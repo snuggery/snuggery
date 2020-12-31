@@ -30,9 +30,13 @@ export interface Option {
   hidden: boolean;
 }
 
-export function parseSchema(
-  schema: json.schema.JsonSchema,
-): {options: Option[]; allowExtraOptions: boolean} {
+export function parseSchema({
+  description,
+  optionSchema: schema,
+}: {
+  description?: string;
+  optionSchema: json.schema.JsonSchema;
+}): {options: Option[]; allowExtraOptions: boolean; description?: string} {
   if (typeof schema === 'boolean') {
     return {
       options: [],
@@ -128,6 +132,11 @@ export function parseSchema(
         const hidden =
           !!property.hidden || !!property['x-deprecated'] || !visible;
 
+        const description =
+          typeof property.description === 'string'
+            ? property.description
+            : undefined;
+
         return {
           aliases,
           extraTypes: types,
@@ -137,9 +146,11 @@ export function parseSchema(
           required,
           type,
           positional,
+          description,
         };
       })
       .filter(isntNull),
     allowExtraOptions: additionalProperties,
+    description,
   };
 }

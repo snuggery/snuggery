@@ -5,7 +5,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "tsc && cp README.md dist/ && jq 'del(.scripts) | del(.devDependencies) | del(.private)' package.json >dist/package.json"
+    "build": "rm -rf dist && tsc && cp README.md dist/ && jq 'del(.scripts) | del(.devDependencies) | del(.private)' package.json >dist/package.json"
   },
   "dependencies": {
     "@angular-devkit/architect": "^0.1100.5",

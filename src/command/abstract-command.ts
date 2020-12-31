@@ -3,6 +3,7 @@ import {Command, UsageError} from 'clipanion';
 
 import {CliWorkspace, Context} from './context';
 import {Cached} from '../utils/decorator';
+import type {Writable} from 'stream';
 
 export abstract class AbstractCommand extends Command<Context> {
   @Cached()
@@ -24,8 +25,27 @@ export abstract class AbstractCommand extends Command<Context> {
     return workspace;
   }
 
+  protected get currentProject() {
+    const {
+      workspace,
+      context: {startCwd},
+    } = this;
+
+    return workspace.tryGetProjectNameByCwd(startCwd);
+  }
+
   protected createLogger(): logging.Logger {
-    // TODO
-    return new logging.Logger('to do');
+    const logger = new logging.Logger('');
+
+    const out: {[level in logging.LogLevel]?: Writable} = {
+      info: this.context.stdout,
+      debug: this.context.stdout,
+    };
+
+    logger.subscribe(entry => {
+      (out[entry.level] ?? this.context.stderr).write(entry.message + '\n');
+    });
+
+    return logger;
   }
 }

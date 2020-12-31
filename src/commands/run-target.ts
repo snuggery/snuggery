@@ -23,7 +23,7 @@ export class RunTargetCommand extends ArchitectCommand {
   @ArchitectCommand.String({
     required: true,
   })
-  public target?: string;
+  public specifier?: string;
 
   @ArchitectCommand.Proxy()
   public args = [] as string[];
@@ -31,13 +31,13 @@ export class RunTargetCommand extends ArchitectCommand {
   @ArchitectCommand.Path('run')
   @ArchitectCommand.Path('run', 'target')
   async execute() {
-    if (this.target == null) {
+    if (this.specifier == null) {
       const err = new UsageError(`Missing parameter target`);
       err.clipanion.type = 'usage';
       throw err;
     }
 
-    const target = targetFromTargetString(this.target);
+    const target = targetFromTargetString(this.specifier);
 
     const {
       allowExtraOptions,
@@ -50,13 +50,20 @@ export class RunTargetCommand extends ArchitectCommand {
         options = parseFreeFormArguments(this.args);
       }
     } else {
-      options = parseOptions({
+      const o = parseOptions({
         allowExtraOptions,
-        baseCli: this.cli,
+        command: this,
+        description: `Run the \`${this.specifier}\` target`,
         options: definedOptions,
-        path: [...this.path, this.target],
+        path: [...this.path, this.specifier],
         values: this.args,
       });
+
+      if (o === null) {
+        return 1;
+      }
+
+      options = o;
     }
 
     return this.runTarget({

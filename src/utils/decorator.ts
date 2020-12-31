@@ -14,17 +14,26 @@ export function Cached(): MethodDecorator {
       );
     }
 
-    const values = new WeakMap<object, T>();
+    const values = new WeakMap<object, {value: T} | {error: unknown}>();
 
     descriptor.get = function (this: object) {
       let cached = values.get(this);
 
       if (cached == null) {
-        cached = get.call(this);
+        try {
+          cached = {value: get.call(this)};
+        } catch (e) {
+          cached = {error: e};
+        }
+
         values.set(this, cached);
       }
 
-      return cached;
+      if ('value' in cached) {
+        return cached.value;
+      } else {
+        throw cached.error;
+      }
     };
   };
 }

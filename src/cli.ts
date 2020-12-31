@@ -2,6 +2,8 @@
 import {Cli} from 'clipanion';
 
 import {Context, findWorkspace} from './command/context';
+import {EntryCommand} from './commands/entry';
+import {EntryWithProjectCommand} from './commands/entry-with-project';
 import {HelpCommand} from './commands/help';
 import {RunBuilderCommand} from './commands/run-builder';
 import {RunTargetCommand} from './commands/run-target';
@@ -13,6 +15,9 @@ const cli = new Cli<Context>({
 });
 
 cli.register(HelpCommand);
+cli.register(EntryCommand);
+cli.register(EntryWithProjectCommand);
+
 cli.register(RunTargetCommand);
 cli.register(RunBuilderCommand);
 

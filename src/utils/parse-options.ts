@@ -1,7 +1,8 @@
 import {JsonObject, JsonValue} from '@angular-devkit/core';
 import {camelize, dasherize} from '@angular-devkit/core/src/utils/strings';
-import {Cli, CliOptions, Command} from 'clipanion';
+import {Cli, Command} from 'clipanion';
 import {parse as parseJson} from 'json5';
+import {AbstractCommand} from '../command/abstract-command';
 
 import {Option, Type} from './parse-schema';
 
@@ -19,10 +20,23 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
 
     if (current.startsWith('--')) {
       const equals = current.indexOf('=');
-      const value =
-        equals > -1 ? current.slice(equals + 1) : values[++i] ?? true;
-      const name =
-        equals > -1 ? current.slice(2, equals - 1) : current.slice(2);
+
+      let value: JsonValue;
+      let name: string;
+      if (equals > -1) {
+        name = current.slice(2, equals - 1);
+        value = current.slice(equals + 1);
+      } else {
+        name = current.slice(2);
+
+        let next = values[i + 1];
+        if (!next || next.startsWith('-')) {
+          value = true;
+        } else {
+          value = next;
+          i++;
+        }
+      }
 
       result[camelize(name)] = value;
     } else if (current.startsWith('-')) {
@@ -41,23 +55,42 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
   return result;
 }
 
+class HelpCommand extends Command {
+  @Command.Path('--help')
+  @Command.Path('-h')
+  execute(): Promise<number | void> {
+    throw new Error('Never called.');
+  }
+}
+
+const globalReservedNames = new Set(['--help', '-h']);
+
 export function parseOptions({
-  baseCli,
+  command: {context, cli: baseCli},
   path,
+  description,
   options,
   allowExtraOptions,
   values,
+  reservedNames = new Set(),
 }: {
-  readonly baseCli: CliOptions;
+  readonly command: AbstractCommand;
   readonly path: string[];
+  readonly description?: string;
   readonly options: Option[];
   readonly allowExtraOptions: boolean;
   readonly values: string[];
-}): JsonObject {
+  readonly reservedNames?: Set<string>;
+}): JsonObject | null {
   class OptionParserCommand extends Command {
+    static usage = description ? {description} : undefined;
+
     public readonly value: JsonObject = {};
 
-    @Command.Path(...path)
+    @Command.Boolean('--help,-h', {description: 'Show this help message'})
+    public help = false;
+
+    @Command.Path()
     execute(): never {
       throw new Error('Never called');
     }
@@ -105,6 +138,9 @@ export function parseOptions({
     const names = [option.name, ...option.aliases]
       .map(f => dasherize(f))
       .map(f => (f.length > 1 ? `--${f}` : `-${f}`))
+      .filter(
+        name => !reservedNames.has(name) && !globalReservedNames.has(name),
+      )
       .join(',');
 
     let decorator;
@@ -156,8 +192,17 @@ export function parseOptions({
     OptionParserCommand.addOption('rest', Command.Proxy());
   }
 
-  const cli = Cli.from([OptionParserCommand], baseCli);
-  const command = cli.process([...path, ...values]);
+  const cli = Cli.from([OptionParserCommand, HelpCommand], {
+    ...baseCli,
+    binaryName: `${baseCli.binaryName} ${path.join(' ')}`,
+  });
+  const command = cli.process(values);
+
+  if (command.help || command instanceof HelpCommand) {
+    context.stderr.write(cli.usage(OptionParserCommand, {detailed: true}));
+
+    return null;
+  }
 
   if (!(command instanceof OptionParserCommand)) {
     throw new Error(`Invalid result returned by inner cli`);

@@ -34,6 +34,7 @@ export class RunBuilderCommand extends ArchitectCommand {
     const {
       allowExtraOptions,
       options: definedOptions,
+      description,
     } = await this.getOptionsForBuilder(this.builder);
 
     let options: JsonObject | undefined;
@@ -42,13 +43,20 @@ export class RunBuilderCommand extends ArchitectCommand {
         options = parseFreeFormArguments(this.args);
       }
     } else {
-      options = parseOptions({
+      const o = parseOptions({
         allowExtraOptions,
-        baseCli: this.cli,
+        command: this,
         options: definedOptions,
+        description,
         path: [...this.path, this.builder],
         values: this.args,
       });
+
+      if (o === null) {
+        return 1;
+      }
+
+      options = o;
     }
 
     return this.runBuilder({

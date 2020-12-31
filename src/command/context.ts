@@ -1,7 +1,7 @@
 import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
-import {BaseContext} from 'clipanion';
+import {BaseContext, UsageError} from 'clipanion';
 import {readFileSync, statSync, writeFileSync} from 'fs';
-import {dirname} from 'path';
+import {dirname, normalize, relative, resolve, sep} from 'path';
 import {findUp} from '../utils/find-up';
 
 export interface Context extends BaseContext {
@@ -31,6 +31,43 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
 
   get projects(): workspaces.ProjectDefinitionCollection {
     return this.workspace.projects;
+  }
+
+  tryGetProjectNameByCwd(cwd: string): string | null {
+    const relativeCwd = normalize(
+      relative(this.basePath, resolve(this.basePath, cwd)),
+    );
+
+    if (relativeCwd.startsWith('../')) {
+      throw new UsageError(`Invalid project path ${relativeCwd}`);
+    }
+
+    let longestMatch = '';
+    let longestMatchingProject: string | null = null;
+
+    for (const [name, project] of this.projects) {
+      const root = normalize(project.root);
+
+      if (root === relativeCwd) {
+        longestMatch = root;
+        longestMatchingProject = name;
+        break;
+      }
+
+      if (
+        relativeCwd.startsWith(`${root}${sep}`) &&
+        root.length > longestMatch.length
+      ) {
+        longestMatch = root;
+        longestMatchingProject = name;
+      }
+    }
+
+    return longestMatchingProject;
+  }
+
+  tryGetProjectByName(name: string): workspaces.ProjectDefinition | null {
+    return this.projects.get(name) ?? null;
   }
 }
 
