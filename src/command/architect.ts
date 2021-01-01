@@ -1,6 +1,6 @@
 import {Architect, Target} from '@angular-devkit/architect';
-import {WorkspaceNodeModulesArchitectHost} from '@angular-devkit/architect/node';
 import {json, JsonObject} from '@angular-devkit/core';
+import {AtelierArchitectHost} from '../architect/host';
 
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
@@ -27,11 +27,8 @@ export abstract class ArchitectCommand extends AbstractCommand {
   }
 
   @Cached()
-  protected get architectHost(): WorkspaceNodeModulesArchitectHost {
-    return new WorkspaceNodeModulesArchitectHost(
-      this.workspace,
-      this.workspace.basePath,
-    );
+  protected get architectHost(): AtelierArchitectHost {
+    return new AtelierArchitectHost(this.context, this.workspace);
   }
 
   @Cached()
