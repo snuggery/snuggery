@@ -43,6 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/json5", "npm:0.0.30"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
+            ["@types/which-pm-runs", "npm:1.0.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
             ["clipanion", "npm:2.6.2"],
             ["husky", "npm:4.3.6"],
@@ -50,7 +51,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
-            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
+            ["which-pm-runs", "npm:1.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -144,6 +146,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/json5", "npm:0.0.30"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
+            ["@types/which-pm-runs", "npm:1.0.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
             ["clipanion", "npm:2.6.2"],
             ["husky", "npm:4.3.6"],
@@ -151,7 +154,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
-            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
+            ["which-pm-runs", "npm:1.0.0"]
           ],
           "linkType": "SOFT",
         }]
@@ -330,6 +334,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-treeify-npm-1.0.0-b5e04e9cd3-f7b82d91a4.zip/node_modules/@types/treeify/",
           "packageDependencies": [
             ["@types/treeify", "npm:1.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/which-pm-runs", [
+        ["npm:1.0.0", {
+          "packageLocation": "./.yarn/cache/@types-which-pm-runs-npm-1.0.0-54c3e05919-d1f83686f7.zip/node_modules/@types/which-pm-runs/",
+          "packageDependencies": [
+            ["@types/which-pm-runs", "npm:1.0.0"]
           ],
           "linkType": "HARD",
         }]

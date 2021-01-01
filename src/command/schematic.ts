@@ -1,3 +1,4 @@
+import {isJsonObject, JsonObject, schema} from '@angular-devkit/core';
 import {
   FileSystemCollection,
   FileSystemEngine,
@@ -5,18 +6,18 @@ import {
   FileSystemSchematicDescription,
   NodeWorkflow,
 } from '@angular-devkit/schematics/tools';
-import {isJsonObject, JsonObject, schema} from '@angular-devkit/core';
-
-import {Cached} from '../utils/decorator';
-import {parseSchema, Option} from '../utils/parse-schema';
-import {AbstractCommand} from './abstract-command';
-import {UsageError} from 'clipanion';
-import {normalize, relative} from 'path';
 import {
   DryRunEvent,
   formats,
   UnsuccessfulWorkflowExecution,
 } from '@angular-devkit/schematics';
+import {UsageError} from 'clipanion';
+import {normalize, relative} from 'path';
+import getPackageManager from 'which-pm-runs';
+
+import {Cached} from '../utils/decorator';
+import {parseSchema, Option} from '../utils/parse-schema';
+import {AbstractCommand} from './abstract-command';
 
 export const reservedNames: ReadonlySet<string> = new Set([
   '--dry-run',
@@ -47,8 +48,8 @@ export abstract class SchematicCommand extends AbstractCommand {
     const workflow = new NodeWorkflow(this.root, {
       force: this.force,
       dryRun: this.dryRun,
-      packageManager: 'yarn', // TODO
-      packageRegistry: undefined, // TODO
+      packageManager: getPackageManager()?.name,
+      packageRegistry: undefined,
       registry: new schema.CoreSchemaRegistry(formats.standardFormats),
       resolvePaths: [this.context.startCwd, this.root],
       schemaValidation: true,
