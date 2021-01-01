@@ -1,10 +1,8 @@
 import {Target} from '@angular-devkit/architect';
-import {JsonObject} from '@angular-devkit/core';
+import {isJsonArray, JsonObject} from '@angular-devkit/core';
 import {UsageError} from 'clipanion';
-import {ArchitectCommand} from '../command/architect';
+import {ArchitectCommand, configurationOption} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
-
-const reservedNames = new Set(['--configuration', '-c']);
 
 export class EntryCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
@@ -55,19 +53,11 @@ export class EntryCommand extends ArchitectCommand {
       );
     }
 
-    let target: Target;
-    if (this.configuration.length > 0) {
-      target = {
-        project: currentProject,
-        target: this.target,
-        configuration: this.configuration.join(','),
-      };
-    } else {
-      target = {
-        project: currentProject,
-        target: this.target,
-      };
-    }
+    const target: Target = {
+      project: currentProject,
+      target: this.target,
+    };
+    const configurations = new Set(this.configuration);
 
     const {
       allowExtraOptions,
@@ -84,10 +74,9 @@ export class EntryCommand extends ArchitectCommand {
         allowExtraOptions,
         command: this,
         description: `Run the \`${target.target}\` target in the current project (\`${target.project}\`)`,
-        options: definedOptions,
+        options: [configurationOption, ...definedOptions],
         path: [this.target],
         values: this.args,
-        reservedNames,
       });
 
       if (o === null) {
@@ -95,6 +84,19 @@ export class EntryCommand extends ArchitectCommand {
       }
 
       options = o;
+    }
+
+    if (options != null && isJsonArray(options.configuration!)) {
+      for (const value of options.configuration) {
+        if (typeof value === 'string') {
+          configurations.add(value);
+        }
+      }
+      delete options.configuration;
+    }
+
+    if (configurations.size > 0) {
+      target.configuration = Array.from(configurations).join(',');
     }
 
     return this.runTarget({

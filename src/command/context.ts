@@ -33,7 +33,16 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
     return this.workspace.projects;
   }
 
-  tryGetProjectNameByCwd(cwd: string): string | null {
+  get defaultProject(): string | null {
+    return typeof this.extensions.defaultProject === 'string'
+      ? this.extensions.defaultProject
+      : null;
+  }
+
+  tryGetProjectNameByCwd(
+    cwd: string,
+    warn: (message: string) => void,
+  ): string | null {
     const relativeCwd = normalize(
       relative(this.basePath, resolve(this.basePath, cwd)),
     );
@@ -45,22 +54,39 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
     let longestMatch = '';
     let longestMatchingProject: string | null = null;
 
+    let warnDuplicate = false;
+
     for (const [name, project] of this.projects) {
       const root = normalize(project.root);
 
       if (root === relativeCwd) {
-        longestMatch = root;
-        longestMatchingProject = name;
-        break;
-      }
-
-      if (
+        if (longestMatch === root) {
+          warnDuplicate = true;
+          longestMatchingProject = this.defaultProject;
+        } else {
+          warnDuplicate = false;
+          longestMatch = root;
+          longestMatchingProject = name;
+        }
+      } else if (
         relativeCwd.startsWith(`${root}${sep}`) &&
         root.length > longestMatch.length
       ) {
-        longestMatch = root;
-        longestMatchingProject = name;
+        if (longestMatch === root) {
+          warnDuplicate = true;
+          longestMatchingProject = this.defaultProject;
+        } else {
+          warnDuplicate = false;
+          longestMatch = root;
+          longestMatchingProject = name;
+        }
       }
+    }
+
+    if (warnDuplicate) {
+      warn(
+        `Multiple projects have the same root ${relativeCwd}, using the default project "${longestMatchingProject}"`,
+      );
     }
 
     return longestMatchingProject;

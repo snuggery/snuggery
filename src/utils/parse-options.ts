@@ -72,7 +72,7 @@ export function parseOptions({
   options,
   allowExtraOptions,
   values,
-  reservedNames = new Set(),
+  reservedNames,
 }: {
   readonly command: AbstractCommand;
   readonly path: string[];
@@ -80,7 +80,7 @@ export function parseOptions({
   readonly options: Option[];
   readonly allowExtraOptions: boolean;
   readonly values: string[];
-  readonly reservedNames?: Set<string>;
+  readonly reservedNames?: ReadonlySet<string>;
 }): JsonObject | null {
   class OptionParserCommand extends Command {
     static usage = description ? {description} : undefined;
@@ -96,6 +96,12 @@ export function parseOptions({
     }
   }
 
+  const claimedNames = new Set(
+    reservedNames
+      ? [...reservedNames, ...globalReservedNames]
+      : globalReservedNames,
+  );
+
   let restOption: Option | null = null;
 
   for (const option of options) {
@@ -104,11 +110,30 @@ export function parseOptions({
       continue;
     }
 
+    const names = Array.from(new Set([option.name, ...option.aliases]))
+      .map(f => dasherize(f))
+      .map(f => (f.length > 1 ? `--${f}` : `-${f}`))
+      .filter(name => !claimedNames.has(name));
+
+    if (names.length === 0) {
+      // All names of this option have already been claimed, that's too bad
+      continue;
+    }
+
     const key = `option_${option.name}`;
 
     if (option.type === Type.Boolean) {
       Object.defineProperty(OptionParserCommand.prototype, key, {
         set(value: boolean) {
+          this.value[option.name] = value;
+        },
+      });
+    } else if (option.type === Type.StringArray) {
+      Object.defineProperty(OptionParserCommand.prototype, key, {
+        get() {
+          return (this.value[option.name] ??= []);
+        },
+        set(value: string) {
           this.value[option.name] = value;
         },
       });
@@ -135,30 +160,26 @@ export function parseOptions({
 
     const {hidden, description} = option;
 
-    const names = [option.name, ...option.aliases]
-      .map(f => dasherize(f))
-      .map(f => (f.length > 1 ? `--${f}` : `-${f}`))
-      .filter(
-        name => !reservedNames.has(name) && !globalReservedNames.has(name),
-      )
-      .join(',');
+    for (const name of names) {
+      claimedNames.add(name);
+    }
 
     let decorator;
     switch (option.type) {
       case Type.Boolean:
-        decorator = Command.Boolean(names, {
+        decorator = Command.Boolean(names.join(','), {
           description,
           hidden,
         });
         break;
       case Type.StringArray:
-        decorator = Command.Array(names, {description, hidden});
+        decorator = Command.Array(names.join(','), {description, hidden});
         break;
       case Type.String:
       case Type.Number:
       case Type.Object:
       default:
-        decorator = Command.String(names, {
+        decorator = Command.String(names.join(','), {
           description,
           hidden,
           tolerateBoolean:

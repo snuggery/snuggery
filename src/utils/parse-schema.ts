@@ -28,14 +28,16 @@ export interface Option {
   aliases: string[];
 
   hidden: boolean;
+
+  format?: string;
 }
 
 export function parseSchema({
   description,
-  optionSchema: schema,
+  optionSchema: schema = true,
 }: {
   description?: string;
-  optionSchema: json.schema.JsonSchema;
+  optionSchema?: json.schema.JsonSchema;
 }): {options: Option[]; allowExtraOptions: boolean; description?: string} {
   if (typeof schema === 'boolean') {
     return {
@@ -137,6 +139,9 @@ export function parseSchema({
             ? property.description
             : undefined;
 
+        const format =
+          typeof property.format === 'string' ? property.format : undefined;
+
         return {
           aliases,
           extraTypes: types,
@@ -147,6 +152,7 @@ export function parseSchema({
           type,
           positional,
           description,
+          format,
         };
       })
       .filter(isntNull),

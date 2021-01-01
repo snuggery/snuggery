@@ -3,8 +3,18 @@ import {WorkspaceNodeModulesArchitectHost} from '@angular-devkit/architect/node'
 import {json, JsonObject} from '@angular-devkit/core';
 
 import {Cached} from '../utils/decorator';
-import {parseSchema} from '../utils/parse-schema';
+import {Option, parseSchema, Type} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';
+
+export const configurationOption: Option = {
+  name: 'configuration',
+  aliases: ['c'],
+  hasDefault: false,
+  hidden: false,
+  required: false,
+  type: Type.StringArray,
+  description: 'Configuration(s) to use',
+};
 
 export abstract class ArchitectCommand extends AbstractCommand {
   @Cached()
@@ -49,7 +59,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
     options?: JsonObject;
   }): Promise<number> {
     const run = await this.architect.scheduleTarget(target, options, {
-      logger: this.createLogger(),
+      logger: this.logger,
     });
 
     const {error, success} = await run.output.toPromise();
@@ -70,7 +80,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
     options?: JsonObject;
   }) {
     const run = await this.architect.scheduleBuilder(builder, options, {
-      logger: this.createLogger(),
+      logger: this.logger,
     });
 
     const {error, success} = await run.output.toPromise();

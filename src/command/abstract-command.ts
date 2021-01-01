@@ -31,10 +31,13 @@ export abstract class AbstractCommand extends Command<Context> {
       context: {startCwd},
     } = this;
 
-    return workspace.tryGetProjectNameByCwd(startCwd);
+    return workspace.tryGetProjectNameByCwd(startCwd, message =>
+      this.logger.warn(message),
+    );
   }
 
-  protected createLogger(): logging.Logger {
+  @Cached()
+  protected get logger(): logging.Logger {
     const logger = new logging.Logger('');
 
     const out: {[level in logging.LogLevel]?: Writable} = {
