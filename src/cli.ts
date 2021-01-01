@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {Cli} from 'clipanion';
+import {Cli, UsageError} from 'clipanion';
 
 import {Context, findWorkspace} from './command/context';
 import {EntryCommand} from './commands/entry';
@@ -9,11 +9,24 @@ import {HelpCommand} from './commands/help';
 import {RunBuilderCommand} from './commands/run-builder';
 import {RunTargetCommand} from './commands/run-target';
 
+const [major, minor] = process.version.replace(/^v/, '').split('.') as [
+  string,
+  string,
+];
+
 const cli = new Cli<Context>({
   binaryLabel: 'Atelier',
   binaryName: 'ai',
   binaryVersion: require('@bgotink/atelier/package.json').version,
 });
+
+if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
+  process.stderr.write(
+    cli.error(new UsageError(`Atelier requires at least node version 12.2`)),
+  );
+
+  process.exit(1);
+}
 
 cli.register(HelpCommand);
 cli.register(EntryCommand);
