@@ -1,4 +1,4 @@
-import {json, logging} from '@angular-devkit/core';
+import {logging} from '@angular-devkit/core';
 import {Command, UsageError} from 'clipanion';
 
 import {CliWorkspace, Context} from './context';
@@ -6,15 +6,6 @@ import {Cached} from '../utils/decorator';
 import type {Writable} from 'stream';
 
 export abstract class AbstractCommand extends Command<Context> {
-  @Cached()
-  protected get registry(): json.schema.SchemaRegistry {
-    const registry = new json.schema.CoreSchemaRegistry();
-    registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
-    registry.useXDeprecatedProvider(msg => this.context.stderr.write(msg)); // TODO logging
-
-    return registry;
-  }
-
   protected get workspace(): CliWorkspace {
     const {workspace} = this.context;
 

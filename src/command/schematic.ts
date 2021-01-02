@@ -124,7 +124,9 @@ export abstract class SchematicCommand extends AbstractCommand {
     const {description, schemaJson} = schematic.description;
     return parseSchema({
       description,
-      schema: schemaJson,
+      schema:
+        schemaJson &&
+        (await this.workflow.registry.flatten(schemaJson).toPromise()),
     });
   }
 
