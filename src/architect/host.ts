@@ -6,7 +6,7 @@ import {
 } from '@angular-devkit/architect/src/internal';
 import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
 import {createRequire} from 'module';
-import {dirname, join} from 'path';
+import {basename, dirname, join} from 'path';
 
 import {CliWorkspace, Context} from '../command/context';
 
@@ -47,7 +47,7 @@ export class UnknownTargetError extends Error {
 }
 
 export interface AtelierBuilderInfo extends BuilderInfo {
-  packageName: string;
+  packageName: string | null;
   implementationPath: string;
 }
 
@@ -67,44 +67,60 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
     ])) {
       const require = createRequire(join(basePath, 'synthetic.js'));
 
-      let pJson: JsonObject;
+      let startJsonPath: string;
       try {
-        pJson = require(join(packageName, 'package.json'));
+        startJsonPath = require.resolve(join(packageName, 'package.json'));
       } catch {
-        continue;
+        try {
+          startJsonPath = require.resolve(packageName);
+        } catch {
+          continue;
+        }
       }
 
-      if (typeof pJson.builders !== 'string') {
-        throw new InvalidBuilderError(
-          `No builder configuration found in package "${packageName}" for builder "${builderSpec}"`,
-        );
-      }
+      let buildersJsonPath = startJsonPath;
+      let buildersJson: JsonObject;
 
       try {
-        const builderJsonPath = require.resolve(
-          join(packageName, pJson.builders),
-        );
-        const builderJson = require(builderJsonPath);
-
-        if (
-          !isJsonObject(builderJson) ||
-          !isJsonObject(builderJson.builders!)
-        ) {
-          throw new Error(`configuration doesn't match schema`);
-        }
-
-        return [builderJsonPath, builderJson.builders];
-      } catch (e) {
+        buildersJson = require(buildersJsonPath);
+      } catch {
         throw new InvalidBuilderError(
-          `Invalid builder configuration found in package "${packageName}" for builder "${builderSpec}": ${
-            (e as Error)?.message || e
-          }`,
+          `Failed to load builder configuration file "${buildersJsonPath}"`,
         );
       }
+
+      while (typeof buildersJson.builders === 'string') {
+        buildersJsonPath = join(
+          dirname(buildersJsonPath),
+          buildersJson.builders,
+        );
+
+        try {
+          buildersJson = require(buildersJsonPath);
+        } catch {
+          throw new InvalidBuilderError(
+            `Failed to load builder configuration file "${buildersJsonPath}"`,
+          );
+        }
+      }
+
+      if (buildersJson.builders == null) {
+        throw new InvalidBuilderError(
+          `No builder configuration found in "${packageName}" for builder "${builderSpec}"`,
+        );
+      }
+
+      if (!isJsonObject(buildersJson.builders)) {
+        throw new InvalidBuilderError(
+          `Builder configuration file "${buildersJsonPath}" for "${builderSpec}" doesn't match the schema`,
+        );
+      }
+
+      return [buildersJsonPath, buildersJson.builders];
     }
 
     throw new UnknownBuilderError(
-      `Couldn't find package "${packageName}" for builder "${builderSpec}"`,
+      `Couldn't find builder configuration in "${packageName}" for builder "${builderSpec}"`,
     );
   }
 
@@ -136,51 +152,118 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
     return this.getTarget(target).builder;
   }
 
+  private async resolveBuilderFromPath(
+    path: string,
+  ): Promise<[path: string, info: JsonObject]> {
+    for (const basePath of new Set([
+      this.context.startCwd,
+      this.workspace.basePath,
+    ])) {
+      const require = createRequire(join(basePath, 'synthetic.js'));
+
+      let resolvedPath;
+      try {
+        resolvedPath = require.resolve(path);
+      } catch {
+        continue;
+      }
+
+      let schemaOrBuilder: JsonObject | {[BuilderSymbol]: true};
+      try {
+        schemaOrBuilder = await import(resolvedPath).then(
+          module => module.default ?? module,
+        );
+      } catch {
+        throw new InvalidBuilderError(
+          `Failed to load builder file "${resolvedPath}" for builder "${path}"`,
+        );
+      }
+
+      if (
+        schemaOrBuilder == null ||
+        typeof schemaOrBuilder !== 'object' ||
+        Array.isArray(schemaOrBuilder)
+      ) {
+        throw new InvalidBuilderError(
+          `File "${resolvedPath}" for builder "${path}" does not contain a valid builder`,
+        );
+      }
+
+      if (BuilderSymbol in schemaOrBuilder) {
+        return [
+          resolvedPath,
+          {
+            schema: true,
+            implementation: basename(resolvedPath),
+          },
+        ];
+      } else {
+        return [resolvedPath, schemaOrBuilder];
+      }
+    }
+
+    throw new UnknownBuilderError(`Can't resolve builder "${path}"`);
+  }
+
   async resolveBuilder(builderSpec: string): Promise<AtelierBuilderInfo> {
-    const [packageName, builderName] = builderSpec.split(':', 2);
+    const [builderName, packageName = null] = builderSpec
+      .split(':', 2)
+      .reverse() as [string, string | undefined];
 
-    if (packageName == null || builderName == null) {
-      throw new UnknownBuilderError(
-        `Builder name doesn't match <packageName>:<builderName>: "${builderSpec}"`,
+    let builderPath: string;
+    let builderInfo: JsonValue;
+
+    if (packageName == null) {
+      [builderPath, builderInfo] = await this.resolveBuilderFromPath(
+        builderSpec,
       );
+    } else {
+      let builderJson;
+      [builderPath, builderJson] = this.loadBuilderJson(
+        packageName,
+        builderSpec,
+      );
+
+      if (!Object.prototype.hasOwnProperty.call(builderJson, builderName)) {
+        throw new UnknownBuilderError(
+          `Can't find "${builderName}" in "${packageName}"`,
+        );
+      }
+
+      builderInfo = builderJson[builderName]!;
     }
 
-    const [builderPath, builderJson] = this.loadBuilderJson(
-      packageName,
-      builderSpec,
-    );
-
-    if (!Object.prototype.hasOwnProperty.call(builderJson, builderName)) {
-      throw new UnknownBuilderError(
-        `Can't find "${builderName}" in "${packageName}"`,
-      );
-    }
-
-    let builderInfo = builderJson[builderName]!;
     if (
       !isJsonObject(builderInfo) ||
       typeof builderInfo.implementation !== 'string' ||
-      typeof builderInfo.schema !== 'string'
+      (typeof builderInfo.schema !== 'string' &&
+        typeof builderInfo.schema !== 'boolean')
     ) {
       throw new InvalidBuilderError(
-        `Invalid configuration for builder "${builderName}" in package "${packageName}"`,
+        packageName != null
+          ? `Invalid configuration for builder "${builderName}" in package "${packageName}"`
+          : `Invalid configuration for builder "${builderName}"`,
       );
     }
 
-    const schemaPath = join(dirname(builderPath), builderInfo.schema);
     let optionSchema: JsonValue;
-    try {
-      optionSchema = require(schemaPath);
-    } catch {
-      throw new InvalidBuilderError(
-        `Couldn't load schema "${schemaPath}" for builder "${builderName}" in package "${packageName}"`,
-      );
-    }
+    if (typeof builderInfo.schema === 'boolean') {
+      optionSchema = builderInfo.schema;
+    } else {
+      const schemaPath = join(dirname(builderPath), builderInfo.schema);
+      try {
+        optionSchema = require(schemaPath);
+      } catch {
+        throw new InvalidBuilderError(
+          `Couldn't load schema "${schemaPath}" for builder "${builderName}" in package "${packageName}"`,
+        );
+      }
 
-    if (!isJsonObject(optionSchema)) {
-      throw new InvalidBuilderError(
-        `Invalid schema at "${schemaPath}" for builder "${builderName}" in package "${packageName}"`,
-      );
+      if (!isJsonObject(optionSchema)) {
+        throw new InvalidBuilderError(
+          `Invalid schema at "${schemaPath}" for builder "${builderName}" in package "${packageName}"`,
+        );
+      }
     }
 
     const description =
