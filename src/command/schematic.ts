@@ -283,11 +283,10 @@ export abstract class SchematicCommand extends AbstractCommand {
     } catch (e) {
       if (e instanceof UnsuccessfulWorkflowExecution) {
         this.logger.fatal('The schematic workflow failed. See above.');
-      } else {
-        this.context.stderr.write(this.cli.error(e));
+        return 1;
       }
 
-      return 1;
+      throw e;
     }
 
     if (!madeAChange) {
