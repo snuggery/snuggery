@@ -24,7 +24,7 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
       let value: JsonValue;
       let name: string;
       if (equals > -1) {
-        name = current.slice(2, equals - 1);
+        name = current.slice(2, equals);
         value = current.slice(equals + 1);
       } else {
         name = current.slice(2);
@@ -36,6 +36,16 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
           value = next;
           i++;
         }
+      }
+
+      if (value === 'true' || value === 'false') {
+        value = value === 'true';
+      } else if (
+        typeof value === 'string' &&
+        !isNaN(value as any) &&
+        !isNaN(parseFloat(value))
+      ) {
+        value = parseFloat(value);
       }
 
       result[camelize(name)] = value;
