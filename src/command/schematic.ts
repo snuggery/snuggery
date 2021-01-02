@@ -100,10 +100,12 @@ export abstract class SchematicCommand extends AbstractCommand {
     return collection.createSchematic(schematicName, allowPrivate);
   }
 
-  protected async getOptions(collection: string, schematic: string) {
-    return parseSchema(
-      this.getSchematic(this.getCollection(collection), schematic).description,
-    );
+  protected async getOptions(schematic: FileSystemSchematic) {
+    const {description, schemaJson} = schematic.description;
+    return parseSchema({
+      description,
+      schema: schemaJson,
+    });
   }
 
   protected getConfiguredOptions(

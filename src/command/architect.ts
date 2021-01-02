@@ -55,9 +55,14 @@ export abstract class ArchitectCommand extends AbstractCommand {
   }
 
   protected async getOptionsForBuilder(builderConf: string) {
-    const builderDesc = await this.architectHost.resolveBuilder(builderConf);
+    const {description, optionSchema} = await this.architectHost.resolveBuilder(
+      builderConf,
+    );
 
-    return parseSchema(builderDesc);
+    return parseSchema({
+      description,
+      schema: optionSchema,
+    });
   }
 
   protected async runTarget({

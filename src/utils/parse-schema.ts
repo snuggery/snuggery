@@ -34,10 +34,10 @@ export interface Option {
 
 export function parseSchema({
   description,
-  optionSchema: schema = true,
+  schema = true,
 }: {
   description?: string;
-  optionSchema?: json.schema.JsonSchema;
+  schema?: json.schema.JsonSchema;
 }): {options: Option[]; allowExtraOptions: boolean; description?: string} {
   if (typeof schema === 'boolean') {
     return {

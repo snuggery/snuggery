@@ -77,7 +77,7 @@ export class GenerateCommand extends SchematicCommand {
       options: definedOptions,
       allowExtraOptions,
       description,
-    } = await this.getOptions(collectionName, schematicName);
+    } = await this.getOptions(schematic);
 
     let options: JsonObject | undefined;
     if (definedOptions.length === 0) {
