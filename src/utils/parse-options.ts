@@ -65,14 +65,6 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
   return result;
 }
 
-class HelpCommand extends Command {
-  @Command.Path('--help')
-  @Command.Path('-h')
-  execute(): Promise<number | void> {
-    throw new Error('Never called.');
-  }
-}
-
 const globalReservedNames = new Set(['--help', '-h']);
 
 export function parseOptions({
@@ -80,7 +72,6 @@ export function parseOptions({
   path,
   description,
   options,
-  allowExtraOptions,
   values,
   reservedNames,
 }: {
@@ -88,7 +79,6 @@ export function parseOptions({
   readonly path: string[];
   readonly description?: string;
   readonly options: Option[];
-  readonly allowExtraOptions: boolean;
   readonly values: string[];
   readonly reservedNames?: ReadonlySet<string>;
 }): JsonObject | null {
@@ -213,23 +203,15 @@ export function parseOptions({
     });
 
     OptionParserCommand.addOption(key, Command.Rest());
-  } else if (allowExtraOptions) {
-    Object.defineProperty(OptionParserCommand.prototype, 'rest', {
-      set(this: OptionParserCommand, value: string[]) {
-        Object.assign(this.value, parseFreeFormArguments(value));
-      },
-    });
-
-    OptionParserCommand.addOption('rest', Command.Proxy());
   }
 
-  const cli = Cli.from([OptionParserCommand, HelpCommand], {
+  const cli = Cli.from([OptionParserCommand], {
     ...baseCli,
     binaryName: `${baseCli.binaryName} ${path.join(' ')}`,
   });
   const command = cli.process(values);
 
-  if (command.help || command instanceof HelpCommand) {
+  if (command.help) {
     context.stderr.write(cli.usage(OptionParserCommand, {detailed: true}));
 
     return null;

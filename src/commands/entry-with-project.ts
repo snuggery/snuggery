@@ -71,7 +71,6 @@ export class EntryWithProjectCommand extends ArchitectCommand {
       }
     } else {
       const o = parseOptions({
-        allowExtraOptions,
         command: this,
         description: `Run the \`${target.target}\` target in the \`${target.project}\` project`,
         options: [configurationOption, ...definedOptions],

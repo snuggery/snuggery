@@ -44,7 +44,6 @@ export class RunBuilderCommand extends ArchitectCommand {
       }
     } else {
       const o = parseOptions({
-        allowExtraOptions,
         command: this,
         options: definedOptions,
         description,

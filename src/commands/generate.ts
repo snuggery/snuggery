@@ -82,7 +82,6 @@ export class GenerateCommand extends SchematicCommand {
       }
     } else {
       const o = parseOptions({
-        allowExtraOptions,
         command: this,
         description,
         options: [dryRunOption, forceOption, ...definedOptions],

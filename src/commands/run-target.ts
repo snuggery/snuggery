@@ -51,7 +51,6 @@ export class RunTargetCommand extends ArchitectCommand {
       }
     } else {
       const o = parseOptions({
-        allowExtraOptions,
         command: this,
         description: `Run the \`${this.specifier}\` target`,
         options: definedOptions,
