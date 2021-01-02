@@ -1,24 +1,43 @@
 import {JsonObject} from '@angular-devkit/core';
 import {UsageError} from 'clipanion';
 
-import {reservedNames, SchematicCommand} from '../command/schematic';
+import {
+  reservedNames as schematicReservedNames,
+  SchematicCommand,
+} from '../command/schematic';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
+
+const reservedNames = new Set([
+  ...schematicReservedNames,
+  '--dry-run',
+  '--force',
+]);
 
 export class GenerateCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
     category: 'Schematic commands',
-    description: 'Run a schematic',
+    description: 'Generate and/or modify files based on a schematic',
     examples: [
       [
         'Run the `component` schematic of the `@schematics/angular` package',
         '$0 generate @schematics/angular:component',
       ],
       [
-        "Run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
-        '$0 generate application',
+        "Dry-run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
+        '$0 generate --dry-run application',
       ],
     ],
   });
+
+  @SchematicCommand.Boolean('--dry-run', {
+    description: 'Run the schematics without writing the results to disk',
+  })
+  public dryRun = false;
+
+  @SchematicCommand.Boolean('--force', {
+    description: 'Write the results to disk even if there are conflicts',
+  })
+  public force = false;
 
   @SchematicCommand.String()
   public schematic?: string;

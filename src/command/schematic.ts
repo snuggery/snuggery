@@ -20,21 +20,13 @@ import {parseSchema, Option} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';
 
 export const reservedNames: ReadonlySet<string> = new Set([
-  '--dry-run',
-  '--force',
   '--show-file-changes',
 ]);
 
 export abstract class SchematicCommand extends AbstractCommand {
-  @AbstractCommand.Boolean('--dry-run', {
-    description: 'Run the schematics without writing the results to disk',
-  })
-  public dryRun = false;
+  public abstract readonly dryRun: boolean;
 
-  @AbstractCommand.Boolean('--force', {
-    description: 'Write the results to disk even if there are conflicts',
-  })
-  public force = false;
+  public abstract readonly force: boolean;
 
   @AbstractCommand.Boolean('--show-file-changes', {
     description: 'Print an overview of all file changes made by the schematic',
