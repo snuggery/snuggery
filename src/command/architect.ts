@@ -1,5 +1,8 @@
 import {Architect, Target} from '@angular-devkit/architect';
 import {json, JsonObject} from '@angular-devkit/core';
+import {promises as fs} from 'fs';
+import {tmpdir} from 'os';
+import {join} from 'path';
 import {AtelierArchitectHost} from '../architect/host';
 
 import {Cached} from '../utils/decorator';
@@ -15,6 +18,15 @@ export const configurationOption: Option = {
   type: Type.StringArray,
   description: 'Configuration(s) to use',
 };
+
+export class BuilderFailedError extends Error {
+  readonly clipanion = {usage: 'none'};
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'BuilderFailedError';
+  }
+}
 
 export abstract class ArchitectCommand extends AbstractCommand {
   @Cached()
@@ -59,8 +71,32 @@ export abstract class ArchitectCommand extends AbstractCommand {
       logger: this.logger,
     });
 
-    const {error, success} = await run.output.toPromise();
-    await run.stop();
+    let error, success;
+    try {
+      ({error, success} = await run.output.toPromise());
+
+      await run.stop();
+    } catch (e) {
+      if (!(e instanceof Error)) {
+        throw new BuilderFailedError(
+          `Builder failed with non-error: ${JSON.stringify(e)}`,
+        );
+      }
+
+      let message = `Build failed with underlying ${e.name}: ${e.message}`;
+
+      if (e.stack) {
+        const file = join(
+          await fs.mkdtemp(join(tmpdir(), 'atelier-')),
+          'error.log',
+        );
+        await fs.writeFile(file, e.stack);
+
+        message += `\nSee ${file} for more information on the error`;
+      }
+
+      throw new BuilderFailedError(message);
+    }
 
     if (error) {
       this.context.stderr.write(error + '\n');
@@ -78,8 +114,8 @@ export abstract class ArchitectCommand extends AbstractCommand {
   }) {
     // the Architect class has a `scheduleBuilder` method, you'd think that was
     // useful, but in fact it's the same as `scheduleTarget` with the sole
-    //  exception that it expects the target to be passed in as string instead
-    // of as Target object.
+    // exception that it expects the target to be passed in as string instead of
+    // as Target object.
 
     return this.runTarget({
       target: this.workspace.makeSyntheticTarget(this.currentProject, builder),
