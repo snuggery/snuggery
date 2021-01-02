@@ -99,8 +99,12 @@ export abstract class SchematicCommand extends AbstractCommand {
   }
 
   protected createPathPartialOptions(options: Option[]): JsonObject {
+    if (this.context.workspace == null) {
+      return {};
+    }
+
     const relativeCwd = normalize(
-      relative(this.workspace.basePath, this.context.startCwd),
+      relative(this.context.workspace.basePath, this.context.startCwd),
     );
 
     if (relativeCwd === '.') {
