@@ -2,16 +2,12 @@ import {JsonObject} from '@angular-devkit/core';
 import {UsageError} from 'clipanion';
 
 import {
-  reservedNames as schematicReservedNames,
+  dryRunOption,
+  forceOption,
+  reservedNames,
   SchematicCommand,
 } from '../command/schematic';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
-
-const reservedNames = new Set([
-  ...schematicReservedNames,
-  '--dry-run',
-  '--force',
-]);
 
 export class GenerateCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
@@ -89,7 +85,7 @@ export class GenerateCommand extends SchematicCommand {
         allowExtraOptions,
         command: this,
         description,
-        options: definedOptions,
+        options: [dryRunOption, forceOption, ...definedOptions],
         path: [...this.path, this.schematic],
         values: this.args,
         reservedNames,
@@ -103,6 +99,15 @@ export class GenerateCommand extends SchematicCommand {
         ...this.createPathPartialOptions(definedOptions),
         ...o,
       };
+    }
+
+    if (options?.force != null) {
+      this.force = !!options.force;
+      delete options.force;
+    }
+    if (options?.dryRun != null) {
+      this.dryRun = !!options.dryRun;
+      delete options.dryRun;
     }
 
     return this.runSchematic({schematic, options});

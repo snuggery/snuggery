@@ -16,12 +16,32 @@ import {normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
 import {Cached} from '../utils/decorator';
-import {parseSchema, Option} from '../utils/parse-schema';
+import {parseSchema, Option, Type} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';
 
 export const reservedNames: ReadonlySet<string> = new Set([
   '--show-file-changes',
 ]);
+
+export const forceOption: Option = {
+  name: 'force',
+  aliases: [],
+  hasDefault: true,
+  hidden: false,
+  required: false,
+  type: Type.Boolean,
+  description: 'Write the results to disk even if there are conflicts',
+};
+
+export const dryRunOption: Option = {
+  name: 'dryRun',
+  aliases: [],
+  hasDefault: true,
+  hidden: false,
+  required: false,
+  type: Type.Boolean,
+  description: 'Run the schematics without writing the results to disk',
+};
 
 export abstract class SchematicCommand extends AbstractCommand {
   public abstract readonly dryRun: boolean;
