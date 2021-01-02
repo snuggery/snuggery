@@ -76,17 +76,14 @@ export abstract class ArchitectCommand extends AbstractCommand {
     builder: string;
     options?: JsonObject;
   }) {
-    const run = await this.architect.scheduleBuilder(builder, options, {
-      logger: this.logger,
+    // the Architect class has a `scheduleBuilder` method, you'd think that was
+    // useful, but in fact it's the same as `scheduleTarget` with the sole
+    //  exception that it expects the target to be passed in as string instead
+    // of as Target object.
+
+    return this.runTarget({
+      target: this.workspace.makeSyntheticTarget(this.currentProject, builder),
+      options,
     });
-
-    const {error, success} = await run.output.toPromise();
-    await run.stop();
-
-    if (error) {
-      this.context.stderr.write(error + '\n'); // TODO logging
-    }
-
-    return success ? 0 : 1;
   }
 }

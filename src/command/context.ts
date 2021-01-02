@@ -1,3 +1,4 @@
+import {Target} from '@angular-devkit/architect';
 import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {readFileSync, statSync, writeFileSync} from 'fs';
@@ -17,6 +18,8 @@ export interface Context extends BaseContext {
 }
 
 export class CliWorkspace implements workspaces.WorkspaceDefinition {
+  private syntheticProject?: workspaces.ProjectDefinition;
+
   constructor(
     private readonly workspace: workspaces.WorkspaceDefinition,
     public readonly basePath: string,
@@ -94,6 +97,33 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
 
   tryGetProjectByName(name: string): workspaces.ProjectDefinition | null {
     return this.projects.get(name) ?? null;
+  }
+
+  makeSyntheticTarget(projectName: string | null, builder: string): Target {
+    let project;
+    if (projectName == null) {
+      projectName = '@synthetic/project';
+      project = this.syntheticProject ??= this.projects.add({
+        name: projectName,
+        root: '',
+      });
+    } else {
+      project = this.tryGetProjectByName(projectName);
+      if (project == null) {
+        throw new UsageError(`Unknown project "${projectName}"`);
+      }
+    }
+
+    const targetName = `$$synthetic-${Date.now()}$$`;
+    project.targets.add({
+      name: targetName,
+      builder,
+    });
+
+    return {
+      project: projectName,
+      target: targetName,
+    };
   }
 }
 
