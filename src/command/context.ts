@@ -4,6 +4,7 @@ import {BaseContext, UsageError} from 'clipanion';
 import {readFileSync, statSync, writeFileSync} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 import {findUp} from '../utils/find-up';
+import {Report} from '../utils/report';
 
 export interface Context extends BaseContext {
   /**
@@ -15,6 +16,11 @@ export interface Context extends BaseContext {
    * The configured workspace, if any
    */
   workspace: CliWorkspace | null;
+
+  /**
+   * Report / logger
+   */
+  report: Report;
 }
 
 export class CliWorkspace implements workspaces.WorkspaceDefinition {

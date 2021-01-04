@@ -5,7 +5,7 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@angular-devkit/architect@npm:^0.1100.5":
+"@angular-devkit/architect@npm:0.1100.5":
   version: 0.1100.5
   resolution: "@angular-devkit/architect@npm:0.1100.5"
   dependencies:
@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:11.0.5, @angular-devkit/core@npm:^11.0.5":
+"@angular-devkit/core@npm:11.0.5":
   version: 11.0.5
   resolution: "@angular-devkit/core@npm:11.0.5"
   dependencies:
@@ -28,7 +28,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/schematics@npm:^11.0.5":
+"@angular-devkit/schematics@npm:11.0.5":
   version: 11.0.5
   resolution: "@angular-devkit/schematics@npm:11.0.5"
   dependencies:
@@ -39,7 +39,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arcanis/slice-ansi@npm:^1.0.2":
+"@arcanis/slice-ansi@npm:1.0.2, @arcanis/slice-ansi@npm:^1.0.2":
   version: 1.0.2
   resolution: "@arcanis/slice-ansi@npm:1.0.2"
   dependencies:
@@ -79,22 +79,25 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@bgotink/atelier@workspace:."
   dependencies:
-    "@angular-devkit/architect": ^0.1100.5
-    "@angular-devkit/core": ^11.0.5
-    "@angular-devkit/schematics": ^11.0.5
+    "@angular-devkit/architect": 0.1100.5
+    "@angular-devkit/core": 11.0.5
+    "@angular-devkit/schematics": 11.0.5
+    "@arcanis/slice-ansi": 1.0.2
     "@types/json5": ^0.0.30
     "@types/node": ^14.14.17
     "@types/prettier": ^2
     "@types/which-pm-runs": ^1.0.0
     "@yarnpkg/pnpify": ^2.4.0
+    chalk: 4.1.0
     clipanion: 2.6.2
     husky: ^4.3.6
-    json5: ^2.1.3
+    json5: 2.1.3
     prettier: ^2.2.1
     pretty-quick: ^3.1.0
+    strip-ansi: 6.0.0
     ts-node: ^9.1.1
     typescript: 4.1.3
-    which-pm-runs: ^1.0.0
+    which-pm-runs: 1.0.0
   bin:
     ai: cli.js
   languageName: unknown
@@ -192,10 +195,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
-  version: 14.14.16
-  resolution: "@types/node@npm:14.14.16"
-  checksum: 220a7496ec73861ad7fb4ae762618bb46ac9d5d5f92f3a2fcebfd1a81a509ff558eface7bcd1d632598a8a28f856a74b324e7165918e8334a59c221cb06d15e3
+"@types/node@npm:*, @types/node@npm:^14.14.17":
+  version: 14.14.17
+  resolution: "@types/node@npm:14.14.17"
+  checksum: 2bb32c683d8446128cf3240b4af6cc884c6ee006a845d1901becadc46255d1263bf265abde5ccb37a09d9a318fc3964d07afc941d52544f2d7f249dbb28d9420
   languageName: node
   linkType: hard
 
@@ -203,13 +206,6 @@ __metadata:
   version: 13.13.38
   resolution: "@types/node@npm:13.13.38"
   checksum: b373d9285c7c6c867144d83df00095b201b9d6ea9211694c9b5df25bcd0f78f70e46da22aed3e31f7cc3ea4a326fb59c15326a051805e1cac5ae5df6dee56008
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^14.14.17":
-  version: 14.14.17
-  resolution: "@types/node@npm:14.14.17"
-  checksum: 2bb32c683d8446128cf3240b4af6cc884c6ee006a845d1901becadc46255d1263bf265abde5ccb37a09d9a318fc3964d07afc941d52544f2d7f249dbb28d9420
   languageName: node
   linkType: hard
 
@@ -593,6 +589,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:4.1.0, chalk@npm:^4.0.0, chalk@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "chalk@npm:4.1.0"
+  dependencies:
+    ansi-styles: ^4.1.0
+    supports-color: ^7.1.0
+  checksum: f860285b419f9e925c2db0f45ffa88aa8794c14b80cc5d01ff30930bcfc384996606362706f0829cf557f6d36152a5fb2d227ad63c4bc90e2ec9e9dbed4a3c07
+  languageName: node
+  linkType: hard
+
 "chalk@npm:^2.0.0":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
@@ -611,16 +617,6 @@ __metadata:
     ansi-styles: ^4.1.0
     supports-color: ^7.1.0
   checksum: 4018b0c812880da595d0d7b8159939527b72f58d3370e2fdc1a24d9abd460bab851695d7eca014082f110d5702d1221b05493fec430ccce375de907d50cc48c1
-  languageName: node
-  linkType: hard
-
-"chalk@npm:^4.0.0, chalk@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "chalk@npm:4.1.0"
-  dependencies:
-    ansi-styles: ^4.1.0
-    supports-color: ^7.1.0
-  checksum: f860285b419f9e925c2db0f45ffa88aa8794c14b80cc5d01ff30930bcfc384996606362706f0829cf557f6d36152a5fb2d227ad63c4bc90e2ec9e9dbed4a3c07
   languageName: node
   linkType: hard
 
@@ -1256,7 +1252,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json5@npm:^2.1.3":
+"json5@npm:2.1.3":
   version: 2.1.3
   resolution: "json5@npm:2.1.3"
   dependencies:
@@ -1945,7 +1941,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^6.0.0":
+"strip-ansi@npm:6.0.0, strip-ansi@npm:^6.0.0":
   version: 6.0.0
   resolution: "strip-ansi@npm:6.0.0"
   dependencies:
@@ -2088,7 +2084,7 @@ typescript@4.1.3:
   languageName: node
   linkType: hard
 
-"which-pm-runs@npm:^1.0.0":
+"which-pm-runs@npm:1.0.0, which-pm-runs@npm:^1.0.0":
   version: 1.0.0
   resolution: "which-pm-runs@npm:1.0.0"
   checksum: 0bb79a782e98955afec8f35a3ae95c4711fdd3d0743772ee98211da67c2421fdd4c92c95c93532cc0b4dcc085d8e27f3ad2f8a9173cb632692379bd3d2818821

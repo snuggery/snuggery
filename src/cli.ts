@@ -8,6 +8,7 @@ import {GenerateCommand} from './commands/generate';
 import {HelpCommand} from './commands/help';
 import {RunBuilderCommand} from './commands/run-builder';
 import {RunTargetCommand} from './commands/run-target';
+import {Report} from './utils/report';
 
 const [major, minor] = process.version.replace(/^v/, '').split('.') as [
   string,
@@ -39,6 +40,11 @@ cli.register(GenerateCommand);
 
 const {stderr, stdin, stdout} = process;
 
+const report = new Report({
+  cli,
+  stdout,
+});
+
 const startCwd = process.cwd();
 
 findWorkspace(startCwd)
@@ -49,10 +55,11 @@ findWorkspace(startCwd)
       stdout,
       startCwd,
       workspace,
+      report,
     }),
   )
   .catch(err => {
-    stderr.write(cli.error(err));
+    report.reportError(cli.error(err));
     return 1;
   })
   .then(returnCode => process.exit(returnCode));

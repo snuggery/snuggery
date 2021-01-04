@@ -3,8 +3,8 @@ import {json, JsonObject} from '@angular-devkit/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
-import {AtelierArchitectHost} from '../architect/host';
 
+import {AtelierArchitectHost} from '../architect/host';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';

@@ -40,16 +40,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1100.5"],
             ["@angular-devkit/core", "npm:11.0.5"],
             ["@angular-devkit/schematics", "npm:11.0.5"],
+            ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@types/json5", "npm:0.0.30"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
             ["@types/which-pm-runs", "npm:1.0.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
+            ["chalk", "npm:4.1.0"],
             ["clipanion", "npm:2.6.2"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
+            ["strip-ansi", "npm:6.0.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
@@ -143,16 +146,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1100.5"],
             ["@angular-devkit/core", "npm:11.0.5"],
             ["@angular-devkit/schematics", "npm:11.0.5"],
+            ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@types/json5", "npm:0.0.30"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
             ["@types/which-pm-runs", "npm:1.0.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
+            ["chalk", "npm:4.1.0"],
             ["clipanion", "npm:2.6.2"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
+            ["strip-ansi", "npm:6.0.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
@@ -217,7 +223,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cacheable-request", "npm:6.0.1"],
             ["@types/http-cache-semantics", "npm:4.0.0"],
             ["@types/keyv", "npm:3.1.1"],
-            ["@types/node", "npm:14.14.16"],
+            ["@types/node", "npm:14.14.17"],
             ["@types/responselike", "npm:1.0.0"]
           ],
           "linkType": "HARD",
@@ -255,7 +261,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-keyv-npm-3.1.1-779a80f2c7-3aaf557d5b.zip/node_modules/@types/keyv/",
           "packageDependencies": [
             ["@types/keyv", "npm:3.1.1"],
-            ["@types/node", "npm:14.14.16"]
+            ["@types/node", "npm:14.14.17"]
           ],
           "linkType": "HARD",
         }]
@@ -274,13 +280,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-13.13.38-4b102efd9c-b373d9285c.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:13.13.38"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:14.14.16", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.16-b866b68544-220a7496ec.zip/node_modules/@types/node/",
-          "packageDependencies": [
-            ["@types/node", "npm:14.14.16"]
           ],
           "linkType": "HARD",
         }],
@@ -315,7 +314,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-responselike-npm-1.0.0-85dd08af42-e6e6613c80.zip/node_modules/@types/responselike/",
           "packageDependencies": [
             ["@types/responselike", "npm:1.0.0"],
-            ["@types/node", "npm:14.14.16"]
+            ["@types/node", "npm:14.14.17"]
           ],
           "linkType": "HARD",
         }]

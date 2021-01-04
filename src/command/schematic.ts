@@ -79,7 +79,9 @@ export abstract class SchematicCommand extends AbstractCommand {
       'projectName',
       () => this.currentProject,
     );
-    workflow.registry.useXDeprecatedProvider(msg => this.logger.warn(msg));
+    workflow.registry.useXDeprecatedProvider(msg =>
+      this.context.report.reportWarning(msg),
+    );
 
     return workflow;
   }
@@ -231,7 +233,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 
       if (event.kind === 'error') {
         hasError = true;
-        this.logger.warn(
+        this.context.report.reportWarning(
           `Error: ${path} ${
             event.description == 'alreadyExist'
               ? 'already exists'
@@ -265,7 +267,7 @@ export abstract class SchematicCommand extends AbstractCommand {
       workflow.lifeCycle.subscribe(event => {
         if (event.kind == 'end' || event.kind == 'post-tasks-start') {
           if (!hasError) {
-            loggingQueue.forEach(log => this.logger.info(log));
+            loggingQueue.forEach(log => this.context.report.reportInfo(log));
           }
 
           loggingQueue.length = 0;
@@ -286,7 +288,9 @@ export abstract class SchematicCommand extends AbstractCommand {
         .toPromise();
     } catch (e) {
       if (e instanceof UnsuccessfulWorkflowExecution) {
-        this.logger.fatal('The schematic workflow failed. See above.');
+        this.context.report.reportError(
+          'The schematic workflow failed. See above.',
+        );
         return 1;
       }
 
@@ -294,9 +298,9 @@ export abstract class SchematicCommand extends AbstractCommand {
     }
 
     if (!madeAChange) {
-      this.logger.warn('Nothing to do');
+      this.context.report.reportWarning('Nothing to do');
     } else if (this.dryRun) {
-      this.logger.info(
+      this.context.report.reportInfo(
         '\nNote: no changes were made, run without `--dry-run` to actually make the changes',
       );
     }

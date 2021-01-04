@@ -3,7 +3,6 @@ import {Command, UsageError} from 'clipanion';
 
 import {CliWorkspace, Context} from './context';
 import {Cached} from '../utils/decorator';
-import type {Writable} from 'stream';
 
 class PrettiedError extends Error {
   readonly clipanion = {type: 'none'};
@@ -32,7 +31,7 @@ export abstract class AbstractCommand extends Command<Context> {
     } = this;
 
     return workspace.tryGetProjectNameByCwd(startCwd, message =>
-      this.logger.warn(message),
+      this.context.report.reportWarning(message),
     );
   }
 
@@ -40,19 +39,32 @@ export abstract class AbstractCommand extends Command<Context> {
   protected get logger(): logging.Logger {
     const logger = new logging.Logger('');
 
-    const out: {[level in logging.LogLevel]?: Writable} = {
-      info: this.context.stdout,
-      debug: this.context.stdout,
-    };
+    const {report} = this.context;
+    const method = {
+      debug: report.reportDebug,
+      info: report.reportInfo,
+      warn: report.reportWarning,
+      error: report.reportError,
+      fatal: report.reportError,
+    } as const;
 
     logger.subscribe(entry => {
-      (out[entry.level] ?? this.context.stderr).write(entry.message + '\n');
+      (method[entry.level] ?? method.info).call(report, entry.message);
     });
 
     return logger;
   }
 
   async catch(e: any) {
+    // Extending from the Error class is often done without overriding the name
+    // property to something other than 'Error'
+    if (e.name === 'Error' && e.constructor !== Error) {
+      // Prevent minified code from showing something less useful than 'Error'
+      if (e.constructor.name.length > 5) {
+        e.name = e.constructor.name;
+      }
+    }
+
     if (e instanceof schema.SchemaValidationException) {
       const errors = e.errors
         .filter(error => error.message)
