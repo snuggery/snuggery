@@ -6,6 +6,7 @@ import {EntryCommand} from './commands/entry';
 import {EntryWithProjectCommand} from './commands/entry-with-project';
 import {GenerateCommand} from './commands/generate';
 import {HelpCommand} from './commands/help';
+import {ProjectCommand} from './commands/project';
 import {RunBuilderCommand} from './commands/run-builder';
 import {RunTargetCommand} from './commands/run-target';
 import {Report} from './utils/report';
@@ -32,6 +33,7 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 cli.register(HelpCommand);
 cli.register(EntryCommand);
 cli.register(EntryWithProjectCommand);
+cli.register(ProjectCommand);
 
 cli.register(RunTargetCommand);
 cli.register(RunBuilderCommand);

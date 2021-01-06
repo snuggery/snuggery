@@ -108,10 +108,6 @@ export abstract class SchematicCommand extends AbstractCommand {
       relative(this.context.workspace.basePath, this.context.startCwd),
     );
 
-    if (relativeCwd === '.') {
-      return {};
-    }
-
     return Object.fromEntries(
       options.filter(o => o.format === 'path').map(o => [o.name, relativeCwd]),
     );
