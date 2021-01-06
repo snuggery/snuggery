@@ -1,11 +1,11 @@
-import {RuleFactory} from '@angular-devkit/schematics';
+import type {RuleFactory} from '@angular-devkit/schematics';
 import {
   FileSystemCollectionDesc,
   FileSystemSchematicDesc,
   NodeModulesEngineHost,
 } from '@angular-devkit/schematics/tools';
 
-import {Context} from '../command/context';
+import type {Context} from '../command/context';
 import {makeGeneratorIntoSchematic, Generator} from '../utils/tao';
 
 export class AtelierEngineHost extends NodeModulesEngineHost {

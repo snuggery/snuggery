@@ -6,7 +6,7 @@
  * Licensed under the BSD 2-Clause License, https://github.com/yarnpkg/berry/blob/14027c/LICENSE.md
  */
 
-import {JsonValue} from '@angular-devkit/core';
+import type {JsonValue} from '@angular-devkit/core';
 import sliceAnsi from '@arcanis/slice-ansi';
 import {Instance as ChalkCtor, Chalk, supportsColor} from 'chalk';
 import type {Writable} from 'stream';

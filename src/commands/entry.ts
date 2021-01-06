@@ -1,4 +1,4 @@
-import {Target} from '@angular-devkit/architect';
+import type {Target} from '@angular-devkit/architect';
 import {isJsonArray, JsonObject} from '@angular-devkit/core';
 import {UsageError} from 'clipanion';
 import {ArchitectCommand, configurationOption} from '../command/architect';

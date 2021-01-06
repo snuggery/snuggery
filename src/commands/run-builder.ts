@@ -1,4 +1,4 @@
-import {JsonObject} from '@angular-devkit/core';
+import type {JsonObject} from '@angular-devkit/core';
 import {UsageError} from 'clipanion';
 import {ArchitectCommand} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';

@@ -1,5 +1,5 @@
 import {isJsonObject, JsonObject, schema} from '@angular-devkit/core';
-import {
+import type {
   FileSystemCollection,
   FileSystemEngine,
   FileSystemSchematic,

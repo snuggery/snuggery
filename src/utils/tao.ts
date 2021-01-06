@@ -1,7 +1,7 @@
 import {BuilderOutput, createBuilder} from '@angular-devkit/architect';
-import {Builder} from '@angular-devkit/architect/src/internal';
-import {JsonObject} from '@angular-devkit/core';
-import {
+import type {Builder} from '@angular-devkit/architect/src/internal';
+import type {JsonObject} from '@angular-devkit/core';
+import type {
   Rule,
   RuleFactory,
   TaskConfiguration,
@@ -10,8 +10,8 @@ import {
   TaskExecutorFactory,
   Tree as NgTree,
 } from '@angular-devkit/schematics';
-import {FileSystemEngineHostBase} from '@angular-devkit/schematics/tools';
-import {
+import type {FileSystemEngineHostBase} from '@angular-devkit/schematics/tools';
+import type {
   Tree as NxTree,
   ProjectConfiguration,
   TargetConfiguration,
@@ -20,7 +20,7 @@ import {
   FileChange,
 } from '@nrwl/devkit';
 import {basename} from 'path';
-import {CliWorkspace} from '../command/context';
+import type {CliWorkspace} from '../command/context';
 
 export type Executor = (
   options: JsonObject,

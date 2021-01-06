@@ -14,7 +14,7 @@ import {
   validateOptionsWithSchema,
 } from '@angular-devkit/schematics/tools';
 
-import {Context} from '../command/context';
+import type {Context} from '../command/context';
 
 import {AtelierEngineHost} from './engine-host';
 

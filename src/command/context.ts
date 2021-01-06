@@ -1,10 +1,10 @@
-import {Target} from '@angular-devkit/architect';
+import type {Target} from '@angular-devkit/architect';
 import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {promises as fs} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 import {findUp} from '../utils/find-up';
-import {Report} from '../utils/report';
+import type {Report} from '../utils/report';
 import {
   isTaoWorkspaceConfiguration,
   mapTaoWorkspaceToAngularWorkspace,
@@ -154,7 +154,7 @@ const configFileNames = [
 export async function findWorkspace(
   startingCwd: string,
 ): Promise<CliWorkspace | null> {
-  const workspacePath = findUp(configFileNames, startingCwd);
+  const workspacePath = await findUp(configFileNames, startingCwd);
 
   if (workspacePath == null) {
     return null;

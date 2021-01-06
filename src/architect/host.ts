@@ -1,4 +1,4 @@
-import {Target, BuilderInfo} from '@angular-devkit/architect';
+import type {Target, BuilderInfo} from '@angular-devkit/architect';
 import {
   ArchitectHost,
   Builder,
@@ -8,7 +8,7 @@ import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
 import {createRequire} from 'module';
 import {basename, dirname, join} from 'path';
 
-import {CliWorkspace, Context} from '../command/context';
+import type {CliWorkspace, Context} from '../command/context';
 import {makeExecutorIntoBuilder} from '../utils/tao';
 
 export class UnknownBuilderError extends Error {

@@ -1,7 +1,7 @@
 import {logging, schema} from '@angular-devkit/core';
 import {Command, UsageError} from 'clipanion';
 
-import {CliWorkspace, Context} from './context';
+import type {CliWorkspace, Context} from './context';
 import {Cached} from '../utils/decorator';
 
 class PrettiedError extends Error {
