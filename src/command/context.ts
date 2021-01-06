@@ -1,10 +1,14 @@
 import {Target} from '@angular-devkit/architect';
 import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
 import {BaseContext, UsageError} from 'clipanion';
-import {readFileSync, statSync, writeFileSync} from 'fs';
+import {promises as fs} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 import {findUp} from '../utils/find-up';
 import {Report} from '../utils/report';
+import {
+  isTaoWorkspaceConfiguration,
+  mapTaoWorkspaceToAngularWorkspace,
+} from '../utils/tao';
 
 export interface Context extends BaseContext {
   /**
@@ -134,7 +138,11 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
 }
 
 const configFileNames = [
-  // Our own (or Nx's tao :shrug:)
+  // Our own
+  'atelier.json',
+  '.atelier.json',
+
+  // Nx's tao
   'workspace.json',
   '.workspace.json',
 
@@ -152,36 +160,70 @@ export async function findWorkspace(
     return null;
   }
 
+  const host = new AtelierWorkspaceHost();
+
+  let version = 1;
+  try {
+    const workspaceJson = JSON.parse(await host.readFile(workspacePath));
+
+    if (typeof workspaceJson.version === 'number') {
+      ({version} = workspaceJson);
+    }
+  } catch {
+    // default to v1, angular will throw something useful
+  }
+
+  if (isTaoWorkspaceConfiguration(workspacePath, version)) {
+    host.mockFile(
+      workspacePath,
+      JSON.stringify(
+        mapTaoWorkspaceToAngularWorkspace(
+          JSON.parse(await host.readFile(workspacePath)),
+        ),
+        null,
+        2,
+      ),
+    );
+  }
+
   const {workspace} = await workspaces.readWorkspace(
     workspacePath,
-    createWorkspaceHost(),
+    host,
     workspaces.WorkspaceFormat.JSON,
   );
 
   return new CliWorkspace(workspace, dirname(workspacePath));
 }
 
-function createWorkspaceHost(): workspaces.WorkspaceHost {
-  return {
-    async readFile(path) {
-      return readFileSync(path, 'utf-8');
-    },
-    async writeFile(path, data) {
-      writeFileSync(path, data);
-    },
-    async isDirectory(path) {
-      try {
-        return statSync(path).isDirectory();
-      } catch {
-        return false;
-      }
-    },
-    async isFile(path) {
-      try {
-        return statSync(path).isFile();
-      } catch {
-        return false;
-      }
-    },
-  };
+class AtelierWorkspaceHost implements workspaces.WorkspaceHost {
+  private readonly mocked = new Map<string, string>();
+
+  async readFile(path: string): Promise<string> {
+    const mocked = this.mocked.get(path);
+    return mocked ?? fs.readFile(path, 'utf-8');
+  }
+
+  async writeFile(path: string, data: string): Promise<void> {
+    await fs.writeFile(path, data);
+  }
+
+  mockFile(path: string, data: string) {
+    this.mocked.set(path, data);
+  }
+
+  async isDirectory(path: string): Promise<boolean> {
+    try {
+      return (await fs.stat(path)).isDirectory();
+    } catch {
+      return false;
+    }
+  }
+
+  async isFile(path: string): Promise<boolean> {
+    try {
+      return (await fs.stat(path)).isFile();
+    } catch {
+      return false;
+    }
+  }
 }

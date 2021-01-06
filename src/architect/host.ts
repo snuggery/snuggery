@@ -9,6 +9,7 @@ import {createRequire} from 'module';
 import {basename, dirname, join} from 'path';
 
 import {CliWorkspace, Context} from '../command/context';
+import {makeExecutorIntoBuilder} from '../utils/tao';
 
 export class UnknownBuilderError extends Error {
   public clipanion = {type: 'none'};
@@ -297,6 +298,13 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
           info.builderName
         }" in package "${info.packageName}": ${(e as Error)?.message ?? e}`,
       );
+    }
+
+    if (
+      typeof info.optionSchema === 'object' &&
+      info.optionSchema.cli === 'nx'
+    ) {
+      return makeExecutorIntoBuilder(implementation, this.workspace);
     }
 
     if (!implementation[BuilderSymbol]) {

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es2018",
-    "lib": ["es2018", "ES2019.Object"],
+    "target": "es2019",
+    "lib": ["es2020"],
     "module": "commonjs",
     "strict": true,
     "noUnusedLocals": true,

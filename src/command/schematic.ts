@@ -4,7 +4,6 @@ import {
   FileSystemEngine,
   FileSystemSchematic,
   FileSystemSchematicDescription,
-  NodeWorkflow,
 } from '@angular-devkit/schematics/tools';
 import {
   DryRunEvent,
@@ -15,6 +14,7 @@ import {UsageError} from 'clipanion';
 import {normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
+import {AtelierWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';
@@ -56,13 +56,15 @@ export abstract class SchematicCommand extends AbstractCommand {
   protected abstract readonly root: string;
 
   @Cached()
-  public get workflow(): NodeWorkflow {
-    const workflow = new NodeWorkflow(this.root, {
+  public get workflow(): AtelierWorkflow {
+    const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
+
+    const workflow = new AtelierWorkflow(this.root, {
+      context: this.context,
       force: this.force,
       dryRun: this.dryRun,
       packageManager: getPackageManager()?.name,
-      packageRegistry: undefined,
-      registry: new schema.CoreSchemaRegistry(formats.standardFormats),
+      registry,
       resolvePaths: [this.context.startCwd, this.root],
       schemaValidation: true,
       optionTransforms: [
@@ -74,12 +76,9 @@ export abstract class SchematicCommand extends AbstractCommand {
       ],
     });
 
-    workflow.registry.addPostTransform(schema.transforms.addUndefinedDefaults);
-    workflow.registry.addSmartDefaultProvider(
-      'projectName',
-      () => this.currentProject,
-    );
-    workflow.registry.useXDeprecatedProvider(msg =>
+    registry.addPostTransform(schema.transforms.addUndefinedDefaults);
+    registry.addSmartDefaultProvider('projectName', () => this.currentProject);
+    registry.useXDeprecatedProvider(msg =>
       this.context.report.reportWarning(msg),
     );
 
