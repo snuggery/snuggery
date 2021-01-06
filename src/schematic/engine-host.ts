@@ -6,7 +6,7 @@ import {
 } from '@angular-devkit/schematics/tools';
 
 import {Context} from '../command/context';
-import {makeGeneratorInfoSchematic} from '../utils/tao';
+import {makeGeneratorIntoSchematic} from '../utils/tao';
 
 export class AtelierEngineHost extends NodeModulesEngineHost {
   constructor(private readonly context: Context, paths?: string[]) {
@@ -18,7 +18,7 @@ export class AtelierEngineHost extends NodeModulesEngineHost {
     collection: FileSystemCollectionDesc,
   ): RuleFactory<OptionT> {
     if (schematic.schemaJson?.cli === 'nx') {
-      return makeGeneratorInfoSchematic(
+      return makeGeneratorIntoSchematic(
         schematic.factoryFn as any,
         this.context.workspace?.basePath ?? this.context.startCwd,
         this,

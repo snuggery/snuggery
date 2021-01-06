@@ -205,7 +205,7 @@ const executeAfterSchematicTaskFactory: TaskExecutorFactory<void> = {
   },
 };
 
-export function makeGeneratorInfoSchematic(
+export function makeGeneratorIntoSchematic(
   generator: Generator,
   root: string,
   engineHost: FileSystemEngineHostBase,
