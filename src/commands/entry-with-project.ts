@@ -35,7 +35,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
   public args = [] as string[];
 
   @ArchitectCommand.Path()
-  async execute() {
+  async execute(): Promise<number> {
     if (!this.target || !this.project) {
       this.context.stderr.write(this.cli.usage(null));
       return 1;
@@ -57,7 +57,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
       project: this.project,
       target: this.target,
     };
-    let configurations = new Set(this.configuration);
+    const configurations = new Set(this.configuration);
 
     const {
       allowExtraOptions,

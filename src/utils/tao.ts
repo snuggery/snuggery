@@ -1,4 +1,5 @@
 import {BuilderOutput, createBuilder} from '@angular-devkit/architect';
+import {Builder} from '@angular-devkit/architect/src/internal';
 import {JsonObject} from '@angular-devkit/core';
 import {
   Rule,
@@ -21,7 +22,7 @@ import {
 import {basename} from 'path';
 import {CliWorkspace} from '../command/context';
 
-type Executor = (
+export type Executor = (
   options: JsonObject,
   context: TargetContext,
 ) => Promise<BuilderOutput>;
@@ -29,7 +30,7 @@ type Executor = (
 export function makeExecutorIntoBuilder(
   executor: Executor,
   workspace: CliWorkspace,
-) {
+): Builder<JsonObject> {
   return createBuilder(async (options, ngContext) => {
     const nxContext: TargetContext = {
       get root() {
@@ -55,6 +56,7 @@ export function makeExecutorIntoBuilder(
       },
 
       get workspace(): WorkspaceConfiguration {
+        /* eslint-disable @typescript-eslint/no-explicit-any */
         return {
           projects: Object.fromEntries(
             Array.from(workspace.projects, ([projectName, project]): [
@@ -98,6 +100,7 @@ export function makeExecutorIntoBuilder(
           cli: workspace.extensions.cli as any,
           generators: workspace.extensions.schematics as any,
         };
+        /* eslint-enable @typescript-eslint/no-explicit-any */
       },
     };
 
@@ -240,11 +243,11 @@ export function mapTaoWorkspaceToAngularWorkspace({
   schematics,
   projects,
   ...rest
-}: JsonObject) {
+}: JsonObject): JsonObject {
   return {
     ...rest,
     version: 1,
-    schematics: generators ?? schematics,
+    schematics: generators ?? schematics ?? {},
     projects: Object.fromEntries(
       Object.entries(projects as Record<string, JsonObject>).map(
         ([
@@ -255,7 +258,7 @@ export function mapTaoWorkspaceToAngularWorkspace({
             projectName,
             {
               ...project,
-              schematics: generators ?? schematics,
+              schematics: generators ?? schematics ?? {},
               architect: Object.fromEntries(
                 Object.entries(
                   architect ?? targets ?? ({} as JsonObject),

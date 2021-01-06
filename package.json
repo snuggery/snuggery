@@ -5,7 +5,8 @@
   },
   "private": true,
   "scripts": {
-    "build": "rm -rf dist && tsc && cp README.md dist/ && jq 'del(.scripts) | del(.devDependencies) | del(.private)' package.json >dist/package.json"
+    "build": "rm -rf dist && tsc && cp README.md dist/ && jq 'del(.scripts) | del(.devDependencies) | del(.private)' package.json >dist/package.json",
+    "lint": "eslint src"
   },
   "dependencies": {
     "@angular-devkit/architect": "0.1100.5",
@@ -24,7 +25,12 @@
     "@types/node": "^14.14.17",
     "@types/prettier": "^2",
     "@types/which-pm-runs": "^1.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
     "@yarnpkg/pnpify": "^2.4.0",
+    "eslint": "^7.17.0",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-plugin-import": "^2.22.1",
     "husky": "^4.3.6",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",

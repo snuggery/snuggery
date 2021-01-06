@@ -5,7 +5,7 @@ export class HelpCommand extends AbstractCommand {
   @AbstractCommand.Path('-h')
   @AbstractCommand.Path('--help')
   @AbstractCommand.Path('help')
-  async execute() {
+  async execute(): Promise<number> {
     this.context.report.reportInfo(this.cli.usage(null));
 
     return 0;

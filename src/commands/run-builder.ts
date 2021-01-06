@@ -24,7 +24,7 @@ export class RunBuilderCommand extends ArchitectCommand {
   public args = [] as string[];
 
   @ArchitectCommand.Path('run', 'builder')
-  async execute() {
+  async execute(): Promise<number> {
     if (this.builder == null) {
       const err = new UsageError(`Missing parameter builder`);
       err.clipanion.type = 'usage';

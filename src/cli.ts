@@ -19,6 +19,7 @@ const [major, minor] = process.version.replace(/^v/, '').split('.') as [
 const cli = new Cli<Context>({
   binaryLabel: 'Atelier',
   binaryName: 'ai',
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   binaryVersion: require('@bgotink/atelier/package.json').version,
 });
 

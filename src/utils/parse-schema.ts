@@ -46,7 +46,8 @@ export function parseSchema({
     };
   }
 
-  let {properties = {}, additionalProperties, required} = schema;
+  const {required} = schema;
+  let {properties = {}, additionalProperties} = schema;
 
   const requiredProperties = new Set<string>();
   if (Array.isArray(required)) {

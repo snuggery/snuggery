@@ -16,5 +16,6 @@
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": true
-  }
+  },
+  "eslint.nodePath": ".yarn/sdks"
 }

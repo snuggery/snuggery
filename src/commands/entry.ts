@@ -29,7 +29,7 @@ export class EntryCommand extends ArchitectCommand {
   public args = [] as string[];
 
   @ArchitectCommand.Path()
-  async execute() {
+  async execute(): Promise<number> {
     if (!this.target) {
       this.context.stderr.write(this.cli.usage(null));
       return 1;

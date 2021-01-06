@@ -6,6 +6,7 @@
  * Licensed under the BSD 2-Clause License, https://github.com/yarnpkg/berry/blob/14027c/LICENSE.md
  */
 
+import {JsonValue} from '@angular-devkit/core';
 import sliceAnsi from '@arcanis/slice-ansi';
 import {Instance as ChalkCtor, Chalk, supportsColor} from 'chalk';
 import type {Writable} from 'stream';
@@ -14,7 +15,7 @@ import type {WriteStream} from 'tty';
 
 export type ReportOptions = {
   cli: {
-    error(err: any): string;
+    error(err: unknown): string;
     enableColors: boolean;
   };
   stdout: Writable;
@@ -22,38 +23,6 @@ export type ReportOptions = {
 };
 
 export class Report {
-  static async start(
-    opts: ReportOptions,
-    cb: (report: Report) => Promise<void>,
-  ) {
-    const report = new this(opts);
-
-    const emitWarning = process.emitWarning;
-    process.emitWarning = (message, name) => {
-      if (typeof message !== `string`) {
-        const error = message;
-
-        message = error.message;
-        name = name ?? error.name;
-      }
-
-      const fullMessage =
-        typeof name !== `undefined` ? `${name}: ${message}` : message;
-
-      report.reportWarning(fullMessage);
-    };
-
-    try {
-      await cb(report);
-    } catch (error) {
-      report.reportError(opts.cli.error(error));
-    } finally {
-      process.emitWarning = emitWarning;
-    }
-
-    return report;
-  }
-
   private readonly json: boolean;
 
   private readonly stdout: Writable;
@@ -75,11 +44,11 @@ export class Report {
     });
   }
 
-  reportSeparator() {
+  reportSeparator(): void {
     this.writeLine(``);
   }
 
-  reportDebug(text: string) {
+  reportDebug(text: string): void {
     if (!this.json) {
       this.writeLine(text, {color: this.chalk.gray});
     } else {
@@ -90,7 +59,7 @@ export class Report {
     }
   }
 
-  reportInfo(text: string) {
+  reportInfo(text: string): void {
     if (!this.json) {
       this.writeLine(text, {
         color: this.chalk.whiteBright,
@@ -103,7 +72,7 @@ export class Report {
     }
   }
 
-  reportWarning(text: string) {
+  reportWarning(text: string): void {
     if (!this.json) {
       this.writeLine(text, {
         color: this.chalk.yellow,
@@ -116,7 +85,7 @@ export class Report {
     }
   }
 
-  reportError(text: string) {
+  reportError(text: string): void {
     if (!this.json) {
       this.writeLine(text, {
         truncate: false,
@@ -130,7 +99,7 @@ export class Report {
     }
   }
 
-  reportJson(data: any) {
+  reportJson(data: JsonValue): void {
     if (this.json) {
       this.writeLine(JSON.stringify(data));
     }

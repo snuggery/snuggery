@@ -1,7 +1,8 @@
 export function Cached(): MethodDecorator {
   return <T>(
+    // eslint-disable-next-line @typescript-eslint/ban-types
     target: Object,
-    key: keyof any,
+    key: string | symbol,
     descriptor: TypedPropertyDescriptor<T>,
   ) => {
     const {get, set} = descriptor;

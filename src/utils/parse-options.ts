@@ -29,7 +29,7 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
       } else {
         name = current.slice(2);
 
-        let next = values[i + 1];
+        const next = values[i + 1];
         if (!next || next.startsWith('-')) {
           value = true;
         } else {
@@ -42,6 +42,7 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
         value = value === 'true';
       } else if (
         typeof value === 'string' &&
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         !isNaN(value as any) &&
         !isNaN(parseFloat(value))
       ) {

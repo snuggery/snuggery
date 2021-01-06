@@ -121,7 +121,13 @@ export abstract class SchematicCommand extends AbstractCommand {
     return collection.createSchematic(schematicName, allowPrivate);
   }
 
-  protected async getOptions(schematic: FileSystemSchematic) {
+  protected async getOptions(
+    schematic: FileSystemSchematic,
+  ): Promise<{
+    options: Option[];
+    allowExtraOptions: boolean;
+    description?: string | undefined;
+  }> {
     const {description, schemaJson} = schematic.description;
     return parseSchema({
       description,
@@ -177,7 +183,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 
     if (workspace != null) {
       const projectName = this.currentProject;
-      let project =
+      const project =
         projectName != null ? workspace.tryGetProjectByName(projectName) : null;
 
       if (project != null) {
@@ -250,10 +256,11 @@ export abstract class SchematicCommand extends AbstractCommand {
           case 'delete':
             loggingQueue.push(`${'DELETE'} ${path}`);
             break;
-          case 'rename':
+          case 'rename': {
             const to = event.to.replace(/^\//, '');
             loggingQueue.push(`${'RENAME'} ${path} => ${to}`);
             break;
+          }
         }
       }
     });

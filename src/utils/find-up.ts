@@ -1,7 +1,10 @@
-import {existsSync} from 'fs';
+import {promises as fs} from 'fs';
 import {join, dirname, parse as parsePath} from 'path';
 
-export function findUp(names: string | string[], from: string) {
+export async function findUp(
+  names: string | string[],
+  from: string,
+): Promise<string | null> {
   if (!Array.isArray(names)) {
     names = [names];
   }
@@ -11,8 +14,13 @@ export function findUp(names: string | string[], from: string) {
   while (currentDir && currentDir !== root) {
     for (const name of names) {
       const p = join(currentDir, name);
-      if (existsSync(p)) {
-        return p;
+      try {
+        if ((await fs.stat(p)).isFile()) {
+          return p;
+        }
+      } catch {
+        // ignore any error
+        // continue to the next filename / folder
       }
     }
 

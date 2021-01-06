@@ -48,13 +48,25 @@ export abstract class ArchitectCommand extends AbstractCommand {
     return new Architect(this.architectHost, this.registry);
   }
 
-  protected async getOptionsForTarget(target: Target) {
+  protected async getOptionsForTarget(
+    target: Target,
+  ): Promise<{
+    options: Option[];
+    allowExtraOptions: boolean;
+    description?: string | undefined;
+  }> {
     return this.getOptionsForBuilder(
       await this.architectHost.getBuilderNameForTarget(target),
     );
   }
 
-  protected async getOptionsForBuilder(builderConf: string) {
+  protected async getOptionsForBuilder(
+    builderConf: string,
+  ): Promise<{
+    options: Option[];
+    allowExtraOptions: boolean;
+    description?: string | undefined;
+  }> {
     const {description, optionSchema} = await this.architectHost.resolveBuilder(
       builderConf,
     );
@@ -119,7 +131,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
   }: {
     builder: string;
     options?: JsonObject;
-  }) {
+  }): Promise<number> {
     // the Architect class has a `scheduleBuilder` method, you'd think that was
     // useful, but in fact it's the same as `scheduleTarget` with the sole
     // exception that it expects the target to be passed in as string instead of

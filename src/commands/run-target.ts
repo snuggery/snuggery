@@ -30,7 +30,7 @@ export class RunTargetCommand extends ArchitectCommand {
 
   @ArchitectCommand.Path('run')
   @ArchitectCommand.Path('run', 'target')
-  async execute() {
+  async execute(): Promise<number> {
     if (this.specifier == null) {
       const err = new UsageError(`Missing parameter target`);
       err.clipanion.type = 'usage';

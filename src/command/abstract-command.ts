@@ -24,7 +24,7 @@ export abstract class AbstractCommand extends Command<Context> {
     return workspace;
   }
 
-  protected get currentProject() {
+  protected get currentProject(): string | null {
     const {
       workspace,
       context: {startCwd},
@@ -55,18 +55,24 @@ export abstract class AbstractCommand extends Command<Context> {
     return logger;
   }
 
-  async catch(e: any) {
+  async catch(e: unknown): Promise<void> {
+    if (!(e instanceof Error)) {
+      return super.catch(e);
+    }
+
+    let error = e;
+
     // Extending from the Error class is often done without overriding the name
     // property to something other than 'Error'
-    if (e.name === 'Error' && e.constructor !== Error) {
+    if (error.name === 'Error' && error.constructor !== Error) {
       // Prevent minified code from showing something less useful than 'Error'
-      if (e.constructor.name.length > 5) {
-        e.name = e.constructor.name;
+      if (error.constructor.name.length > 5) {
+        error.name = error.constructor.name;
       }
     }
 
-    if (e instanceof schema.SchemaValidationException) {
-      const errors = e.errors
+    if (error instanceof schema.SchemaValidationException) {
+      const errors = error.errors
         .filter(error => error.message)
         .map(error =>
           error.dataPath
@@ -74,21 +80,21 @@ export abstract class AbstractCommand extends Command<Context> {
             : `  - Input ${error.message}`,
         );
 
-      e = new PrettiedError(
+      error = new PrettiedError(
         // Angular has the annoying tendency to not name their errors properly
-        e.constructor.name,
+        error.constructor.name,
         errors.length > 0
           ? `Schema validation failed:\n${errors.join('\n')}`
-          : e.message,
+          : error.message,
       );
     }
 
-    if (/^[A-Z].*[A-Z].*(?:Error|Exception)$/.test(e.name)) {
+    if (/^[A-Z].*[A-Z].*(?:Error|Exception)$/.test(error.name)) {
       // The name of the error is probably already useful
       // e.g. IllegalArgumentException, SchemaValidationException, BuildFailedError
-      e.name = e.name.replace(/(?:Error|Exception)$/, '');
+      error.name = error.name.replace(/(?:Error|Exception)$/, '');
     }
 
-    await super.catch(e);
+    await super.catch(error);
   }
 }
