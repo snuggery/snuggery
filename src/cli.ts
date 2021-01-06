@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 import {Cli, UsageError} from 'clipanion';
 
-import {Context, findWorkspace} from './command/context';
-import {EntryCommand} from './commands/entry';
-import {EntryWithProjectCommand} from './commands/entry-with-project';
-import {GenerateCommand} from './commands/generate';
-import {HelpCommand} from './commands/help';
-import {ProjectCommand} from './commands/project';
-import {RunBuilderCommand} from './commands/run-builder';
-import {RunTargetCommand} from './commands/run-target';
-import {Report} from './utils/report';
+import {Context, findWorkspace} from './cli/command/context';
+import {EntryCommand} from './cli/commands/entry';
+import {EntryWithProjectCommand} from './cli/commands/entry-with-project';
+import {GenerateCommand} from './cli/commands/generate';
+import {HelpCommand} from './cli/commands/help';
+import {ProjectCommand} from './cli/commands/project';
+import {RunBuilderCommand} from './cli/commands/run-builder';
+import {RunTargetCommand} from './cli/commands/run-target';
+import {Report} from './cli/utils/report';
 
 const [major, minor] = process.version.replace(/^v/, '').split('.') as [
   string,
