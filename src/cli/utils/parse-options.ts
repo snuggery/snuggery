@@ -2,6 +2,7 @@ import type {JsonObject, JsonValue} from '@angular-devkit/core';
 import {camelize, dasherize} from '@angular-devkit/core/src/utils/strings';
 import {Cli, Command} from 'clipanion';
 import {parse as parseJson} from 'json5';
+
 import type {AbstractCommand} from '../command/abstract-command';
 
 import {Option, Type} from './parse-schema';

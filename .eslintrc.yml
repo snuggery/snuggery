@@ -4,12 +4,14 @@ env:
 extends:
   - 'eslint:recommended'
   - 'plugin:@typescript-eslint/recommended'
+  - 'plugin:import/typescript'
 parser: '@typescript-eslint/parser'
 parserOptions:
   ecmaVersion: 12
   sourceType: module
 plugins:
   - '@typescript-eslint'
+  - 'import'
 reportUnusedDisableDirectives: true
 rules:
   '@typescript-eslint/no-non-null-assertion': 'off'
@@ -17,3 +19,27 @@ rules:
     - error
     - types:
         object: false
+
+  # Require packages to be listed in package.json
+  'import/no-extraneous-dependencies': error
+
+  # Disallow mutable exports
+  'import/no-mutable-exports': error
+
+  # Disallow other module systems
+  'import/no-amd': error
+  # 'import/no-commonjs': error # already covered via @typescript-eslint/no-var-requires
+
+  # Code style
+  'import/first': error
+  'import/newline-after-import': error
+  'import/no-duplicates': error
+  'import/order':
+    - error
+    - groups:
+        - [builtin, internal, external]
+        - parent
+        - [index, sibling]
+      'newlines-between': always
+      alphabetize:
+        order: asc

@@ -7,6 +7,7 @@ import {join} from 'path';
 import {AtelierArchitectHost} from '../architect/host';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
+
 import {AbstractCommand} from './abstract-command';
 
 export const configurationOption: Option = {

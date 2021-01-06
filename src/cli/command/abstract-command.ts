@@ -1,8 +1,9 @@
 import {logging, schema} from '@angular-devkit/core';
 import {Command, UsageError} from 'clipanion';
 
-import type {CliWorkspace, Context} from './context';
 import {Cached} from '../utils/decorator';
+
+import type {CliWorkspace, Context} from './context';
 
 class PrettiedError extends Error {
   readonly clipanion = {type: 'none'};

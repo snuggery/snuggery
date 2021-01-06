@@ -3,6 +3,7 @@ import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {promises as fs} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
+
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
 import {

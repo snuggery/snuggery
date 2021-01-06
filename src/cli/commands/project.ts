@@ -1,5 +1,6 @@
 import {UsageError} from 'clipanion';
 import {join} from 'path';
+
 import {AbstractCommand} from '../command/abstract-command';
 
 export class ProjectCommand extends AbstractCommand {
