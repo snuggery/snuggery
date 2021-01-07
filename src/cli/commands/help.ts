@@ -1,6 +1,10 @@
 import {AbstractCommand} from '../command/abstract-command';
 
 export class HelpCommand extends AbstractCommand {
+  static usage = AbstractCommand.Usage({
+    description: `Show this usage statement`,
+  });
+
   @AbstractCommand.Path()
   @AbstractCommand.Path('-h')
   @AbstractCommand.Path('--help')

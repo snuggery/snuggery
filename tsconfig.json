@@ -19,6 +19,7 @@
     "forceConsistentCasingInFileNames": true,
 
     "paths": {
+      "@bgotink/atelier/package.json": ["./package.json"],
       "@bgotink/atelier/*": ["./src/*"]
     }
   }

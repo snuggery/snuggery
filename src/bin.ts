@@ -9,6 +9,7 @@ import {HelpCommand} from './cli/commands/help';
 import {ProjectCommand} from './cli/commands/project';
 import {RunBuilderCommand} from './cli/commands/run-builder';
 import {RunTargetCommand} from './cli/commands/run-target';
+import {VersionCommand} from './cli/commands/version';
 import {Report} from './cli/utils/report';
 
 const [major, minor] = process.version.replace(/^v/, '').split('.') as [
@@ -32,6 +33,8 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 }
 
 cli.register(HelpCommand);
+cli.register(VersionCommand);
+
 cli.register(EntryCommand);
 cli.register(EntryWithProjectCommand);
 cli.register(ProjectCommand);
