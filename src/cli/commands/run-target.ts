@@ -18,27 +18,36 @@ export class RunTargetCommand extends ArchitectCommand {
         'Run the `build` target with the `production` configuration in the `application` project',
         '$0 run target application:build:production',
       ],
+      ['Run the `test` target in the current project', '$0 run target test'],
     ],
   });
 
-  @ArchitectCommand.String({
-    required: true,
-  })
-  public specifier?: string;
+  @ArchitectCommand.String()
+  specifier!: string;
 
   @ArchitectCommand.Proxy()
-  public args = [] as string[];
+  args = [] as string[];
 
   @ArchitectCommand.Path('run')
   @ArchitectCommand.Path('run', 'target')
   async execute(): Promise<number> {
-    if (this.specifier == null) {
-      const err = new UsageError(`Missing parameter target`);
-      err.clipanion.type = 'usage';
-      throw err;
-    }
+    let target;
+    if (this.specifier.includes(':')) {
+      target = targetFromTargetString(this.specifier);
+    } else {
+      const project = this.currentProject;
 
-    const target = targetFromTargetString(this.specifier);
+      if (project == null) {
+        throw new UsageError(
+          `Failed to find project to run target ${target} in`,
+        );
+      }
+
+      target = {
+        project,
+        target: this.specifier,
+      };
+    }
 
     const {
       allowExtraOptions,
