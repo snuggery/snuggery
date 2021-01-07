@@ -110,6 +110,18 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
     return this.projects.get(name) ?? null;
   }
 
+  getProjectByName(name: string): workspaces.ProjectDefinition {
+    const project = this.projects.get(name);
+
+    if (project == null) {
+      throw new UsageError(
+        `No project named ${JSON.stringify(name)} found in the workspace`,
+      );
+    }
+
+    return project;
+  }
+
   makeSyntheticTarget(projectName: string | null, builder: string): Target {
     let project;
     if (projectName == null) {

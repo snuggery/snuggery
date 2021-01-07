@@ -1,4 +1,3 @@
-import {UsageError} from 'clipanion';
 import {join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
@@ -33,12 +32,7 @@ export class ProjectCommand extends AbstractCommand {
 
   @AbstractCommand.Path('project')
   execute(): Promise<number> {
-    const project = this.workspace.tryGetProjectByName(this.projectName);
-
-    if (project == null) {
-      throw new UsageError(`Unknown project: "${project}"`);
-    }
-
+    const project = this.workspace.getProjectByName(this.projectName);
     const cwd = join(this.workspace.basePath, project.root);
 
     return this.cli.run([this.command, ...this.args], {startCwd: cwd});

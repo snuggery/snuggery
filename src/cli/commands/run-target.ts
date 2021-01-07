@@ -1,6 +1,5 @@
 import {targetFromTargetString} from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
-import {UsageError} from 'clipanion';
 
 import {ArchitectCommand} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
@@ -35,18 +34,7 @@ export class RunTargetCommand extends ArchitectCommand {
     if (this.specifier.includes(':')) {
       target = targetFromTargetString(this.specifier);
     } else {
-      const project = this.currentProject;
-
-      if (project == null) {
-        throw new UsageError(
-          `Failed to find project to run target ${target} in`,
-        );
-      }
-
-      target = {
-        project,
-        target: this.specifier,
-      };
+      target = this.resolveTarget(this.specifier, null);
     }
 
     const {

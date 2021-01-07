@@ -1,6 +1,4 @@
-import type {Target} from '@angular-devkit/architect';
 import {isJsonArray, JsonObject} from '@angular-devkit/core';
-import {UsageError} from 'clipanion';
 
 import {ArchitectCommand, configurationOption} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
@@ -36,28 +34,7 @@ export class EntryCommand extends ArchitectCommand {
       return 1;
     }
 
-    const {currentProject} = this;
-
-    if (!currentProject) {
-      throw new UsageError(`Couldn't find project to run "${this.target}" in`);
-    }
-
-    const project = this.workspace.tryGetProjectByName(currentProject);
-
-    if (project == null) {
-      throw new UsageError(`Couldn't find project "${currentProject}"`);
-    }
-
-    if (!project.targets.has(this.target)) {
-      throw new UsageError(
-        `Project "${currentProject}" doesn't have a target called "${this.target}"`,
-      );
-    }
-
-    const target: Target = {
-      project: currentProject,
-      target: this.target,
-    };
+    const target = this.resolveTarget(this.target, null);
     const configurations = new Set(this.configuration);
 
     const {

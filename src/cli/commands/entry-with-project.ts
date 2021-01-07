@@ -1,6 +1,4 @@
-import type {Target} from '@angular-devkit/architect';
 import {isJsonArray, JsonObject} from '@angular-devkit/core';
-import {UsageError} from 'clipanion';
 
 import {ArchitectCommand, configurationOption} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
@@ -22,10 +20,10 @@ export class EntryWithProjectCommand extends ArchitectCommand {
   });
 
   @ArchitectCommand.String()
-  public target?: string;
+  public target!: string;
 
   @ArchitectCommand.String()
-  public project?: string;
+  public project!: string;
 
   @ArchitectCommand.Array('--configuration,-c', {
     description: 'Configuration(s) to use',
@@ -37,27 +35,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 
   @ArchitectCommand.Path()
   async execute(): Promise<number> {
-    if (!this.target || !this.project) {
-      this.context.stderr.write(this.cli.usage(null));
-      return 1;
-    }
-
-    const project = this.workspace.tryGetProjectByName(this.project);
-
-    if (project == null) {
-      throw new UsageError(`Couldn't find project "${this.project}"`);
-    }
-
-    if (!project.targets.has(this.target)) {
-      throw new UsageError(
-        `Project "${this.project}" doesn't have a target called "${this.target}"`,
-      );
-    }
-
-    const target: Target = {
-      project: this.project,
-      target: this.target,
-    };
+    const target = this.resolveTarget(this.target, this.project);
     const configurations = new Set(this.configuration);
 
     const {

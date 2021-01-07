@@ -4,7 +4,7 @@ import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
 
-import {AtelierArchitectHost} from '../architect/host';
+import {AtelierArchitectHost, UnknownTargetError} from '../architect/host';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 
@@ -142,5 +142,50 @@ export abstract class ArchitectCommand extends AbstractCommand {
       target: this.workspace.makeSyntheticTarget(this.currentProject, builder),
       options,
     });
+  }
+
+  protected resolveTarget(target: string, projectName: string | null): Target {
+    if (projectName != null) {
+      return {project: projectName, target};
+    }
+
+    const {currentProject, workspace} = this;
+
+    if (currentProject != null) {
+      const project = workspace.getProjectByName(currentProject);
+      if (project.targets.has(target)) {
+        return {project: currentProject, target};
+      }
+    }
+
+    const {defaultProject: defaultProjectName} = workspace.extensions;
+
+    if (typeof defaultProjectName === 'string') {
+      const defaultProject = workspace.tryGetProjectByName(defaultProjectName);
+
+      if (defaultProject == null) {
+        this.context.report.reportWarning(
+          `Couldn't find configured default project ${JSON.stringify(
+            defaultProjectName,
+          )} in the workspace`,
+        );
+      } else if (defaultProject.targets.has(target)) {
+        return {project: defaultProjectName, target};
+      }
+    }
+
+    const projectsWithTarget = Array.from(workspace.projects)
+      .filter(([, {targets}]) => targets.has(target))
+      .map(([project]) => project);
+
+    if (projectsWithTarget.length === 1) {
+      return {project: projectsWithTarget[0]!, target};
+    }
+
+    throw new UnknownTargetError(
+      `Failed to resolve target ${JSON.stringify(
+        target,
+      )}, try passing a project name`,
+    );
   }
 }
