@@ -54,7 +54,7 @@ export interface AtelierBuilderInfo extends BuilderInfo {
 
 export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   constructor(
-    private readonly context: Context,
+    private readonly context: Pick<Context, 'startCwd'>,
     private readonly workspace: CliWorkspace,
   ) {}
 

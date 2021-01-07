@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Combine multiple targets",
+  "description": "Target options for combining multiple targets into one",
+  "type": "object",
+  "properties": {
+    "include": {
+      "$ref": "#/definitions/glob",
+      "description": "Projects to include"
+    },
+    "exclude": {
+      "$ref": "#/definitions/glob",
+      "description": "Projects to exclude, note that the project running the glob builder is excluded by default if the target is the target this builder is registered for"
+    },
+    "target": {
+      "type": "string",
+      "description": "The target to run in the configured projects, defaults to the target this builder is configured for if neiter target nor builder are set"
+    },
+    "builder": {
+      "type": "string",
+      "description": "The builder to run in the confiugred projects"
+    },
+    "configuration": {
+      "type": "string",
+      "description": "The configuration to run the target with"
+    },
+    "options": {
+      "type": "object",
+      "description": "Options to pass into the configured target or builder",
+      "additionalProperties": true
+    },
+    "targetOptions": {
+      "description": "Options for running the targets",
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["serial"],
+              "additionalItems": false
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["parallel"],
+              "additionalItems": false
+            },
+            "maxParallel": {
+              "oneOf": [{"type": "number"}, {"type": "string"}],
+              "description": "The maximum number of jobs to have running at a time"
+            }
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "scheduler": {
+      "type": "string",
+      "enum": ["in process", "spawn", "worker", "respawn"],
+      "additionalItems": false
+    }
+  },
+  "additionalProperties": true,
+  "required": ["include"],
+  "dependencies": {
+    "builder": {
+      "not": {
+        "required": ["target", "configuration"]
+      }
+    },
+    "target": {
+      "not": {
+        "required": ["builder"]
+      }
+    }
+  },
+  "definitions": {
+    "glob": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -43,6 +43,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.0.20"],
             ["@types/json5", "npm:0.0.30"],
+            ["@types/micromatch", "npm:4.0.1"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
             ["@types/which-pm-runs", "npm:1.0.0"],
@@ -56,8 +57,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
+            ["micromatch", "npm:4.0.2"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
+            ["rxjs", "npm:6.6.3"],
             ["strip-ansi", "npm:6.0.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
@@ -155,6 +158,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.0.20"],
             ["@types/json5", "npm:0.0.30"],
+            ["@types/micromatch", "npm:4.0.1"],
             ["@types/node", "npm:14.14.17"],
             ["@types/prettier", "npm:2.1.6"],
             ["@types/which-pm-runs", "npm:1.0.0"],
@@ -168,8 +172,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
+            ["micromatch", "npm:4.0.2"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
+            ["rxjs", "npm:6.6.3"],
             ["strip-ansi", "npm:6.0.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
@@ -282,6 +288,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/braces", [
+        ["npm:3.0.0", {
+          "packageLocation": "./.yarn/cache/@types-braces-npm-3.0.0-511ab9ce35-4bebd28e5b.zip/node_modules/@types/braces/",
+          "packageDependencies": [
+            ["@types/braces", "npm:3.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/cacheable-request", [
         ["npm:6.0.1", {
           "packageLocation": "./.yarn/cache/@types-cacheable-request-npm-6.0.1-067bf7714d-3dae802a08.zip/node_modules/@types/cacheable-request/",
@@ -344,6 +359,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@types/keyv", "npm:3.1.1"],
             ["@types/node", "npm:14.14.17"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/micromatch", [
+        ["npm:4.0.1", {
+          "packageLocation": "./.yarn/cache/@types-micromatch-npm-4.0.1-7ac15e73fd-50c26e31fa.zip/node_modules/@types/micromatch/",
+          "packageDependencies": [
+            ["@types/micromatch", "npm:4.0.1"],
+            ["@types/braces", "npm:3.0.0"]
           ],
           "linkType": "HARD",
         }]

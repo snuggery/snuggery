@@ -125,7 +125,9 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
       }
     }
 
-    const targetName = `$$synthetic-${Date.now()}$$`;
+    const targetName = `$$synthetic-${Date.now()}-${Math.random()
+      .toFixed(5)
+      .slice(2)}$$`;
     project.targets.add({
       name: targetName,
       builder,

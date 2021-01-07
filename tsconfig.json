@@ -16,6 +16,10 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+
+    "paths": {
+      "@bgotink/atelier/*": ["./src/*"]
+    }
   }
 }
