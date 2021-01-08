@@ -6,6 +6,8 @@ import {EntryCommand} from './cli/commands/entry';
 import {EntryWithProjectCommand} from './cli/commands/entry-with-project';
 import {GenerateCommand} from './cli/commands/generate';
 import {HelpCommand} from './cli/commands/help';
+import {HelpProjectCommand} from './cli/commands/help/project';
+import {HelpProjectsCommand} from './cli/commands/help/projects';
 import {HelpTargetCommand} from './cli/commands/help/target';
 import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {ProjectCommand} from './cli/commands/project';
@@ -35,6 +37,11 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 }
 
 cli.register(HelpCommand);
+cli.register(HelpProjectCommand);
+cli.register(HelpProjectsCommand);
+cli.register(HelpTargetCommand);
+cli.register(HelpTargetsCommand);
+
 cli.register(VersionCommand);
 
 cli.register(EntryCommand);
@@ -42,8 +49,6 @@ cli.register(EntryWithProjectCommand);
 cli.register(ProjectCommand);
 
 cli.register(RunTargetCommand);
-cli.register(HelpTargetCommand);
-cli.register(HelpTargetsCommand);
 cli.register(RunBuilderCommand);
 
 cli.register(GenerateCommand);

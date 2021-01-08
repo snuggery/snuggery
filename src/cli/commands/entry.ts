@@ -50,7 +50,9 @@ export class EntryCommand extends ArchitectCommand {
     } else {
       const o = parseOptions({
         command: this,
-        description: `Run the \`${target.target}\` target in the current project (\`${target.project}\`)`,
+        description: `Run the \`${this.format.code(
+          target.target,
+        )}\` target in project \`${this.format.code(target.project)}\``,
         options: [configurationOption, ...definedOptions],
         path: [this.target],
         values: this.args,

@@ -68,7 +68,6 @@ export class HelpTargetCommand extends ArchitectCommand {
         {format, paragraphs: true},
       ),
     );
-    report.reportSeparator();
 
     if (unsafeTargetNames.has(this.target)) {
       const spec =
