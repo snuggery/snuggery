@@ -44,6 +44,8 @@ export const dryRunOption: Option = {
   description: 'Run the schematics without writing the results to disk',
 };
 
+export const defaultSchematicCollection = '@schematics/angular';
+
 export abstract class SchematicCommand extends AbstractCommand {
   public abstract readonly dryRun: boolean;
 
@@ -208,7 +210,7 @@ export abstract class SchematicCommand extends AbstractCommand {
       }
     }
 
-    return '@schematics/angular';
+    return defaultSchematicCollection;
   }
 
   protected async runSchematic({
