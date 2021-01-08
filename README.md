@@ -15,6 +15,9 @@ Where <command> is one of:
   ai help
     Show this usage statement
 
+  ai help target <target> [project]
+    Show information about a target
+
   ai project <projectName> <command> ...
     Run a command within a project
 

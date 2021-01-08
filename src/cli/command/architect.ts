@@ -49,6 +49,17 @@ export abstract class ArchitectCommand extends AbstractCommand {
     return new Architect(this.architectHost, this.registry);
   }
 
+  @Cached()
+  protected get defaultProject(): string | null {
+    const {defaultProject} = this.workspace.extensions;
+
+    if (typeof defaultProject === 'string') {
+      return defaultProject;
+    }
+
+    return null;
+  }
+
   protected async getOptionsForTarget(
     target: Target,
   ): Promise<{
@@ -158,19 +169,19 @@ export abstract class ArchitectCommand extends AbstractCommand {
       }
     }
 
-    const {defaultProject: defaultProjectName} = workspace.extensions;
+    const {defaultProject} = this;
 
-    if (typeof defaultProjectName === 'string') {
-      const defaultProject = workspace.tryGetProjectByName(defaultProjectName);
+    if (typeof defaultProject === 'string') {
+      const project = workspace.tryGetProjectByName(defaultProject);
 
-      if (defaultProject == null) {
+      if (project == null) {
         this.context.report.reportWarning(
           `Couldn't find configured default project ${JSON.stringify(
-            defaultProjectName,
+            defaultProject,
           )} in the workspace`,
         );
-      } else if (defaultProject.targets.has(target)) {
-        return {project: defaultProjectName, target};
+      } else if (project.targets.has(target)) {
+        return {project: defaultProject, target};
       }
     }
 

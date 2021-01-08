@@ -6,6 +6,7 @@ import {EntryCommand} from './cli/commands/entry';
 import {EntryWithProjectCommand} from './cli/commands/entry-with-project';
 import {GenerateCommand} from './cli/commands/generate';
 import {HelpCommand} from './cli/commands/help';
+import {HelpTargetCommand} from './cli/commands/help/target';
 import {ProjectCommand} from './cli/commands/project';
 import {RunBuilderCommand} from './cli/commands/run-builder';
 import {RunTargetCommand} from './cli/commands/run-target';
@@ -40,6 +41,7 @@ cli.register(EntryWithProjectCommand);
 cli.register(ProjectCommand);
 
 cli.register(RunTargetCommand);
+cli.register(HelpTargetCommand);
 cli.register(RunBuilderCommand);
 
 cli.register(GenerateCommand);
