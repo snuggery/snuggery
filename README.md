@@ -18,6 +18,9 @@ Where <command> is one of:
   ai help target <target> [project]
     Show information about a target
 
+  ai help targets [--all,-a #0]
+    Show information about all available targets
+
   ai project <projectName> <command> ...
     Run a command within a project
 

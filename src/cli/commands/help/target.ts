@@ -1,10 +1,10 @@
-import {bold, cyanBright} from 'chalk';
 import {UsageError} from 'clipanion';
 
 import {UnknownTargetError} from '../../architect/host';
 import {ArchitectCommand} from '../../command/architect';
+import {formatMarkdownish} from '../../utils/format';
 
-const unsafeTargetNames: ReadonlySet<string> = new Set([
+export const unsafeTargetNames: ReadonlySet<string> = new Set([
   'generate',
   'help',
   'project',
@@ -56,42 +56,47 @@ export class HelpTargetCommand extends ArchitectCommand {
       );
     }
 
-    this.context.stdout.write(
-      `Run target \`${cyanBright(this.target)}\` in project \`${cyanBright(
-        projectName,
-      )}\`${projectLabel ? ` ${projectLabel}` : ''} via:\n\n`,
+    const {report, format} = this;
+
+    report.reportInfo(
+      formatMarkdownish(
+        `Run target \`${this.format.code(
+          this.target,
+        )}\` in project \`${this.format.code(projectName)}\`${
+          projectLabel ? ` ${projectLabel}` : ''
+        } via:`,
+        {format, paragraphs: true},
+      ),
     );
+    report.reportSeparator();
+
     if (unsafeTargetNames.has(this.target)) {
       const spec =
         this.project != null ? `${this.project}:${this.target}` : this.target;
-      this.context.stdout.write(
-        `  $ ${this.cli.binaryName} run target ${spec}\n\n`,
-      );
+      report.reportInfo(`  $ ${this.cli.binaryName} run target ${spec}\n`);
     } else if (this.project != null) {
-      this.context.stdout.write(
-        `  $ ${this.cli.binaryName} ${this.target} ${this.project}\n\n`,
+      report.reportInfo(
+        `  $ ${this.cli.binaryName} ${this.target} ${this.project}\n`,
       );
     } else {
-      this.context.stdout.write(
-        `  $ ${this.cli.binaryName} ${this.target}\n\n`,
-      );
+      report.reportInfo(`  $ ${this.cli.binaryName} ${this.target}\n`);
     }
 
-    this.context.stdout.write(
-      `Add \`${cyanBright(
+    report.reportInfo(
+      `Add \`${this.format.code(
         '--help',
-      )}\` to that command to see the available options.\n\n`,
+      )}\` to that command to see the available options.\n`,
     );
 
     const configurations = Object.keys(target.configurations ?? {});
     if (configurations.length > 0) {
-      this.context.stdout.write(`${bold('Configurations')}\n\n`);
+      report.reportInfo(`${this.format.bold('Configurations')}\n`);
 
       for (const config of configurations) {
-        this.context.stdout.write(`- ${config}\n`);
+        report.reportInfo(`- ${config}`);
       }
 
-      this.context.stdout.write(`\n`);
+      report.reportSeparator();
     }
 
     this.printProjectList();
@@ -108,7 +113,7 @@ export class HelpTargetCommand extends ArchitectCommand {
   }
 
   private tryToFindProject(): [project: string, label: string] | null {
-    const {workspace, currentProject} = this;
+    const {workspace, currentProject, report} = this;
 
     if (currentProject != null) {
       const project = workspace.getProjectByName(currentProject);
@@ -123,7 +128,7 @@ export class HelpTargetCommand extends ArchitectCommand {
       const project = workspace.tryGetProjectByName(defaultProject);
 
       if (project == null) {
-        this.context.report.reportWarning(
+        report.reportWarning(
           `Couldn't find configured default project ${JSON.stringify(
             defaultProject,
           )} in the workspace`,
@@ -157,14 +162,19 @@ export class HelpTargetCommand extends ArchitectCommand {
       );
     }
 
-    const {currentProject, defaultProject, project: selectedProject} = this;
+    const {
+      currentProject,
+      defaultProject,
+      project: selectedProject,
+      report,
+    } = this;
 
-    this.context.stdout.write(`${bold('Projects:')}\n\n`);
+    report.reportInfo(`${this.format.bold('Projects:')}\n`);
 
-    this.context.stdout.write(
-      `Target \`${cyanBright(
+    report.reportInfo(
+      `Target \`${this.format.code(
         this.target,
-      )}\` is available in the following projects:\n\n`,
+      )}\` is available in the following projects:\n`,
     );
     for (const project of projects) {
       let label = '';
@@ -180,7 +190,7 @@ export class HelpTargetCommand extends ArchitectCommand {
           break;
       }
 
-      this.context.stdout.write(`- \`${cyanBright(project)}\`${label}\n`);
+      report.reportInfo(`- \`${this.format.code(project)}\`${label}`);
     }
   }
 }

@@ -2,6 +2,8 @@ import {logging, schema} from '@angular-devkit/core';
 import {Command, UsageError} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
+import {Format, richFormat, textFormat} from '../utils/format';
+import type {Report} from '../utils/report';
 
 import type {CliWorkspace, Context} from './context';
 
@@ -54,6 +56,14 @@ export abstract class AbstractCommand extends Command<Context> {
     });
 
     return logger;
+  }
+
+  protected get report(): Report {
+    return this.context.report;
+  }
+
+  protected get format(): Format {
+    return this.cli.enableColors ? richFormat : textFormat;
   }
 
   async catch(e: unknown): Promise<void> {

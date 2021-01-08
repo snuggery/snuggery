@@ -60,6 +60,28 @@ export abstract class ArchitectCommand extends AbstractCommand {
     return null;
   }
 
+  @Cached()
+  protected get uniqueTargets(): ReadonlyMap<string, string> {
+    const allTargets = new Map<string, string>();
+    const nonUniqueTargets = new Set<string>();
+
+    for (const [project, {targets}] of this.workspace.projects) {
+      for (const target of targets.keys()) {
+        if (allTargets.has(target)) {
+          nonUniqueTargets.add(target);
+        } else {
+          allTargets.set(target, project);
+        }
+      }
+    }
+
+    return new Map(
+      Array.from(allTargets).filter(
+        ([target]) => !nonUniqueTargets.has(target),
+      ),
+    );
+  }
+
   protected async getOptionsForTarget(
     target: Target,
   ): Promise<{
@@ -185,12 +207,10 @@ export abstract class ArchitectCommand extends AbstractCommand {
       }
     }
 
-    const projectsWithTarget = Array.from(workspace.projects)
-      .filter(([, {targets}]) => targets.has(target))
-      .map(([project]) => project);
+    const {uniqueTargets} = this;
 
-    if (projectsWithTarget.length === 1) {
-      return {project: projectsWithTarget[0]!, target};
+    if (uniqueTargets.has(target)) {
+      return {project: uniqueTargets.get(target)!, target};
     }
 
     throw new UnknownTargetError(
