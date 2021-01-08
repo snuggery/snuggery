@@ -15,10 +15,19 @@ Where <command> is one of:
   ai help
     Show this usage statement
 
+  ai help builder <builder>
+    Show information about a builder
+
+  ai help project [project]
+    Show information about a project
+
+  ai help projects
+    Show information about all projects
+
   ai help target <target> [project]
     Show information about a target
 
-  ai help targets [--all,-a #0]
+  ai help targets
     Show information about all available targets
 
   ai project <projectName> <command> ...

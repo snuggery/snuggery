@@ -3,6 +3,16 @@ import {formatMarkdownish} from '../../utils/format';
 import {printSchema} from '../../utils/print-schema';
 
 export class HelpBuilderCommand extends ArchitectCommand {
+  static usage = ArchitectCommand.Usage({
+    description: 'Show information about a builder',
+    examples: [
+      [
+        'Print information about `@angular-devkit/build-angular:browser`',
+        '$0 help builder @angular-devkit/build-angular:browser',
+      ],
+    ],
+  });
+
   @ArchitectCommand.String()
   builder!: string;
 
