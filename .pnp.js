@@ -38,7 +38,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["@angular-devkit/architect", "npm:0.1100.5"],
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["@angular-devkit/schematics", "npm:11.0.5"],
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.0.20"],
@@ -74,17 +74,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@angular-devkit-architect-npm-0.1100.5-c07381a2a9-bbcc331450.zip/node_modules/@angular-devkit/architect/",
           "packageDependencies": [
             ["@angular-devkit/architect", "npm:0.1100.5"],
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["rxjs", "npm:6.6.3"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["@angular-devkit/core", [
-        ["npm:11.0.5", {
-          "packageLocation": "./.yarn/cache/@angular-devkit-core-npm-11.0.5-dc83f5b9a4-2623c8154f.zip/node_modules/@angular-devkit/core/",
+        ["patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A.", {
+          "packageLocation": "./.yarn/cache/@angular-devkit-core-patch-5baeaec7c9-0457aa74ac.zip/node_modules/@angular-devkit/core/",
           "packageDependencies": [
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["ajv", "npm:6.12.6"],
             ["fast-json-stable-stringify", "npm:2.1.0"],
             ["magic-string", "npm:0.25.7"],
@@ -99,7 +99,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@angular-devkit-schematics-npm-11.0.5-3ba4200738-7a1f531cf6.zip/node_modules/@angular-devkit/schematics/",
           "packageDependencies": [
             ["@angular-devkit/schematics", "npm:11.0.5"],
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["ora", "npm:5.1.0"],
             ["rxjs", "npm:6.6.3"]
           ],
@@ -153,7 +153,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@bgotink/atelier", "workspace:."],
             ["@angular-devkit/architect", "npm:0.1100.5"],
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["@angular-devkit/schematics", "npm:11.0.5"],
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.0.20"],
@@ -253,7 +253,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@nrwl/tao", "npm:11.0.20"],
             ["@angular-devkit/architect", "npm:0.1100.5"],
-            ["@angular-devkit/core", "npm:11.0.5"],
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."],
             ["@angular-devkit/schematics", "npm:11.0.5"],
             ["chalk", "npm:4.1.0"],
             ["fs-extra", "npm:7.0.1"],

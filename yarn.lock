@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/core@npm:11.0.5, @angular-devkit/core@npm:~11.0.1":
+"@angular-devkit/core@11.0.5":
   version: 11.0.5
   resolution: "@angular-devkit/core@npm:11.0.5"
   dependencies:
@@ -25,6 +25,19 @@ __metadata:
     rxjs: 6.6.3
     source-map: 0.7.3
   checksum: 2623c8154fb696b57205a810f0d5353417d8bc51936910a72d2e6e3a94db4ac12a4509cb7ab0bf51f1459c9e563554de37d70dfc83e42b3cfcca822434d201cd
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/core@patch:@angular-devkit/core@11.0.5#patches/@angular-devkit__core.patch::locator=%40bgotink%2Fatelier%40workspace%3A.":
+  version: 11.0.5
+  resolution: "@angular-devkit/core@patch:@angular-devkit/core@npm%3A11.0.5#patches/@angular-devkit__core.patch::version=11.0.5&hash=6c128b&locator=%40bgotink%2Fatelier%40workspace%3A."
+  dependencies:
+    ajv: 6.12.6
+    fast-json-stable-stringify: 2.1.0
+    magic-string: 0.25.7
+    rxjs: 6.6.3
+    source-map: 0.7.3
+  checksum: 0457aa74ac7e804acd0b2dbdcae63e8a207c014f90bb09fba3420390983fc35efe17c44840762fb062d78eff54e2632871d7a8d2f21a89b55bd967368305df2c
   languageName: node
   linkType: hard
 

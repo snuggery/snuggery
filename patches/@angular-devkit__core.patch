@@ -1,0 +1,21 @@
+diff --git a/src/json/schema/visitor.js b/src/json/schema/visitor.js
+index 212206c1293e4053348979630e714c7ed5876c65..c47f0e84910069bbb603415d708412d062780797 100644
+--- a/src/json/schema/visitor.js
++++ b/src/json/schema/visitor.js
+@@ -110,7 +110,6 @@ function visitJsonSchema(schema, visitor) {
+         patternProperties: true,
+         additionalProperties: true,
+         dependencies: true,
+-        items: true,
+     };
+     function _traverse(schema, jsonPtr, rootSchema, parentSchema, keyIndex) {
+         if (schema && typeof schema == 'object' && !Array.isArray(schema)) {
+@@ -120,7 +119,7 @@ function visitJsonSchema(schema, visitor) {
+                 if (key in propsKeywords) {
+                     if (sch && typeof sch == 'object') {
+                         for (const prop of Object.keys(sch)) {
+-                            _traverse(sch[prop], pointer_1.joinJsonPointer(jsonPtr, key, prop), rootSchema, schema, prop);
++                            _traverse(sch[prop], pointer_1.joinJsonPointer(jsonPtr, key, prop), rootSchema, sch, prop);
+                         }
+                     }
+                 }
