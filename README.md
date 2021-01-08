@@ -56,7 +56,13 @@ Atelier provides a couple of builders that are useful to manage workspaces:
 - `@bgotink/atelier:execute`: Run any program as a builder
 
 These builders work regardless of whether you're using the Angular's `ng`,
-Narwhal's `nx` or atelier as CLI.
+Narwhal's `nx` or atelier's `ai` as CLI.
+
+Use atelier to print information on these builders:
+
+```bash
+ai help builder @bgotink/atelier:glob
+```
 
 ## License
 

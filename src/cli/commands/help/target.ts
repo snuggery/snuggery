@@ -68,6 +68,7 @@ export class HelpTargetCommand extends ArchitectCommand {
         {format, paragraphs: true},
       ),
     );
+    report.reportSeparator();
 
     if (unsafeTargetNames.has(this.target)) {
       const spec =
@@ -89,7 +90,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 
     const configurations = Object.keys(target.configurations ?? {});
     if (configurations.length > 0) {
-      report.reportInfo(`${this.format.bold('Configurations')}\n`);
+      report.reportInfo(`${this.format.bold('Configurations:')}\n`);
 
       for (const config of configurations) {
         report.reportInfo(`- ${config}`);

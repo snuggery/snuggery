@@ -71,5 +71,10 @@ export function formatMarkdownish(
     return format.code($1 + $2 + $1);
   });
 
-  return text ? `${text}\n` : ``;
+  if (indentation > 0) {
+    // indent lines
+    text = text.replace(/^|\n/g, _ => `${_}${' '.repeat(indentation)}`);
+  }
+
+  return text;
 }

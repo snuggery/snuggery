@@ -67,6 +67,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
             {format, paragraphs: true},
           ),
         );
+        this.context.report.reportSeparator();
       } else {
         const availableTargets = Array.from(project.targets.keys()).filter(
           target => !printedTargets.has(target),
@@ -85,6 +86,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
               {format, paragraphs: true},
             ),
           );
+          report.reportSeparator();
         } else {
           report.reportInfo('It exposes the following targets:\n');
 

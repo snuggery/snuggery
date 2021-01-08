@@ -81,6 +81,8 @@ export class HelpProjectCommand extends AbstractCommand {
         ),
       );
     }
+
+    report.reportSeparator();
   }
 
   private isInstalled(packageName: string, root: string) {
