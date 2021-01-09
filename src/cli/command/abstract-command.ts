@@ -21,7 +21,9 @@ export abstract class AbstractCommand extends Command<Context> {
     const {workspace} = this.context;
 
     if (workspace == null) {
-      throw new UsageError(`Couldn't find any workspace configuration`);
+      const err = new UsageError(`Couldn't find any workspace configuration`);
+      err.clipanion.type = 'none';
+      throw err;
     }
 
     return workspace;
