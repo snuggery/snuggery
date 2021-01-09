@@ -16,9 +16,6 @@ export function printSchema(
     format,
   }: {supportPathFormat: boolean; report: Report; format: Format},
 ): void {
-  report.reportInfo(`${format.bold('Properties:')}`);
-  report.reportSeparator();
-
   printObjectPropererties(report, format, supportPathFormat, schema, 0);
 }
 
@@ -36,143 +33,192 @@ function printObjectPropererties(
     Array.isArray(object.required) ? object.required : [],
   );
 
-  if (isJsonObject(object.properties!)) {
-    for (const [name, prop] of Object.entries(object.properties)) {
+  if (object.properties == null || !isJsonObject(object.properties)) {
+    if (object.additionalProperties === false) {
+      report.reportInfo(formatHelper('An empty object'));
+    } else if (object.additionalProperties === true) {
       report.reportInfo(
         formatHelper(
-          `- \`${name}\`${required.has(name) ? ' (required)' : ''}`,
-          false,
+          "The object doesn't have a fixed shape, any property is allowed.",
         ),
       );
-      indentation += 2;
+    } else {
+      report.reportInfo(
+        formatHelper(
+          "The object doesn't have a fixed shape, some requirements apply but those are too complex to print.",
+        ),
+      );
+    }
 
-      try {
-        if (!isJsonObject(prop)) {
-          report.reportWarning(
-            formatHelper('Invalid property definition', false),
-          );
-          continue;
-        }
+    return;
+  }
 
-        const description = getDescription(prop);
-        if (description) {
-          report.reportInfo(formatHelper(description));
-        }
+  if (indentation !== 0) {
+    report.reportInfo(formatHelper(`Properties:`));
+    report.reportSeparator();
+  }
 
-        const $default = getDefault(prop, supportPathFormat); // default is not a valid property name
-        if ($default != null) {
+  for (const [name, prop] of Object.entries(object.properties)) {
+    report.reportInfo(
+      formatHelper(
+        `- \`${name}\`${required.has(name) ? ' (required)' : ''}`,
+        false,
+      ),
+    );
+    const originalIndentation = indentation;
+    indentation += 2;
+
+    try {
+      if (!isJsonObject(prop)) {
+        report.reportWarning(
+          formatHelper('Invalid property definition', false),
+        );
+        continue;
+      }
+
+      const description = getDescription(prop);
+      if (description) {
+        report.reportInfo(formatHelper(description));
+      }
+
+      const $default = getDefault(prop, supportPathFormat); // default is not a valid property name
+      if ($default != null) {
+        report.reportInfo(formatHelper(`Default value is ${$default}`, false));
+      }
+
+      const $enum = getEnum(prop); // "const enum" and "enum" are keywords in typescript
+      if ($enum != null) {
+        report.reportInfo(formatHelper(`Possible values:`, false));
+        for (const value of $enum) {
           report.reportInfo(
-            formatHelper(`Default value is ${$default}`, false),
+            formatHelper(`- \`${JSON.stringify(value)}\``, false),
           );
         }
 
-        const $enum = getEnum(prop); // "const enum" and "enum" are keywords in typescript
-        if ($enum != null) {
-          report.reportInfo(formatHelper(`Possible values:`, false));
-          for (const value of $enum) {
-            report.reportInfo(
-              formatHelper(`- \`${JSON.stringify(value)}\``, false),
-            );
-          }
+        continue;
+      }
 
-          continue;
-        }
-
-        const simpleTypes = getTypesSimple(prop);
-        if (simpleTypes != null) {
-          printSimpleTypes(report, formatHelper, simpleTypes);
-          continue;
-        }
-
-        const complexTypes = getTypesComplex(prop);
-
-        if (complexTypes == null) {
-          report.reportWarning(
-            formatHelper(
-              'The type of this property is too complex to print in this help block.',
-            ),
+      let hasExamples = false;
+      if (Array.isArray(prop.examples) && prop.examples.length > 0) {
+        hasExamples = true;
+        report.reportInfo(formatHelper('Examples:', false));
+        for (const example of prop.examples) {
+          report.reportInfo(
+            formatHelper(`- \`${JSON.stringify(example)}\``, false),
           );
-          continue;
         }
+      }
 
-        if (complexTypes.isArray) {
-          if (complexTypes.rest.length === 0 && complexTypes.object == null) {
-            report.reportInfo(formatHelper(`Type: \`any[]\``, false));
-          } else if (
-            complexTypes.rest.length === 1 &&
-            complexTypes.object == null
-          ) {
-            report.reportInfo(
-              formatHelper(`Type: \`${complexTypes.rest[0]}[]\``, false),
-            );
-          } else if (complexTypes.rest.length > 0) {
-            report.reportInfo(
-              formatHelper(`Type: an array with items of type`, false),
-            );
-            for (const type of complexTypes.rest) {
-              report.reportInfo(formatHelper(`- \`${type}\``, false));
-            }
-            if (complexTypes.object != null) {
-              report.reportInfo(formatHelper('or an object with properties:'));
-              report.reportSeparator();
-            }
-          } else {
-            report.reportInfo(
-              formatHelper(
-                `Type: an array containing objects with properties:`,
-              ),
-            );
-            report.reportSeparator();
+      const simpleTypes = getTypesSimple(prop);
+      if (simpleTypes != null) {
+        printSimpleTypes(report, formatHelper, simpleTypes, hasExamples);
+        continue;
+      }
+
+      const complexTypes = getTypesComplex(prop);
+
+      if (complexTypes == null) {
+        report[hasExamples ? 'reportInfo' : 'reportWarning'](
+          formatHelper(
+            'The type of this property is too complex to print in this help block.',
+          ),
+        );
+        continue;
+      }
+
+      if (complexTypes.isArray) {
+        if (complexTypes.rest.length === 0 && complexTypes.object == null) {
+          report.reportInfo(formatHelper(`Type: \`any[]\``, false));
+        } else if (
+          complexTypes.rest.length === 1 &&
+          complexTypes.object == null
+        ) {
+          report.reportInfo(
+            formatHelper(`Type: \`${complexTypes.rest[0]}[]\``, false),
+          );
+        } else if (complexTypes.rest.length > 0) {
+          report.reportInfo(
+            formatHelper(`Type: an array with items of type`, false),
+          );
+          for (const type of complexTypes.rest) {
+            report.reportInfo(formatHelper(`- \`${type}\``, false));
           }
-
           if (complexTypes.object != null) {
-            printObjectPropererties(
-              report,
-              format,
-              supportPathFormat,
-              complexTypes.object,
-              indentation,
-            );
+            report.reportInfo(formatHelper('- or an object:'));
+            indentation += 2;
+            report.reportSeparator();
           }
         } else {
-          if (complexTypes.rest.length === 0 && complexTypes.object == null) {
-            report.reportInfo(formatHelper(`Type: \`any\``, false));
-          } else if (
-            complexTypes.rest.length === 1 &&
-            complexTypes.object == null
-          ) {
-            report.reportInfo(
-              formatHelper(`Type: \`${complexTypes.rest[0]}\``, false),
-            );
-          } else if (complexTypes.rest.length > 0) {
-            report.reportInfo(formatHelper(`Type: one of`, false));
-            for (const type of complexTypes.rest) {
-              report.reportInfo(formatHelper(`- \`${type}\``, false));
-            }
-            if (complexTypes.object != null) {
-              report.reportInfo(formatHelper('or an object with properties:'));
-              report.reportSeparator();
-            }
-          } else {
-            report.reportInfo(formatHelper(`Type: an object with properties:`));
+          report.reportInfo(formatHelper(`Type: an array containing objects:`));
+          report.reportSeparator();
+        }
+
+        if (complexTypes.object != null) {
+          printObjectPropererties(
+            report,
+            format,
+            supportPathFormat,
+            complexTypes.object,
+            indentation,
+          );
+        }
+      } else {
+        if (complexTypes.rest.length === 0 && complexTypes.object == null) {
+          report.reportInfo(formatHelper(`Type: \`any\``, false));
+        } else if (
+          complexTypes.rest.length === 1 &&
+          complexTypes.object == null
+        ) {
+          report.reportInfo(
+            formatHelper(`Type: \`${complexTypes.rest[0]}\``, false),
+          );
+        } else if (complexTypes.rest.length > 0) {
+          report.reportInfo(formatHelper(`Type: one of`, false));
+          for (const type of complexTypes.rest) {
+            report.reportInfo(formatHelper(`- \`${type}\``, false));
+          }
+          if (complexTypes.object != null) {
+            report.reportInfo(formatHelper('- or an object:'));
+            indentation += 2;
             report.reportSeparator();
           }
-
-          if (complexTypes.object != null) {
-            printObjectPropererties(
-              report,
-              format,
-              supportPathFormat,
-              complexTypes.object,
-              indentation,
-            );
-          }
+        } else {
+          report.reportInfo(formatHelper(`Type: an object:`));
+          report.reportSeparator();
         }
-      } finally {
-        report.reportSeparator();
-        indentation -= 2;
+
+        if (complexTypes.object != null) {
+          printObjectPropererties(
+            report,
+            format,
+            supportPathFormat,
+            complexTypes.object,
+            indentation,
+          );
+        }
       }
+    } finally {
+      report.reportSeparator();
+      indentation = originalIndentation;
     }
+  }
+
+  if (
+    object.additionalProperties === true ||
+    object.additionalProperties == null
+  ) {
+    report.reportInfo(
+      formatHelper(`Additional properties are allowed.`, false),
+    );
+    report.reportSeparator();
+  } else if (object.additionalProperties !== false) {
+    report.reportInfo(
+      formatHelper(
+        `Additional properties are allowed, some requirements apply but those are too complex to print.`,
+        false,
+      ),
+    );
+    report.reportSeparator();
   }
 }
 
@@ -266,10 +312,11 @@ function printSimpleTypes(
   report: Report,
   format: (s: string) => string,
   types: string[],
+  hasExamples: boolean,
 ) {
   switch (types.length) {
     case 0:
-      report.reportWarning(
+      report[hasExamples ? 'reportInfo' : 'reportWarning'](
         format(
           'The type of this property is too complex to print in this help block.',
         ),
@@ -316,7 +363,7 @@ function getTypesComplex(
     : null;
 
   if (alternatives == null) {
-    return null;
+    return null; // probably something with allOf
   }
 
   const types = alternatives.map(alt =>
@@ -332,8 +379,12 @@ function getTypesComplex(
       continue;
     }
 
-    if (object == null && type.object != null) {
-      object = type.object;
+    if (type.object != null) {
+      if (object == null) {
+        object = type.object;
+      } else {
+        return null; // too complex
+      }
     }
 
     if (isArray !== type.isArray) {

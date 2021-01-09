@@ -41,14 +41,14 @@ export class HelpBuilderCommand extends ArchitectCommand {
       report.reportSeparator();
     }
 
-    report.reportInfo(`${format.bold('Options:')}\n`);
+    report.reportInfo(`${format.bold('Properties:')}\n`);
 
-    if (optionSchema === true) {
-      report.reportInfo(`This builder accepts all options.\n`);
-      return;
-    }
-    if (optionSchema === false) {
-      report.reportInfo(`This builder doens't accept any options.\n`);
+    if (typeof optionSchema === 'boolean') {
+      if (optionSchema) {
+        report.reportInfo(`This builder accepts all properties.\n`);
+      } else {
+        report.reportInfo(`This builder doens't accept any properties.\n`);
+      }
       return;
     }
 
