@@ -23,6 +23,7 @@ export class HelpSchematicCommand extends SchematicCommand {
 
   readonly dryRun = false; // abstract in SchematicCommand, of no use here
   readonly force = false; // abstract in SchematicCommand, of no use here
+  readonly showFileChanges = false; // abstract in SchematicCommand, of no use here
 
   protected get root(): string {
     return this.workspace.basePath;

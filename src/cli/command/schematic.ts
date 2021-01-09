@@ -20,10 +20,6 @@ import {parseSchema, Option, Type} from '../utils/parse-schema';
 
 import {AbstractCommand} from './abstract-command';
 
-export const reservedNames: ReadonlySet<string> = new Set([
-  '--show-file-changes',
-]);
-
 export const forceOption: Option = {
   name: 'force',
   aliases: [],
@@ -51,10 +47,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 
   public abstract readonly force: boolean;
 
-  @AbstractCommand.Boolean('--show-file-changes', {
-    description: 'Print an overview of all file changes made by the schematic',
-  })
-  public showFileChanges = false;
+  public abstract readonly showFileChanges: boolean;
 
   protected abstract readonly root: string;
 

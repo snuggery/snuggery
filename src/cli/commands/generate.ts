@@ -4,10 +4,11 @@ import {UsageError} from 'clipanion';
 import {
   dryRunOption,
   forceOption,
-  reservedNames,
   SchematicCommand,
 } from '../command/schematic';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
+
+const reservedNames = new Set(['--show-file-changes']);
 
 export class GenerateCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
@@ -34,6 +35,11 @@ export class GenerateCommand extends SchematicCommand {
     description: 'Write the results to disk even if there are conflicts',
   })
   public force = false;
+
+  @SchematicCommand.Boolean('--show-file-changes', {
+    description: 'Print an overview of all file changes made by the schematic',
+  })
+  public showFileChanges = false;
 
   @SchematicCommand.String()
   public schematic?: string;
