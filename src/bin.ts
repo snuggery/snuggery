@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 import {Cli, UsageError} from 'clipanion';
+// @ts-expect-error There are no good types for supports-color
+import {supportsColor} from 'supports-color';
 
 import {Context, findWorkspace} from './cli/command/context';
 import {EntryCommand} from './cli/commands/entry';
@@ -28,6 +30,7 @@ const cli = new Cli<Context>({
   binaryName: 'ai',
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   binaryVersion: require('@bgotink/atelier/package.json').version,
+  enableColors: supportsColor(process.stdout).level > 0,
 });
 
 if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {

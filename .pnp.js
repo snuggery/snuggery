@@ -51,19 +51,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
-            ["chalk", "npm:4.1.0"],
             ["clipanion", "npm:2.6.2"],
             ["eslint", "npm:7.17.0"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
+            ["kleur", "npm:4.1.3"],
             ["micromatch", "npm:4.0.2"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
             ["prompts", "npm:2.4.0"],
             ["rxjs", "npm:6.6.3"],
             ["strip-ansi", "npm:6.0.0"],
+            ["supports-color", "npm:8.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
@@ -168,19 +169,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
-            ["chalk", "npm:4.1.0"],
             ["clipanion", "npm:2.6.2"],
             ["eslint", "npm:7.17.0"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
             ["husky", "npm:4.3.6"],
             ["json5", "npm:2.1.3"],
+            ["kleur", "npm:4.1.3"],
             ["micromatch", "npm:4.0.2"],
             ["prettier", "npm:2.2.1"],
             ["pretty-quick", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.1.0"],
             ["prompts", "npm:2.4.0"],
             ["rxjs", "npm:6.6.3"],
             ["strip-ansi", "npm:6.0.0"],
+            ["supports-color", "npm:8.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
@@ -2625,6 +2627,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["kleur", "npm:3.0.3"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:4.1.3", {
+          "packageLocation": "./.yarn/cache/kleur-npm-4.1.3-258cc52fe1-2f7c8faa80.zip/node_modules/kleur/",
+          "packageDependencies": [
+            ["kleur", "npm:4.1.3"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["levn", [
@@ -3933,6 +3942,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/supports-color-npm-7.2.0-606bfcf7da-8e57067c39.zip/node_modules/supports-color/",
           "packageDependencies": [
             ["supports-color", "npm:7.2.0"],
+            ["has-flag", "npm:4.0.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:8.1.0", {
+          "packageLocation": "./.yarn/cache/supports-color-npm-8.1.0-f1688888e2-6213162d55.zip/node_modules/supports-color/",
+          "packageDependencies": [
+            ["supports-color", "npm:8.1.0"],
             ["has-flag", "npm:4.0.0"]
           ],
           "linkType": "HARD",

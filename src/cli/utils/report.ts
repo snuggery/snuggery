@@ -8,7 +8,7 @@
 
 import type {JsonValue} from '@angular-devkit/core';
 import sliceAnsi from '@arcanis/slice-ansi';
-import {Instance as ChalkCtor, Chalk, supportsColor} from 'chalk';
+import {gray, red, white, yellow} from 'kleur';
 import type {Writable} from 'stream';
 import stripAnsi from 'strip-ansi';
 import type {WriteStream} from 'tty';
@@ -31,17 +31,11 @@ export class Report {
 
   private readonly supportsColor: boolean;
 
-  private readonly chalk: Chalk;
-
   constructor({cli, stdout, json = false}: ReportOptions) {
     this.json = json;
     this.stdout = stdout;
     this.isTty = (stdout as WriteStream).isTTY ?? false;
-    this.supportsColor =
-      cli.enableColors && supportsColor && supportsColor.level > 0;
-    this.chalk = new ChalkCtor({
-      level: cli.enableColors ? (supportsColor && supportsColor.level) || 0 : 0,
-    });
+    this.supportsColor = cli.enableColors;
   }
 
   reportSeparator(): void {
@@ -50,7 +44,7 @@ export class Report {
 
   reportDebug(text: string): void {
     if (!this.json) {
-      this.writeLine(text, {color: this.chalk.gray});
+      this.writeLine(text, {color: gray});
     } else {
       this.reportJson({
         type: `debug`,
@@ -62,7 +56,7 @@ export class Report {
   reportInfo(text: string): void {
     if (!this.json) {
       this.writeLine(text, {
-        color: this.chalk.whiteBright,
+        color: white,
       });
     } else {
       this.reportJson({
@@ -75,7 +69,7 @@ export class Report {
   reportWarning(text: string): void {
     if (!this.json) {
       this.writeLine(text, {
-        color: this.chalk.yellow,
+        color: yellow,
       });
     } else {
       this.reportJson({
@@ -89,7 +83,7 @@ export class Report {
     if (!this.json) {
       this.writeLine(text, {
         truncate: false,
-        color: this.chalk.red,
+        color: red,
       });
     } else {
       this.reportJson({
