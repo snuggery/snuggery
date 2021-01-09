@@ -17,6 +17,7 @@ import getPackageManager from 'which-pm-runs';
 import {AtelierWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
+import {createPromptProvider} from '../utils/prompt';
 
 import {AbstractCommand} from './abstract-command';
 
@@ -77,6 +78,8 @@ export abstract class SchematicCommand extends AbstractCommand {
     registry.useXDeprecatedProvider(msg =>
       this.context.report.reportWarning(msg),
     );
+
+    registry.usePromptProvider(createPromptProvider());
 
     return workflow;
   }
