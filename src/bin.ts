@@ -9,6 +9,7 @@ import {HelpCommand} from './cli/commands/help';
 import {HelpBuilderCommand} from './cli/commands/help/builder';
 import {HelpProjectCommand} from './cli/commands/help/project';
 import {HelpProjectsCommand} from './cli/commands/help/projects';
+import {HelpSchematicCommand} from './cli/commands/help/schematic';
 import {HelpTargetCommand} from './cli/commands/help/target';
 import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {ProjectCommand} from './cli/commands/project';
@@ -41,6 +42,7 @@ cli.register(HelpCommand);
 cli.register(HelpBuilderCommand);
 cli.register(HelpProjectCommand);
 cli.register(HelpProjectsCommand);
+cli.register(HelpSchematicCommand);
 cli.register(HelpTargetCommand);
 cli.register(HelpTargetsCommand);
 
