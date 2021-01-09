@@ -4,6 +4,7 @@ import {printSchema} from '../../utils/print-schema';
 
 export class HelpBuilderCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about a builder',
     examples: [
       [

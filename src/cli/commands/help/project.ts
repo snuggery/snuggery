@@ -7,6 +7,7 @@ import {formatMarkdownish} from '../../utils/format';
 
 export class HelpProjectCommand extends AbstractCommand {
   static usage = AbstractCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about a project',
   });
 

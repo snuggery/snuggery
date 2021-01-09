@@ -4,6 +4,7 @@ import {AbstractCommand} from '../../command/abstract-command';
 
 export class HelpProjectsCommand extends AbstractCommand {
   static usage = AbstractCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about all projects',
   });
 

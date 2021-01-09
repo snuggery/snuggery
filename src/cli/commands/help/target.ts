@@ -13,6 +13,7 @@ export const unsafeTargetNames: ReadonlySet<string> = new Set([
 
 export class HelpTargetCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about a target',
     examples: [
       [

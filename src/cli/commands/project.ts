@@ -4,6 +4,7 @@ import {AbstractCommand} from '../command/abstract-command';
 
 export class ProjectCommand extends AbstractCommand {
   static usage = AbstractCommand.Usage({
+    category: 'Utility commands',
     description: 'Run a command within a project',
     details: `
     This command runs another command as if atelier was executed from within that project.

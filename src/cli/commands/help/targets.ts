@@ -3,6 +3,7 @@ import {formatMarkdownish} from '../../utils/format';
 
 export class HelpTargetsCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about all available targets',
   });
 

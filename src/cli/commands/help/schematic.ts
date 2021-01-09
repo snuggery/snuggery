@@ -4,6 +4,7 @@ import {printSchema} from '../../utils/print-schema';
 
 export class HelpSchematicCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
+    category: 'Workspace information commands',
     description: 'Show information about a schematic',
     examples: [
       [

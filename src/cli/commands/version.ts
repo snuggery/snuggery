@@ -19,6 +19,7 @@ function getSet<K, T>(map: Map<K, Set<T>>, key: K): Set<T> {
 
 export class VersionCommand extends AbstractCommand {
   static usage = AbstractCommand.Usage({
+    category: 'Workspace information commands',
     description: `Print version information`,
   });
 
