@@ -34,7 +34,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
   protected get registry(): json.schema.SchemaRegistry {
     const registry = new json.schema.CoreSchemaRegistry();
     registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
-    registry.useXDeprecatedProvider(msg => this.context.stderr.write(msg)); // TODO logging
+    registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
 
     return registry;
   }
