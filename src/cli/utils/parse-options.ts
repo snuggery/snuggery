@@ -69,6 +69,14 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
 
 const globalReservedNames = new Set(['--help', '-h']);
 
+class HelpCommand extends Command {
+  @Command.Path('-h')
+  @Command.Path('--help')
+  execute(): never {
+    throw new Error(`Never called`);
+  }
+}
+
 export function parseOptions({
   command: {context, cli: baseCli},
   path,
@@ -207,13 +215,13 @@ export function parseOptions({
     OptionParserCommand.addOption(key, Command.Rest());
   }
 
-  const cli = Cli.from([OptionParserCommand], {
+  const cli = Cli.from([OptionParserCommand, HelpCommand], {
     ...baseCli,
     binaryName: `${baseCli.binaryName} ${path.join(' ')}`,
   });
   const command = cli.process(values);
 
-  if (command.help) {
+  if (command instanceof HelpCommand || command.help) {
     context.stderr.write(cli.usage(OptionParserCommand, {detailed: true}));
 
     return null;
