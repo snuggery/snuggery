@@ -53,7 +53,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
         command: this,
         description: `Run the \`${target.target}\` target in the \`${target.project}\` project`,
         options: [configurationOption, ...definedOptions],
-        path: [this.target],
+        path: [this.target, this.project],
         values: this.args,
       });
 
