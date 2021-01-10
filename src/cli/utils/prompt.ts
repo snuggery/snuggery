@@ -39,8 +39,11 @@ export function createPromptProvider(): json.schema.PromptProvider {
             question.type = 'confirm';
             break;
           case 'list':
-            question.type = definition.multiselect ? 'multiselect' : 'list';
+            question.type = definition.multiselect ? 'multiselect' : 'select';
             question.choices = extractChoices(definition);
+            question.initial = question.choices?.findIndex(
+              ({value}) => value === question.initial,
+            );
             break;
           case 'input':
             if (
