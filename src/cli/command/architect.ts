@@ -41,7 +41,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 
   @Cached()
   protected get architectHost(): AtelierArchitectHost {
-    return new AtelierArchitectHost(this.context, this.workspace);
+    return new AtelierArchitectHost(this.context, this.context.workspace);
   }
 
   @Cached()

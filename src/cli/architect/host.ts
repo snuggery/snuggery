@@ -55,17 +55,18 @@ export interface AtelierBuilderInfo extends BuilderInfo {
 export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   constructor(
     private readonly context: Pick<Context, 'startCwd'>,
-    private readonly workspace: CliWorkspace,
+    private readonly workspace: CliWorkspace | null,
   ) {}
 
   private loadBuilderJson(
     packageName: string,
     builderSpec: string,
   ): [path: string, builders: JsonObject] {
-    for (const basePath of new Set([
-      this.context.startCwd,
-      this.workspace.basePath,
-    ])) {
+    for (const basePath of new Set(
+      this.workspace != null
+        ? [this.context.startCwd, this.workspace.basePath]
+        : [this.context.startCwd],
+    )) {
       const require = createRequire(join(basePath, 'synthetic.js'));
 
       let startJsonPath: string;
@@ -126,7 +127,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   }
 
   private getProject(projectName: string) {
-    const project = this.workspace.projects.get(projectName);
+    const project = this.workspace?.projects.get(projectName);
 
     if (project == null) {
       throw new UnknownTargetError(`Unknown project: "${projectName}"`);
@@ -156,10 +157,11 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   private async resolveBuilderFromPath(
     path: string,
   ): Promise<[path: string, info: JsonObject]> {
-    for (const basePath of new Set([
-      this.context.startCwd,
-      this.workspace.basePath,
-    ])) {
+    for (const basePath of new Set(
+      this.workspace != null
+        ? [this.context.startCwd, this.workspace.basePath]
+        : [this.context.startCwd],
+    )) {
       const require = createRequire(join(basePath, 'synthetic.js'));
 
       let resolvedPath;
@@ -321,7 +323,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   }
 
   getWorkspaceRoot(): Promise<string> {
-    return Promise.resolve(this.workspace.basePath);
+    return Promise.resolve(this.workspace?.basePath ?? this.context.startCwd);
   }
 
   async getOptionsForTarget(target: Target): Promise<JsonObject | null> {

@@ -23,6 +23,7 @@ export function createPromptProvider(): json.schema.PromptProvider {
           type: 'text',
 
           message: definition.message,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           initial: definition.default as any,
         };
 

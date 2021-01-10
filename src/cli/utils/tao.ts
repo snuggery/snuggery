@@ -30,7 +30,7 @@ export type Executor = (
 
 export function makeExecutorIntoBuilder(
   executor: Executor,
-  workspace: CliWorkspace,
+  workspace: CliWorkspace | null,
 ): Builder<JsonObject> {
   return createBuilder(async (options, ngContext) => {
     const nxContext: TargetContext = {
@@ -45,7 +45,7 @@ export function makeExecutorIntoBuilder(
           };
         }
 
-        const target = workspace.projects
+        const target = workspace?.projects
           .get(ngContext.target.project)
           ?.targets.get(ngContext.target.target);
 
@@ -60,7 +60,7 @@ export function makeExecutorIntoBuilder(
         /* eslint-disable @typescript-eslint/no-explicit-any */
         return {
           projects: Object.fromEntries(
-            Array.from(workspace.projects, ([projectName, project]): [
+            Array.from(workspace?.projects ?? [], ([projectName, project]): [
               string,
               ProjectConfiguration,
             ] => {
@@ -97,9 +97,9 @@ export function makeExecutorIntoBuilder(
             }),
           ),
 
-          defaultProject: workspace.defaultProject ?? undefined,
-          cli: workspace.extensions.cli as any,
-          generators: workspace.extensions.schematics as any,
+          defaultProject: workspace?.defaultProject ?? undefined,
+          cli: workspace?.extensions.cli as any,
+          generators: workspace?.extensions.schematics as any,
         };
         /* eslint-enable @typescript-eslint/no-explicit-any */
       },
