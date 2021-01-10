@@ -57,12 +57,24 @@ export interface TargetSchema extends AbstractSchema {
    */
   configuration?: string;
 
+  /**
+   * What to do if the glob encounters a project that doesn't include the requested target
+   */
+  unknownTarget?: 'error' | 'skip';
+
+  /**
+   * What to do if the glob encounters a target that is missing a requested configuration
+   */
+  unknownConfiguration?: 'error' | 'skip' | 'run';
+
   builder?: undefined;
 }
 
 export interface BuilderSchema extends AbstractSchema {
   target?: undefined;
   configuration?: undefined;
+  unknownTarget?: undefined;
+  unknownConfiguration?: undefined;
 
   /**
    * Name of the builder to execute, e.g. `@angular-devkit/architect:browser`.

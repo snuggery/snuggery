@@ -27,6 +27,8 @@ export function execute(
     scheduler,
     target,
     targetOptions,
+    unknownConfiguration,
+    unknownTarget,
     ...otherOptions
   }: Schema,
   context: BuilderContext,
@@ -63,13 +65,53 @@ export function execute(
       filterByPatterns(Array.from(workspace?.projects.keys() ?? []), {
         include,
         exclude,
-      }).map(project => {
+      }).flatMap(project => {
         if (builder != null) {
           return {
             builder,
             project,
           };
         } else {
+          if (unknownTarget === 'skip') {
+            const projectDefinition = workspace!.projects.get(project)!;
+
+            if (!projectDefinition.targets.has(target!)) {
+              return [];
+            }
+          }
+
+          if (
+            unknownConfiguration != null &&
+            unknownConfiguration !== 'error'
+          ) {
+            const targetDefinition = workspace!.projects
+              .get(project)!
+              .targets.get(target!);
+            if (targetDefinition != null) {
+              const requestedConfigurations = configuration?.split(',') ?? [];
+              let modified = false;
+
+              for (const [i, config] of requestedConfigurations.entries()) {
+                if (
+                  targetDefinition.configurations == null ||
+                  !Reflect.has(targetDefinition.configurations, config)
+                ) {
+                  switch (unknownConfiguration) {
+                    case 'skip':
+                      return [];
+                    case 'run':
+                      requestedConfigurations.splice(i);
+                      modified = true;
+                  }
+                }
+              }
+
+              if (modified) {
+                configuration = requestedConfigurations.join(',');
+              }
+            }
+          }
+
           return targetStringFromTarget({
             project,
             target,

@@ -29,6 +29,18 @@
       "description": "Options to pass into the configured target or builder",
       "additionalProperties": true
     },
+    "unknownTarget": {
+      "type": "string",
+      "description": "What to do if the glob encounters a project that doesn't include the requested target: fail or skip the project",
+      "enum": ["error", "skip"],
+      "default": "error"
+    },
+    "unknownConfiguration": {
+      "type": "string",
+      "description": "What to do if the glob encounters a target that is missing a requested configuration: fail, skip the project or run without the unknown configuration",
+      "enum": ["error", "skip", "run"],
+      "default": "error"
+    },
     "targetOptions": {
       "description": "Options for running the targets",
       "oneOf": [
@@ -73,7 +85,12 @@
   "dependencies": {
     "builder": {
       "not": {
-        "required": ["target", "configuration"]
+        "required": [
+          "target",
+          "configuration",
+          "unknownTarget",
+          "unknownConfiguration"
+        ]
       }
     },
     "target": {
