@@ -21,9 +21,9 @@ export class HelpSchematicCommand extends SchematicCommand {
   @SchematicCommand.String()
   schematic!: string;
 
-  readonly dryRun = false; // abstract in SchematicCommand, of no use here
-  readonly force = false; // abstract in SchematicCommand, of no use here
-  readonly showFileChanges = false; // abstract in SchematicCommand, of no use here
+  protected readonly dryRun = false; // abstract in SchematicCommand, of no use here
+  protected readonly force = false; // abstract in SchematicCommand, of no use here
+  protected readonly showFileChanges = false; // abstract in SchematicCommand, of no use here
 
   protected get root(): string {
     return this.workspace.basePath;

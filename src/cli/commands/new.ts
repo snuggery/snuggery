@@ -9,20 +9,11 @@ import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 const reservedNames = new Set(['--show-file-changes']);
 
-export class GenerateCommand extends SchematicCommand {
+export class NewCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
     category: 'Schematic commands',
-    description: 'Generate and/or modify files based on a schematic',
-    examples: [
-      [
-        'Run the `component` schematic of the `@schematics/angular` package',
-        '$0 generate @schematics/angular:component',
-      ],
-      [
-        "Dry-run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
-        '$0 generate --dry-run application',
-      ],
-    ],
+    description: 'Create a new workspace',
+    examples: [['Create a new workspace ', '$0 new @schematics/angular']],
   });
 
   @SchematicCommand.Boolean('--dry-run', {
@@ -41,33 +32,23 @@ export class GenerateCommand extends SchematicCommand {
   showFileChanges = false;
 
   @SchematicCommand.String()
-  schematic!: string;
+  collection!: string;
 
   @SchematicCommand.Proxy()
   args: string[] = [];
 
   protected get root(): string {
-    return this.workspace.basePath;
+    return this.context.startCwd;
   }
 
-  @SchematicCommand.Path('g')
-  @SchematicCommand.Path('generate')
-  async execute(): Promise<number | void> {
-    let collectionName, schematicName;
-    if (this.schematic.includes(':')) {
-      [collectionName, schematicName] = this.schematic.split(':', 2) as [
-        string,
-        string,
-      ];
-    } else {
-      collectionName = this.getDefaultCollection();
-      schematicName = this.schematic;
-    }
+  protected readonly resolveSelf = true;
 
+  @SchematicCommand.Path('new')
+  async execute(): Promise<number | void> {
     const schematic = this.getSchematic(
-      this.getCollection(collectionName),
-      schematicName,
-      false,
+      this.getCollection(this.collection),
+      'ng-new',
+      true,
     );
 
     const {
@@ -75,6 +56,17 @@ export class GenerateCommand extends SchematicCommand {
       allowExtraOptions,
       description,
     } = await this.getOptions(schematic);
+
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    this.workflow.registry.addSmartDefaultProvider(
+      'ng-cli-version',
+      () => require('@angular-devkit/core/package.json').version,
+    );
+    this.workflow.registry.addSmartDefaultProvider(
+      'atelier-version',
+      () => require('@bgotink/atelier/package.json').version,
+    );
+    /* eslint-enable @typescript-eslint/no-var-requires */
 
     let options: JsonObject | undefined;
     if (definedOptions.length === 0) {
@@ -86,7 +78,7 @@ export class GenerateCommand extends SchematicCommand {
         command: this,
         description,
         options: [dryRunOption, forceOption, ...definedOptions],
-        path: [...this.path, this.schematic],
+        path: [...this.path, this.collection],
         values: this.args,
         reservedNames,
       });

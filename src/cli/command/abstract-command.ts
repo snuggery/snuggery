@@ -30,13 +30,12 @@ export abstract class AbstractCommand extends Command<Context> {
   }
 
   protected get currentProject(): string | null {
-    const {
-      workspace,
-      context: {startCwd},
-    } = this;
+    const {workspace, startCwd} = this.context;
 
-    return workspace.tryGetProjectNameByCwd(startCwd, message =>
-      this.context.report.reportWarning(message),
+    return (
+      workspace?.tryGetProjectNameByCwd(startCwd, message =>
+        this.context.report.reportWarning(message),
+      ) ?? null
     );
   }
 

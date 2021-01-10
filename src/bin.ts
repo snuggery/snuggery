@@ -14,6 +14,7 @@ import {HelpProjectsCommand} from './cli/commands/help/projects';
 import {HelpSchematicCommand} from './cli/commands/help/schematic';
 import {HelpTargetCommand} from './cli/commands/help/target';
 import {HelpTargetsCommand} from './cli/commands/help/targets';
+import {NewCommand} from './cli/commands/new';
 import {ProjectCommand} from './cli/commands/project';
 import {RunBuilderCommand} from './cli/commands/run-builder';
 import {RunTargetCommand} from './cli/commands/run-target';
@@ -59,6 +60,7 @@ cli.register(RunTargetCommand);
 cli.register(RunBuilderCommand);
 
 cli.register(GenerateCommand);
+cli.register(NewCommand);
 
 const {stderr, stdin, stdout} = process;
 

@@ -11,7 +11,7 @@ import type {
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
 import {UsageError} from 'clipanion';
-import {normalize, relative} from 'path';
+import {dirname, normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
 import {AtelierWorkflow} from '../schematic/workflow';
@@ -44,13 +44,21 @@ export const dryRunOption: Option = {
 export const defaultSchematicCollection = '@schematics/angular';
 
 export abstract class SchematicCommand extends AbstractCommand {
-  public abstract readonly dryRun: boolean;
+  protected abstract readonly dryRun: boolean;
 
-  public abstract readonly force: boolean;
+  protected abstract readonly force: boolean;
 
-  public abstract readonly showFileChanges: boolean;
+  protected abstract readonly showFileChanges: boolean;
 
   protected abstract readonly root: string;
+
+  /**
+   * Enable resolving collections wrt the location of Atelier
+   *
+   * This allows resolving globally installed collections if Atelier was
+   * installed globally.
+   */
+  protected readonly resolveSelf: boolean = false;
 
   @Cached()
   public get workflow(): AtelierWorkflow {
@@ -62,7 +70,13 @@ export abstract class SchematicCommand extends AbstractCommand {
       dryRun: this.dryRun,
       packageManager: getPackageManager()?.name,
       registry,
-      resolvePaths: [this.context.startCwd, this.root],
+      resolvePaths: [
+        this.context.startCwd,
+        this.root,
+        ...(this.resolveSelf
+          ? [dirname(require.resolve('@bgotink/atelier/package.json'))]
+          : []),
+      ],
       schemaValidation: true,
       optionTransforms: [
         // Add any option values from the configuration file
@@ -139,7 +153,11 @@ export abstract class SchematicCommand extends AbstractCommand {
   protected getConfiguredOptions(
     schematic: FileSystemSchematicDescription,
   ): JsonObject {
-    const {workspace} = this;
+    const {workspace} = this.context;
+
+    if (workspace == null) {
+      return {};
+    }
 
     const projectName = this.currentProject;
     const project =

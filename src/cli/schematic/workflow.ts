@@ -9,7 +9,6 @@ import {workflow} from '@angular-devkit/schematics';
 import {BuiltinTaskExecutor} from '@angular-devkit/schematics/tasks/node';
 import {
   FileSystemEngine,
-  NodeModulesEngineHost,
   OptionTransform,
   validateOptionsWithSchema,
 } from '@angular-devkit/schematics/tools';
@@ -80,7 +79,7 @@ export class AtelierWorkflow extends workflow.BaseWorkflow {
     return this._engine as FileSystemEngine;
   }
 
-  get engineHost(): NodeModulesEngineHost {
-    return this._engineHost as NodeModulesEngineHost;
+  get engineHost(): AtelierEngineHost {
+    return this._engineHost as AtelierEngineHost;
   }
 }

@@ -7,6 +7,7 @@ import {formatMarkdownish} from '../../utils/format';
 export const unsafeTargetNames: ReadonlySet<string> = new Set([
   'generate',
   'help',
+  'new',
   'project',
   'run',
 ]);
