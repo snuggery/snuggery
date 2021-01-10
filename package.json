@@ -2,12 +2,13 @@
   "name": "@bgotink/atelier",
   "version": "0.1.1",
   "private": true,
+  "license": "MIT",
   "bin": {
     "ai": "bin.js"
   },
   "builders": "builders.json",
   "scripts": {
-    "build": "rm -rf dist && tsc && cp README.md dist/ && rsync -r src/ dist --exclude '*.ts' && jq 'del(.scripts) | del(.devDependencies) | del(.private)' package.json >dist/package.json",
+    "build": "rm -rf dist && tsc && cp README.md dist/ && rsync -r src/ dist --exclude '*.ts' && jq 'del(.scripts) | del(.devDependencies) | del(.private) | del(.resolutions)' package.json >dist/package.json",
     "lint": "eslint src"
   },
   "dependencies": {
