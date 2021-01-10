@@ -51,12 +51,10 @@ export class HelpProjectsCommand extends AbstractCommand {
           report.reportInfo(`  This is the default project`);
           break;
       }
-
-      report.reportSeparator();
-      report.reportInfo('For more information about a project, run\n');
-      report.reportInfo(
-        `  ${this.cli.binaryName} help project <project name>\n`,
-      );
     }
+
+    report.reportSeparator();
+    report.reportInfo('For more information about a project, run\n');
+    report.reportInfo(`  ${this.cli.binaryName} help project <project name>\n`);
   }
 }
