@@ -113,13 +113,7 @@ export abstract class SchematicCommand extends AbstractCommand {
   }
 
   protected getCollection(collectionName: string): FileSystemCollection {
-    const collection = this.engine.createCollection(collectionName);
-
-    if (collection === null) {
-      throw new UsageError(`Couldn't find collection "${collectionName}"`);
-    }
-
-    return collection;
+    return this.engine.createCollection(collectionName);
   }
 
   protected createPathPartialOptions(options: Option[]): JsonObject {
@@ -323,7 +317,25 @@ export abstract class SchematicCommand extends AbstractCommand {
         return 1;
       }
 
-      throw e;
+      if (!(e instanceof Error)) {
+        throw new SchematicFailedError(
+          `The schematic failed with non-error: ${JSON.stringify(e)}`,
+        );
+      }
+
+      let message = `The schematic failed with underlying ${e.name}: ${e.message}`;
+
+      if (e.stack) {
+        const file = join(
+          await fs.mkdtemp(join(tmpdir(), 'atelier-')),
+          'error.log',
+        );
+        await fs.writeFile(file, e.stack);
+
+        message += `\nSee ${file} for more information on the error`;
+      }
+
+      throw new SchematicFailedError(message);
     }
 
     if (!madeAChange) {

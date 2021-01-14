@@ -1,4 +1,22 @@
 import {logging, schema} from '@angular-devkit/core';
+import {
+  CircularCollectionException,
+  UnknownCollectionException,
+  UnknownSchematicException,
+  PrivateSchematicException,
+} from '@angular-devkit/schematics';
+import {
+  CollectionCannotBeResolvedException,
+  InvalidCollectionJsonException,
+  CollectionMissingSchematicsMapException,
+  CollectionMissingFieldsException,
+  NodePackageDoesNotSupportSchematics,
+  SchematicMissingFactoryException,
+  FactoryCannotBeResolvedException,
+  SchematicMissingDescriptionException,
+  SchematicNameCollisionException,
+  SchematicMissingFieldsException,
+} from '@angular-devkit/schematics/tools';
 import {Command, UsageError} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
@@ -15,6 +33,26 @@ class PrettiedError extends Error {
     this.name = name;
   }
 }
+
+// Errors the Angular API's throw that shouldn't show a stacktrace
+const angularUserErrors = new Set([
+  // Schematics
+  CollectionCannotBeResolvedException,
+  InvalidCollectionJsonException,
+  CollectionMissingSchematicsMapException,
+  CollectionMissingFieldsException,
+  CircularCollectionException,
+  UnknownCollectionException,
+  NodePackageDoesNotSupportSchematics,
+  SchematicMissingFactoryException,
+  FactoryCannotBeResolvedException,
+  CollectionMissingFieldsException,
+  SchematicMissingDescriptionException,
+  SchematicNameCollisionException,
+  UnknownSchematicException,
+  PrivateSchematicException,
+  SchematicMissingFieldsException,
+]);
 
 export abstract class AbstractCommand extends Command<Context> {
   protected get workspace(): CliWorkspace {
@@ -93,12 +131,18 @@ export abstract class AbstractCommand extends Command<Context> {
         );
 
       error = new PrettiedError(
-        // Angular has the annoying tendency to not name their errors properly
-        error.constructor.name,
+        error.name,
         errors.length > 0
           ? `Schema validation failed:\n${errors.join('\n')}`
           : error.message,
       );
+    }
+
+    for (const Err of angularUserErrors) {
+      if (error instanceof Err) {
+        error = new PrettiedError(error.name, error.message);
+        break;
+      }
     }
 
     if (/^[A-Z].*[A-Z].*(?:Error|Exception)$/.test(error.name)) {
