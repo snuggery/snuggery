@@ -1,4 +1,4 @@
-import {isJsonArray, isJsonObject, json} from '@angular-devkit/core';
+import {isJsonArray, isJsonObject, json, JsonValue} from '@angular-devkit/core';
 
 import {isntNull} from './varia';
 
@@ -30,6 +30,19 @@ export interface Option {
   hidden: boolean;
 
   format?: string;
+
+  enum?: (string | number | boolean | null)[];
+}
+
+function isValidatableEnum(
+  val: JsonValue | undefined,
+): val is (string | number | boolean | null)[] {
+  if (!Array.isArray(val)) {
+    return false;
+  }
+
+  const validTypes = new Set(['string', 'number', 'boolean']);
+  return val.every(item => item === null || validTypes.has(typeof item));
 }
 
 export function parseSchema({
@@ -143,6 +156,10 @@ export function parseSchema({
         const format =
           typeof property.format === 'string' ? property.format : undefined;
 
+        const _enum = isValidatableEnum(property.enum)
+          ? property.enum
+          : undefined;
+
         return {
           aliases,
           extraTypes: types,
@@ -154,6 +171,7 @@ export function parseSchema({
           positional,
           description,
           format,
+          enum: _enum,
         };
       })
       .filter(isntNull),

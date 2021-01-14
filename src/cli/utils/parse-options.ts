@@ -103,6 +103,28 @@ const isJSON5 = () =>
     },
   });
 
+const isEnum = <T extends (number | string | boolean | null)[]>(
+  allowedValuesArr: T,
+) => {
+  const allowedValues = new Set(allowedValuesArr);
+
+  return t.makeValidator<unknown, T[number]>({
+    test: (value: unknown, state): value is T[number] => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (!allowedValues.has(value as any)) {
+        return t.pushError(
+          state,
+          `Expected one of ${allowedValuesArr
+            .map(value => JSON.stringify(value))
+            .join(', ')}; but got ${JSON.stringify(value)}`,
+        );
+      }
+
+      return true;
+    },
+  });
+};
+
 export function parseOptions({
   command: {context, cli: baseCli},
   path,
@@ -181,13 +203,17 @@ export function parseOptions({
         } else {
           let validator: t.StrictValidator<unknown, JsonValue> | undefined;
 
-          switch (option.type) {
-            case Type.Number:
-              validator = t.isNumber();
-              break;
-            case Type.Object:
-              validator = isJSON5();
-              break;
+          if (option.enum != null) {
+            validator = isEnum(option.enum);
+          } else {
+            switch (option.type) {
+              case Type.Number:
+                validator = t.isNumber();
+                break;
+              case Type.Object:
+                validator = isJSON5();
+                break;
+            }
           }
 
           cliOption = CommandOption.String(names.join(','), {
