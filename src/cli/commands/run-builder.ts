@@ -1,10 +1,12 @@
 import type {JsonObject} from '@angular-devkit/core';
-import {UsageError} from 'clipanion';
+import {Option, UsageError} from 'clipanion';
 
 import {ArchitectCommand} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 export class RunBuilderCommand extends ArchitectCommand {
+  static paths = [['run', 'builder']];
+
   static usage = ArchitectCommand.Usage({
     category: 'Architect commands',
     description: 'Run a builder by name',
@@ -16,15 +18,10 @@ export class RunBuilderCommand extends ArchitectCommand {
     ],
   });
 
-  @ArchitectCommand.String({
-    required: true,
-  })
-  public builder?: string;
+  builder = Option.String();
 
-  @ArchitectCommand.Proxy()
-  public args = [] as string[];
+  args = Option.Proxy();
 
-  @ArchitectCommand.Path('run', 'builder')
   async execute(): Promise<number> {
     if (this.builder == null) {
       const err = new UsageError(`Missing parameter builder`);

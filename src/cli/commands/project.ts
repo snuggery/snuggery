@@ -1,8 +1,11 @@
+import {Option} from 'clipanion';
 import {join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
 
 export class ProjectCommand extends AbstractCommand {
+  static paths = [['project']];
+
   static usage = AbstractCommand.Usage({
     category: 'Utility commands',
     description: 'Run a command within a project',
@@ -22,16 +25,12 @@ export class ProjectCommand extends AbstractCommand {
     ],
   });
 
-  @AbstractCommand.String()
-  public projectName!: string;
+  projectName = Option.String();
 
-  @AbstractCommand.String()
-  public command!: string;
+  command = Option.String();
 
-  @AbstractCommand.Proxy()
-  public args: string[] = [];
+  args = Option.Proxy();
 
-  @AbstractCommand.Path('project')
   execute(): Promise<number> {
     const project = this.workspace.getProjectByName(this.projectName);
     const cwd = join(this.workspace.basePath, project.root);

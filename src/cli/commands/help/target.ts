@@ -1,4 +1,4 @@
-import {UsageError} from 'clipanion';
+import {Option, UsageError} from 'clipanion';
 
 import {UnknownTargetError} from '../../architect/host';
 import {ArchitectCommand} from '../../command/architect';
@@ -13,6 +13,8 @@ export const unsafeTargetNames: ReadonlySet<string> = new Set([
 ]);
 
 export class HelpTargetCommand extends ArchitectCommand {
+  static paths = [['help', 'target']];
+
   static usage = ArchitectCommand.Usage({
     category: 'Workspace information commands',
     description: 'Show information about a target',
@@ -28,13 +30,10 @@ export class HelpTargetCommand extends ArchitectCommand {
     ],
   });
 
-  @ArchitectCommand.String()
-  target!: string;
+  target = Option.String();
 
-  @ArchitectCommand.String({required: false})
-  project?: string;
+  project = Option.String({required: false});
 
-  @ArchitectCommand.Path('help', 'target')
   async execute(): Promise<number> {
     if (this.project != null) {
       await this.executeWithProject(this.project);

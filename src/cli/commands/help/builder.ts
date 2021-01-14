@@ -1,8 +1,12 @@
+import {Option} from 'clipanion';
+
 import {ArchitectCommand} from '../../command/architect';
 import {formatMarkdownish} from '../../utils/format';
 import {printSchema} from '../../utils/print-schema';
 
 export class HelpBuilderCommand extends ArchitectCommand {
+  static paths = [['help', 'builder']];
+
   static usage = ArchitectCommand.Usage({
     category: 'Workspace information commands',
     description: 'Show information about a builder',
@@ -14,10 +18,8 @@ export class HelpBuilderCommand extends ArchitectCommand {
     ],
   });
 
-  @ArchitectCommand.String()
-  builder!: string;
+  builder = Option.String();
 
-  @ArchitectCommand.Path('help', 'builder')
   async execute(): Promise<void> {
     const {report, format} = this;
     const {

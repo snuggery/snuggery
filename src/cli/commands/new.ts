@@ -1,4 +1,5 @@
 import type {JsonObject} from '@angular-devkit/core';
+import {Option} from 'clipanion';
 
 import {
   dryRunOption,
@@ -10,32 +11,29 @@ import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 const reservedNames = new Set(['--show-file-changes']);
 
 export class NewCommand extends SchematicCommand {
+  static paths = [['new']];
+
   static usage = SchematicCommand.Usage({
     category: 'Schematic commands',
     description: 'Create a new workspace',
     examples: [['Create a new workspace ', '$0 new @schematics/angular']],
   });
 
-  @SchematicCommand.Boolean('--dry-run', {
+  dryRun = Option.Boolean('--dry-run', false, {
     description: 'Run the schematics without writing the results to disk',
-  })
-  dryRun = false;
+  });
 
-  @SchematicCommand.Boolean('--force', {
+  force = Option.Boolean('--force', false, {
     description: 'Write the results to disk even if there are conflicts',
-  })
-  force = false;
+  });
 
-  @SchematicCommand.Boolean('--show-file-changes', {
+  showFileChanges = Option.Boolean('--show-file-changes', false, {
     description: 'Print an overview of all file changes made by the schematic',
-  })
-  showFileChanges = false;
+  });
 
-  @SchematicCommand.String()
-  collection!: string;
+  collection = Option.String();
 
-  @SchematicCommand.Proxy()
-  args: string[] = [];
+  args = Option.Proxy();
 
   protected get root(): string {
     return this.context.startCwd;
@@ -43,7 +41,6 @@ export class NewCommand extends SchematicCommand {
 
   protected readonly resolveSelf = true;
 
-  @SchematicCommand.Path('new')
   async execute(): Promise<number | void> {
     const schematic = this.getSchematic(
       this.getCollection(this.collection),

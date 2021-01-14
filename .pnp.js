@@ -51,7 +51,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
-            ["clipanion", "npm:2.6.2"],
+            ["clipanion", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.0.0-rc.5"],
             ["eslint", "npm:7.17.0"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
@@ -66,6 +66,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["strip-ansi", "npm:6.0.0"],
             ["supports-color", "npm:8.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
+            ["typanion", "npm:3.2.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
           ],
@@ -169,7 +170,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.4.0"],
-            ["clipanion", "npm:2.6.2"],
+            ["clipanion", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.0.0-rc.5"],
             ["eslint", "npm:7.17.0"],
             ["eslint-import-resolver-node", "npm:0.3.4"],
             ["eslint-plugin-import", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:2.22.1"],
@@ -184,6 +185,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["strip-ansi", "npm:6.0.0"],
             ["supports-color", "npm:8.1.0"],
             ["ts-node", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:9.1.1"],
+            ["typanion", "npm:3.2.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"],
             ["which-pm-runs", "npm:1.0.0"]
           ],
@@ -1229,6 +1231,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/clipanion-npm-2.6.2-65049fe240-d162deedd0.zip/node_modules/clipanion/",
           "packageDependencies": [
             ["clipanion", "npm:2.6.2"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:3.0.0-rc.5", {
+          "packageLocation": "./.yarn/cache/clipanion-npm-3.0.0-rc.5-65b2e45ea2-cfa07beb10.zip/node_modules/clipanion/",
+          "packageDependencies": [
+            ["clipanion", "npm:3.0.0-rc.5"]
+          ],
+          "linkType": "SOFT",
+        }],
+        ["virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.0.0-rc.5", {
+          "packageLocation": "./.yarn/$$virtual/clipanion-virtual-68775cf9a1/0/cache/clipanion-npm-3.0.0-rc.5-65b2e45ea2-cfa07beb10.zip/node_modules/clipanion/",
+          "packageDependencies": [
+            ["clipanion", "virtual:2d759bc402753187ab60f4e958da3948878a1eeba7db79800c779751c69fe688221cfed5068a328a841d18a33b7dbf81a00ee0b3434c5f6f70271293eb0f95f5#npm:3.0.0-rc.5"],
+            ["@types/typanion", null],
+            ["typanion", "npm:3.2.1"]
+          ],
+          "packagePeers": [
+            "@types/typanion",
+            "typanion"
           ],
           "linkType": "HARD",
         }]
@@ -4128,6 +4150,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/tunnel-npm-0.0.6-b1c0830ea4-78fbb1a55a.zip/node_modules/tunnel/",
           "packageDependencies": [
             ["tunnel", "npm:0.0.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["typanion", [
+        ["npm:3.2.1", {
+          "packageLocation": "./.yarn/cache/typanion-npm-3.2.1-d7aec05187-db18b79efd.zip/node_modules/typanion/",
+          "packageDependencies": [
+            ["typanion", "npm:3.2.1"]
           ],
           "linkType": "HARD",
         }]

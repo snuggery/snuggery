@@ -1,4 +1,5 @@
 import type {JsonObject} from '@angular-devkit/core';
+import {Option} from 'clipanion';
 
 import {
   dryRunOption,
@@ -10,6 +11,8 @@ import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 const reservedNames = new Set(['--show-file-changes']);
 
 export class GenerateCommand extends SchematicCommand {
+  static paths = [['generate'], ['g']];
+
   static usage = SchematicCommand.Usage({
     category: 'Schematic commands',
     description: 'Generate and/or modify files based on a schematic',
@@ -25,33 +28,26 @@ export class GenerateCommand extends SchematicCommand {
     ],
   });
 
-  @SchematicCommand.Boolean('--dry-run', {
+  dryRun = Option.Boolean('--dry-run', false, {
     description: 'Run the schematics without writing the results to disk',
-  })
-  dryRun = false;
+  });
 
-  @SchematicCommand.Boolean('--force', {
+  force = Option.Boolean('--force', false, {
     description: 'Write the results to disk even if there are conflicts',
-  })
-  force = false;
+  });
 
-  @SchematicCommand.Boolean('--show-file-changes', {
+  showFileChanges = Option.Boolean('--show-file-changes', false, {
     description: 'Print an overview of all file changes made by the schematic',
-  })
-  showFileChanges = false;
+  });
 
-  @SchematicCommand.String()
-  schematic!: string;
+  schematic = Option.String();
 
-  @SchematicCommand.Proxy()
-  args: string[] = [];
+  args = Option.Proxy();
 
   protected get root(): string {
     return this.workspace.basePath;
   }
 
-  @SchematicCommand.Path('g')
-  @SchematicCommand.Path('generate')
   async execute(): Promise<number | void> {
     let collectionName, schematicName;
     if (this.schematic.includes(':')) {

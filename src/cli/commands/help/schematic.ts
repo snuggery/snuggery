@@ -1,8 +1,12 @@
+import {Option} from 'clipanion';
+
 import {SchematicCommand} from '../../command/schematic';
 import {formatMarkdownish} from '../../utils/format';
 import {printSchema} from '../../utils/print-schema';
 
 export class HelpSchematicCommand extends SchematicCommand {
+  static paths = [['help', 'schematic']];
+
   static usage = SchematicCommand.Usage({
     category: 'Workspace information commands',
     description: 'Show information about a schematic',
@@ -18,8 +22,7 @@ export class HelpSchematicCommand extends SchematicCommand {
     ],
   });
 
-  @SchematicCommand.String()
-  schematic!: string;
+  schematic = Option.String();
 
   protected readonly dryRun = false; // abstract in SchematicCommand, of no use here
   protected readonly force = false; // abstract in SchematicCommand, of no use here
@@ -29,7 +32,6 @@ export class HelpSchematicCommand extends SchematicCommand {
     return this.workspace.basePath;
   }
 
-  @SchematicCommand.Path('help', 'schematic')
   async execute(): Promise<void> {
     const {report, format} = this;
 

@@ -1,9 +1,12 @@
 import {isJsonArray, JsonObject} from '@angular-devkit/core';
+import {Option} from 'clipanion';
 
 import {ArchitectCommand, configurationOption} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 export class EntryWithProjectCommand extends ArchitectCommand {
+  static paths = [ArchitectCommand.Default];
+
   static usage = ArchitectCommand.Usage({
     category: 'Architect commands',
     description: 'Run a target in a project',
@@ -19,21 +22,16 @@ export class EntryWithProjectCommand extends ArchitectCommand {
     ],
   });
 
-  @ArchitectCommand.String()
-  public target!: string;
+  target = Option.String();
 
-  @ArchitectCommand.String()
-  public project!: string;
+  project = Option.String();
 
-  @ArchitectCommand.Array('--configuration,-c', {
+  configuration = Option.Array('--configuration,-c', {
     description: 'Configuration(s) to use',
-  })
-  public configuration: string[] = [];
+  });
 
-  @ArchitectCommand.Proxy()
-  public args = [] as string[];
+  args = Option.Proxy();
 
-  @ArchitectCommand.Path()
   async execute(): Promise<number> {
     const target = this.resolveTarget(this.target, this.project);
     const configurations = new Set(this.configuration);

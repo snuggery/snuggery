@@ -1,4 +1,5 @@
 import {isJsonObject} from '@angular-devkit/core';
+import {Option} from 'clipanion';
 import {join, posix} from 'path';
 
 import {AbstractCommand} from '../../command/abstract-command';
@@ -6,15 +7,15 @@ import {defaultSchematicCollection} from '../../command/schematic';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpProjectCommand extends AbstractCommand {
+  static paths = [['help', 'project']];
+
   static usage = AbstractCommand.Usage({
     category: 'Workspace information commands',
     description: 'Show information about a project',
   });
 
-  @AbstractCommand.String({required: false})
-  project?: string;
+  project = Option.String({required: false});
 
-  @AbstractCommand.Path('help', 'project')
   async execute(): Promise<void> {
     const {workspace, format, report} = this;
 

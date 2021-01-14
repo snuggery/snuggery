@@ -1,10 +1,13 @@
 import {targetFromTargetString} from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
+import {Option} from 'clipanion';
 
 import {ArchitectCommand} from '../command/architect';
 import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 export class RunTargetCommand extends ArchitectCommand {
+  static paths = [['run', 'target'], ['run']];
+
   static usage = ArchitectCommand.Usage({
     category: 'Architect commands',
     description: 'Run a target by specifier',
@@ -21,14 +24,10 @@ export class RunTargetCommand extends ArchitectCommand {
     ],
   });
 
-  @ArchitectCommand.String()
-  specifier!: string;
+  specifier = Option.String();
 
-  @ArchitectCommand.Proxy()
-  args = [] as string[];
+  args = Option.Proxy();
 
-  @ArchitectCommand.Path('run')
-  @ArchitectCommand.Path('run', 'target')
   async execute(): Promise<number> {
     let target;
     if (this.specifier.includes(':')) {

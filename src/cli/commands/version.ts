@@ -18,12 +18,13 @@ function getSet<K, T>(map: Map<K, Set<T>>, key: K): Set<T> {
 }
 
 export class VersionCommand extends AbstractCommand {
+  static paths = [['--version']];
+
   static usage = AbstractCommand.Usage({
     category: 'Workspace information commands',
     description: `Print version information`,
   });
 
-  @AbstractCommand.Path('--version')
   async execute(): Promise<void> {
     const {report, format} = this;
 

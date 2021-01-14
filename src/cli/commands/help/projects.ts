@@ -3,12 +3,13 @@ import {isJsonObject} from '@angular-devkit/core';
 import {AbstractCommand} from '../../command/abstract-command';
 
 export class HelpProjectsCommand extends AbstractCommand {
+  static paths = [['help', 'projects']];
+
   static usage = AbstractCommand.Usage({
     category: 'Workspace information commands',
     description: 'Show information about all projects',
   });
 
-  @AbstractCommand.Path('help', 'projects')
   async execute(): Promise<void> {
     const {workspace, report} = this.context;
 
