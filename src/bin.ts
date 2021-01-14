@@ -9,9 +9,11 @@ import {EntryWithProjectCommand} from './cli/commands/entry-with-project';
 import {GenerateCommand} from './cli/commands/generate';
 import {HelpCommand} from './cli/commands/help';
 import {HelpBuilderCommand} from './cli/commands/help/builder';
+import {HelpBuildersCommand} from './cli/commands/help/builders';
 import {HelpProjectCommand} from './cli/commands/help/project';
 import {HelpProjectsCommand} from './cli/commands/help/projects';
 import {HelpSchematicCommand} from './cli/commands/help/schematic';
+import {HelpSchematicsCommand} from './cli/commands/help/schematics';
 import {HelpTargetCommand} from './cli/commands/help/target';
 import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {NewCommand} from './cli/commands/new';
@@ -44,9 +46,11 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 
 cli.register(HelpCommand);
 cli.register(HelpBuilderCommand);
+cli.register(HelpBuildersCommand);
 cli.register(HelpProjectCommand);
 cli.register(HelpProjectsCommand);
 cli.register(HelpSchematicCommand);
+cli.register(HelpSchematicsCommand);
 cli.register(HelpTargetCommand);
 cli.register(HelpTargetsCommand);
 

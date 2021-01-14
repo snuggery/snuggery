@@ -208,6 +208,20 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
     throw new UnknownBuilderError(`Can't resolve builder "${path}"`);
   }
 
+  listBuilders(packageName: string): {name: string; description?: string}[] {
+    const [, builderJson] = this.loadBuilderJson(packageName, packageName);
+
+    return (Object.entries(builderJson) as [string, JsonObject][]).map(
+      ([name, {description}]) => {
+        if (typeof description === 'string') {
+          return {name, description};
+        } else {
+          return {name};
+        }
+      },
+    );
+  }
+
   async resolveBuilder(builderSpec: string): Promise<AtelierBuilderInfo> {
     const [builderName, packageName = null] = builderSpec
       .split(':', 2)

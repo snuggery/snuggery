@@ -10,8 +10,9 @@ import type {
   FileSystemSchematic,
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
-import {UsageError} from 'clipanion';
-import {dirname, normalize, relative} from 'path';
+import {promises as fs} from 'fs';
+import {tmpdir} from 'os';
+import {dirname, join, normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
 import {AtelierWorkflow} from '../schematic/workflow';
@@ -42,6 +43,15 @@ export const dryRunOption: Option = {
 };
 
 export const defaultSchematicCollection = '@schematics/angular';
+
+export class SchematicFailedError extends Error {
+  readonly clipanion = {usage: 'none'};
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'SchematicFailedError';
+  }
+}
 
 export abstract class SchematicCommand extends AbstractCommand {
   protected abstract readonly dryRun: boolean;
