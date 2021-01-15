@@ -1,4 +1,3 @@
-import type {JsonObject} from '@angular-devkit/core';
 import {Option} from 'clipanion';
 
 import {
@@ -6,7 +5,6 @@ import {
   forceOption,
   SchematicCommand,
 } from '../command/schematic';
-import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 const reservedNames = new Set(['--show-file-changes']);
 
@@ -65,29 +63,19 @@ export class NewCommand extends SchematicCommand {
     );
     /* eslint-enable @typescript-eslint/no-var-requires */
 
-    let options: JsonObject | undefined;
-    if (definedOptions.length === 0) {
-      if (allowExtraOptions) {
-        options = parseFreeFormArguments(this.args);
-      }
-    } else {
-      const o = parseOptions({
-        command: this,
-        description,
-        options: [dryRunOption, forceOption, ...definedOptions],
-        path: [...this.path, this.collection],
-        values: this.args,
-        reservedNames,
-      });
+    const options = this.parseOptionValues({
+      options: definedOptions,
+      allowExtraOptions,
+      description,
 
-      if (o === null) {
-        return 1;
-      }
+      commandOptions: [dryRunOption, forceOption],
+      pathSuffix: [this.collection],
+      values: this.args,
+      reservedNames,
+    });
 
-      options = {
-        ...this.createPathPartialOptions(definedOptions),
-        ...o,
-      };
+    if (options == null) {
+      return 1;
     }
 
     if (options?.force != null) {
@@ -99,6 +87,12 @@ export class NewCommand extends SchematicCommand {
       delete options.dryRun;
     }
 
-    return this.runSchematic({schematic, options});
+    return this.runSchematic({
+      schematic,
+      options: {
+        ...this.createPathPartialOptions(definedOptions),
+        ...options,
+      },
+    });
   }
 }

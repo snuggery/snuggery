@@ -1,9 +1,7 @@
 import {targetFromTargetString} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import {Option} from 'clipanion';
 
-import {ArchitectCommand} from '../command/architect';
-import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
+import {ArchitectCommand} from '../../command/architect';
 
 export class RunTargetCommand extends ArchitectCommand {
   static paths = [['run', 'target'], ['run']];
@@ -36,30 +34,16 @@ export class RunTargetCommand extends ArchitectCommand {
       target = this.resolveTarget(this.specifier, null);
     }
 
-    const {
-      allowExtraOptions,
-      options: definedOptions,
-    } = await this.getOptionsForTarget(target);
+    const options = this.parseOptionValues({
+      ...(await this.getOptionsForTarget(target)),
+      description: `Run the \`${this.specifier}\` target`,
+      pathSuffix: [this.specifier],
+      values: this.args,
+    });
 
-    let options: JsonObject | undefined;
-    if (definedOptions.length === 0) {
-      if (allowExtraOptions) {
-        options = parseFreeFormArguments(this.args);
-      }
-    } else {
-      const o = parseOptions({
-        command: this,
-        description: `Run the \`${this.specifier}\` target`,
-        options: definedOptions,
-        path: [...this.path, this.specifier],
-        values: this.args,
-      });
-
-      if (o === null) {
-        return 1;
-      }
-
-      options = o;
+    if (options == null) {
+      // Error is already logged
+      return 1;
     }
 
     return this.runTarget({

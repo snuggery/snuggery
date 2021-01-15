@@ -1,4 +1,4 @@
-import {logging, schema} from '@angular-devkit/core';
+import {JsonObject, logging, schema} from '@angular-devkit/core';
 import {
   CircularCollectionException,
   UnknownCollectionException,
@@ -21,6 +21,8 @@ import {Command, UsageError} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
 import {Format, richFormat, textFormat} from '../utils/format';
+import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
+import type {Option} from '../utils/parse-schema';
 import type {Report} from '../utils/report';
 
 import type {CliWorkspace, Context} from './context';
@@ -103,6 +105,37 @@ export abstract class AbstractCommand extends Command<Context> {
 
   protected get format(): Format {
     return this.cli.enableColors ? richFormat : textFormat;
+  }
+
+  protected parseOptionValues({
+    options,
+    allowExtraOptions,
+    description,
+    commandOptions,
+    values,
+    pathSuffix = [],
+    reservedNames,
+  }: {
+    options: Option[];
+    allowExtraOptions: boolean;
+    description?: string;
+    commandOptions?: Option[];
+    values: string[];
+    pathSuffix?: string[];
+    reservedNames?: Set<string>;
+  }): JsonObject | null {
+    if (options.length === 0) {
+      return allowExtraOptions ? parseFreeFormArguments(values) : {};
+    }
+
+    return parseOptions({
+      command: this,
+      options: commandOptions ? [...options, ...commandOptions] : options,
+      path: [...this.path, ...pathSuffix],
+      values,
+      description,
+      reservedNames,
+    });
   }
 
   async catch(e: unknown): Promise<void> {

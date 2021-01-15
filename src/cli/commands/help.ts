@@ -5,7 +5,7 @@ export class HelpCommand extends AbstractCommand {
 
   static usage = AbstractCommand.Usage({
     category: 'Utility commands',
-    description: 'Show this usage statement',
+    description: 'List all available commands',
   });
 
   async execute(): Promise<number> {

@@ -18,8 +18,8 @@ import {HelpTargetCommand} from './cli/commands/help/target';
 import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {NewCommand} from './cli/commands/new';
 import {ProjectCommand} from './cli/commands/project';
-import {RunBuilderCommand} from './cli/commands/run-builder';
-import {RunTargetCommand} from './cli/commands/run-target';
+import {RunBuilderCommand} from './cli/commands/run/builder';
+import {RunTargetCommand} from './cli/commands/run/target';
 import {VersionCommand} from './cli/commands/version';
 import {Report} from './cli/utils/report';
 

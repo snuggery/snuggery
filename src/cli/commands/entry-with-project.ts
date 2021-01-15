@@ -1,8 +1,7 @@
-import {isJsonArray, JsonObject} from '@angular-devkit/core';
+import {isJsonArray} from '@angular-devkit/core';
 import {Option} from 'clipanion';
 
 import {ArchitectCommand, configurationOption} from '../command/architect';
-import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
 
 export class EntryWithProjectCommand extends ArchitectCommand {
   static paths = [ArchitectCommand.Default];
@@ -36,33 +35,19 @@ export class EntryWithProjectCommand extends ArchitectCommand {
     const target = this.resolveTarget(this.target, this.project);
     const configurations = new Set(this.configuration);
 
-    const {
-      allowExtraOptions,
-      options: definedOptions,
-    } = await this.getOptionsForTarget(target);
+    const options = this.parseOptionValues({
+      ...(await this.getOptionsForTarget(target)),
+      description: `Run the \`${target.target}\` target in the \`${target.project}\` project`,
+      commandOptions: [configurationOption],
+      pathSuffix: [this.target, this.project],
+      values: this.args,
+    });
 
-    let options: JsonObject | undefined;
-    if (definedOptions.length === 0) {
-      if (allowExtraOptions) {
-        options = parseFreeFormArguments(this.args);
-      }
-    } else {
-      const o = parseOptions({
-        command: this,
-        description: `Run the \`${target.target}\` target in the \`${target.project}\` project`,
-        options: [configurationOption, ...definedOptions],
-        path: [this.target, this.project],
-        values: this.args,
-      });
-
-      if (o === null) {
-        return 1;
-      }
-
-      options = o;
+    if (options == null) {
+      return 1;
     }
 
-    if (options != null && isJsonArray(options.configuration!)) {
+    if (isJsonArray(options.configuration!)) {
       for (const value of options.configuration) {
         if (typeof value === 'string') {
           configurations.add(value);
