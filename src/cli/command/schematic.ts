@@ -257,7 +257,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 
     const {workflow} = this;
 
-    workflow.reporter.subscribe((event: DryRunEvent) => {
+    const subscription = workflow.reporter.subscribe((event: DryRunEvent) => {
       madeAChange = true;
 
       const path = event.path.replace(/^\//, '');
@@ -296,16 +296,18 @@ export abstract class SchematicCommand extends AbstractCommand {
     });
 
     if (shouldPrintFileChanges) {
-      workflow.lifeCycle.subscribe(event => {
-        if (event.kind == 'end' || event.kind == 'post-tasks-start') {
-          if (!hasError) {
-            loggingQueue.forEach(log => this.context.report.reportInfo(log));
-          }
+      subscription.add(
+        workflow.lifeCycle.subscribe(event => {
+          if (event.kind == 'end' || event.kind == 'post-tasks-start') {
+            if (!hasError) {
+              loggingQueue.forEach(log => this.context.report.reportInfo(log));
+            }
 
-          loggingQueue.length = 0;
-          hasError = false;
-        }
-      });
+            loggingQueue.length = 0;
+            hasError = false;
+          }
+        }),
+      );
     }
 
     try {
@@ -345,6 +347,8 @@ export abstract class SchematicCommand extends AbstractCommand {
       }
 
       throw new SchematicFailedError(message);
+    } finally {
+      subscription.unsubscribe();
     }
 
     if (!madeAChange) {
