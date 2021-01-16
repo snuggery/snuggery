@@ -1,12 +1,11 @@
 import type {JsonObject, JsonValue} from '@angular-devkit/core';
 import {camelize, dasherize} from '@angular-devkit/core/src/utils/strings';
 import {Cli, Command, Option as CommandOption} from 'clipanion';
-import {parse as parseJson} from 'json5';
-import * as t from 'typanion';
 
 import type {AbstractCommand} from '../command/abstract-command';
 
 import {Option, Type} from './parse-schema';
+import * as t from './typanion';
 
 export type ParsedArguments =
   | [success: true, value: JsonObject | null]
@@ -35,53 +34,6 @@ function createOptionParserCommand({
     }
   };
 }
-
-const isJSON5 = () =>
-  t.makeValidator<unknown, JsonObject>({
-    test: (value: unknown, state): value is JsonObject => {
-      let data;
-
-      try {
-        data = parseJson(value as string);
-
-        if (state?.coercions != null && state.coercion != null) {
-          state.coercions.push([
-            state.p ?? '.',
-            state.coercion.bind(null, data),
-          ]);
-        }
-
-        return true;
-      } catch {
-        return t.pushError(
-          state,
-          `Expected to be a valid JSON5 string (got ${t.getPrintable(value)})`,
-        );
-      }
-    },
-  });
-
-const isEnum = <T extends (number | string | boolean | null)[]>(
-  allowedValuesArr: T,
-) => {
-  const allowedValues = new Set(allowedValuesArr);
-
-  return t.makeValidator<unknown, T[number]>({
-    test: (value: unknown, state): value is T[number] => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (!allowedValues.has(value as any)) {
-        return t.pushError(
-          state,
-          `Expected one of ${allowedValuesArr
-            .map(value => JSON.stringify(value))
-            .join(', ')}; but got ${JSON.stringify(value)}`,
-        );
-      }
-
-      return true;
-    },
-  });
-};
 
 export function parseFreeFormArguments({
   command: {context, cli: baseCli},
@@ -244,14 +196,14 @@ export function parseOptions({
           let validator: t.StrictValidator<unknown, JsonValue> | undefined;
 
           if (option.enum != null) {
-            validator = isEnum(option.enum);
+            validator = t.isEnum(option.enum);
           } else {
             switch (option.type) {
               case Type.Number:
                 validator = t.isNumber();
                 break;
               case Type.Object:
-                validator = isJSON5();
+                validator = t.isJSON5();
                 break;
             }
           }
