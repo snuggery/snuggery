@@ -19,6 +19,7 @@ import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {NewCommand} from './cli/commands/new';
 import {ProjectCommand} from './cli/commands/project';
 import {RunBuilderCommand} from './cli/commands/run/builder';
+import {RunSchematicCommand} from './cli/commands/run/schematic';
 import {RunTargetCommand} from './cli/commands/run/target';
 import {VersionCommand} from './cli/commands/version';
 import {Report} from './cli/utils/report';
@@ -63,6 +64,7 @@ cli.register(ProjectCommand);
 cli.register(RunTargetCommand);
 cli.register(RunBuilderCommand);
 
+cli.register(RunSchematicCommand);
 cli.register(GenerateCommand);
 cli.register(NewCommand);
 
