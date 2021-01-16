@@ -40,17 +40,19 @@ export class EntryCommand extends ArchitectCommand {
       values: this.args,
     });
 
-    if (options == null) {
+    if (!options[0]) {
       return 1;
+    } else if (options[1] == null) {
+      return 0;
     }
 
-    if (isJsonArray(options.configuration!)) {
-      for (const value of options.configuration) {
+    if (isJsonArray(options[1].configuration!)) {
+      for (const value of options[1].configuration) {
         if (typeof value === 'string') {
           configurations.add(value);
         }
       }
-      delete options.configuration;
+      delete options[1].configuration;
     }
 
     if (configurations.size > 0) {
@@ -59,7 +61,7 @@ export class EntryCommand extends ArchitectCommand {
 
     return this.runTarget({
       target,
-      options,
+      options: options[1],
     });
   }
 }

@@ -27,19 +27,12 @@ export class RunBuilderCommand extends ArchitectCommand {
       throw err;
     }
 
-    const options = this.parseOptionValues({
-      ...(await this.getOptionsForBuilder(this.builder)),
-      values: this.args,
-    });
-
-    if (options == null) {
-      // Error is already logged above
-      return 1;
-    }
-
-    return this.runBuilder({
-      builder: this.builder,
-      options,
-    });
+    return this.withOptionValues(
+      {
+        ...(await this.getOptionsForBuilder(this.builder)),
+        values: this.args,
+      },
+      options => this.runBuilder({builder: this.builder, options}),
+    );
   }
 }

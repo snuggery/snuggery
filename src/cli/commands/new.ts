@@ -1,12 +1,6 @@
 import {Option} from 'clipanion';
 
-import {
-  dryRunOption,
-  forceOption,
-  SchematicCommand,
-} from '../command/schematic';
-
-const reservedNames = new Set(['--show-file-changes']);
+import {SchematicCommand} from '../command/schematic';
 
 export class NewCommand extends SchematicCommand {
   static paths = [['new']];
@@ -59,36 +53,23 @@ export class NewCommand extends SchematicCommand {
     );
     /* eslint-enable @typescript-eslint/no-var-requires */
 
-    const options = this.parseOptionValues({
-      options: definedOptions,
-      allowExtraOptions,
-      description,
+    return this.withOptionValues(
+      {
+        options: definedOptions,
+        allowExtraOptions,
+        description,
 
-      commandOptions: [dryRunOption, forceOption],
-      pathSuffix: [this.collection],
-      values: this.args,
-      reservedNames,
-    });
-
-    if (options == null) {
-      return 1;
-    }
-
-    if (options?.force != null) {
-      this.force = !!options.force;
-      delete options.force;
-    }
-    if (options?.dryRun != null) {
-      this.dryRun = !!options.dryRun;
-      delete options.dryRun;
-    }
-
-    return this.runSchematic({
-      schematic,
-      options: {
-        ...this.createPathPartialOptions(definedOptions),
-        ...options,
+        pathSuffix: [this.collection],
+        values: this.args,
       },
-    });
+      options =>
+        this.runSchematic({
+          schematic,
+          options: {
+            ...this.createPathPartialOptions(definedOptions),
+            ...options,
+          },
+        }),
+    );
   }
 }

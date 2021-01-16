@@ -8,7 +8,92 @@ import type {AbstractCommand} from '../command/abstract-command';
 
 import {Option, Type} from './parse-schema';
 
-export function parseFreeFormArguments(values: string[]): JsonObject {
+export type ParsedArguments =
+  | [success: true, value: JsonObject | null]
+  | [success: false, value: void];
+
+const globalReservedNames = new Set(['--help', '-h']);
+
+function createOptionParserCommand({
+  path = Command.Default,
+  description,
+}: {
+  path?: string[];
+  description?: string;
+}) {
+  return class OptionParserCommand extends Command {
+    static paths = [path];
+
+    static usage = description ? {description} : undefined;
+
+    help = CommandOption.Boolean('--help,-h', false, {
+      description: 'Show this help message',
+    });
+
+    execute(): never {
+      throw new Error('Never called');
+    }
+  };
+}
+
+const isJSON5 = () =>
+  t.makeValidator<unknown, JsonObject>({
+    test: (value: unknown, state): value is JsonObject => {
+      let data;
+
+      try {
+        data = parseJson(value as string);
+
+        if (state?.coercions != null && state.coercion != null) {
+          state.coercions.push([
+            state.p ?? '.',
+            state.coercion.bind(null, data),
+          ]);
+        }
+
+        return true;
+      } catch {
+        return t.pushError(
+          state,
+          `Expected to be a valid JSON5 string (got ${t.getPrintable(value)})`,
+        );
+      }
+    },
+  });
+
+const isEnum = <T extends (number | string | boolean | null)[]>(
+  allowedValuesArr: T,
+) => {
+  const allowedValues = new Set(allowedValuesArr);
+
+  return t.makeValidator<unknown, T[number]>({
+    test: (value: unknown, state): value is T[number] => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (!allowedValues.has(value as any)) {
+        return t.pushError(
+          state,
+          `Expected one of ${allowedValuesArr
+            .map(value => JSON.stringify(value))
+            .join(', ')}; but got ${JSON.stringify(value)}`,
+        );
+      }
+
+      return true;
+    },
+  });
+};
+
+export function parseFreeFormArguments({
+  command: {context, cli: baseCli},
+  path,
+  values,
+  description,
+}: {
+  readonly command: AbstractCommand;
+  readonly path: string[];
+  readonly description?: string;
+  readonly values: string[];
+}): ParsedArguments {
   const result: JsonObject = {};
   const leftOvers: string[] = [];
 
@@ -65,65 +150,25 @@ export function parseFreeFormArguments(values: string[]): JsonObject {
     result['--'] = leftOvers;
   }
 
-  return result;
-}
-
-const globalReservedNames = new Set(['--help', '-h']);
-
-class HelpCommand extends Command {
-  static paths = [['-h'], ['--help']];
-
-  execute(): never {
-    throw new Error(`Never called`);
+  if ((result.help ?? result.h) !== true) {
+    return [true, result];
   }
+
+  class OptionParserCommand extends createOptionParserCommand({
+    path,
+    description,
+  }) {
+    rest = CommandOption.Proxy();
+  }
+
+  const cli = Cli.from([OptionParserCommand], {
+    ...baseCli,
+  });
+
+  context.stderr.write(cli.usage(OptionParserCommand, {detailed: true}));
+
+  return [true, null];
 }
-
-const isJSON5 = () =>
-  t.makeValidator<unknown, JsonObject>({
-    test: (value: unknown, state): value is JsonObject => {
-      let data;
-
-      try {
-        data = parseJson(value as string);
-
-        if (state?.coercions != null && state.coercion != null) {
-          state.coercions.push([
-            state.p ?? '.',
-            state.coercion.bind(null, data),
-          ]);
-        }
-
-        return true;
-      } catch {
-        return t.pushError(
-          state,
-          `Expected to be a valid JSON5 string (got ${t.getPrintable(value)})`,
-        );
-      }
-    },
-  });
-
-const isEnum = <T extends (number | string | boolean | null)[]>(
-  allowedValuesArr: T,
-) => {
-  const allowedValues = new Set(allowedValuesArr);
-
-  return t.makeValidator<unknown, T[number]>({
-    test: (value: unknown, state): value is T[number] => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      if (!allowedValues.has(value as any)) {
-        return t.pushError(
-          state,
-          `Expected one of ${allowedValuesArr
-            .map(value => JSON.stringify(value))
-            .join(', ')}; but got ${JSON.stringify(value)}`,
-        );
-      }
-
-      return true;
-    },
-  });
-};
 
 export function parseOptions({
   command: {context, cli: baseCli},
@@ -139,18 +184,13 @@ export function parseOptions({
   readonly options: Option[];
   readonly values: string[];
   readonly reservedNames?: ReadonlySet<string>;
-}): JsonObject | null {
+}): ParsedArguments {
   const commandKeyToOptionNameMap = new Map<string, string>();
 
-  class OptionParserCommand extends Command {
-    static paths = [Command.Default];
-
-    static usage = description ? {description} : undefined;
-
-    help = CommandOption.Boolean('--help,-h', false, {
-      description: 'Show this help message',
-    });
-
+  class OptionParserCommand extends createOptionParserCommand({
+    path,
+    description,
+  }) {
     constructor() {
       super();
 
@@ -248,27 +288,41 @@ export function parseOptions({
 
       return res;
     }
+  }
+
+  class HelpCommand extends Command {
+    static paths = [
+      [...path, '-h'],
+      [...path, '--help'],
+    ];
 
     execute(): never {
-      throw new Error('Never called');
+      throw new Error(`Never called`);
     }
   }
 
   const cli = Cli.from([OptionParserCommand, HelpCommand], {
     ...baseCli,
-    binaryName: `${baseCli.binaryName} ${path.join(' ')}`,
   });
-  const command = cli.process(values);
+  let command;
+
+  try {
+    command = cli.process([...path, ...values]);
+  } catch (e) {
+    context.stderr.write(cli.error(e));
+
+    return [false, undefined];
+  }
 
   if (command instanceof HelpCommand || command.help) {
     context.stderr.write(cli.usage(OptionParserCommand, {detailed: true}));
 
-    return null;
+    return [true, null];
   }
 
   if (!(command instanceof OptionParserCommand)) {
     throw new Error(`Invalid result returned by inner cli`);
   }
 
-  return command.value;
+  return [true, command.value];
 }

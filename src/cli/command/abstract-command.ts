@@ -21,7 +21,11 @@ import {Command, UsageError} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
 import {Format, richFormat, textFormat} from '../utils/format';
-import {parseFreeFormArguments, parseOptions} from '../utils/parse-options';
+import {
+  ParsedArguments,
+  parseFreeFormArguments,
+  parseOptions,
+} from '../utils/parse-options';
 import type {Option} from '../utils/parse-schema';
 import type {Report} from '../utils/report';
 
@@ -107,6 +111,39 @@ export abstract class AbstractCommand extends Command<Context> {
     return this.cli.enableColors ? richFormat : textFormat;
   }
 
+  protected async withOptionValues<T>(
+    {
+      options,
+      allowExtraOptions,
+      description,
+      values,
+      pathSuffix = [],
+    }: {
+      options: Option[];
+      allowExtraOptions: boolean;
+      description?: string;
+      values: string[];
+      pathSuffix?: string[];
+    },
+    fn: (parsedOptions: JsonObject) => Promise<T>,
+  ): Promise<number | T> {
+    const [success, parsedOptions] = this.parseOptionValues({
+      options,
+      allowExtraOptions,
+      description,
+      values,
+      pathSuffix,
+    });
+
+    if (!success) {
+      return 1;
+    } else if (parsedOptions == null) {
+      return 0;
+    }
+
+    return fn(parsedOptions);
+  }
+
   protected parseOptionValues({
     options,
     allowExtraOptions,
@@ -123,9 +160,24 @@ export abstract class AbstractCommand extends Command<Context> {
     values: string[];
     pathSuffix?: string[];
     reservedNames?: Set<string>;
-  }): JsonObject | null {
+  }): ParsedArguments {
     if (options.length === 0) {
-      return allowExtraOptions ? parseFreeFormArguments(values) : {};
+      if (allowExtraOptions) {
+        return parseFreeFormArguments({
+          command: this,
+          path: [...this.path, ...pathSuffix],
+          values,
+          description,
+        });
+      } else if (values.length === 0) {
+        return [true, {}];
+      }
+      // else {
+      //   No values are allowed, but values are passed in. We could throw an
+      //   error here but it would be hard to print a useful message.
+      //   However, if we pass the invalid input to `parseOptions` that function
+      //   will print a clear error message.
+      // }
     }
 
     return parseOptions({

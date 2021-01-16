@@ -1,12 +1,6 @@
 import {Option} from 'clipanion';
 
-import {
-  dryRunOption,
-  forceOption,
-  SchematicCommand,
-} from '../../command/schematic';
-
-const reservedNames = new Set(['--show-file-changes']);
+import {SchematicCommand} from '../../command/schematic';
 
 export class RunSchematicCommand extends SchematicCommand {
   static paths = [['run', 'schematic']];
@@ -14,6 +8,15 @@ export class RunSchematicCommand extends SchematicCommand {
   static usage = SchematicCommand.Usage({
     category: 'Schematic commands',
     description: 'Run a schematic to generate and/or modify files',
+    details: `
+      A schematic is a code generator that supports complex logic. It contains instructions and templates for creating or modifying your codebase.
+
+      Schematics are published as npm packages called collections. A schematic is reference uniquely by defining both the collection's name and the schematic's name: \`<collection>:<schematic>\`, e.g. \`@schematics/angular:component\`. A workspace has a default collection, those schematics can be referenced simply by their name. If no default collection is configured, \`@schematics/angular\` is the default collection.
+
+      This command accepts options and schematics usually also support options. The order in which your provide these options is important. The options of the Atelier command (\`--dry-run\`, \`--force\` and \`--show-file-changes\`) must come before the name of the schematic. Any option passed after the schematic's identifier are considered options for the schematic itself.
+
+      To get a list of available options for a schematic, run \`$0 run schematic <schematic> --help\`.
+    `,
     examples: [
       [
         'Run the `component` schematic of the `@schematics/angular` package',
@@ -22,6 +25,10 @@ export class RunSchematicCommand extends SchematicCommand {
       [
         "Dry-run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
         '$0 run schematic --dry-run application',
+      ],
+      [
+        'Show all available command line options for the `@nrwl/react:application` schematic',
+        '$0 run schematic @nrwl/react:application --help',
       ],
     ],
   });
@@ -66,36 +73,23 @@ export class RunSchematicCommand extends SchematicCommand {
       description,
     } = await this.getOptions(schematic);
 
-    const options = this.parseOptionValues({
-      options: definedOptions,
-      allowExtraOptions,
-      description,
+    return this.withOptionValues(
+      {
+        options: definedOptions,
+        allowExtraOptions,
+        description,
 
-      commandOptions: [dryRunOption, forceOption],
-      pathSuffix: [this.schematic],
-      values: this.args,
-      reservedNames,
-    });
-
-    if (options == null) {
-      return 1;
-    }
-
-    if (options?.force != null) {
-      this.force = !!options.force;
-      delete options.force;
-    }
-    if (options?.dryRun != null) {
-      this.dryRun = !!options.dryRun;
-      delete options.dryRun;
-    }
-
-    return this.runSchematic({
-      schematic,
-      options: {
-        ...this.createPathPartialOptions(definedOptions),
-        ...options,
+        pathSuffix: [this.schematic],
+        values: this.args,
       },
-    });
+      options =>
+        this.runSchematic({
+          schematic,
+          options: {
+            ...this.createPathPartialOptions(definedOptions),
+            ...options,
+          },
+        }),
+    );
   }
 }

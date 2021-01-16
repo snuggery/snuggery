@@ -1,4 +1,4 @@
-import {targetFromTargetString} from '@angular-devkit/architect';
+import {Target, targetFromTargetString} from '@angular-devkit/architect';
 import {Option} from 'clipanion';
 
 import {ArchitectCommand} from '../../command/architect';
@@ -27,28 +27,21 @@ export class RunTargetCommand extends ArchitectCommand {
   args = Option.Proxy();
 
   async execute(): Promise<number> {
-    let target;
+    let target: Target;
     if (this.specifier.includes(':')) {
       target = targetFromTargetString(this.specifier);
     } else {
       target = this.resolveTarget(this.specifier, null);
     }
 
-    const options = this.parseOptionValues({
-      ...(await this.getOptionsForTarget(target)),
-      description: `Run the \`${this.specifier}\` target`,
-      pathSuffix: [this.specifier],
-      values: this.args,
-    });
-
-    if (options == null) {
-      // Error is already logged
-      return 1;
-    }
-
-    return this.runTarget({
-      target,
-      options,
-    });
+    return this.withOptionValues(
+      {
+        ...(await this.getOptionsForTarget(target)),
+        description: `Run the \`${this.specifier}\` target`,
+        pathSuffix: [this.specifier],
+        values: this.args,
+      },
+      options => this.runTarget({target, options}),
+    );
   }
 }
