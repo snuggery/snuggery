@@ -3,7 +3,7 @@ import {Option} from 'clipanion';
 import {AbstractCommand} from '../command/abstract-command';
 
 export class GenerateCommand extends AbstractCommand {
-  static paths = [['generate'], ['g']];
+  static paths = [['generate']];
 
   static usage = AbstractCommand.Usage({
     category: 'Schematic commands',
