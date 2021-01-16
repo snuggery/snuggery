@@ -1,5 +1,6 @@
 import type {JsonObject} from '@angular-devkit/core';
 import {parse as parseJson} from 'json5';
+import {SemVer, valid as isValidSemVer} from 'semver';
 import {
   getPrintable,
   makeValidator,
@@ -55,3 +56,26 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
     },
   });
 };
+
+export const isSemVer = (): StrictValidator<unknown, SemVer> =>
+  makeValidator({
+    test(value, state): value is SemVer {
+      if (typeof value === 'string' && isValidSemVer(value)) {
+        if (state?.coercions != null && state.coercion != null) {
+          state.coercions.push([
+            state.p ?? '.',
+            state.coercion.bind(null, new SemVer(value)),
+          ]);
+        }
+
+        return true;
+      }
+
+      return pushError(
+        state,
+        `Expected a valid SemVer version number but got ${JSON.stringify(
+          value,
+        )}`,
+      );
+    },
+  });
