@@ -1,78 +1,39 @@
-import {
-  getSystemPath,
-  normalize,
-  schema,
-  virtualFs,
-} from '@angular-devkit/core';
+import {normalize, schema, virtualFs} from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
 import {workflow} from '@angular-devkit/schematics';
-import {BuiltinTaskExecutor} from '@angular-devkit/schematics/tasks/node';
-import {
-  FileSystemEngine,
-  OptionTransform,
-  validateOptionsWithSchema,
-} from '@angular-devkit/schematics/tools';
+import type {FileSystemEngine} from '@angular-devkit/schematics/tools';
 
-import type {Context} from '../command/context';
-
-import {AtelierEngineHost} from './engine-host';
-
-export interface AtelierWorkflowOptions {
-  context: Context;
-  force: boolean;
-  dryRun: boolean;
-  packageManager?: string;
-  registry: schema.CoreSchemaRegistry;
-  resolvePaths?: string[];
-  schemaValidation?: boolean;
-  optionTransforms?: OptionTransform<object, object>[];
-}
+import type {AtelierEngineHost} from './engine-host';
 
 /**
  * A workflow specifically for Node tools.
  */
 export class AtelierWorkflow extends workflow.BaseWorkflow {
-  constructor(_root: string, options: AtelierWorkflowOptions) {
+  constructor(
+    _root: string,
+    {
+      engineHost,
+      force,
+      dryRun,
+      registry,
+    }: {
+      force: boolean;
+      dryRun: boolean;
+      registry: schema.CoreSchemaRegistry;
+      engineHost: AtelierEngineHost;
+    },
+  ) {
     const root = normalize(_root);
     const host = new virtualFs.ScopedHost(new NodeJsSyncHost(), root);
 
-    const engineHost = new AtelierEngineHost(
-      options.context,
-      options.resolvePaths,
-    );
     super({
       host,
       engineHost,
 
-      force: options.force,
-      dryRun: options.dryRun,
-      registry: options.registry,
+      force,
+      dryRun,
+      registry,
     });
-
-    engineHost.registerTaskExecutor(BuiltinTaskExecutor.NodePackage, {
-      allowPackageManagerOverride: true,
-      packageManager: options.packageManager,
-      rootDirectory: getSystemPath(root),
-    });
-    engineHost.registerTaskExecutor(BuiltinTaskExecutor.RepositoryInitializer, {
-      rootDirectory: getSystemPath(root),
-    });
-    engineHost.registerTaskExecutor(BuiltinTaskExecutor.RunSchematic);
-    engineHost.registerTaskExecutor(BuiltinTaskExecutor.TslintFix);
-
-    if (options.optionTransforms) {
-      for (const transform of options.optionTransforms) {
-        engineHost.registerOptionsTransform(transform);
-      }
-    }
-
-    if (options.schemaValidation) {
-      engineHost.registerOptionsTransform(
-        validateOptionsWithSchema(this.registry),
-      );
-    }
-
-    this._context = [];
   }
 
   get engine(): FileSystemEngine {

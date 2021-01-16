@@ -58,11 +58,7 @@ export class RunSchematicCommand extends SchematicCommand {
       schematicName = this.schematic;
     }
 
-    const schematic = this.getSchematic(
-      this.getCollection(collectionName),
-      schematicName,
-      false,
-    );
+    const schematic = this.getSchematic(collectionName, schematicName, false);
 
     const {
       options: definedOptions,

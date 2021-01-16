@@ -6,7 +6,6 @@ import {
 } from '@angular-devkit/schematics';
 import type {
   FileSystemCollection,
-  FileSystemEngine,
   FileSystemSchematic,
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
@@ -15,6 +14,7 @@ import {tmpdir} from 'os';
 import {dirname, join, normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
+import {AtelierEngineHost} from '../schematic/engine-host';
 import {AtelierWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
@@ -71,31 +71,8 @@ export abstract class SchematicCommand extends AbstractCommand {
   protected readonly resolveSelf: boolean = false;
 
   @Cached()
-  public get workflow(): AtelierWorkflow {
+  protected get registry(): schema.CoreSchemaRegistry {
     const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
-
-    const workflow = new AtelierWorkflow(this.root, {
-      context: this.context,
-      force: this.force,
-      dryRun: this.dryRun,
-      packageManager: getPackageManager()?.name,
-      registry,
-      resolvePaths: [
-        this.context.startCwd,
-        this.root,
-        ...(this.resolveSelf
-          ? [dirname(require.resolve('@bgotink/atelier/package.json'))]
-          : []),
-      ],
-      schemaValidation: true,
-      optionTransforms: [
-        // Add any option values from the configuration file
-        (schematic, current) => ({
-          ...this.getConfiguredOptions(schematic),
-          ...current,
-        }),
-      ],
-    });
 
     registry.addPostTransform(schema.transforms.addUndefinedDefaults);
     registry.addSmartDefaultProvider('projectName', () => this.currentProject);
@@ -105,15 +82,56 @@ export abstract class SchematicCommand extends AbstractCommand {
 
     registry.usePromptProvider(createPromptProvider());
 
-    return workflow;
+    return registry;
   }
 
-  protected get engine(): FileSystemEngine {
-    return this.workflow.engine;
+  @Cached()
+  protected get engineHost(): AtelierEngineHost {
+    return new AtelierEngineHost(this.root, {
+      context: this.context,
+      optionTransforms: [
+        // Add any option values from the configuration file
+        (schematic, current) => ({
+          ...this.getConfiguredOptions(schematic),
+          ...current,
+        }),
+      ],
+      packageManager: getPackageManager()?.name,
+      registry: this.registry,
+      resolvePaths: [
+        this.context.startCwd,
+        this.root,
+        ...(this.resolveSelf
+          ? [dirname(require.resolve('@bgotink/atelier/package.json'))]
+          : []),
+      ],
+      schemaValidation: true,
+    });
+  }
+
+  @Cached()
+  protected get workflow(): AtelierWorkflow {
+    return new AtelierWorkflow(this.root, {
+      engineHost: this.engineHost,
+      force: this.force,
+      dryRun: this.dryRun,
+      registry: this.registry,
+    });
   }
 
   protected getCollection(collectionName: string): FileSystemCollection {
-    return this.engine.createCollection(collectionName);
+    return this.workflow.engine.createCollection(collectionName);
+  }
+
+  protected getSchematic(
+    collectionName: string,
+    schematicName: string,
+    allowPrivate?: boolean,
+  ): FileSystemSchematic {
+    return this.getCollection(collectionName).createSchematic(
+      schematicName,
+      allowPrivate,
+    );
   }
 
   protected createPathPartialOptions(options: Option[]): JsonObject {
@@ -130,14 +148,6 @@ export abstract class SchematicCommand extends AbstractCommand {
     );
   }
 
-  protected getSchematic(
-    collection: FileSystemCollection,
-    schematicName: string,
-    allowPrivate?: boolean,
-  ): FileSystemSchematic {
-    return collection.createSchematic(schematicName, allowPrivate);
-  }
-
   protected async getOptions(
     schematic: FileSystemSchematic,
   ): Promise<{
@@ -149,8 +159,7 @@ export abstract class SchematicCommand extends AbstractCommand {
     return parseSchema({
       description,
       schema:
-        schemaJson &&
-        (await this.workflow.registry.flatten(schemaJson).toPromise()),
+        schemaJson && (await this.registry.flatten(schemaJson).toPromise()),
     });
   }
 

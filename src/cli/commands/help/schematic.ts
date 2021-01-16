@@ -48,11 +48,7 @@ export class HelpSchematicCommand extends SchematicCommand {
 
     const {
       description: {description, schemaJson},
-    } = this.getSchematic(
-      this.getCollection(collectionName),
-      schematicName,
-      false,
-    );
+    } = this.getSchematic(collectionName, schematicName, false);
 
     report.reportInfo(
       formatMarkdownish(

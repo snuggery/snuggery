@@ -40,11 +40,7 @@ export class NewCommand extends SchematicCommand {
   protected readonly resolveSelf = true;
 
   async execute(): Promise<number | void> {
-    const schematic = this.getSchematic(
-      this.getCollection(this.collection),
-      'ng-new',
-      true,
-    );
+    const schematic = this.getSchematic(this.collection, 'ng-new', true);
 
     const {
       options: definedOptions,
