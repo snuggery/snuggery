@@ -284,8 +284,6 @@ export function parseOptions({
           .map(([key, name]) => [name, self[key]!]),
       );
 
-      console.log(res);
-
       return res;
     }
   }
