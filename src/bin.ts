@@ -10,6 +10,7 @@ import {GenerateCommand} from './cli/commands/generate';
 import {HelpCommand} from './cli/commands/help';
 import {HelpBuilderCommand} from './cli/commands/help/builder';
 import {HelpBuildersCommand} from './cli/commands/help/builders';
+import {HelpMigrationsCommand} from './cli/commands/help/migrations';
 import {HelpProjectCommand} from './cli/commands/help/project';
 import {HelpProjectsCommand} from './cli/commands/help/projects';
 import {HelpSchematicCommand} from './cli/commands/help/schematic';
@@ -19,6 +20,7 @@ import {HelpTargetsCommand} from './cli/commands/help/targets';
 import {NewCommand} from './cli/commands/new';
 import {ProjectCommand} from './cli/commands/project';
 import {RunBuilderCommand} from './cli/commands/run/builder';
+import {RunMigrationCommand} from './cli/commands/run/migration';
 import {RunSchematicCommand} from './cli/commands/run/schematic';
 import {RunTargetCommand} from './cli/commands/run/target';
 import {VersionCommand} from './cli/commands/version';
@@ -48,6 +50,7 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 cli.register(HelpCommand);
 cli.register(HelpBuilderCommand);
 cli.register(HelpBuildersCommand);
+cli.register(HelpMigrationsCommand);
 cli.register(HelpProjectCommand);
 cli.register(HelpProjectsCommand);
 cli.register(HelpSchematicCommand);
@@ -67,6 +70,7 @@ cli.register(RunBuilderCommand);
 cli.register(RunSchematicCommand);
 cli.register(GenerateCommand);
 cli.register(NewCommand);
+cli.register(RunMigrationCommand);
 
 const {stderr, stdin, stdout} = process;
 
