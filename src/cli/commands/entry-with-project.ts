@@ -9,6 +9,11 @@ export class EntryWithProjectCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
     category: 'Architect commands',
     description: 'Run a target in a project',
+    details: `
+      Execute a target in the specified project.
+
+      This command allows overriding configured options. To see what options are available for a target, run \`ai <target> <project> --help\`.
+    `,
     examples: [
       [
         'Run the `build` target in the `application` project',
@@ -17,6 +22,22 @@ export class EntryWithProjectCommand extends ArchitectCommand {
       [
         'Run the `build` target with the `production` configuration in the `application` project',
         '$0 build application --configuration production',
+      ],
+      [
+        'Run the `build` target in the `application` project with the `production` and `french` configurations',
+        '$0 build application --configuration production --configuration french',
+      ],
+      [
+        'Run the `build` target in the `application` project with the `production` and `french` configurations',
+        '$0 build application --configuration production,french',
+      ],
+      [
+        'Run the `serve` target in the `app` project, set `open` to true and set the `baseHref` to `/lorem/`',
+        '$0 serve app --open --base-href /lorem/',
+      ],
+      [
+        'Show all options to the `test` target in the `app` project that can be passed via commandline arguments',
+        '$0 test app --help',
       ],
     ],
   });

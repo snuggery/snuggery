@@ -3,7 +3,7 @@
 An `ng`-like Angular CLI alternative
 
 ```
-Atelier - 0.1.1
+Atelier - 0.2.1
 
   $ ai <command>
 
@@ -23,13 +23,22 @@ Architect commands:
 
 Schematic commands:
 
-  ai generate [--dry-run] [--force] [--show-file-changes] <schematic> ...
-    Generate and/or modify files based on a schematic
+  ai generate ...
+    Alias for `ai run schematic`
+
+  ai new [--dry-run] [--force] [--show-file-changes] <collection> ...
+    Create a new workspace
+
+  ai run migration [--dry-run] [--force] [--show-file-changes] [--ignore-missing-migrations] [--name #0] [--from #0] [--to #0] <package>
+    Run migration(s) of a package
+
+  ai run schematic [--dry-run] [--force] [--show-file-changes] <schematic> ...
+    Run a schematic to generate and/or modify files
 
 Utility commands:
 
   ai help
-    Show this usage statement
+    List all available commands
 
   ai project <projectName> <command> ...
     Run a command within a project
@@ -42,6 +51,12 @@ Workspace information commands:
   ai help builder <builder>
     Show information about a builder
 
+  ai help builders <packageName>
+    Show information about the builders of a package
+
+  ai help migrations <package>
+    Show information about migrations for a package
+
   ai help project [project]
     Show information about a project
 
@@ -50,6 +65,9 @@ Workspace information commands:
 
   ai help schematic <schematic>
     Show information about a schematic
+
+  ai help schematics [collectionName]
+    Show information about schematic collection
 
   ai help target <target> [project]
     Show information about a target

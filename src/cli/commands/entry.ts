@@ -9,11 +9,38 @@ export class EntryCommand extends ArchitectCommand {
   static usage = ArchitectCommand.Usage({
     category: 'Architect commands',
     description: 'Run a target in the current project',
+    details: `
+      Execute a target without specifying a project. Atelier looks for the project to run the target in:
+
+      - If the command is executed from within a project that has the requested target, the target is executed in that project.
+      - If the workspace has a default project and that project has the requested target, the target is executed in the default project.
+      - If there's only one project in the entire workspace that has the requested target, the target is executed in that project.
+
+      A list of all targets you can run without specifying the project is shown when you run \`ai help targets\`.
+
+      This command allows overriding configured options. To see what options are available for a target, run \`ai <target> --help\`.
+    `,
     examples: [
-      ['Run the `build` target in the current project', '$0 build'],
+      ['Run the `build` target', '$0 build'],
       [
-        'Run the `build` target with the `production` configuration in the current project',
+        'Run the `build` target with the `production` configuration',
         '$0 build --configuration production',
+      ],
+      [
+        'Run the `build` target with the `production` and `french` configurations',
+        '$0 build --configuration production --configuration french',
+      ],
+      [
+        'Run the `build` target with the `production` and `french` configurations',
+        '$0 build --configuration production,french',
+      ],
+      [
+        'Run the `serve` target, set `open` to true and set the `baseHref` to `/lorem/`',
+        '$0 serve --open --base-href /lorem/',
+      ],
+      [
+        'Show all options to the `test` target that can be passed via commandline arguments',
+        '$0 test --help',
       ],
     ],
   });
@@ -28,7 +55,9 @@ export class EntryCommand extends ArchitectCommand {
 
   async execute(): Promise<number> {
     const target = this.resolveTarget(this.target, null);
-    const configurations = new Set(this.configuration);
+    const configurations = new Set(
+      this.configuration?.flatMap(c => c.split(',')),
+    );
 
     const options = this.parseOptionValues({
       ...(await this.getOptionsForTarget(target)),

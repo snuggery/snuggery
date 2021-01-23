@@ -10,11 +10,11 @@ export class ProjectCommand extends AbstractCommand {
     category: 'Utility commands',
     description: 'Run a command within a project',
     details: `
-    This command runs another command as if atelier was executed from within that project.
-    
-    For architects this behaves as if a project is passed in the command. In other words, \`ai build app\` is the same as \`ai project app build\`. For schematics, this is the only way to run from another project.
+      This command runs another command as if atelier was executed from within that project.
+      
+      For architects this behaves as if a project is passed in the command. In other words, \`ai build app\` is the same as \`ai project app build\`. For schematics, this is the only way to run from another project.
 
-    Note: This command doesn't change the working directory of the process.
+      Note: This command doesn't change the working directory of the process.
     `,
     examples: [
       ['Run the `build` target in project `app`', '$0 project app build'],

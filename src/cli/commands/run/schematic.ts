@@ -15,7 +15,7 @@ export class RunSchematicCommand extends SchematicCommand {
 
       This command accepts options and schematics usually also support options. The order in which your provide these options is important. The options of the Atelier command (\`--dry-run\`, \`--force\` and \`--show-file-changes\`) must come before the name of the schematic. Any option passed after the schematic's identifier are considered options for the schematic itself.
 
-      To get a list of available options for a schematic, run \`$0 run schematic <schematic> --help\`.
+      To get a list of available options for a schematic, run \`ai run schematic <schematic> --help\`.
     `,
     examples: [
       [

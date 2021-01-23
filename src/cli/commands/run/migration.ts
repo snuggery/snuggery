@@ -40,6 +40,25 @@ export class RunMigrationCommand extends MigrationCommand {
     ],
   });
 
+  /**
+   * Define the `help` option explicitly
+   *
+   * Clipanion by default logs a help statement if `<path> --help` or `<path> -h` is executed, but
+   * it no longer does this when other parameters are present, e.g.
+   *
+   * ```bash
+   * ai run migration --help # prints statement
+   * ai run migration @angular/cli --help # prints error about unknown option --help
+   * ```
+   *
+   * Most of our commands don't need this, because they proxy extra arguments into `parseOptions`,
+   * which handles the `--help` properly. This migration command doesn't, so we have to provide the
+   * functionality to ensure we don't confuse our users by having some commands allow adding
+   * `--help` when arguments are present and some commands throwing errors if arguments are present
+   * and `--help` is passed.
+   */
+  help = Option.Boolean('--help,-h', false, {hidden: true});
+
   dryRun = Option.Boolean('--dry-run', false, {
     description: 'Run the schematics without writing the results to disk',
   });

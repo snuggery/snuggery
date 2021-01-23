@@ -364,11 +364,11 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
     return options;
   }
 
-  getProjectMetadata(projectName: string): Promise<JsonObject | null>;
-  getProjectMetadata(target: Target): Promise<JsonObject | null>;
+  getProjectMetadata(projectName: string): Promise<JsonObject>;
+  getProjectMetadata(target: Target): Promise<JsonObject>;
   async getProjectMetadata(
     projectNameOrTarget: string | Target,
-  ): Promise<JsonObject | null> {
+  ): Promise<JsonObject> {
     const projectDefinition = this.getProject(
       typeof projectNameOrTarget === 'string'
         ? projectNameOrTarget

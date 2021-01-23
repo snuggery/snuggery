@@ -4,7 +4,7 @@ import type {
   FileSystemCollectionDescription,
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
-import {Option, UsageError} from 'clipanion';
+import {UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
 
@@ -21,25 +21,6 @@ export type MigrationCollection = Collection<
 > & {readonly version?: string};
 
 export abstract class MigrationCommand extends SchematicCommand {
-  /**
-   * Define the `help` option explicitly
-   *
-   * Clipanion by default logs a help statement if `<path> --help` or `<path> -h` is executed, but
-   * it no longer does this when other parameters are present, e.g.
-   *
-   * ```bash
-   * ai run migration --help # prints statement
-   * ai run migration @angular/cli --help # prints error about unknown option --help
-   * ```
-   *
-   * Most of our commands don't need this, because they proxy extra arguments into `parseOptions`,
-   * which handles the `--help` properly. Migration commands don't do this, so we have to provide
-   * the functionality to ensure we don't confuse our users by having some commands allow adding
-   * `--help` when arguments are present and some commands throwing errors if arguments are present
-   * and `--help` is passed.
-   */
-  help = Option.Boolean('--help,-h', false);
-
   protected get root(): string {
     return this.workspace.basePath;
   }
