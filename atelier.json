@@ -12,6 +12,11 @@
           "options": {
             "package": "eslint",
             "arguments": ["src", "integration"]
+          },
+          "configurations": {
+            "fix": {
+              "arguments": ["--fix", "src", "integration"]
+            }
           }
         }
       }
