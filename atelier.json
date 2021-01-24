@@ -1,1 +1,31 @@
-{"version": 1}
+{
+  "version": 1,
+  "projects": {
+    "atelier": {
+      "root": ".",
+      "architect": {
+        "build": {
+          "builder": "./scripts/build"
+        },
+        "lint": {
+          "builder": "@bgotink/atelier:execute",
+          "options": {
+            "package": "eslint",
+            "arguments": ["src", "integration"]
+          }
+        }
+      }
+    },
+    "integration": {
+      "root": "integration",
+      "architect": {
+        "test": {
+          "builder": "@bgotink/atelier:execute",
+          "options": {
+            "package": "jest"
+          }
+        }
+      }
+    }
+  }
+}

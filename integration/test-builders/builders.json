@@ -1,0 +1,14 @@
+{
+  "builders": {
+    "echo": {
+      "implementation": "./builders/echo",
+      "schema": "./builders/echo/schema.json",
+      "description": "Echo arguments"
+    },
+    "log-target": {
+      "implementation": "./builders/log-target",
+      "schema": "./builders/log-target/schema.json",
+      "description": "Log running target"
+    }
+  }
+}

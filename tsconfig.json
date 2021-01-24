@@ -22,5 +22,6 @@
       "@bgotink/atelier/package.json": ["./package.json"],
       "@bgotink/atelier/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src/**/*.ts"]
 }

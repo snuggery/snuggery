@@ -1,25 +1,15 @@
 env:
-  browser: true
+  node: true
   es2021: true
 extends:
   - 'eslint:recommended'
-  - 'plugin:@typescript-eslint/recommended'
-  - 'plugin:import/typescript'
-parser: '@typescript-eslint/parser'
-parserOptions:
-  ecmaVersion: 12
-  sourceType: module
 plugins:
-  - '@typescript-eslint'
   - 'import'
 reportUnusedDisableDirectives: true
-rules:
-  '@typescript-eslint/no-non-null-assertion': 'off'
-  '@typescript-eslint/ban-types':
-    - error
-    - types:
-        object: false
+parserOptions:
+  ecmaVersion: 12
 
+rules:
   # Require packages to be listed in package.json
   'import/no-extraneous-dependencies': error
 
@@ -43,3 +33,21 @@ rules:
       'newlines-between': always
       alphabetize:
         order: asc
+
+overrides:
+  - files: ['**/*.ts']
+    plugins:
+      - '@typescript-eslint'
+    parser: '@typescript-eslint/parser'
+    parserOptions:
+      ecmaVersion: 12
+      sourceType: module
+    extends:
+      - 'plugin:@typescript-eslint/recommended'
+      - 'plugin:import/typescript'
+    rules:
+      '@typescript-eslint/no-non-null-assertion': 'off'
+      '@typescript-eslint/ban-types':
+        - error
+        - types:
+            object: false

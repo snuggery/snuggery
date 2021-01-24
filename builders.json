@@ -1,0 +1,19 @@
+{
+  "builders": {
+    "combine": {
+      "implementation": "./scripts/local-builder#combine",
+      "schema": "./src/builders/combine/schema.json",
+      "description": "Combine multiple targets into one"
+    },
+    "execute": {
+      "implementation": "./scripts/local-builder#execute",
+      "schema": "./src/builders/execute/schema.json",
+      "description": "Execute a command from a dependency"
+    },
+    "glob": {
+      "implementation": "./scripts/local-builder#glob",
+      "schema": "./src/builders/glob/schema.json",
+      "description": "Run a target in all projects matching a glob"
+    }
+  }
+}

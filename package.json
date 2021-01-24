@@ -2,14 +2,18 @@
   "name": "@bgotink/atelier",
   "version": "0.2.1",
   "private": true,
+  "workspaces": [
+    "integration"
+  ],
   "license": "MIT",
   "bin": {
     "ai": "bin.js"
   },
   "builders": "builders.json",
   "scripts": {
-    "build": "rm -rf dist && tsc && cp README.md dist/ && rsync -r src/ dist --exclude '*.ts' && jq 'del(.scripts) | del(.devDependencies) | del(.private) | del(.resolutions)' package.json >dist/package.json",
-    "lint": "eslint src"
+    "build": "ai build",
+    "lint": "ai lint",
+    "test": "ai test"
   },
   "dependencies": {
     "@angular-devkit/architect": "0.1100.5",
@@ -39,6 +43,7 @@
     "@types/which-pm-runs": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
+    "@yarnpkg/fslib": "^2.4.0",
     "@yarnpkg/pnpify": "^2.4.0",
     "eslint": "^7.17.0",
     "eslint-import-resolver-node": "^0.3.4",

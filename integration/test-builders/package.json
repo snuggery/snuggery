@@ -1,0 +1,7 @@
+{
+  "name": "test-builders",
+  "builders": "./builders.json",
+  "dependencies": {
+    "@angular-devkit/architect": "0.1100.5"
+  }
+}

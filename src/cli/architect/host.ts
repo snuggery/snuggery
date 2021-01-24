@@ -50,6 +50,7 @@ export class UnknownTargetError extends Error {
 export interface AtelierBuilderInfo extends BuilderInfo {
   packageName: string | null;
   implementationPath: string;
+  implementationExport: string | null;
 }
 
 export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
@@ -288,15 +289,23 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         ? builderInfo.description
         : undefined!;
 
+    let implementationPath = builderInfo.implementation;
+    let implementationExport: string | null = null;
+
+    if (implementationPath.includes('#')) {
+      const index = implementationPath.indexOf('#');
+
+      implementationExport = implementationPath.slice(index + 1);
+      implementationPath = implementationPath.slice(0, index);
+    }
+
     return {
       packageName,
       builderName,
       description,
       optionSchema,
-      implementationPath: join(
-        dirname(builderPath),
-        builderInfo.implementation,
-      ),
+      implementationPath: join(dirname(builderPath), implementationPath),
+      implementationExport,
     };
   }
 
@@ -306,13 +315,21 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
     let implementation;
     try {
       implementation = await import(info.implementationPath).then(
-        module => module.default ?? module,
+        info.implementationExport != null
+          ? module => module[info.implementationExport!]
+          : module => module.default ?? module,
       );
     } catch (e) {
       throw new InvalidBuilderError(
         `Failed to load implementation for builder "${
           info.builderName
         }" in package "${info.packageName}": ${(e as Error)?.message ?? e}`,
+      );
+    }
+
+    if (implementation == null) {
+      throw new InvalidBuilderError(
+        `Failed to load implementation for builder "${info.builderName}" in package ${info.packageName}`,
       );
     }
 

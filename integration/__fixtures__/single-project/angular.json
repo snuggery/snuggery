@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "projects": {
+    "fixture": {
+      "root": "",
+      "architect": {
+        "build": {
+          "builder": "test-builders:log-target"
+        },
+        "test": {
+          "builder": "test-builders:log-target"
+        },
+        "lint": {
+          "builder": "test-builders:log-target",
+          "configurations": {
+            "foo": {},
+            "bar": {}
+          }
+        }
+      }
+    }
+  }
+}
