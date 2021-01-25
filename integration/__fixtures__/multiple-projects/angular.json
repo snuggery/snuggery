@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "projects": {
+    "root": {
+      "root": "",
+      "architect": {
+        "build": {
+          "builder": "test-builders:log-target"
+        },
+        "test": {
+          "builder": "test-builders:log-target",
+          "configurations": {
+            "foo": {},
+            "bar": {}
+          }
+        },
+        "lint": {
+          "builder": "test-builders:log-target",
+          "configurations": {
+            "foo": {},
+            "bar": {}
+          }
+        }
+      }
+    },
+    "one": {
+      "root": "projects/one",
+      "architect": {
+        "build": {
+          "builder": "test-builders:log-target"
+        },
+        "test": {
+          "builder": "test-builders:log-target",
+          "configurations": {
+            "foo": {},
+            "bar": {}
+          }
+        }
+      }
+    },
+    "two": {
+      "root": "projects/two",
+      "architect": {
+        "test": {
+          "builder": "test-builders:log-target",
+          "configurations": {
+            "foo": {},
+            "bar": {}
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "root"
+}

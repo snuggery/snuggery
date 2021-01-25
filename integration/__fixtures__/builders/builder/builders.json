@@ -1,0 +1,9 @@
+{
+  "builders": {
+    "builder": {
+      "schema": "./schema.json",
+      "implementation": "./builder.js",
+      "description": "Local builder via builders.json"
+    }
+  }
+}

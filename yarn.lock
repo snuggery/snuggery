@@ -3688,6 +3688,7 @@ fsevents@^2.1.2:
   version: 0.0.0-use.local
   resolution: "integration-aa38c3@workspace:integration"
   dependencies:
+    "@angular-devkit/architect": 0.1100.5
     "@jest/types": 26.6.2
     "@types/jest": ^26.0.20
     "@yarnpkg/fslib": 2.4.0

@@ -4438,6 +4438,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/",
           "packageDependencies": [
             ["integration-aa38c3", "workspace:integration"],
+            ["@angular-devkit/architect", "npm:0.1100.5"],
             ["@jest/types", "npm:26.6.2"],
             ["@types/jest", "npm:26.0.20"],
             ["@yarnpkg/fslib", "npm:2.4.0"],
