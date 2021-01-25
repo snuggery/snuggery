@@ -107,10 +107,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 
     return parseSchema({
       description,
-      schema:
-        typeof optionSchema === 'boolean'
-          ? optionSchema
-          : await this.registry.flatten(optionSchema).toPromise(),
+      schema: optionSchema,
     });
   }
 

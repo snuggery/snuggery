@@ -1,4 +1,10 @@
-import {isJsonArray, isJsonObject, json, JsonValue} from '@angular-devkit/core';
+import {
+  isJsonArray,
+  isJsonObject,
+  json,
+  JsonObject,
+  JsonValue,
+} from '@angular-devkit/core';
 
 import {isntNull} from './varia';
 
@@ -45,6 +51,51 @@ function isValidatableEnum(
   return val.every(item => item === null || validTypes.has(typeof item));
 }
 
+/**
+ * Try to dereference a $ref in the given object
+ *
+ * This function only supports references of the type `#/.../...` with a path relative to the root
+ * of the given schema.
+ */
+export function tryDereference(
+  obj: JsonObject,
+  schema: JsonObject,
+): JsonObject {
+  if (typeof obj.$ref !== 'string' || !obj.$ref.startsWith('#/')) {
+    return obj;
+  }
+
+  const path = obj.$ref.slice(2).split('/');
+  let current = schema;
+  for (let i = 0, l = path.length; i < l; i++) {
+    const key = path[i]!;
+    const result: JsonValue = (current as JsonObject)[key]!;
+
+    if (result === undefined) {
+      return obj;
+    }
+
+    if (!isJsonObject(result)) {
+      return obj;
+    }
+
+    current = result;
+  }
+
+  if (current.$ref !== obj.$ref) {
+    if (typeof obj.description === 'string') {
+      return {
+        ...tryDereference(current, schema),
+        description: obj.description,
+      };
+    }
+
+    return tryDereference(current, schema);
+  }
+
+  return obj;
+}
+
 export function parseSchema({
   description,
   schema = true,
@@ -86,6 +137,8 @@ export function parseSchema({
           return null;
         }
 
+        property = tryDereference(property, schema);
+
         const required = requiredProperties.has(name);
         const rawTypes = json.schema.getTypesOfSchema(property);
         const types: Type[] = [];
@@ -103,13 +156,20 @@ export function parseSchema({
               types.push(Type.Number);
               break;
             case 'array':
-              // Only include arrays if they're boolean, string or number.
-              if (
-                isJsonObject(property.items!) &&
-                property.items.type == 'string'
-              ) {
-                types.push(Type.StringArray);
-                break;
+              if (isJsonObject(property.items!)) {
+                const items = tryDereference(property.items, schema);
+                if (
+                  items.type === 'string' ||
+                  (isJsonArray(items.oneOf!) &&
+                    items.oneOf.some(
+                      item =>
+                        isJsonObject(item) &&
+                        tryDereference(item, schema).type === 'string',
+                    ))
+                ) {
+                  types.push(Type.StringArray);
+                  break;
+                }
               }
 
               types.push(Type.Object);

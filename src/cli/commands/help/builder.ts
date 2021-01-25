@@ -55,7 +55,7 @@ export class HelpBuilderCommand extends ArchitectCommand {
       return;
     }
 
-    printSchema(await this.registry.flatten(optionSchema).toPromise(), {
+    printSchema(optionSchema, {
       report,
       format,
       supportPathFormat: false,

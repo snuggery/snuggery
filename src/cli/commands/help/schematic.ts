@@ -72,7 +72,7 @@ export class HelpSchematicCommand extends SchematicCommand {
       return;
     }
 
-    printSchema(await this.workflow.registry.flatten(schemaJson).toPromise(), {
+    printSchema(schemaJson, {
       report,
       format,
       supportPathFormat: true,

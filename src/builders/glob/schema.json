@@ -75,6 +75,7 @@
       ]
     },
     "scheduler": {
+      "description": "Define the scheduler to run jobs with",
       "type": "string",
       "enum": ["in process", "spawn", "worker", "respawn"],
       "additionalItems": false

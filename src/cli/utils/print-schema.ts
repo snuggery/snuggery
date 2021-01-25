@@ -6,6 +6,7 @@ import {
 } from '@angular-devkit/core';
 
 import {Format, formatMarkdownish} from './format';
+import {tryDereference} from './parse-schema';
 import type {Report} from './report';
 
 export function printSchema(
@@ -16,7 +17,7 @@ export function printSchema(
     format,
   }: {supportPathFormat: boolean; report: Report; format: Format},
 ): void {
-  printObjectPropererties(report, format, supportPathFormat, schema, 0);
+  printObjectPropererties(report, format, supportPathFormat, schema, schema, 0);
 }
 
 function printObjectPropererties(
@@ -24,8 +25,11 @@ function printObjectPropererties(
   format: Format,
   supportPathFormat: boolean,
   object: JsonObject,
+  schema: JsonObject,
   indentation: number,
 ) {
+  object = tryDereference(object, schema);
+
   const formatHelper = (s: string, paragraphs = true) =>
     formatMarkdownish(s, {format, paragraphs, indentation});
 
@@ -76,17 +80,19 @@ function printObjectPropererties(
         continue;
       }
 
-      const description = getDescription(prop);
+      const dereferencedProp = tryDereference(prop, schema);
+
+      const description = getDescription(dereferencedProp);
       if (description) {
         report.reportInfo(formatHelper(description));
       }
 
-      const $default = getDefault(prop, supportPathFormat); // default is not a valid property name
+      const $default = getDefault(dereferencedProp, supportPathFormat); // default is not a valid property name
       if ($default != null) {
         report.reportInfo(formatHelper(`Default value is ${$default}`, false));
       }
 
-      const $enum = getEnum(prop); // "const enum" and "enum" are keywords in typescript
+      const $enum = getEnum(dereferencedProp); // "const enum" and "enum" are keywords in typescript
       if ($enum != null) {
         report.reportInfo(formatHelper(`Possible values:`, false));
         for (const value of $enum) {
@@ -99,23 +105,26 @@ function printObjectPropererties(
       }
 
       let hasExamples = false;
-      if (Array.isArray(prop.examples) && prop.examples.length > 0) {
+      if (
+        Array.isArray(dereferencedProp.examples) &&
+        dereferencedProp.examples.length > 0
+      ) {
         hasExamples = true;
         report.reportInfo(formatHelper('Examples:', false));
-        for (const example of prop.examples) {
+        for (const example of dereferencedProp.examples) {
           report.reportInfo(
             formatHelper(`- \`${JSON.stringify(example)}\``, false),
           );
         }
       }
 
-      const simpleTypes = getTypesSimple(prop);
+      const simpleTypes = getTypesSimple(dereferencedProp, schema);
       if (simpleTypes != null) {
         printSimpleTypes(report, formatHelper, simpleTypes, hasExamples);
         continue;
       }
 
-      const complexTypes = getTypesComplex(prop);
+      const complexTypes = getTypesComplex(dereferencedProp, schema);
 
       if (complexTypes == null) {
         report[hasExamples ? 'reportInfo' : 'reportWarning'](
@@ -159,6 +168,7 @@ function printObjectPropererties(
             format,
             supportPathFormat,
             complexTypes.object,
+            schema,
             indentation,
           );
         }
@@ -193,6 +203,7 @@ function printObjectPropererties(
             format,
             supportPathFormat,
             complexTypes.object,
+            schema,
             indentation,
           );
         }
@@ -259,17 +270,22 @@ function getEnum(property: JsonObject): JsonValue[] | undefined {
   return undefined;
 }
 
-function getTypesSimple(property: JsonValue | undefined): string[] | null {
+function getTypesSimple(
+  property: JsonValue | undefined,
+  schema: JsonObject,
+): string[] | null {
   if (!isJsonObject(property!)) {
     return [];
   }
+
+  property = tryDereference(property, schema);
 
   if (property.type === 'object') {
     return null;
   }
 
   if (property.type === 'array') {
-    const innerType = getTypesSimple(property.items);
+    const innerType = getTypesSimple(property.items, schema);
 
     if (innerType == null) {
       return null;
@@ -299,7 +315,7 @@ function getTypesSimple(property: JsonValue | undefined): string[] | null {
     return [];
   }
 
-  const types = alternatives.map(alt => getTypesSimple(alt));
+  const types = alternatives.map(alt => getTypesSimple(alt, schema));
 
   if (types.includes(null)) {
     return null;
@@ -335,6 +351,7 @@ function printSimpleTypes(
 
 function getTypesComplex(
   property: JsonObject,
+  schema: JsonObject,
 ): {object?: JsonObject; isArray: boolean; rest: string[]} | null {
   if (property.type === 'object') {
     return {object: property, isArray: false, rest: []};
@@ -342,7 +359,7 @@ function getTypesComplex(
 
   if (property.type === 'array') {
     const innerType = isJsonObject(property.items!)
-      ? getTypesComplex(property.items)
+      ? getTypesComplex(tryDereference(property.items, schema), schema)
       : null;
 
     if (innerType == null) {
@@ -367,7 +384,9 @@ function getTypesComplex(
   }
 
   const types = alternatives.map(alt =>
-    isJsonObject(alt) ? getTypesComplex(alt) : null,
+    isJsonObject(alt)
+      ? getTypesComplex(tryDereference(alt, schema), schema)
+      : null,
   );
 
   let rest: string[] = [];
