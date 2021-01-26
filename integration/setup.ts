@@ -1,8 +1,12 @@
-import {Filename, PortablePath, npath, ppath} from '@yarnpkg/fslib';
+import {Filename, PortablePath, npath, ppath, xfs} from '@yarnpkg/fslib';
 import {spawn} from 'child_process';
 
 const fixtureRoot = npath.toPortablePath(__dirname + '/__fixtures__');
-const atelierMain = npath.resolve(__dirname, '../dist/bin.js');
+const atelierMain = npath.resolve(__dirname, '../packages/atelier/dist/bin.js');
+
+if (!xfs.existsSync(npath.toPortablePath(atelierMain))) {
+  throw new Error('Built atelier not found, run `yarn ai build atelier` first');
+}
 
 declare global {
   type JsonValue = string | number | null | boolean | JsonValue[] | JsonObject;

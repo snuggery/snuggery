@@ -4,4 +4,4 @@
 !/.yarn/releases
 !/.yarn/sdks
 
-/dist
+/packages/*/dist

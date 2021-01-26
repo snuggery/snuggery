@@ -1,9 +1,9 @@
+'use strict';
+// @ts-check
+
 const {createBuilder} = require('@angular-devkit/architect');
 const {xfs, npath, ppath, NodeFS} = require('@yarnpkg/fslib');
 const {spawn} = require('child_process');
-
-const root = ppath.dirname(npath.toPortablePath(__dirname));
-const dist = ppath.join(root, 'dist');
 
 class FilteredFs extends NodeFS {
   constructor(filter) {
@@ -43,18 +43,29 @@ class FilteredFs extends NodeFS {
   }
 }
 
-module.exports = createBuilder(async function () {
+module.exports = createBuilder(async function (_, ctx) {
+  const root = ppath.join(
+    npath.toPortablePath(ctx.workspaceRoot),
+    (await ctx.getProjectMetadata(ctx.target.project)).root,
+  );
+  const dist = ppath.join(root, 'dist');
+
   try {
     await xfs.removePromise(dist, {recursive: true});
     await xfs.mkdirPromise(dist);
 
     await Promise.all([
-      tsc(),
+      tsc(root),
 
       xfs.copyFilePromise(
         ppath.join(root, 'README.md'),
         ppath.join(dist, 'README.md'),
       ),
+      xfs.copyFilePromise(
+        ppath.join(npath.toPortablePath(__dirname), '../LICENSE.md'),
+        ppath.join(dist, 'LICENSE.md'),
+      ),
+
       xfs.copyPromise(dist, ppath.join(root, 'src'), {
         baseFs: new FilteredFs(/\.d\.ts$|\.json$/),
       }),
@@ -79,7 +90,7 @@ module.exports = createBuilder(async function () {
   return {success: true};
 });
 
-function tsc() {
+function tsc(root) {
   return new Promise((resolve, reject) => {
     const child = spawn('tsc', {
       cwd: npath.fromPortablePath(root),

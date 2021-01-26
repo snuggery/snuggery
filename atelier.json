@@ -1,23 +1,28 @@
 {
   "version": 1,
   "projects": {
-    "atelier": {
-      "root": ".",
+    "all": {
+      "root": "",
       "architect": {
-        "build": {
-          "builder": "./scripts/build"
-        },
         "lint": {
           "builder": "@bgotink/atelier:execute",
           "options": {
             "package": "eslint",
-            "arguments": ["src", "integration"]
+            "arguments": ["packages", "integration"]
           },
           "configurations": {
             "fix": {
-              "arguments": ["--fix", "src", "integration"]
+              "arguments": ["--fix", "packages", "integration"]
             }
           }
+        }
+      }
+    },
+    "atelier": {
+      "root": "packages/atelier",
+      "architect": {
+        "build": {
+          "builder": "./scripts/build"
         }
       }
     },

@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+
+    "paths": {
+      "@bgotink/atelier/package.json": ["./package.json"],
+      "@bgotink/atelier/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"]
+}
