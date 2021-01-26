@@ -96,6 +96,10 @@ Use atelier to print information on these builders:
 ai help builder @bgotink/atelier:glob
 ```
 
+## Global installation
+
+If you want to install Atelier globally, see [`@bgotink/global-atelier`](https://yarn.pm/@bgotink/global-atelier).
+
 ## License
 
 Licensed under the MIT license.

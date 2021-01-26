@@ -420,7 +420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bgotink/atelier@workspace:packages/atelier":
+"@bgotink/atelier@0.2.1, @bgotink/atelier@workspace:packages/atelier":
   version: 0.0.0-use.local
   resolution: "@bgotink/atelier@workspace:packages/atelier"
   dependencies:
@@ -448,6 +448,19 @@ __metadata:
     supports-color: 8.1.0
     typanion: 3.2.1
     which-pm-runs: 1.0.0
+  bin:
+    ai: bin.js
+  languageName: unknown
+  linkType: soft
+
+"@bgotink/global-atelier@workspace:packages/global-atelier":
+  version: 0.0.0-use.local
+  resolution: "@bgotink/global-atelier@workspace:packages/global-atelier"
+  dependencies:
+    "@atelier-workspace/scripts": "workspace:scripts"
+    "@bgotink/atelier": 0.2.1
+    "@types/node": ^14.14.17
+    "@yarnpkg/pnp": 2.3.2
   bin:
     ai: bin.js
   languageName: unknown
@@ -1232,7 +1245,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/pnp@npm:^2.3.2":
+"@yarnpkg/pnp@npm:2.3.2, @yarnpkg/pnp@npm:^2.3.2":
   version: 2.3.2
   resolution: "@yarnpkg/pnp@npm:2.3.2"
   dependencies:
@@ -1619,6 +1632,7 @@ __metadata:
   dependencies:
     "@atelier-workspace/scripts": "workspace:scripts"
     "@bgotink/atelier": "workspace:packages/atelier"
+    "@types/node": ^14.14.17
     "@typescript-eslint/eslint-plugin": ^4.12.0
     "@typescript-eslint/parser": ^4.12.0
     "@yarnpkg/pnpify": ^2.4.0

@@ -44,6 +44,8 @@ class FilteredFs extends NodeFS {
 }
 
 module.exports = createBuilder(async function (_, ctx) {
+  ctx.logger.info(`Building project ${ctx.target.project}`);
+
   const root = ppath.join(
     npath.toPortablePath(ctx.workspaceRoot),
     (await ctx.getProjectMetadata(ctx.target.project)).root,
@@ -90,9 +92,18 @@ module.exports = createBuilder(async function (_, ctx) {
   return {success: true};
 });
 
+let tscPath;
+{
+  const typescriptPath = require.resolve('typescript/package.json');
+  tscPath = ppath.join(
+    ppath.dirname(typescriptPath),
+    require(typescriptPath).bin.tsc,
+  );
+}
+
 function tsc(root) {
   return new Promise((resolve, reject) => {
-    const child = spawn('tsc', {
+    const child = spawn(process.argv0, [tscPath], {
       cwd: npath.fromPortablePath(root),
       stdio: ['ignore', 'inherit', 'inherit'],
     });

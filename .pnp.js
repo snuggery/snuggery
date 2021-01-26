@@ -31,6 +31,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/atelier"
       },
       {
+        "name": "@bgotink/global-atelier",
+        "reference": "workspace:packages/global-atelier"
+      },
+      {
         "name": "@atelier-workspace/scripts",
         "reference": "workspace:scripts"
       },
@@ -44,6 +48,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "fallbackExclusionList": [
       ["@atelier-workspace/scripts", ["workspace:scripts"]],
       ["@bgotink/atelier", ["workspace:packages/atelier"]],
+      ["@bgotink/global-atelier", ["workspace:packages/global-atelier"]],
       ["atelier-workspace", ["workspace:."]],
       ["integration-aa38c3", ["workspace:integration"]],
       ["test-builders", ["workspace:integration/test-builders"]]
@@ -59,6 +64,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@atelier-workspace/scripts", "workspace:scripts"],
             ["@bgotink/atelier", "workspace:packages/atelier"],
+            ["@types/node", "npm:14.14.17"],
             ["@typescript-eslint/eslint-plugin", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:2.4.0"],
@@ -691,6 +697,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["supports-color", "npm:8.1.0"],
             ["typanion", "npm:3.2.1"],
             ["which-pm-runs", "npm:1.0.0"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@bgotink/global-atelier", [
+        ["workspace:packages/global-atelier", {
+          "packageLocation": "./packages/global-atelier/",
+          "packageDependencies": [
+            ["@bgotink/global-atelier", "workspace:packages/global-atelier"],
+            ["@atelier-workspace/scripts", "workspace:scripts"],
+            ["@bgotink/atelier", "workspace:packages/atelier"],
+            ["@types/node", "npm:14.14.17"],
+            ["@yarnpkg/pnp", "npm:2.3.2"]
           ],
           "linkType": "SOFT",
         }]
@@ -2073,6 +2092,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["atelier-workspace", "workspace:."],
             ["@atelier-workspace/scripts", "workspace:scripts"],
             ["@bgotink/atelier", "workspace:packages/atelier"],
+            ["@types/node", "npm:14.14.17"],
             ["@typescript-eslint/eslint-plugin", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:4.12.0"],
             ["@typescript-eslint/parser", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:4.12.0"],
             ["@yarnpkg/pnpify", "virtual:670c88dab8ddeeb5405e58dfa89bf5ecd3f711afa27ce7abda744834402240c1c00e7086aa3ac522675e7065fd74488fa1f881a35d6703a2fb9d2ccdd8de6c4a#npm:2.4.0"],

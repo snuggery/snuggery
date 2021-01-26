@@ -4,6 +4,13 @@
     "all": {
       "root": "",
       "architect": {
+        "build": {
+          "builder": "@bgotink/atelier:glob",
+          "options": {
+            "include": "*",
+            "unknownTarget": "skip"
+          }
+        },
         "lint": {
           "builder": "@bgotink/atelier:execute",
           "options": {
@@ -20,6 +27,14 @@
     },
     "atelier": {
       "root": "packages/atelier",
+      "architect": {
+        "build": {
+          "builder": "./scripts/build"
+        }
+      }
+    },
+    "global-atelier": {
+      "root": "packages/global-atelier",
       "architect": {
         "build": {
           "builder": "./scripts/build"
