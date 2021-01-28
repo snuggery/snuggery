@@ -3,7 +3,8 @@
 
 const {createBuilder} = require('@angular-devkit/architect');
 const {xfs, npath, ppath, NodeFS} = require('@yarnpkg/fslib');
-const {spawn} = require('child_process');
+
+const {exec} = require('./util');
 
 class FilteredFs extends NodeFS {
   constructor(filter) {
@@ -82,6 +83,8 @@ module.exports = createBuilder(async function (_, ctx) {
         return xfs.writeJsonPromise(ppath.join(dist, 'package.json'), pJson);
       }),
     ]);
+
+    await pack(root);
   } catch (e) {
     return {
       success: false,
@@ -102,19 +105,9 @@ let tscPath;
 }
 
 function tsc(root) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(process.argv0, [tscPath], {
-      cwd: npath.fromPortablePath(root),
-      stdio: ['ignore', 'inherit', 'inherit'],
-    });
+  return exec(process.argv0, [tscPath], root);
+}
 
-    child.addListener('error', reject);
-    child.addListener('close', code => {
-      if (code) {
-        reject(new Error(`Child exited with code ${code}`));
-      } else {
-        resolve();
-      }
-    });
-  });
+function pack(root) {
+  return exec('yarn', ['atelier-workspace', 'pack'], root);
 }

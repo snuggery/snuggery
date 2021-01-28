@@ -11,6 +11,20 @@
             "unknownTarget": "skip"
           }
         },
+        "deploy": {
+          "builder": "@bgotink/atelier:glob",
+          "options": {
+            "include": ["atelier", "gloal-atelier"],
+            "builder": "./scripts/deploy"
+          },
+          "configurations": {
+            "next": {
+              "options": {
+                "tag": "next"
+              }
+            }
+          }
+        },
         "lint": {
           "builder": "@bgotink/atelier:execute",
           "options": {

@@ -5,3 +5,4 @@
 !/.yarn/sdks
 
 /packages/*/dist
+/dist
