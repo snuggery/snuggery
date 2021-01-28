@@ -4,7 +4,7 @@
     "test-builders"
   ],
   "devDependencies": {
-    "@angular-devkit/architect": "0.1100.5",
+    "@angular-devkit/architect": "0.1101.2",
     "@jest/types": "26.6.2",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.17",

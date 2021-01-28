@@ -1,4 +1,4 @@
-import {BuilderOutput, createBuilder} from '@angular-devkit/architect';
+import {createBuilder} from '@angular-devkit/architect';
 import type {Builder} from '@angular-devkit/architect/src/internal';
 import type {JsonObject} from '@angular-devkit/core';
 import type {
@@ -15,7 +15,8 @@ import type {
   Tree as NxTree,
   ProjectConfiguration,
   TargetConfiguration,
-  TargetContext,
+  ExecutorContext,
+  Executor,
   WorkspaceConfiguration,
   FileChange,
 } from '@nrwl/devkit';
@@ -23,19 +24,58 @@ import {basename} from 'path';
 
 import type {CliWorkspace} from '../command/context';
 
-export type Executor = (
-  options: JsonObject,
-  context: TargetContext,
-) => Promise<BuilderOutput>;
+function isPromise<T>(
+  value: PromiseLike<T> | AsyncIterable<T>,
+): value is PromiseLike<T> {
+  return 'then' in value && typeof value.then === 'function';
+}
+
+async function extractResult<T>(
+  name: string,
+  value: Promise<T> | AsyncIterable<T>,
+): Promise<T> {
+  if (isPromise(value)) {
+    return value;
+  }
+
+  let result: T | undefined;
+  let hasResult = false;
+
+  for await (result of value) {
+    hasResult = true;
+  }
+
+  if (!hasResult) {
+    throw new InvalidExecutorError(
+      `Executor "${name}" didn't yield any result`,
+    );
+  }
+
+  return result!;
+}
+
+export class InvalidExecutorError extends Error {
+  readonly clipanion = {usage: 'none'};
+  constructor(message: string) {
+    super(message);
+
+    this.name = 'InvalidExecutorError';
+  }
+}
 
 export function makeExecutorIntoBuilder(
   executor: Executor,
   workspace: CliWorkspace | null,
+  name: string,
 ): Builder<JsonObject> {
   return createBuilder(async (options, ngContext) => {
-    const nxContext: TargetContext = {
+    const nxContext: ExecutorContext = {
       get root() {
         return ngContext.workspaceRoot;
+      },
+
+      get projectName() {
+        return ngContext.target?.project;
       },
 
       get target(): TargetConfiguration {
@@ -59,6 +99,7 @@ export function makeExecutorIntoBuilder(
       get workspace(): WorkspaceConfiguration {
         /* eslint-disable @typescript-eslint/no-explicit-any */
         return {
+          version: 2,
           projects: Object.fromEntries(
             Array.from(workspace?.projects ?? [], ([projectName, project]): [
               string,
@@ -103,9 +144,17 @@ export function makeExecutorIntoBuilder(
         };
         /* eslint-enable @typescript-eslint/no-explicit-any */
       },
+
+      get cwd(): string {
+        return ngContext.currentDirectory;
+      },
+
+      get isVerbose(): boolean {
+        return false;
+      },
     };
 
-    return executor(options, nxContext);
+    return extractResult(name, executor(options, nxContext));
   });
 }
 

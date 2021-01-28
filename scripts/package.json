@@ -1,7 +1,7 @@
 {
   "name": "@atelier-workspace/scripts",
   "dependencies": {
-    "@angular-devkit/architect": "0.1100.5",
+    "@angular-devkit/architect": "0.1101.2",
     "@bgotink/atelier": "workspace:packages/atelier",
     "@yarnpkg/fslib": "^2.4.0",
     "ts-node": "^9.1.1",
