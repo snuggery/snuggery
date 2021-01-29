@@ -1,4 +1,4 @@
-import {Architect, Target} from '@angular-devkit/architect';
+import {Architect, BuilderRun, Target} from '@angular-devkit/architect';
 import {json, JsonObject} from '@angular-devkit/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
@@ -9,6 +9,7 @@ import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 
 import {AbstractCommand} from './abstract-command';
+import type {Context} from './context';
 
 export const configurationOption: Option = {
   name: 'configuration',
@@ -27,6 +28,41 @@ export class BuilderFailedError extends Error {
     super(message);
     this.name = 'BuilderFailedError';
   }
+}
+
+async function handleBuilderRun(run: BuilderRun, context: Context) {
+  let error, success;
+  try {
+    ({error, success} = await run.output.toPromise());
+
+    await run.stop();
+  } catch (e) {
+    if (!(e instanceof Error)) {
+      throw new BuilderFailedError(
+        `Builder failed with non-error: ${JSON.stringify(e)}`,
+      );
+    }
+
+    let message = `Build failed with underlying ${e.name}: ${e.message}`;
+
+    if (e.stack) {
+      const file = join(
+        await fs.mkdtemp(join(tmpdir(), 'atelier-')),
+        'error.log',
+      );
+      await fs.writeFile(file, e.stack);
+
+      message += `\nSee ${file} for more information on the error`;
+    }
+
+    throw new BuilderFailedError(message);
+  }
+
+  if (error) {
+    context.stderr.write(error + '\n');
+  }
+
+  return success ? 0 : 1;
 }
 
 export abstract class ArchitectCommand extends AbstractCommand {
@@ -118,42 +154,12 @@ export abstract class ArchitectCommand extends AbstractCommand {
     target: Target;
     options?: JsonObject;
   }): Promise<number> {
-    const run = await this.architect.scheduleTarget(target, options, {
-      logger: this.logger,
-    });
-
-    let error, success;
-    try {
-      ({error, success} = await run.output.toPromise());
-
-      await run.stop();
-    } catch (e) {
-      if (!(e instanceof Error)) {
-        throw new BuilderFailedError(
-          `Builder failed with non-error: ${JSON.stringify(e)}`,
-        );
-      }
-
-      let message = `Build failed with underlying ${e.name}: ${e.message}`;
-
-      if (e.stack) {
-        const file = join(
-          await fs.mkdtemp(join(tmpdir(), 'atelier-')),
-          'error.log',
-        );
-        await fs.writeFile(file, e.stack);
-
-        message += `\nSee ${file} for more information on the error`;
-      }
-
-      throw new BuilderFailedError(message);
-    }
-
-    if (error) {
-      this.context.stderr.write(error + '\n');
-    }
-
-    return success ? 0 : 1;
+    return handleBuilderRun(
+      await this.architect.scheduleTarget(target, options, {
+        logger: this.logger,
+      }),
+      this.context,
+    );
   }
 
   protected async runBuilder({
@@ -163,15 +169,12 @@ export abstract class ArchitectCommand extends AbstractCommand {
     builder: string;
     options?: JsonObject;
   }): Promise<number> {
-    // the Architect class has a `scheduleBuilder` method, you'd think that was
-    // useful, but in fact it's the same as `scheduleTarget` with the sole
-    // exception that it expects the target to be passed in as string instead of
-    // as Target object.
-
-    return this.runTarget({
-      target: this.workspace.makeSyntheticTarget(this.currentProject, builder),
-      options,
-    });
+    return handleBuilderRun(
+      await this.architect.scheduleBuilder(builder, options, {
+        logger: this.logger,
+      }),
+      this.context,
+    );
   }
 
   protected resolveTarget(target: string, projectName: string | null): Target {
