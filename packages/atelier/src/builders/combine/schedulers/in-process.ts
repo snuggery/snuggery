@@ -1,45 +1,15 @@
-import {
-  BuilderOutput,
-  BuilderRun,
-  targetFromTargetString,
-} from '@angular-devkit/architect';
+import type {BuilderOutput} from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
-import {
-  resolveTargetString,
-  TargetSpecifier,
-} from '@bgotink/atelier/builder-utils';
-import {defer, Observable} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import {scheduleTarget, TargetSpecifier} from '@bgotink/atelier/builder-utils';
+import type {Observable} from 'rxjs';
 
 import {RegularScheduler} from './abstract';
 
 export class InProcessScheduler extends RegularScheduler {
   public runSingleTarget(
     targetSpec: TargetSpecifier,
-    extraOptions?: JsonObject | undefined,
+    extraOptions: JsonObject = {},
   ): Observable<BuilderOutput> {
-    let scheduled: Observable<BuilderRun>;
-
-    if (typeof targetSpec === 'string') {
-      const target = targetFromTargetString(
-        resolveTargetString(this.context, targetSpec),
-      );
-
-      scheduled = defer(() =>
-        this.context.scheduleTarget(target, extraOptions, {target}),
-      );
-    } else {
-      const target = this.getTarget(targetSpec.project);
-
-      scheduled = defer(() =>
-        this.context.scheduleBuilder(
-          targetSpec.builder,
-          {...targetSpec.options, ...extraOptions},
-          {target},
-        ),
-      );
-    }
-
-    return scheduled.pipe(switchMap(result => result.result));
+    return scheduleTarget(targetSpec, extraOptions, this.context);
   }
 }
