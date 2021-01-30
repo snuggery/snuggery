@@ -58,6 +58,10 @@ export class VersionCommand extends AbstractCommand {
       for (const target of project.targets.values()) {
         const packageName = target.builder.split(':', 1)[0]!;
 
+        if (packageName === '$direct') {
+          continue;
+        }
+
         getSet(builderVersions, packageName).add(
           this.getVersion(packageName, project.root),
         );

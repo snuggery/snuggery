@@ -7,15 +7,15 @@
         "build": {
           "builder": "@bgotink/atelier:glob",
           "options": {
-            "include": "*",
-            "unknownTarget": "skip"
+            "include": "*atelier",
+            "builder": "$direct:./scripts/build"
           }
         },
         "deploy": {
           "builder": "@bgotink/atelier:glob",
           "options": {
             "include": ["atelier", "gloal-atelier"],
-            "builder": "./scripts/deploy"
+            "builder": "$direct:./scripts/deploy"
           },
           "configurations": {
             "next": {
@@ -43,7 +43,7 @@
       "root": "packages/atelier",
       "architect": {
         "build": {
-          "builder": "./scripts/build"
+          "builder": "$direct:./scripts/build"
         }
       }
     },
@@ -51,7 +51,7 @@
       "root": "packages/global-atelier",
       "architect": {
         "build": {
-          "builder": "./scripts/build"
+          "builder": "$direct:./scripts/build"
         }
       }
     },

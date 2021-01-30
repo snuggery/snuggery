@@ -29,6 +29,15 @@ export class UnknownConfigurationError extends Error {
   }
 }
 
+export class InvalidBuilderSpecifiedError extends Error {
+  public clipanion = {type: 'none'};
+
+  constructor(message: string) {
+    super(message);
+    this.name = 'InvalidBuilderSpecifiedError';
+  }
+}
+
 export class InvalidBuilderError extends Error {
   public clipanion = {type: 'none'};
 
@@ -224,16 +233,23 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   }
 
   async resolveBuilder(builderSpec: string): Promise<AtelierBuilderInfo> {
-    const [builderName, packageName = null] = builderSpec
-      .split(':', 2)
-      .reverse() as [string, string | undefined];
+    const [packageName, builderName] = builderSpec.split(':', 2) as [
+      string,
+      string | undefined,
+    ];
+
+    if (builderName == null) {
+      throw new InvalidBuilderSpecifiedError(
+        `Builders must list a collection, use $direct as collection if you want to use a builder directly`,
+      );
+    }
 
     let builderPath: string;
     let builderInfo: JsonValue;
 
-    if (packageName == null) {
+    if (packageName === '$direct') {
       [builderPath, builderInfo] = await this.resolveBuilderFromPath(
-        builderSpec,
+        builderName,
       );
     } else {
       let builderJson;
