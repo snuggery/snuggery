@@ -7,7 +7,7 @@ import {
 } from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
 import {Observable, defer, of, from} from 'rxjs';
-import {switchMap, finalize} from 'rxjs/operators';
+import {switchMap} from 'rxjs/operators';
 
 import {resolveTargetString} from './target';
 
@@ -80,7 +80,21 @@ export function scheduleTarget(
     } else {
       const currentTarget = context.target;
 
-      if (currentTarget == null) {
+      let newTarget: ArchitectTarget;
+
+      // https://github.com/angular/angular-cli/issues/19905
+      if (currentTarget?.target) {
+        newTarget = {...currentTarget};
+
+        if (targetSpec.project) {
+          newTarget.project = targetSpec.project;
+        }
+      } else if (targetSpec.project) {
+        newTarget = {
+          project: targetSpec.project,
+          target: '$generated',
+        };
+      } else {
         return of({
           success: false as const,
           error: `Cannot run target without project ${JSON.stringify(
@@ -97,24 +111,24 @@ export function scheduleTarget(
             options,
           },
           {
-            target: {
-              ...currentTarget,
-              project: targetSpec.project || currentTarget.project,
-            } as ArchitectTarget,
+            target: newTarget,
           },
         ),
       ).pipe(
-        switchMap(run => {
-          let resolve: () => void | undefined;
-          const promise = new Promise<void>(r => (resolve = r));
-          context.addTeardown(() => promise);
+        switchMap(
+          run =>
+            new Observable<BuilderOutput>(observer => {
+              let resolve: () => void | undefined;
+              const promise = new Promise<void>(r => (resolve = r));
+              context.addTeardown(() => promise);
 
-          return run.output.pipe(
-            finalize(() => {
-              run.stop().then(resolve);
+              observer.add(run.output.subscribe(observer));
+
+              return () => {
+                run.stop().then(resolve);
+              };
             }),
-          );
-        }),
+        ),
       );
     }
   });
