@@ -14,7 +14,7 @@
         "deploy": {
           "builder": "@bgotink/atelier:glob",
           "options": {
-            "include": ["atelier", "gloal-atelier"],
+            "include": "*atelier",
             "builder": "$direct:./scripts/deploy"
           },
           "configurations": {
@@ -35,6 +35,12 @@
             "fix": {
               "arguments": ["--fix", "packages", "integration"]
             }
+          }
+        },
+        "test": {
+          "builder": "@bgotink/atelier:execute",
+          "options": {
+            "package": "jest"
           }
         }
       }

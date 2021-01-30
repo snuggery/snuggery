@@ -7,16 +7,10 @@ const enum Operator {
   Divide = '/',
 }
 
-const ops: {[o in Operator]?: (a: number, b: number) => number}[] = [
-  {
-    [Operator.Times]: (a, b) => a * b,
-    [Operator.Divide]: (a, b) => a / b,
-  },
-  {
-    [Operator.Plus]: (a, b) => a + b,
-    [Operator.Minus]: (a, b) => a - b,
-  },
-];
+const enum Group {
+  Start = '(',
+  End = ')',
+}
 
 const constants = {
   cpuCount: () => cpus().length,
@@ -24,135 +18,178 @@ const constants = {
 
 type Constant = keyof typeof constants;
 
-interface Calculation
-  extends Array<Operator | number | Constant | Calculation> {
-  parent?: Calculation;
+const constantNames = Object.keys(constants) as Constant[];
+
+type Token = Group | Operator | Constant | number;
+
+export class InvalidCalculationError extends Error {
+  constructor(calculation: string, index: number) {
+    super(
+      `Invalid calculation "${calculation.slice(
+        0,
+        index,
+      )}[HERE -->]${calculation.slice(index)}"`,
+    );
+
+    this.name = 'InvalidCalculationError';
+  }
 }
 
-function isOperator(
-  value: number | Constant | Operator | Calculation,
-): value is Operator {
-  return !Array.isArray(value) && /^[-+*/]$/.test(`${value}`);
-}
+function tokenize(calculation: string) {
+  const tokens = [] as {token: Token; start: number}[];
 
-function isConstant(value: string): value is Constant {
-  return value in constants;
-}
+  let i = 0;
+  const {length} = calculation;
 
-function parseCalculation(s: string): Calculation {
-  const calculation: Calculation = [];
-  let current = '';
+  let currentNumber: string[] = [];
+  let startOfCurrentNumber = 0;
 
-  let currentLevel: Calculation = calculation;
+  while (i < length) {
+    const current = calculation[i]!;
 
-  for (let i = 0, char: string; (char = s.charAt(i)); i++) {
-    if (char === '(') {
-      const parentLevel = currentLevel;
-      currentLevel = [];
-      currentLevel.parent = parentLevel;
-      parentLevel.push(currentLevel);
-    } else if (char === ')') {
-      if (currentLevel.parent == null) {
-        throw new Error(
-          `Uneven parentheses: extra closing parenthesis at index ${i}`,
-        );
+    if (/[0-9.]/.test(current)) {
+      if (currentNumber.length === 0) {
+        startOfCurrentNumber = i;
       }
-      if (currentLevel.length === 0) {
-        throw new Error(`Invalid calculation: empty parentheses at index ${i}`);
-      }
-      currentLevel = currentLevel.parent;
-    } else if ('*/+-'.includes(char)) {
-      if (current == '' && char == '-') {
-        current = '-';
-      } else {
-        if (current === '' || current === '-') {
-          if (currentLevel.length === 0) {
-            throw new Error(
-              `Invalid calculation: operator at start of calculation`,
-            );
-          }
-          if (isOperator(currentLevel[currentLevel.length - 1]!)) {
-            throw new Error(
-              `Invalid calculation: operator followed by operator at index ${i}`,
-            );
-          }
-        } else {
-          currentLevel.push(parseFloat(current));
-          current = '';
-        }
+      currentNumber.push(current);
 
-        currentLevel.push(char as Operator);
-      }
-    } else if (/[0-9.]/.test(char)) {
-      current += s.charAt(i);
+      i++;
+      continue;
+    }
+
+    if (currentNumber.length) {
+      tokens.push({
+        token: parseFloat(currentNumber.join('')),
+        start: startOfCurrentNumber,
+      });
+      currentNumber = [];
+    }
+
+    if (/\s/.test(current)) {
+      // ignore
+    } else if ('()+-*/'.includes(current)) {
+      tokens.push({token: current as Group | Operator, start: i});
     } else {
-      let foundConstant: Constant | undefined;
-      for (const c of Object.keys(constants) as Constant[]) {
-        if (s.slice(i, c.length) === c) {
-          foundConstant = c;
+      let found = false;
+      for (const constant of constantNames) {
+        if (constant === calculation.substr(i, constant.length)) {
+          tokens.push({token: constant, start: i});
+
+          found = true;
+          i += constant.length;
+          break;
         }
       }
 
-      if (foundConstant != null) {
-        if (current === '-') {
-          currentLevel.push(-1, Operator.Times);
-          current = '';
-        }
-
-        if (current !== '') {
-          throw new Error(`Invalid calculation "${current}${foundConstant}"`);
-        }
-
-        currentLevel.push(foundConstant);
-        i += foundConstant.length - 1;
+      if (!found) {
+        throw new InvalidCalculationError(calculation, i);
       }
+
+      continue;
     }
+
+    i++;
   }
 
-  if (currentLevel !== calculation) {
-    throw new Error(`Uneven parentheses: missing close parenthesis`);
+  if (currentNumber.length) {
+    tokens.push({
+      token: parseFloat(currentNumber.join('')),
+      start: startOfCurrentNumber,
+    });
   }
 
-  if (current !== '') {
-    calculation.push(parseFloat(current));
-  }
-
-  return calculation;
+  return tokens;
 }
 
-function performCalculation(calc: Calculation): number {
-  const flattenedCalc = calc.map(part => {
-    if (Array.isArray(part)) {
-      return performCalculation(part);
-    } else if (typeof part === 'string' && isConstant(part)) {
-      return constants[part]();
-    } else {
-      return part;
+const performOperator = {
+  [Operator.Plus]: (left: number, right: number) => left + right,
+  [Operator.Minus]: (left: number, right: number) => left - right,
+  [Operator.Times]: (left: number, right: number) => left * right,
+  [Operator.Divide]: (left: number, right: number) => left / right,
+} as const;
+
+function parse(
+  calculation: string,
+  tokens: {token: Token; start: number}[],
+): number {
+  let position = 0;
+  const {length} = tokens;
+
+  const result = parseExpression();
+
+  if (position !== length) {
+    throw new InvalidCalculationError(calculation, peek()!.start);
+  }
+
+  return result;
+
+  function parseExpression(): number {
+    let result = parseMultiplicativeExpression();
+    let token = peek();
+
+    while (token?.token === Operator.Plus || token?.token === Operator.Minus) {
+      pop();
+      result = performOperator[token.token](
+        result,
+        parseMultiplicativeExpression(),
+      );
+      token = peek();
     }
-  });
 
-  for (let i = 0; i < ops.length; i++) {
-    for (let j = 0; j < flattenedCalc.length; j++) {
-      const c = flattenedCalc[j]!;
+    return result;
+  }
 
-      if (isOperator(c) && ops[i]![c]) {
-        const a = flattenedCalc[j - 1];
-        const b = flattenedCalc[j + 1];
+  function parseMultiplicativeExpression(): number {
+    let result = parsePrimaryExpression();
+    let token = peek();
 
-        if (typeof a !== 'number' || typeof b !== 'number') {
-          throw new Error(`Invalid calculation`);
-        }
+    while (
+      token?.token === Operator.Times ||
+      token?.token === Operator.Divide
+    ) {
+      pop();
+      result = performOperator[token.token](result, parsePrimaryExpression());
+      token = peek();
+    }
 
-        flattenedCalc.splice(j - 1, 3, ops[i]![c]!(a, b));
-        j--;
+    return result;
+  }
+
+  function parsePrimaryExpression(): number {
+    const {token, start} = pop();
+
+    if (typeof token === 'number') {
+      return token;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } else if (constantNames.includes(token as any)) {
+      return constants[token as Constant]();
+    } else if (token === Group.Start) {
+      try {
+        return parseExpression();
+      } finally {
+        pop(Group.End);
       }
+    } else {
+      throw new InvalidCalculationError(calculation, start);
     }
   }
 
-  if (flattenedCalc.length > 1 || typeof flattenedCalc[0] !== 'number') {
-    throw new Error('unable to resolve calculation');
-  } else {
-    return flattenedCalc[0];
+  function pop(token?: Token) {
+    if (token != null) {
+      if (tokens[position]!.token !== token) {
+        throw new InvalidCalculationError(calculation, tokens[position]!.start);
+      }
+    }
+
+    if (position >= length) {
+      throw new InvalidCalculationError(calculation, calculation.length);
+    }
+
+    return tokens[position++]!;
+  }
+
+  function peek() {
+    return tokens[position];
   }
 }
 
@@ -161,5 +198,5 @@ export function calculate(value: string | number): number {
     return value;
   }
 
-  return performCalculation(parseCalculation(value.replace(/\s+/g, '')));
+  return parse(value, tokenize(value));
 }

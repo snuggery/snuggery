@@ -21,7 +21,8 @@ class FilteredFs extends NodeFS {
         const resolved = ppath.join(p, f);
 
         if (
-          (await this.statPromise(resolved)).isDirectory() ||
+          (!/^__.*__$/.test(f) &&
+            (await this.statPromise(resolved)).isDirectory()) ||
           this.filter.test(resolved)
         ) {
           return f;

@@ -4,10 +4,10 @@
 /** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   testEnvironment: 'node',
-  setupFilesAfterEnv: ['<rootDir>/setup.ts'],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  testMatch: ['<rootDir>/__tests__/**/*.spec.ts'],
+  testMatch: ['<rootDir>/packages/*/src/**/__tests__/**/*.spec.ts'],
+  modulePathIgnorePatterns: ['<rootDir>/packages/*/dist'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };

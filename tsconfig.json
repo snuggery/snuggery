@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
+    "types": ["jest"],
     "paths": {
       "@bgotink/atelier/package.json": ["./packages/atelier/package.json"],
       "@bgotink/atelier/*": ["./packages/atelier/src/*"]
