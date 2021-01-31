@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import {isJsonObject} from '@angular-devkit/core';
+import {createRequire} from 'module';
 import {join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
@@ -157,14 +158,18 @@ export class VersionCommand extends AbstractCommand {
   private getVersion(packageName: string, projectRoot: string | null): string {
     const {basePath} = this.workspace;
 
-    try {
-      return require(require.resolve(join(packageName, 'package.json'), {
-        paths: projectRoot
-          ? [join(basePath, projectRoot), basePath]
-          : [basePath],
-      })).version;
-    } catch {
-      return '<error>';
+    for (const path of projectRoot
+      ? [join(basePath, projectRoot), basePath]
+      : [basePath]) {
+      const require = createRequire(join(path, '<synthetic>'));
+
+      try {
+        return require(join(packageName, 'package.json')).version;
+      } catch {
+        // ignore
+      }
     }
+
+    return '<error>';
   }
 }

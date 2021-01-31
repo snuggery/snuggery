@@ -1,5 +1,6 @@
 import {isJsonObject} from '@angular-devkit/core';
 import {Option} from 'clipanion';
+import {createRequire} from 'module';
 import {join, posix} from 'path';
 
 import {AbstractCommand} from '../../command/abstract-command';
@@ -88,14 +89,21 @@ export class HelpProjectCommand extends AbstractCommand {
   }
 
   private isInstalled(packageName: string, root: string) {
-    try {
-      require.resolve(join(packageName, 'package.json'), {
-        paths: [join(this.workspace.basePath, root), this.workspace.basePath],
-      });
+    for (const path of [
+      join(this.workspace.basePath, root),
+      this.workspace.basePath,
+    ]) {
+      const require = createRequire(join(path, '<synthetic>'));
 
-      return true;
-    } catch {
-      return false;
+      try {
+        require.resolve(join(packageName, 'package.json'));
+
+        return true;
+      } catch {
+        // ignore
+      }
     }
+
+    return false;
   }
 }

@@ -77,7 +77,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         ? [this.context.startCwd, this.workspace.basePath]
         : [this.context.startCwd],
     )) {
-      const require = createRequire(join(basePath, 'synthetic.js'));
+      const require = createRequire(join(basePath, '<synthetic>'));
 
       let startJsonPath: string;
       try {
@@ -172,7 +172,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         ? [this.context.startCwd, this.workspace.basePath]
         : [this.context.startCwd],
     )) {
-      const require = createRequire(join(basePath, 'synthetic.js'));
+      const require = createRequire(join(basePath, '<synthetic>'));
 
       let resolvedPath;
       try {

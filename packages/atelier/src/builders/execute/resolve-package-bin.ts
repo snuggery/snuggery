@@ -1,5 +1,6 @@
 import type {BuilderContext} from '@angular-devkit/architect';
 import {getProjectPath} from '@bgotink/atelier/builder-utils';
+import {createRequire} from 'module';
 import {dirname, join} from 'path';
 
 interface Manifest {
@@ -36,21 +37,25 @@ export async function resolvePackageBin(
     };
   }
 
-  let manifestPath: string;
+  let manifestPath: string | undefined;
 
-  try {
-    manifestPath = require.resolve(`${packageName}/package.json`, {
-      paths: [await getProjectPath(context), context.workspaceRoot],
-    });
-  } catch (e) {
-    if ((e as NodeJS.ErrnoException).code === 'MODULE_NOT_FOUND') {
-      return {
-        success: false,
-        error: `Couldn't find package ${packageName}`,
-      };
-    } else {
-      throw e;
+  for (const path of [await getProjectPath(context), context.workspaceRoot]) {
+    const require = createRequire(join(path, '<synthetic>'));
+    try {
+      manifestPath = require.resolve(`${packageName}/package.json`);
+      break;
+    } catch (e) {
+      if ((e as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') {
+        throw e;
+      }
     }
+  }
+
+  if (manifestPath == null) {
+    return {
+      success: false,
+      error: `Couldn't find package ${packageName}`,
+    };
   }
 
   const packageFolder = dirname(manifestPath);
