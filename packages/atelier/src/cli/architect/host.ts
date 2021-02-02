@@ -370,13 +370,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
       typeof info.optionSchema === 'object' &&
       info.optionSchema.cli === 'nx'
     ) {
-      return makeExecutorIntoBuilder(
-        implementation,
-        this.workspace,
-        info.packageName
-          ? `${info.packageName}:${info.builderName}`
-          : info.builderName,
-      );
+      return makeExecutorIntoBuilder(implementation, this.workspace);
     }
 
     if (!implementation[BuilderSymbol]) {

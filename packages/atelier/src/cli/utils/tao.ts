@@ -1,5 +1,8 @@
-import {createBuilder} from '@angular-devkit/architect';
-import type {Builder} from '@angular-devkit/architect/src/internal';
+import {
+  BuilderContext,
+  BuilderHandlerFn,
+  createBuilder,
+} from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
 import type {
   Rule,
@@ -19,39 +22,43 @@ import type {
   Executor,
   WorkspaceConfiguration,
   FileChange,
+  Generator,
 } from '@nrwl/devkit';
 import {basename} from 'path';
 
 import type {CliWorkspace} from '../command/context';
 
-function isPromise<T>(
-  value: PromiseLike<T> | AsyncIterable<T>,
-): value is PromiseLike<T> {
-  return 'then' in value && typeof value.then === 'function';
+import {Cached} from './decorator';
+
+export {Executor, Generator};
+
+function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
+  return value != null && Symbol.asyncIterator in (value as object);
 }
 
-async function extractResult<T>(
-  name: string,
-  value: Promise<T> | AsyncIterable<T>,
-): Promise<T> {
-  if (isPromise(value)) {
-    return value;
+function extractResult(
+  value: ReturnType<Executor>,
+): ReturnType<BuilderHandlerFn<JsonObject>> {
+  // @nrwl/devkit declares that an executor returns a promise or async iterable that emits items of
+  // interface {success: boolean}, but they can't actually enforce this as they lack an equivalent
+  // to `createBuilder`.
+  // Therefore we must default `success` to a value, and `true` seems to be the most logical choice,
+  // as an executor that returns Promise<void> can only convey "it failed" by throwing an error.
+
+  if (!isAsyncIterable(value)) {
+    // Use Promise.resolve here because again, the return type of an executor isn't validated, so
+    // executors can potentially return anything they want, e.g. void
+
+    // @ts-expect-error see above
+    return Promise.resolve(value).then(v => ({success: true, ...v}));
   }
 
-  let result: T | undefined;
-  let hasResult = false;
-
-  for await (result of value) {
-    hasResult = true;
-  }
-
-  if (!hasResult) {
-    throw new InvalidExecutorError(
-      `Executor "${name}" didn't yield any result`,
-    );
-  }
-
-  return result!;
+  return (async function* () {
+    for await (const item of value) {
+      // @ts-expect-error see above
+      yield {success: true, ...item};
+    }
+  })();
 }
 
 export class InvalidExecutorError extends Error {
@@ -63,105 +70,108 @@ export class InvalidExecutorError extends Error {
   }
 }
 
+class MappedContext implements ExecutorContext {
+  constructor(
+    private readonly atelierWorkspace: CliWorkspace | null,
+    private readonly ngContext: BuilderContext,
+  ) {}
+
+  get root() {
+    return this.ngContext.workspaceRoot;
+  }
+
+  get projectName() {
+    return this.ngContext.target?.project;
+  }
+
+  @Cached()
+  get target(): TargetConfiguration {
+    if (this.ngContext.target == null) {
+      return {
+        executor: this.ngContext.builder.builderName,
+      };
+    }
+
+    const target = this.atelierWorkspace?.projects
+      .get(this.ngContext.target.project)
+      ?.targets.get(this.ngContext.target.target);
+
+    return {
+      executor: this.ngContext.builder.builderName,
+      options: target?.options,
+      configurations: target?.configurations,
+    };
+  }
+
+  @Cached()
+  get workspace(): WorkspaceConfiguration {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    return {
+      version: 2,
+      projects: Object.fromEntries(
+        Array.from(
+          this.atelierWorkspace?.projects ?? [],
+          ([projectName, project]): [string, ProjectConfiguration] => {
+            return [
+              projectName,
+              {
+                targets: Object.fromEntries(
+                  Array.from(
+                    project.targets,
+                    ([targetName, {builder, configurations, options}]): [
+                      string,
+                      TargetConfiguration,
+                    ] => {
+                      return [
+                        targetName,
+                        {
+                          executor: builder,
+                          configurations,
+                          options,
+                        },
+                      ];
+                    },
+                  ),
+                ),
+
+                root: project.root,
+                generators: project.extensions.schematics as any,
+                projectType: project.extensions.projectType as
+                  | 'library'
+                  | 'application',
+                sourceRoot: project.sourceRoot,
+              },
+            ];
+          },
+        ),
+      ),
+
+      defaultProject: this.workspace?.defaultProject ?? undefined,
+      cli: this.atelierWorkspace?.extensions.cli as any,
+      generators: this.atelierWorkspace?.extensions.schematics as any,
+    };
+    /* eslint-enable @typescript-eslint/no-explicit-any */
+  }
+
+  get cwd(): string {
+    return this.ngContext.currentDirectory;
+  }
+
+  get isVerbose(): boolean {
+    return false;
+  }
+}
+
 export function makeExecutorIntoBuilder(
   executor: Executor,
   workspace: CliWorkspace | null,
-  name: string,
-): Builder<JsonObject> {
-  return createBuilder(async (options, ngContext) => {
-    const nxContext: ExecutorContext = {
-      get root() {
-        return ngContext.workspaceRoot;
-      },
-
-      get projectName() {
-        return ngContext.target?.project;
-      },
-
-      get target(): TargetConfiguration {
-        if (ngContext.target == null) {
-          return {
-            executor: ngContext.builder.builderName,
-          };
-        }
-
-        const target = workspace?.projects
-          .get(ngContext.target.project)
-          ?.targets.get(ngContext.target.target);
-
-        return {
-          executor: ngContext.builder.builderName,
-          options: target?.options,
-          configurations: target?.configurations,
-        };
-      },
-
-      get workspace(): WorkspaceConfiguration {
-        /* eslint-disable @typescript-eslint/no-explicit-any */
-        return {
-          version: 2,
-          projects: Object.fromEntries(
-            Array.from(workspace?.projects ?? [], ([projectName, project]): [
-              string,
-              ProjectConfiguration,
-            ] => {
-              return [
-                projectName,
-                {
-                  targets: Object.fromEntries(
-                    Array.from(
-                      project.targets,
-                      ([targetName, {builder, configurations, options}]): [
-                        string,
-                        TargetConfiguration,
-                      ] => {
-                        return [
-                          targetName,
-                          {
-                            executor: builder,
-                            configurations,
-                            options,
-                          },
-                        ];
-                      },
-                    ),
-                  ),
-
-                  root: project.root,
-                  generators: project.extensions.schematics as any,
-                  projectType: project.extensions.projectType as
-                    | 'library'
-                    | 'application',
-                  sourceRoot: project.sourceRoot,
-                },
-              ];
-            }),
-          ),
-
-          defaultProject: workspace?.defaultProject ?? undefined,
-          cli: workspace?.extensions.cli as any,
-          generators: workspace?.extensions.schematics as any,
-        };
-        /* eslint-enable @typescript-eslint/no-explicit-any */
-      },
-
-      get cwd(): string {
-        return ngContext.currentDirectory;
-      },
-
-      get isVerbose(): boolean {
-        return false;
-      },
-    };
-
-    return extractResult(name, executor(options, nxContext));
+): ReturnType<typeof createBuilder> {
+  return createBuilder((options, context) => {
+    return extractResult(
+      executor(options, new MappedContext(workspace, context)),
+    );
   });
 }
-
-export type Generator = (
-  host: NxTree,
-  schema: JsonObject,
-) => Promise<(host: NxTree) => void | undefined>;
 
 class MappedTree implements NxTree {
   constructor(private readonly tree: NgTree, readonly root: string) {}
@@ -263,14 +273,15 @@ export function makeGeneratorIntoSchematic(
   root: string,
   engineHost: FileSystemEngineHostBase,
 ): RuleFactory<JsonObject> {
-  return (options: JsonObject): Rule => async (ngTree, context) => {
-    const nxTree = new MappedTree(ngTree, root);
-
-    const task = await generator(nxTree, options);
+  return (options: JsonObject): Rule => async (tree, context) => {
+    const task = await generator(new MappedTree(tree, root), options);
 
     if (task != null) {
-      engineHost.registerTaskExecutor(executeAfterSchematicTaskFactory);
-      context.addTask(new ExecuteAfterSchematicTask(() => task(nxTree)));
+      if (!engineHost.hasTaskExecutor(executeAfterSchematicTaskFactory.name)) {
+        engineHost.registerTaskExecutor(executeAfterSchematicTaskFactory);
+      }
+
+      context.addTask(new ExecuteAfterSchematicTask(() => task()));
     }
   };
 }
