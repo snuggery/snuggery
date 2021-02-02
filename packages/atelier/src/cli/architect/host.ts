@@ -62,6 +62,12 @@ export interface AtelierBuilderInfo extends BuilderInfo {
   implementationExport: string | null;
 }
 
+function isBuilder(value: object): value is Builder {
+  return (
+    BuilderSymbol in value && (value as {[BuilderSymbol]: true})[BuilderSymbol]
+  );
+}
+
 export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
   constructor(
     private readonly context: Pick<Context, 'startCwd'>,
@@ -181,7 +187,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         continue;
       }
 
-      let schemaOrBuilder: JsonObject | {[BuilderSymbol]: true};
+      let schemaOrBuilder: JsonObject | Builder;
       try {
         schemaOrBuilder = await import(resolvedPath).then(
           module => module.default ?? module,
@@ -202,12 +208,23 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         );
       }
 
-      if (BuilderSymbol in schemaOrBuilder) {
+      if (isBuilder(schemaOrBuilder)) {
         return [
           resolvedPath,
           {
             schema: true,
             implementation: basename(resolvedPath),
+          },
+        ];
+      } else if (
+        typeof schemaOrBuilder.type === 'string' &&
+        typeof schemaOrBuilder.implementation === 'string'
+      ) {
+        return [
+          resolvedPath,
+          {
+            schema: basename(resolvedPath),
+            implementation: schemaOrBuilder.implementation,
           },
         ];
       } else {
@@ -274,7 +291,7 @@ export class AtelierArchitectHost implements ArchitectHost<AtelierBuilderInfo> {
         typeof builderInfo.schema !== 'boolean')
     ) {
       throw new InvalidBuilderError(
-        packageName != null
+        packageName !== '$direct'
           ? `Invalid configuration for builder "${builderName}" in package "${packageName}"`
           : `Invalid configuration for builder "${builderName}"`,
       );

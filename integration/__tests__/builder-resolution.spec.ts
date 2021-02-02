@@ -128,4 +128,37 @@ describe('builder resolution', () => {
       }),
     );
   });
+
+  describe('builder via schema', () => {
+    it(
+      'should run',
+      inFixture('builders', async ({runJson}) => {
+        await expect(
+          runJson(['run', 'target', 'fixture:local-builder-schema']),
+        ).resolves.toMatchObject({
+          withDefault: 'defaultValue',
+        });
+      }),
+    );
+
+    it(
+      'should run with arguments',
+      inFixture('builders', async ({runJson}) => {
+        await expect(
+          runJson([
+            'run',
+            'target',
+            'fixture:local-builder-schema',
+            '--foo',
+            'bar',
+            '--with-default',
+            'baz',
+          ]),
+        ).resolves.toMatchObject({
+          foo: 'bar',
+          withDefault: 'baz',
+        });
+      }),
+    );
+  });
 });

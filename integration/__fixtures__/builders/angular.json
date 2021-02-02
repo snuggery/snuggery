@@ -11,10 +11,13 @@
           "builder": "./builder/builders.json:builder"
         },
         "local-builder-single": {
-          "builder": "./builder/builder.json"
+          "builder": "$direct:./builder/builder.json"
         },
         "local-builder-implementation": {
-          "builder": "./builder/builder.js"
+          "builder": "$direct:./builder/builder.js"
+        },
+        "local-builder-schema": {
+          "builder": "$direct:./builder/schema.json"
         }
       }
     }

@@ -1,4 +1,5 @@
 {
+  "implementation": "./builder.js",
   "type": "object",
   "properties": {
     "foo": {"type": "string"},

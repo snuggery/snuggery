@@ -1,0 +1,32 @@
+{
+  "implementation": "./jest.js",
+  "type": "object",
+  "properties": {
+    "setupFilesAfterEnv": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Setup files to load"
+    },
+    "testMatch": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Match test files"
+    },
+    "modulePathIgnorePatterns": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Modules to ignore"
+    },
+    "tsConfig": {
+      "type": "string",
+      "description": "tsConfig file"
+    },
+    "watch": {
+      "type": "boolean",
+      "description": "Watch for changes",
+      "default": false
+    }
+  },
+  "required": ["tsConfig"],
+  "additionalProperties": false
+}

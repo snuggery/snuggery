@@ -44,9 +44,13 @@ globalThis.inFixture = function inFixture(
       directory: fixtureDir,
       run,
       runJson: async (args, options) => {
-        const {exitCode, stdout} = await run(args, options);
+        const {exitCode, stdout, stderr} = await run(args, options);
 
-        expect(exitCode).toBe(0);
+        if (exitCode !== 0) {
+          fail(
+            `Failed with code ${exitCode}\n== STDOUT: ${stdout}\n== STDERR: ${stderr}`,
+          );
+        }
 
         try {
           return JSON.parse(stdout);
