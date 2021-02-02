@@ -54,7 +54,6 @@ __metadata:
   dependencies:
     "@angular-devkit/architect": 0.1101.2
     "@bgotink/atelier": "workspace:packages/atelier"
-    "@jest/types": 26.6.2
     "@yarnpkg/fslib": ^2.4.0
     jest: 26.6.3
     ts-jest: 26.5.0
@@ -701,7 +700,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/types@npm:26.6.2, @jest/types@npm:^26.6.2":
+"@jest/types@npm:^26.6.2":
   version: 26.6.2
   resolution: "@jest/types@npm:26.6.2"
   dependencies:

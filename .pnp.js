@@ -134,7 +134,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@atelier-workspace/scripts", "workspace:scripts"],
             ["@angular-devkit/architect", "npm:0.1101.2"],
             ["@bgotink/atelier", "workspace:packages/atelier"],
-            ["@jest/types", "npm:26.6.2"],
             ["@yarnpkg/fslib", "npm:2.4.0"],
             ["jest", "npm:26.6.3"],
             ["ts-jest", "virtual:2291c05da04b1ac76df4d4fdeed116477404d20a094bc8c0a4dcb2e88adbdcb577da2561dd891b2fe4e76564c3ca962a0a068827ea9d332b5e63ca781e179271#npm:26.5.0"],

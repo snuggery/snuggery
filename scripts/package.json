@@ -3,7 +3,6 @@
   "dependencies": {
     "@angular-devkit/architect": "0.1101.2",
     "@bgotink/atelier": "workspace:packages/atelier",
-    "@jest/types": "26.6.2",
     "@yarnpkg/fslib": "^2.4.0",
     "jest": "26.6.3",
     "ts-jest": "26.5.0",
