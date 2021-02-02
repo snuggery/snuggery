@@ -38,5 +38,6 @@ module.exports = createBuilder(async (options, context) => {
 });
 
 function mapJestFilesOption(files) {
-  return files?.map(f => join('<rootDir>', f));
+  // Can't use ?. until node 12 EOL
+  return files && files.map(f => join('<rootDir>', f));
 }
