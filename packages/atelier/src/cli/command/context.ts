@@ -26,6 +26,11 @@ export interface Context extends BaseContext {
    * Report / logger
    */
   report: Report;
+
+  /**
+   * Information on the global CLI if atelier is executed via global
+   */
+  globalManifest?: string;
 }
 
 export class CliWorkspace implements workspaces.WorkspaceDefinition {

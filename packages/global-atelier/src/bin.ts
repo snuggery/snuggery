@@ -73,6 +73,7 @@ import('@bgotink/atelier/cli')
       stdin: process.stdin,
       stdout: process.stdout,
       stderr: process.stderr,
+      globalManifest: require.resolve('@bgotink/global-atelier/package.json'),
     }),
   )
   .catch(e => {

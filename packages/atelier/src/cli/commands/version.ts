@@ -2,7 +2,7 @@
 
 import {isJsonObject} from '@angular-devkit/core';
 import {createRequire} from 'module';
-import {join} from 'path';
+import {dirname, join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
 import {defaultSchematicCollection} from '../command/schematic';
@@ -31,10 +31,10 @@ export class VersionCommand extends AbstractCommand {
 
     report.reportInfo(`${format.bold('Atelier')}\n`);
 
+    const manifestPath = require.resolve('@bgotink/atelier/package.json');
+
     report.reportInfo(
-      `@bgotink/atelier   ${format.code(
-        require('@bgotink/atelier/package.json').version,
-      )}`,
+      `@bgotink/atelier   ${format.code(require(manifestPath).version)}`,
     );
     report.reportInfo(
       `@angular-devkit/*  ${format.code(
@@ -43,6 +43,22 @@ export class VersionCommand extends AbstractCommand {
     );
 
     report.reportSeparator();
+
+    if (
+      this.context.globalManifest &&
+      this.context.globalManifest !== manifestPath
+    ) {
+      report.reportInfo(
+        `Local atelier at ${format.code(dirname(manifestPath))}`,
+      );
+      report.reportInfo(
+        `Run via global atelier version ${format.code(
+          require(this.context.globalManifest).version,
+        )} at ${format.code(dirname(this.context.globalManifest))}`,
+      );
+
+      report.reportSeparator();
+    }
 
     const {workspace} = this.context;
 
