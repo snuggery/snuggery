@@ -422,7 +422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bgotink/atelier@0.2.1, @bgotink/atelier@workspace:packages/atelier":
+"@bgotink/atelier@0.3.0, @bgotink/atelier@workspace:packages/atelier":
   version: 0.0.0-use.local
   resolution: "@bgotink/atelier@workspace:packages/atelier"
   dependencies:
@@ -460,7 +460,7 @@ __metadata:
   resolution: "@bgotink/global-atelier@workspace:packages/global-atelier"
   dependencies:
     "@atelier-workspace/scripts": "workspace:scripts"
-    "@bgotink/atelier": 0.2.1
+    "@bgotink/atelier": 0.3.0
     "@types/node": ^14.14.17
     "@yarnpkg/pnp": 2.3.2
   bin:
