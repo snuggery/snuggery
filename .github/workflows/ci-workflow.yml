@@ -72,12 +72,16 @@ jobs:
           yarn ai test
 
   integration:
-    name: 'Integration tests on node.js ${{matrix.node}}.x'
+    name: 'Integration tests on node.js ${{matrix.node}}.x on ${{matrix.os}}'
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
       matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
         node:
           - 12
           - 14
