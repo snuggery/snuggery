@@ -3,6 +3,11 @@
   "version": "0.3.0",
   "private": true,
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bgotink/atelier.git",
+    "directory": "packages/global-atelier"
+  },
   "bin": {
     "ai": "bin.js"
   },
