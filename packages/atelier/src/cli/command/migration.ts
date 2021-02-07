@@ -4,14 +4,16 @@ import type {
   FileSystemCollectionDescription,
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
-import {UsageError} from 'clipanion';
+import {ErrorWithMeta, UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
 
 import {SchematicCommand} from './schematic';
 
-export class MigrationCollectionCannotBeResolvedError extends Error {
-  readonly clipanion = {type: 'none'};
+export class MigrationCollectionCannotBeResolvedError
+  extends Error
+  implements ErrorWithMeta {
+  readonly clipanion = {type: 'none'} as const;
   name = 'MigrationCollectionCannotBeResolvedError';
 }
 

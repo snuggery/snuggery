@@ -1,5 +1,6 @@
 import {Architect, BuilderRun, Target} from '@angular-devkit/architect';
 import {json, JsonObject} from '@angular-devkit/core';
+import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
@@ -21,8 +22,8 @@ export const configurationOption: Option = {
   description: 'Configuration(s) to use',
 };
 
-export class BuilderFailedError extends Error {
-  readonly clipanion = {usage: 'none'};
+export class BuilderFailedError extends Error implements ErrorWithMeta {
+  readonly clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);

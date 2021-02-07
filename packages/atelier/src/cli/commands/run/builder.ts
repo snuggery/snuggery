@@ -1,4 +1,4 @@
-import {Option, UsageError} from 'clipanion';
+import {Option} from 'clipanion';
 
 import {ArchitectCommand} from '../../command/architect';
 
@@ -21,12 +21,6 @@ export class RunBuilderCommand extends ArchitectCommand {
   args = Option.Proxy();
 
   async execute(): Promise<number> {
-    if (this.builder == null) {
-      const err = new UsageError(`Missing parameter builder`);
-      err.clipanion.type = 'usage';
-      throw err;
-    }
-
     return this.withOptionValues(
       {
         ...(await this.getOptionsForBuilder(this.builder)),

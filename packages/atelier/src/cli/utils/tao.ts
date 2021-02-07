@@ -24,6 +24,7 @@ import type {
   FileChange,
   Generator,
 } from '@nrwl/devkit';
+import type {ErrorWithMeta} from 'clipanion';
 import {basename} from 'path';
 
 import type {CliWorkspace} from '../command/context';
@@ -61,8 +62,8 @@ function extractResult(
   })();
 }
 
-export class InvalidExecutorError extends Error {
-  readonly clipanion = {usage: 'none'};
+export class InvalidExecutorError extends Error implements ErrorWithMeta {
+  readonly clipanion = {type: 'none'} as const;
   constructor(message: string) {
     super(message);
 

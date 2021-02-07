@@ -689,7 +689,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prompts", "npm:2.4.0"],
             ["@types/semver", "npm:7.3.4"],
             ["@types/which-pm-runs", "npm:1.0.0"],
-            ["clipanion", "virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.5"],
+            ["clipanion", "virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.7"],
             ["json5", "npm:2.1.3"],
             ["kleur", "npm:4.1.3"],
             ["micromatch", "npm:4.0.2"],
@@ -698,7 +698,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semver", "npm:7.3.4"],
             ["strip-ansi", "npm:6.0.0"],
             ["supports-color", "npm:8.1.1"],
-            ["typanion", "npm:3.2.1"],
+            ["typanion", "npm:3.3.0"],
             ["which-pm-runs", "npm:1.0.0"]
           ],
           "linkType": "SOFT",
@@ -2633,19 +2633,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:3.0.0-rc.5", {
-          "packageLocation": "./.yarn/cache/clipanion-npm-3.0.0-rc.5-65b2e45ea2-cfa07beb10.zip/node_modules/clipanion/",
+        ["npm:3.0.0-rc.7", {
+          "packageLocation": "./.yarn/cache/clipanion-npm-3.0.0-rc.7-b28243ebd6-d609daa55c.zip/node_modules/clipanion/",
           "packageDependencies": [
-            ["clipanion", "npm:3.0.0-rc.5"]
+            ["clipanion", "npm:3.0.0-rc.7"]
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.5", {
-          "packageLocation": "./.yarn/$$virtual/clipanion-virtual-0b6aa7ef49/0/cache/clipanion-npm-3.0.0-rc.5-65b2e45ea2-cfa07beb10.zip/node_modules/clipanion/",
+        ["virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.7", {
+          "packageLocation": "./.yarn/$$virtual/clipanion-virtual-163898fcc6/0/cache/clipanion-npm-3.0.0-rc.7-b28243ebd6-d609daa55c.zip/node_modules/clipanion/",
           "packageDependencies": [
-            ["clipanion", "virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.5"],
+            ["clipanion", "virtual:d26bb455eb8f76650f406ede289cad22dc59b30c2b19b436b9d93823926989102bdf3b0a214b64f7bb1a11f3988f5451bf699452354e74dc7bde10822d2f64ec#npm:3.0.0-rc.7"],
             ["@types/typanion", null],
-            ["typanion", "npm:3.2.1"]
+            ["typanion", "npm:3.3.0"]
           ],
           "packagePeers": [
             "@types/typanion",
@@ -8357,10 +8357,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["typanion", [
-        ["npm:3.2.1", {
-          "packageLocation": "./.yarn/cache/typanion-npm-3.2.1-d7aec05187-db18b79efd.zip/node_modules/typanion/",
+        ["npm:3.3.0", {
+          "packageLocation": "./.yarn/cache/typanion-npm-3.3.0-9d1255e428-e31d9ee6e5.zip/node_modules/typanion/",
           "packageDependencies": [
-            ["typanion", "npm:3.2.1"]
+            ["typanion", "npm:3.3.0"]
           ],
           "linkType": "HARD",
         }]

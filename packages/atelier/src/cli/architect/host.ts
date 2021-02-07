@@ -5,14 +5,15 @@ import {
   BuilderSymbol,
 } from '@angular-devkit/architect/src/internal';
 import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
+import type {ErrorWithMeta} from 'clipanion';
 import {createRequire} from 'module';
 import {basename, dirname, join} from 'path';
 
 import type {CliWorkspace, Context} from '../command/context';
 import {makeExecutorIntoBuilder} from '../utils/tao';
 
-export class UnknownBuilderError extends Error {
-  public clipanion = {type: 'none'};
+export class UnknownBuilderError extends Error implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);
@@ -20,8 +21,8 @@ export class UnknownBuilderError extends Error {
   }
 }
 
-export class UnknownConfigurationError extends Error {
-  public clipanion = {type: 'none'};
+export class UnknownConfigurationError extends Error implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);
@@ -29,8 +30,10 @@ export class UnknownConfigurationError extends Error {
   }
 }
 
-export class InvalidBuilderSpecifiedError extends Error {
-  public clipanion = {type: 'none'};
+export class InvalidBuilderSpecifiedError
+  extends Error
+  implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);
@@ -38,8 +41,8 @@ export class InvalidBuilderSpecifiedError extends Error {
   }
 }
 
-export class InvalidBuilderError extends Error {
-  public clipanion = {type: 'none'};
+export class InvalidBuilderError extends Error implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);
@@ -47,8 +50,8 @@ export class InvalidBuilderError extends Error {
   }
 }
 
-export class UnknownTargetError extends Error {
-  public clipanion = {type: 'none'};
+export class UnknownTargetError extends Error implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 
   constructor(message: string) {
     super(message);

@@ -17,7 +17,7 @@ import {
   SchematicNameCollisionException,
   SchematicMissingFieldsException,
 } from '@angular-devkit/schematics/tools';
-import {Command, UsageError} from 'clipanion';
+import {Command, ErrorWithMeta, UsageError} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
 import {Format, richFormat, textFormat} from '../utils/format';
@@ -31,8 +31,8 @@ import type {Report} from '../utils/report';
 
 import type {CliWorkspace, Context} from './context';
 
-class PrettiedError extends Error {
-  readonly clipanion = {type: 'none'};
+class PrettiedError extends Error implements ErrorWithMeta {
+  readonly clipanion = {type: 'none'} as const;
 
   constructor(name: string, message: string) {
     super(message);
