@@ -114,7 +114,7 @@ module.exports = {
 
         await project.restoreInstallState();
 
-        const tarballBuffer = await xfs.readFilePromise(distTarball);
+        const tarballBuffer = await xfs.readFilePromise(tgz);
         const manifest = await getManifestFromTarball(tarballBuffer);
 
         if (manifest.name == null || manifest.name.identHash !== ident.identHash) {
@@ -129,8 +129,7 @@ module.exports = {
             stdout: this.context.stdout,
           },
           async report => {
-            const body = npmPublishUtils.makePublishBody(configuration, manifest, tarballBuffer, {
-              access: this.access,
+            const body = await npmPublishUtils.makePublishBody(createPublishWorkspace(workspace, workspace.cwd, manifest.raw), tarballBuffer, {
               tag: this.tag,
               registry,
             });
