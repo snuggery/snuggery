@@ -1,5 +1,7 @@
 import {
   BuilderContext,
+  Target,
+  targetFromTargetString,
   targetStringFromTarget,
 } from '@angular-devkit/architect';
 
@@ -10,22 +12,27 @@ import {
  * project.
  *
  * @param context The builder context
- * @param targetSpring The unresolved target
+ * @param targetString The unresolved target
  */
 export function resolveTargetString(
   context: BuilderContext,
-  targetSpring: string,
+  targetString: string,
 ): string {
-  if (targetSpring.includes(':')) {
-    return targetSpring;
+  let target: Target;
+
+  if (targetString.includes(':')) {
+    target = targetFromTargetString(targetString);
+  } else {
+    target = {project: '', target: targetString};
   }
 
-  if (context.target == null) {
-    throw new Error(`Target is required to resolve spec "${targetSpring}"`);
+  if (!target.project) {
+    if (context.target?.project == null) {
+      throw new Error(`Target is required to resolve spec "${targetString}"`);
+    }
+
+    target.project = context.target.project;
   }
 
-  return targetStringFromTarget({
-    project: context.target.project,
-    target: targetSpring,
-  });
+  return targetStringFromTarget(target);
 }
