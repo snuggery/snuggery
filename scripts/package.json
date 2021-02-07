@@ -1,8 +1,8 @@
 {
-  "name": "@atelier-workspace/scripts",
+  "name": "@snuggery-workspace/scripts",
   "dependencies": {
     "@angular-devkit/architect": "0.1101.2",
-    "@bgotink/atelier": "workspace:packages/atelier",
+    "@snuggery/snuggery": "workspace:packages/snuggery",
     "@yarnpkg/fslib": "^2.4.0",
     "jest": "26.6.3",
     "ts-jest": "26.5.0",

@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "projects": {
+    "all": {
+      "root": "",
+      "architect": {
+        "build": {
+          "builder": "@snuggery/snuggery:glob",
+          "options": {
+            "include": "@snuggery/*",
+            "builder": "$direct:./scripts/build"
+          }
+        },
+        "deploy": {
+          "builder": "@snuggery/snuggery:glob",
+          "options": {
+            "include": "@snuggery/*",
+            "builder": "$direct:./scripts/deploy"
+          },
+          "configurations": {
+            "next": {
+              "options": {
+                "tag": "next"
+              }
+            }
+          }
+        },
+        "lint": {
+          "builder": "@snuggery/snuggery:execute",
+          "options": {
+            "package": "eslint",
+            "arguments": ["packages", "integration"]
+          },
+          "configurations": {
+            "fix": {
+              "arguments": ["--fix", "packages", "integration"]
+            }
+          }
+        },
+        "test": {
+          "builder": "$direct:./scripts/jest.json",
+          "options": {
+            "tsConfig": "tsconfig.json",
+            "testMatch": ["packages/*/src/**/__tests__/**/*.spec.ts"],
+            "modulePathIgnorePatterns": ["packages/*/dist"]
+          }
+        }
+      }
+    },
+    "@snuggery/snuggery": {
+      "root": "packages/snuggery",
+      "architect": {
+        "build": {
+          "builder": "$direct:./scripts/build"
+        }
+      }
+    },
+    "@snuggery/global": {
+      "root": "packages/global",
+      "architect": {
+        "build": {
+          "builder": "$direct:./scripts/build"
+        }
+      }
+    },
+    "integration": {
+      "root": "integration",
+      "architect": {
+        "test": {
+          "builder": "$direct:./scripts/jest.json",
+          "options": {
+            "tsConfig": "integration/tsconfig.json",
+            "setupFilesAfterEnv": ["integration/setup.ts"],
+            "testMatch": ["integration/__tests__/**/*.spec.ts"]
+          }
+        }
+      }
+    }
+  }
+}

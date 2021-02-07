@@ -2,10 +2,15 @@ import {Filename, PortablePath, npath, ppath, xfs} from '@yarnpkg/fslib';
 import {spawn} from 'child_process';
 
 const fixtureRoot = npath.toPortablePath(__dirname + '/__fixtures__');
-const atelierMain = npath.resolve(__dirname, '../packages/atelier/dist/bin.js');
+const snuggeryMain = npath.resolve(
+  __dirname,
+  '../packages/snuggery/dist/bin.js',
+);
 
-if (!xfs.existsSync(npath.toPortablePath(atelierMain))) {
-  throw new Error('Built atelier not found, run `yarn ai build atelier` first');
+if (!xfs.existsSync(npath.toPortablePath(snuggeryMain))) {
+  throw new Error(
+    'Built snuggery not found, run `yarn sn build snuggery` first',
+  );
 }
 
 declare global {
@@ -65,14 +70,14 @@ globalThis.inFixture = function inFixture(
 function createRunner(dir: PortablePath): Fixture['run'] {
   return function run(args: string[], options = {}) {
     return new Promise((resolve, reject) => {
-      const child = spawn(process.argv0, [atelierMain, ...args], {
+      const child = spawn(process.argv0, [snuggeryMain, ...args], {
         cwd: options.cwd
           ? npath.resolve(npath.fromPortablePath(dir), options.cwd)
           : npath.fromPortablePath(dir),
         env: {
           NO_COLOR: '1',
           ...(options.env ?? process.env),
-          ATELIER_TEST: '1',
+          SNUGGERY_TEST: '1',
         },
         stdio: ['ignore', 'pipe', 'pipe'],
       });

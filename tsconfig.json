@@ -3,8 +3,8 @@
   "compilerOptions": {
     "types": ["jest"],
     "paths": {
-      "@bgotink/atelier/package.json": ["./packages/atelier/package.json"],
-      "@bgotink/atelier/*": ["./packages/atelier/src/*"]
+      "@snuggery/snuggery/package.json": ["./packages/snuggery/package.json"],
+      "@snuggery/snuggery/*": ["./packages/snuggery/src/*"]
     }
   },
   "include": ["packages/*/src/**/*.ts"]

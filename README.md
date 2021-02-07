@@ -1,6 +1,6 @@
-# Atelier
+# Snuggery
 
-This monorepository contains Atelier, a CLI to manage workspaces.
+This monorepository contains Snuggery, a CLI to manage workspaces.
 
 ## License
 

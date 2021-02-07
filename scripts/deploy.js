@@ -18,7 +18,7 @@ module.exports = createBuilder(async function ({tag}, ctx) {
     await exec(
       'yarn',
       [
-        'atelier-workspace',
+        'snuggery-workspace',
         'publish',
         ...(typeof tag === 'string' ? ['--tag', tag] : []),
       ],

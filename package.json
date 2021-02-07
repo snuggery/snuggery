@@ -1,5 +1,5 @@
 {
-  "name": "atelier-workspace",
+  "name": "snuggery-workspace",
   "private": true,
   "workspaces": [
     "integration",
@@ -8,13 +8,13 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "ai build",
-    "lint": "ai lint",
-    "test": "ai test"
+    "build": "sn build",
+    "lint": "sn lint",
+    "test": "sn test"
   },
   "devDependencies": {
-    "@atelier-workspace/scripts": "workspace:scripts",
-    "@bgotink/atelier": "workspace:packages/atelier",
+    "@snuggery-workspace/scripts": "workspace:scripts",
+    "@snuggery/snuggery": "workspace:packages/snuggery",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.17",
     "@typescript-eslint/eslint-plugin": "^4.12.0",

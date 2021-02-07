@@ -30,7 +30,7 @@ jobs:
 
       - name: 'Check for linting errors (fix w/ "yarn lint -c fix")'
         run: |
-          yarn ai lint
+          yarn sn lint
         shell: bash
 
   build:
@@ -46,11 +46,11 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          yarn ai build
+          yarn sn build
 
       - uses: actions/upload-artifact@v2
         with:
-          name: atelier-build
+          name: snuggery-build
           path: packages/*/dist/
           if-no-files-found: error
 
@@ -69,7 +69,7 @@ jobs:
       - name: 'Run tests'
         shell: bash
         run: |
-          yarn ai test
+          yarn sn test
 
   integration:
     name: 'Integration tests on node.js ${{matrix.node}}.x on ${{matrix.os}}'
@@ -97,10 +97,10 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: atelier-build
+          name: snuggery-build
           path: packages/
 
       - name: 'Run tests'
         shell: bash
         run: |
-          yarn ai test integration
+          yarn sn test integration

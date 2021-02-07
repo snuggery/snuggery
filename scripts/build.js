@@ -110,5 +110,5 @@ function tsc(root) {
 }
 
 function pack(root) {
-  return exec('yarn', ['atelier-workspace', 'pack'], root);
+  return exec('yarn', ['snuggery-workspace', 'pack'], root);
 }

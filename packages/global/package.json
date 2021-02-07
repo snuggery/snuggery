@@ -1,0 +1,22 @@
+{
+  "name": "@snuggery/global",
+  "version": "0.3.0",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snuggery/snuggery.git",
+    "directory": "packages/global"
+  },
+  "bin": {
+    "sn": "bin.js"
+  },
+  "dependencies": {
+    "@snuggery/snuggery": "0.3.0"
+  },
+  "devDependencies": {
+    "@snuggery-workspace/scripts": "workspace:scripts",
+    "@types/node": "^14.14.17",
+    "@yarnpkg/pnp": "2.3.2"
+  }
+}
