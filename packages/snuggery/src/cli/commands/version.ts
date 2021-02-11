@@ -34,10 +34,10 @@ export class VersionCommand extends AbstractCommand {
     const manifestPath = require.resolve('@snuggery/snuggery/package.json');
 
     report.reportInfo(
-      `@snuggery/snuggery   ${format.code(require(manifestPath).version)}`,
+      `@snuggery/snuggery  ${format.code(require(manifestPath).version)}`,
     );
     report.reportInfo(
-      `@angular-devkit/*  ${format.code(
+      `@angular-devkit/*   ${format.code(
         require('@angular-devkit/core/package.json').version,
       )}`,
     );
