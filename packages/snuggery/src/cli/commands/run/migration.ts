@@ -176,13 +176,25 @@ export class RunMigrationCommand extends MigrationCommand {
     }
 
     if (includedSchematics.length === 0) {
+      const message = formatMarkdownish(
+        `There are no migrations in package \`${this.package}\` between versions \`${this.from}\` and \`${toVersion}\``,
+        {format: this.format, paragraphs: true},
+      );
+
+      if (this.ignoreMissingMigrations) {
+        this.report.reportInfo(message);
+
+        return 0;
+      }
+
+      this.report.reportError(message);
       this.report.reportInfo(
         formatMarkdownish(
-          `There are no migrations in package \`${this.package}\` between versions \`${this.from}\` and \`${toVersion}\``,
+          "Pass `--ignore-missing-migrations` to exit successfully if a package doesn't define upgrade schematics",
           {format: this.format, paragraphs: true},
         ),
       );
-      return 0;
+      return 1;
     }
 
     includedSchematics.sort(
