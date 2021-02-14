@@ -1,0 +1,8 @@
+/* eslint-disable */
+module.exports = {
+name: "@yarnpkg/plugin-snuggery",
+factory: function (require) {
+var plugin;plugin=(()=>{"use strict";var t={165:(t,e,r)=>{r.r(e),r.d(e,{default:()=>a});const s=require("@yarnpkg/cli"),n=require("@yarnpkg/core"),o=n.structUtils.makeIdent("snuggery","snuggery").identHash;class i extends s.BaseCommand{constructor(){super(...arguments),this.args=[]}async execute(){const t=await n.Configuration.find(this.context.cwd,this.context.plugins),{project:e,workspace:r}=await n.Project.find(t,this.context.cwd);await e.restoreInstallState();const s=[e.topLevelWorkspace];null!=r&&s.unshift(r);for(const[t,r]of s.entries())if(r.dependencies.has(o)){if(0===t&&n.scriptUtils.hasWorkspaceScript(r,"sn"))break;return await n.scriptUtils.executePackageAccessibleBinary(r.anchoredLocator,"sn",this.args,{cwd:this.context.cwd,project:e,stdin:this.context.stdin,stdout:this.context.stdout,stderr:this.context.stderr})}return this.cli.run(["run","sn",...this.args])}}i.addOption("args",s.BaseCommand.Proxy()),i.addPath("sn");const a={commands:[i],hooks:{setupScriptEnvironment:(t,e,r)=>r("sn",process.execPath,[process.argv[1],"sn"])}}}},e={};function r(s){if(e[s])return e[s].exports;var n=e[s]={exports:{}};return t[s](n,n.exports,r),n.exports}return r.d=(t,e)=>{for(var s in e)r.o(e,s)&&!r.o(t,s)&&Object.defineProperty(t,s,{enumerable:!0,get:e[s]})},r.o=(t,e)=>Object.prototype.hasOwnProperty.call(t,e),r.r=t=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(t,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(t,"__esModule",{value:!0})},r(165)})();
+return plugin;
+}
+};

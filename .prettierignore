@@ -3,3 +3,6 @@
 
 /dist
 /packages/*/dist
+
+/packages/yarn-plugin-*/bin
+/packages/yarn-plugin-*/bundles
