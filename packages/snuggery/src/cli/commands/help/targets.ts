@@ -66,7 +66,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
         this.context.report.reportWarning(
           formatMarkdownish(
             `Couldn't find the configured default project \`${defaultProject}\` in the workspace.`,
-            {format, paragraphs: true},
+            {format},
           ),
         );
         this.context.report.reportSeparator();
@@ -85,7 +85,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
           report.reportInfo(
             formatMarkdownish(
               "All targets of this project are shadowed by the current project's targets.",
-              {format, paragraphs: true},
+              {format},
             ),
           );
           report.reportSeparator();

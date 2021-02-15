@@ -32,19 +32,17 @@ export class HelpBuilderCommand extends ArchitectCommand {
     report.reportInfo(
       formatMarkdownish(
         `Builder \`${builderName}\` of package \`${packageName}\``,
-        {format, paragraphs: false},
+        {format},
       ),
     );
     report.reportSeparator();
 
     if (description) {
-      report.reportInfo(
-        formatMarkdownish(description, {format, paragraphs: true}),
-      );
+      report.reportInfo(formatMarkdownish(description, {format}));
       report.reportSeparator();
     }
 
-    report.reportInfo(`${format.bold('Properties:')}\n`);
+    report.reportInfo(`${format.header('Properties:')}\n`);
 
     if (typeof optionSchema === 'boolean') {
       if (optionSchema) {

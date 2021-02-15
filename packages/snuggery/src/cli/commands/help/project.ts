@@ -41,7 +41,7 @@ export class HelpProjectCommand extends AbstractCommand {
     );
     report.reportSeparator();
 
-    report.reportInfo(`${format.bold('Targets:')}\n`);
+    report.reportInfo(`${format.header('Targets:')}\n`);
 
     if (project.targets.size === 0) {
       report.reportInfo('No targets are registered in this project.\n');
@@ -57,7 +57,7 @@ export class HelpProjectCommand extends AbstractCommand {
       );
     }
 
-    report.reportInfo(`${format.bold('Schematics:')}\n`);
+    report.reportInfo(`${format.header('Schematics:')}\n`);
 
     let defaultCollection: string;
     if (
@@ -73,14 +73,14 @@ export class HelpProjectCommand extends AbstractCommand {
       report.reportInfo(
         formatMarkdownish(
           `The default schematic collection is \`${defaultCollection}\`.`,
-          {format, paragraphs: true},
+          {format},
         ),
       );
     } else {
       report.reportWarning(
         formatMarkdownish(
           `The default schematic collection is \`${defaultCollection}\`, which is not installed.`,
-          {format, paragraphs: true},
+          {format},
         ),
       );
     }

@@ -31,7 +31,11 @@ function printObjectPropererties(
   object = tryDereference(object, schema);
 
   const formatHelper = (s: string, paragraphs = true) =>
-    formatMarkdownish(s, {format, paragraphs, indentation});
+    formatMarkdownish(s, {
+      format,
+      indentation,
+      maxLineLength: paragraphs ? undefined : Infinity,
+    });
 
   const required = new Set(
     Array.isArray(object.required) ? object.required : [],

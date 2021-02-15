@@ -40,7 +40,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
     report.reportInfo(
       formatMarkdownish(`Collection \`${collectionName}\`:`, {
         format,
-        paragraphs: false,
+        maxLineLength: Infinity,
       }),
     );
     report.reportSeparator();
@@ -51,7 +51,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
       report.reportInfo(
         formatMarkdownish(`- \`${prefix}${schematicName}\``, {
           format,
-          paragraphs: false,
+          maxLineLength: Infinity,
         }),
       );
 
@@ -64,7 +64,6 @@ export class HelpSchematicsCommand extends SchematicCommand {
         report.reportInfo(
           formatMarkdownish(description, {
             format,
-            paragraphs: true,
             indentation: 2,
           }),
         );
@@ -76,7 +75,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
     report.reportInfo(
       formatMarkdownish(
         `For more information about a specific schematic in \`${collectionName}\`, run`,
-        {format, paragraphs: true},
+        {format},
       ),
     );
     report.reportInfo(

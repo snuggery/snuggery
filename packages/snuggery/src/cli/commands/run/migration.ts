@@ -115,7 +115,7 @@ export class RunMigrationCommand extends MigrationCommand {
       this.report.reportDebug(
         formatMarkdownish(
           "Pass `--ignore-missing-migrations` to exit successfully if a package doesn't define upgrade schematics",
-          {format: this.format, paragraphs: true},
+          {format: this.format},
         ),
       );
 
@@ -178,7 +178,7 @@ export class RunMigrationCommand extends MigrationCommand {
     if (includedSchematics.length === 0) {
       const message = formatMarkdownish(
         `There are no migrations in package \`${this.package}\` between versions \`${this.from}\` and \`${toVersion}\``,
-        {format: this.format, paragraphs: true},
+        {format: this.format},
       );
 
       if (this.ignoreMissingMigrations) {
@@ -191,7 +191,7 @@ export class RunMigrationCommand extends MigrationCommand {
       this.report.reportInfo(
         formatMarkdownish(
           "Pass `--ignore-missing-migrations` to exit successfully if a package doesn't define upgrade schematics",
-          {format: this.format, paragraphs: true},
+          {format: this.format},
         ),
       );
       return 1;
@@ -215,7 +215,7 @@ export class RunMigrationCommand extends MigrationCommand {
         } in package  \`${this.package}\``,
         {
           format: this.format,
-          paragraphs: false,
+          maxLineLength: Infinity,
         },
       ),
     );
@@ -224,7 +224,7 @@ export class RunMigrationCommand extends MigrationCommand {
       this.report.reportInfo(
         formatMarkdownish(
           `Running migration \`${schematic.description.name}\``,
-          {format: this.format, paragraphs: false},
+          {format: this.format, maxLineLength: Infinity},
         ),
       );
 

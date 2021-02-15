@@ -66,7 +66,7 @@ export class HelpTargetCommand extends ArchitectCommand {
         )}\` in project \`${this.format.code(projectName)}\`${
           projectLabel ? ` ${projectLabel}` : ''
         } via:`,
-        {format, paragraphs: true},
+        {format},
       ),
     );
     report.reportSeparator();

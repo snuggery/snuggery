@@ -30,7 +30,7 @@ export class HelpBuildersCommand extends ArchitectCommand {
     report.reportInfo(
       formatMarkdownish(`Builders in \`${this.packageName}\`:`, {
         format,
-        paragraphs: false,
+        maxLineLength: Infinity,
       }),
     );
     report.reportSeparator();
@@ -39,7 +39,7 @@ export class HelpBuildersCommand extends ArchitectCommand {
       report.reportInfo(
         formatMarkdownish(`- \`${this.packageName}:${name}\``, {
           format,
-          paragraphs: false,
+          maxLineLength: Infinity,
         }),
       );
 
@@ -47,7 +47,6 @@ export class HelpBuildersCommand extends ArchitectCommand {
         report.reportInfo(
           formatMarkdownish(description, {
             format,
-            paragraphs: true,
             indentation: 2,
           }),
         );
@@ -59,7 +58,7 @@ export class HelpBuildersCommand extends ArchitectCommand {
     report.reportInfo(
       formatMarkdownish(
         `For more information about a specific builder in \`${this.packageName}\`, run`,
-        {format, paragraphs: true},
+        {format},
       ),
     );
     report.reportInfo(`  $ sn help builder ${this.packageName}:<builder name>`);

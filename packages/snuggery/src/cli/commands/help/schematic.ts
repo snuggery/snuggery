@@ -53,19 +53,17 @@ export class HelpSchematicCommand extends SchematicCommand {
     report.reportInfo(
       formatMarkdownish(
         `Schematic \`${schematicName}\` of collection \`${collectionName}\``,
-        {format, paragraphs: false},
+        {format, maxLineLength: Infinity},
       ),
     );
     report.reportSeparator();
 
     if (description) {
-      report.reportInfo(
-        formatMarkdownish(description, {format, paragraphs: true}),
-      );
+      report.reportInfo(formatMarkdownish(description, {format}));
       report.reportSeparator();
     }
 
-    report.reportInfo(`${format.bold('Properties:')}\n`);
+    report.reportInfo(`${format.header('Properties:')}\n`);
 
     if (schemaJson == null) {
       report.reportInfo(`This builder doens't accept any properties.\n`);

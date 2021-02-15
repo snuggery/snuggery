@@ -1079,7 +1079,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prompts", "npm:2.4.0"],
             ["@types/semver", "npm:7.3.4"],
             ["@types/which-pm-runs", "npm:1.0.0"],
-            ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.7"],
+            ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.9"],
             ["json5", "npm:2.1.3"],
             ["kleur", "npm:4.1.3"],
             ["micromatch", "npm:4.0.2"],
@@ -3654,17 +3654,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:3.0.0-rc.7", {
-          "packageLocation": "./.yarn/cache/clipanion-npm-3.0.0-rc.7-b28243ebd6-d609daa55c.zip/node_modules/clipanion/",
+        ["npm:3.0.0-rc.9", {
+          "packageLocation": "./.yarn/cache/clipanion-npm-3.0.0-rc.9-51b562210b-5abfa0ea22.zip/node_modules/clipanion/",
           "packageDependencies": [
-            ["clipanion", "npm:3.0.0-rc.7"]
+            ["clipanion", "npm:3.0.0-rc.9"]
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.7", {
-          "packageLocation": "./.yarn/$$virtual/clipanion-virtual-ac924cb718/0/cache/clipanion-npm-3.0.0-rc.7-b28243ebd6-d609daa55c.zip/node_modules/clipanion/",
+        ["virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.9", {
+          "packageLocation": "./.yarn/$$virtual/clipanion-virtual-aa1f8bd046/0/cache/clipanion-npm-3.0.0-rc.9-51b562210b-5abfa0ea22.zip/node_modules/clipanion/",
           "packageDependencies": [
-            ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.7"],
+            ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.0-rc.9"],
             ["@types/typanion", null],
             ["typanion", "npm:3.3.0"]
           ],

@@ -36,7 +36,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
       report.reportInfo(
         formatMarkdownish(
           `Package \`${this.package}\` doesn't have any migrations.`,
-          {format, paragraphs: true},
+          {format},
         ),
       );
       return;
@@ -52,7 +52,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
         }):`,
         {
           format,
-          paragraphs: false,
+          maxLineLength: Infinity,
         },
       ),
     );
@@ -62,7 +62,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
       report.reportInfo(
         formatMarkdownish(`- \`${schematicName}\``, {
           format,
-          paragraphs: false,
+          maxLineLength: Infinity,
         }),
       );
 
@@ -76,7 +76,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
           version ? `Version \`${version}\`` : 'Not linked to a version',
           {
             format,
-            paragraphs: false,
+            maxLineLength: Infinity,
             indentation: 2,
           },
         ),
