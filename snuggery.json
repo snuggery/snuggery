@@ -7,8 +7,7 @@
         "build": {
           "builder": "@snuggery/snuggery:glob",
           "options": {
-            "include": "@snuggery/*",
-            "builder": "$direct:./scripts/build"
+            "include": "@snuggery/*"
           }
         },
         "deploy": {
