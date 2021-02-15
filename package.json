@@ -8,6 +8,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "postinstall": "is-ci || husky install",
     "build": "sn build",
     "lint": "sn lint",
     "test": "sn test"
@@ -23,7 +24,8 @@
     "eslint": "^7.17.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-plugin-import": "^2.22.1",
-    "husky": "^4.3.6",
+    "husky": "^5.0.9",
+    "is-ci": "^2.0.0",
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "typescript": "4.1.3"
