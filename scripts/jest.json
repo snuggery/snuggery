@@ -25,6 +25,11 @@
       "type": "boolean",
       "description": "Watch for changes",
       "default": false
+    },
+    "updateSnapshot": {
+      "type": "boolean",
+      "description": "Update the snapshots",
+      "default": false
     }
   },
   "required": ["tsConfig"],
