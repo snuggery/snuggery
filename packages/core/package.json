@@ -1,0 +1,20 @@
+{
+  "name": "@snuggery/core",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snuggery/snuggery.git",
+    "directory": "packages/core"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@angular-devkit/core": "11.1.2",
+    "jsonc-parser": "3.0.0"
+  },
+  "devDependencies": {
+    "@snuggery-workspace/scripts": "workspace:scripts",
+    "@types/node": "^14.14.17"
+  }
+}

@@ -773,6 +773,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snuggery/core@0.1.0, @snuggery/core@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@snuggery/core@workspace:packages/core"
+  dependencies:
+    "@angular-devkit/core": 11.1.2
+    "@snuggery-workspace/scripts": "workspace:scripts"
+    "@types/node": ^14.14.17
+    jsonc-parser: 3.0.0
+  languageName: unknown
+  linkType: soft
+
 "@snuggery/global@workspace:packages/global":
   version: 0.0.0-use.local
   resolution: "@snuggery/global@workspace:packages/global"
@@ -5569,6 +5580,13 @@ fsevents@^2.1.2:
   bin:
     json5: lib/cli.js
   checksum: df41624f9f40bfacc546f779eef6d161a3312fbb6ec1dbd69f8c4388e9807af653b753371ab19b6d2bab22af2ca7dde62fe03c791596acf76915e1fc4ee6fd88
+  languageName: node
+  linkType: hard
+
+"jsonc-parser@npm:3.0.0":
+  version: 3.0.0
+  resolution: "jsonc-parser@npm:3.0.0"
+  checksum: 36b9080a7e25f5052c7d551109c4ead564f3102d7ca0c5ee4a2f7debc18b2cd31896e0e369cfd1442d9d2d71fc1defaf094ba885bc9b43a6a3f2b3a9083fd2cb
   languageName: node
   linkType: hard
 
