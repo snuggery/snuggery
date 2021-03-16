@@ -11,17 +11,10 @@
           }
         },
         "deploy": {
-          "builder": "@snuggery/snuggery:glob",
-          "options": {
-            "include": "@snuggery/*",
-            "exclude": "@snuggery/yarn-plugin*",
-            "builder": "$direct:./scripts/deploy"
-          },
+          "builder": "$direct:./scripts/deploy",
           "configurations": {
             "next": {
-              "options": {
-                "tag": "next"
-              }
+              "tag": "next"
             }
           }
         },

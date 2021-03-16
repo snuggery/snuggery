@@ -764,6 +764,7 @@ __metadata:
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
     "@angular-devkit/architect": 0.1101.2
+    "@angular-devkit/core": 11.1.2
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@yarnpkg/fslib": ^2.4.0
     jest: 26.6.3

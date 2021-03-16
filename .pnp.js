@@ -1049,6 +1049,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@yarnpkg/fslib", "npm:2.4.0"],
             ["jest", "npm:26.6.3"],
