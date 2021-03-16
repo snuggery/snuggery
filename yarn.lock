@@ -773,7 +773,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/core@0.1.0, @snuggery/core@workspace:packages/core":
+"@snuggery/core@0.0.0, @snuggery/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
@@ -804,7 +804,7 @@ __metadata:
     "@angular-devkit/core": 11.1.2
     "@angular-devkit/schematics": 11.1.2
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": 0.1.0
+    "@snuggery/core": 0.0.0
   peerDependencies:
     "@angular-devkit/core": ^11.1.2
     "@angular-devkit/schematics": ^11.1.2
@@ -821,7 +821,7 @@ __metadata:
     "@arcanis/slice-ansi": 1.0.2
     "@nrwl/devkit": ^11.2.0
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": 0.1.0
+    "@snuggery/core": 0.0.0
     "@types/json5": ^0.0.30
     "@types/micromatch": ^4
     "@types/node": ^14.14.17

@@ -1,6 +1,6 @@
 {
   "name": "@snuggery/schematics",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -19,6 +19,6 @@
     "@snuggery-workspace/scripts": "workspace:scripts"
   },
   "dependencies": {
-    "@snuggery/core": "0.1.0"
+    "@snuggery/core": "0.0.0"
   }
 }

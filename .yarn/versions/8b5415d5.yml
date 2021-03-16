@@ -1,0 +1,5 @@
+releases:
+  "@snuggery/core": minor
+  "@snuggery/global": minor
+  "@snuggery/schematics": minor
+  "@snuggery/snuggery": minor
