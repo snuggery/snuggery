@@ -1,15 +1,12 @@
 import type {Target} from '@angular-devkit/architect';
-import {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
+import type {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
+import {parseWorkspace, workspaceFilenames} from '@snuggery/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {promises as fs} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
-import {
-  isTaoWorkspaceConfiguration,
-  mapTaoWorkspaceToAngularWorkspace,
-} from '../utils/tao';
 
 export interface Context extends BaseContext {
   /**
@@ -157,79 +154,29 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
   }
 }
 
-const configFileNames = [
-  // Our own
-  'snuggery.json',
-  '.snuggery.json',
-
-  // Nx's tao
-  'workspace.json',
-  '.workspace.json',
-
-  // Angular
-  'angular.json',
-  '.angular.json',
-];
-
 export async function findWorkspace(
   startingCwd: string,
 ): Promise<CliWorkspace | null> {
-  const workspacePath = await findUp(configFileNames, startingCwd);
+  const workspacePath = await findUp(workspaceFilenames, startingCwd);
 
   if (workspacePath == null) {
     return null;
   }
 
-  const host = new SnuggeryWorkspaceHost();
-
-  let version = 1;
-  try {
-    const workspaceJson = JSON.parse(await host.readFile(workspacePath));
-
-    if (typeof workspaceJson.version === 'number') {
-      ({version} = workspaceJson);
-    }
-  } catch {
-    // default to v1, angular will throw something useful
-  }
-
-  if (isTaoWorkspaceConfiguration(workspacePath, version)) {
-    host.mockFile(
-      workspacePath,
-      JSON.stringify(
-        mapTaoWorkspaceToAngularWorkspace(
-          JSON.parse(await host.readFile(workspacePath)),
-        ),
-        null,
-        2,
-      ),
-    );
-  }
-
-  const {workspace} = await workspaces.readWorkspace(
-    workspacePath,
-    host,
-    workspaces.WorkspaceFormat.JSON,
+  return new CliWorkspace(
+    await parseWorkspace(workspacePath, workspaceHost),
+    dirname(workspacePath),
   );
-
-  return new CliWorkspace(workspace, dirname(workspacePath));
 }
 
-class SnuggeryWorkspaceHost implements workspaces.WorkspaceHost {
-  private readonly mocked = new Map<string, string>();
-
+const workspaceHost: workspaces.WorkspaceHost = {
   async readFile(path: string): Promise<string> {
-    const mocked = this.mocked.get(path);
-    return mocked ?? fs.readFile(path, 'utf-8');
-  }
+    return fs.readFile(path, 'utf-8');
+  },
 
   async writeFile(path: string, data: string): Promise<void> {
     await fs.writeFile(path, data);
-  }
-
-  mockFile(path: string, data: string) {
-    this.mocked.set(path, data);
-  }
+  },
 
   async isDirectory(path: string): Promise<boolean> {
     try {
@@ -237,7 +184,7 @@ class SnuggeryWorkspaceHost implements workspaces.WorkspaceHost {
     } catch {
       return false;
     }
-  }
+  },
 
   async isFile(path: string): Promise<boolean> {
     try {
@@ -245,5 +192,5 @@ class SnuggeryWorkspaceHost implements workspaces.WorkspaceHost {
     } catch {
       return false;
     }
-  }
-}
+  },
+};

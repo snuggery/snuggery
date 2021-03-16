@@ -2,11 +2,11 @@ import {promises as fs} from 'fs';
 import {join, dirname, parse as parsePath} from 'path';
 
 export async function findUp(
-  names: string | string[],
+  names: string | readonly string[],
   from: string,
 ): Promise<string | null> {
   if (!Array.isArray(names)) {
-    names = [names];
+    names = [names as string];
   }
   const root = parsePath(from).root;
 

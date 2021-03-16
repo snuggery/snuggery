@@ -25,7 +25,6 @@ import type {
   Generator,
 } from '@nrwl/devkit';
 import type {ErrorWithMeta} from 'clipanion';
-import {basename} from 'path';
 
 import type {CliWorkspace} from '../command/context';
 
@@ -284,55 +283,5 @@ export function makeGeneratorIntoSchematic(
 
       context.addTask(new ExecuteAfterSchematicTask(() => task()));
     }
-  };
-}
-
-const possibleTaoWorkspaces = new Set([
-  'workspace.json',
-  '.workspace.json',
-  'angular.json',
-  '.angular.json',
-]);
-export function isTaoWorkspaceConfiguration(
-  path: string,
-  version: number,
-): boolean {
-  return possibleTaoWorkspaces.has(basename(path)) && version === 2;
-}
-
-export function mapTaoWorkspaceToAngularWorkspace({
-  generators,
-  schematics,
-  projects,
-  ...rest
-}: JsonObject): JsonObject {
-  return {
-    ...rest,
-    version: 1,
-    schematics: generators ?? schematics ?? {},
-    projects: Object.fromEntries(
-      Object.entries(projects as Record<string, JsonObject>).map(
-        ([
-          projectName,
-          {generators, schematics, targets, architect, ...project},
-        ]) => {
-          return [
-            projectName,
-            {
-              ...project,
-              schematics: generators ?? schematics ?? {},
-              architect: Object.fromEntries(
-                Object.entries(
-                  architect ?? targets ?? ({} as JsonObject),
-                ).map(([targetName, {executor, ...target}]) => [
-                  targetName,
-                  {...target, builder: executor},
-                ]),
-              ),
-            },
-          ];
-        },
-      ),
-    ),
   };
 }

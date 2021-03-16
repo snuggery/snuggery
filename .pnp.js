@@ -1091,6 +1091,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.2.0"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/core", "workspace:packages/core"],
             ["@types/json5", "npm:0.0.30"],
             ["@types/micromatch", "npm:4.0.1"],
             ["@types/node", "npm:14.14.17"],
