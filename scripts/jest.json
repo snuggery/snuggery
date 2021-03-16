@@ -30,6 +30,11 @@
       "type": "boolean",
       "description": "Update the snapshots",
       "default": false
+    },
+    "testTimeout": {
+      "type": "number",
+      "description": "Default timeout for tests",
+      "default": 5000
     }
   },
   "required": ["tsConfig"],

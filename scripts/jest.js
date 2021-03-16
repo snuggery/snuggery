@@ -26,6 +26,8 @@ module.exports = createBuilder(async (options, context) => {
 
       watch: options.watch,
       updateSnapshot: options.updateSnapshot,
+
+      testTimeout: options.testTimeout,
     },
     [
       join(
