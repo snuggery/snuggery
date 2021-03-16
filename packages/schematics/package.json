@@ -1,0 +1,24 @@
+{
+  "name": "@snuggery/schematics",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/snuggery/snuggery.git",
+    "directory": "packages/schematics"
+  },
+  "main": "index.js",
+  "peerDependencies": {
+    "@angular-devkit/core": "^11.1.2",
+    "@angular-devkit/schematics": "^11.1.2"
+  },
+  "devDependencies": {
+    "@angular-devkit/core": "11.1.2",
+    "@angular-devkit/schematics": "11.1.2",
+    "@snuggery-workspace/scripts": "workspace:scripts"
+  },
+  "dependencies": {
+    "@snuggery/core": "0.1.0"
+  }
+}

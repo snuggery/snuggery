@@ -797,6 +797,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snuggery/schematics@workspace:packages/schematics":
+  version: 0.0.0-use.local
+  resolution: "@snuggery/schematics@workspace:packages/schematics"
+  dependencies:
+    "@angular-devkit/core": 11.1.2
+    "@angular-devkit/schematics": 11.1.2
+    "@snuggery-workspace/scripts": "workspace:scripts"
+    "@snuggery/core": 0.1.0
+  peerDependencies:
+    "@angular-devkit/core": ^11.1.2
+    "@angular-devkit/schematics": ^11.1.2
+  languageName: unknown
+  linkType: soft
+
 "@snuggery/snuggery@0.3.0, @snuggery/snuggery@workspace:packages/snuggery":
   version: 0.0.0-use.local
   resolution: "@snuggery/snuggery@workspace:packages/snuggery"

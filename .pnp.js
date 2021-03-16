@@ -35,6 +35,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/global"
       },
       {
+        "name": "@snuggery/schematics",
+        "reference": "workspace:packages/schematics"
+      },
+      {
         "name": "@snuggery/snuggery",
         "reference": "workspace:packages/snuggery"
       },
@@ -57,6 +61,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery-workspace/scripts", ["workspace:scripts"]],
       ["@snuggery/core", ["workspace:packages/core"]],
       ["@snuggery/global", ["workspace:packages/global"]],
+      ["@snuggery/schematics", ["workspace:packages/schematics"]],
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],
       ["integration-aa38c3", ["workspace:integration"]],
@@ -1076,6 +1081,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@types/node", "npm:14.14.17"],
             ["@yarnpkg/pnp", "npm:2.3.2"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@snuggery/schematics", [
+        ["workspace:packages/schematics", {
+          "packageLocation": "./packages/schematics/",
+          "packageDependencies": [
+            ["@snuggery/schematics", "workspace:packages/schematics"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@angular-devkit/schematics", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/core", "workspace:packages/core"]
           ],
           "linkType": "SOFT",
         }]

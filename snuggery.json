@@ -71,6 +71,14 @@
         }
       }
     },
+    "@snuggery/schematics": {
+      "root": "packages/schematics",
+      "architect": {
+        "build": {
+          "builder": "$direct:./scripts/build"
+        }
+      }
+    },
     "@snuggery/yarn-plugin-snuggery": {
       "root": "packages/yarn-plugin-snuggery",
       "architect": {
