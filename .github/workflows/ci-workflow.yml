@@ -33,8 +33,8 @@ jobs:
           yarn sn lint
         shell: bash
 
-  build:
-    name: Build
+  build-unit:
+    name: Build & Unit
     runs-on: ubuntu-latest
 
     steps:
@@ -47,24 +47,6 @@ jobs:
         shell: bash
         run: |
           yarn sn build
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: snuggery-build
-          path: packages/*/dist/
-          if-no-files-found: error
-
-  unit:
-    name: 'Unit tests'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: 'Use Node.js ${{matrix.node}}.x'
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
 
       - name: 'Run tests'
         shell: bash
@@ -94,11 +76,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{matrix.node}}.x
-
-      - uses: actions/download-artifact@v2
-        with:
-          name: snuggery-build
-          path: packages/
 
       - name: 'Run tests'
         shell: bash

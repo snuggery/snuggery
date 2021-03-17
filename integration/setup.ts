@@ -1,17 +1,10 @@
-import {Filename, PortablePath, npath, ppath, xfs} from '@yarnpkg/fslib';
-import {spawn} from 'child_process';
+import * as snuggery from '@snuggery/snuggery/cli';
+import {Filename, PortablePath, npath, ppath} from '@yarnpkg/fslib';
+import {Readable, Writable} from 'stream';
 
 const fixtureRoot = npath.toPortablePath(__dirname + '/__fixtures__');
-const snuggeryMain = npath.resolve(
-  __dirname,
-  '../packages/snuggery/dist/bin.js',
-);
 
-if (!xfs.existsSync(npath.toPortablePath(snuggeryMain))) {
-  throw new Error(
-    'Built snuggery not found, run `yarn sn build snuggery` first',
-  );
-}
+process.env.FORCE_COLOR = 'false';
 
 declare global {
   type JsonValue = string | number | null | boolean | JsonValue[] | JsonObject;
@@ -23,12 +16,9 @@ declare global {
     directory: PortablePath;
     run(
       args: string[],
-      options?: {cwd?: string; env?: NodeJS.ProcessEnv},
+      options?: {cwd?: string},
     ): Promise<{stdout: string; stderr: string; exitCode: number}>;
-    runJson(
-      args: string[],
-      options?: {cwd?: string; env?: NodeJS.ProcessEnv},
-    ): Promise<JsonObject>;
+    runJson(args: string[], options?: {cwd?: string}): Promise<JsonObject>;
   }
 
   function inFixture(
@@ -67,35 +57,56 @@ globalThis.inFixture = function inFixture(
   };
 };
 
-function createRunner(dir: PortablePath): Fixture['run'] {
-  return function run(args: string[], options = {}) {
-    return new Promise((resolve, reject) => {
-      const child = spawn(process.argv0, [snuggeryMain, ...args], {
-        cwd: options.cwd
-          ? npath.resolve(npath.fromPortablePath(dir), options.cwd)
-          : npath.fromPortablePath(dir),
-        env: {
-          NO_COLOR: '1',
-          ...(options.env ?? process.env),
-          SNUGGERY_TEST: '1',
-        },
-        stdio: ['ignore', 'pipe', 'pipe'],
-      });
-
-      const stdout: Buffer[] = [];
-      const stderr: Buffer[] = [];
-
-      child.stdout.addListener('data', buff => stdout.push(buff));
-      child.stderr.addListener('data', buff => stderr.push(buff));
-
-      child.on('error', reject);
-      child.on('close', exitCode => {
-        resolve({
-          exitCode,
-          stdout: Buffer.concat(stdout).toString(),
-          stderr: Buffer.concat(stderr).toString(),
-        });
-      });
+class EmptyReadable extends Readable {
+  constructor() {
+    super({
+      read: () => {
+        this.push(null);
+      },
     });
+  }
+}
+
+class CollectingWritable extends Writable {
+  private readonly buffers: Buffer[] = [];
+
+  constructor() {
+    super({
+      write: (buff, _encoding, callback) => {
+        this.buffers.push(buff);
+        callback();
+      },
+    });
+  }
+
+  getContent() {
+    return Buffer.concat(this.buffers);
+  }
+}
+
+function createRunner(dir: PortablePath): Fixture['run'] {
+  return async function run(args: string[], options = {}) {
+    const startCwd = options.cwd
+      ? npath.resolve(npath.fromPortablePath(dir), options.cwd)
+      : npath.fromPortablePath(dir);
+
+    const workspace = await snuggery.findWorkspace(startCwd);
+
+    const stdout = new CollectingWritable();
+    const stderr = new CollectingWritable();
+
+    const exitCode = await snuggery.run(args, {
+      stdin: new EmptyReadable(),
+      stdout,
+      stderr,
+      startCwd,
+      workspace,
+    });
+
+    return {
+      exitCode,
+      stdout: stdout.getContent().toString('utf8'),
+      stderr: stderr.getContent().toString('utf8'),
+    };
   };
 }

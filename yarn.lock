@@ -4570,6 +4570,7 @@ fsevents@^2.1.2:
   resolution: "integration-aa38c3@workspace:integration"
   dependencies:
     "@angular-devkit/architect": 0.1101.2
+    "@snuggery/snuggery": "workspace:packages/snuggery"
     "@types/jest": ^26.0.20
     "@types/node": ^14.14.17
     "@yarnpkg/fslib": 2.4.0

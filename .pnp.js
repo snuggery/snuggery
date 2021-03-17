@@ -5774,6 +5774,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["integration-aa38c3", "workspace:integration"],
             ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@types/jest", "npm:26.0.20"],
             ["@types/node", "npm:14.14.17"],
             ["@yarnpkg/fslib", "npm:2.4.0"],
