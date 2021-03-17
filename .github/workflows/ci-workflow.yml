@@ -55,7 +55,7 @@ jobs:
 
   integration:
     name: 'Integration tests on node.js ${{matrix.node}}.x on ${{matrix.os}}'
-    needs: build
+    needs: build-unit
     runs-on: ${{matrix.os}}
     strategy:
       fail-fast: false
