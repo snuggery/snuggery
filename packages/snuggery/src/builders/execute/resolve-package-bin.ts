@@ -1,5 +1,5 @@
 import type {BuilderContext} from '@angular-devkit/architect';
-import {getProjectPath} from '@snuggery/snuggery/builder-utils';
+import {getProjectPath} from '@snuggery/architect';
 import {createRequire} from 'module';
 import {dirname, join} from 'path';
 

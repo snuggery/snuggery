@@ -4,7 +4,7 @@ import {
   Target as ArchitectTarget,
   targetStringFromTarget,
 } from '@angular-devkit/architect';
-import type {TargetSpecifier} from '@snuggery/snuggery/builder-utils';
+import type {TargetSpecifier} from '@snuggery/architect';
 import {findWorkspace} from '@snuggery/snuggery/cli';
 import {filterByPatterns} from '@snuggery/snuggery/utils';
 import {defer, Observable} from 'rxjs';

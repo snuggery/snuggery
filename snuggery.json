@@ -56,6 +56,14 @@
         }
       }
     },
+    "@snuggery/architect": {
+      "root": "packages/architect",
+      "architect": {
+        "build": {
+          "builder": "$direct:./scripts/build"
+        }
+      }
+    },
     "@snuggery/core": {
       "root": "packages/core",
       "architect": {

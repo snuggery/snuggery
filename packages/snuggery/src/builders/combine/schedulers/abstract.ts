@@ -9,7 +9,7 @@ import {
   TransientTarget,
   resolveTargetString,
   TargetSpecifier,
-} from '@snuggery/snuggery/builder-utils';
+} from '@snuggery/architect';
 import {concat, merge, Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 

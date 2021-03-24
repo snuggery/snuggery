@@ -1,5 +1,5 @@
 import {JsonObject} from '@angular-devkit/core';
-import {TargetSpecifier as SingleTarget} from '@snuggery/snuggery/builder-utils/builder-utils';
+import {TargetSpecifier as SingleTarget} from '@snuggery/architect';
 
 export const enum Type {
   Serial = 'serial',

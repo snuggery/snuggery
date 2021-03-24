@@ -1,8 +1,5 @@
 import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {
-  getProjectPath,
-  resolveWorkspacePath,
-} from '@snuggery/snuggery/builder-utils';
+import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
 import {Observable, defer, of} from 'rxjs';
 import {concatAll} from 'rxjs/operators';
 

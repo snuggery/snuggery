@@ -27,6 +27,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:integration"
       },
       {
+        "name": "@snuggery/architect",
+        "reference": "workspace:packages/architect"
+      },
+      {
         "name": "@snuggery/core",
         "reference": "workspace:packages/core"
       },
@@ -59,6 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "ignorePatternData": "(^(?:\\.yarn\\/sdks(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)|$))$)",
     "fallbackExclusionList": [
       ["@snuggery-workspace/scripts", ["workspace:scripts"]],
+      ["@snuggery/architect", ["virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect", "workspace:packages/architect"]],
       ["@snuggery/core", ["workspace:packages/core"]],
       ["@snuggery/global", ["workspace:packages/global"]],
       ["@snuggery/schematics", ["workspace:packages/schematics"]],
@@ -1060,6 +1065,43 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@snuggery/architect", [
+        ["virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect", {
+          "packageLocation": "./.yarn/$$virtual/@snuggery-architect-virtual-4a0b359a32/1/packages/architect/",
+          "packageDependencies": [
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
+            ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@types/angular-devkit__architect", null],
+            ["@types/angular-devkit__core", null],
+            ["@types/node", "npm:14.14.35"],
+            ["@types/rxjs", null],
+            ["rxjs", "npm:6.6.3"]
+          ],
+          "packagePeers": [
+            "@angular-devkit/architect",
+            "@angular-devkit/core",
+            "@types/angular-devkit__architect",
+            "@types/angular-devkit__core",
+            "@types/rxjs",
+            "rxjs"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:packages/architect", {
+          "packageLocation": "./packages/architect/",
+          "packageDependencies": [
+            ["@snuggery/architect", "workspace:packages/architect"],
+            ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@types/node", "npm:14.14.35"],
+            ["rxjs", "npm:6.6.3"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@snuggery/core", [
         ["workspace:packages/core", {
           "packageLocation": "./packages/core/",
@@ -1110,6 +1152,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@arcanis/slice-ansi", "npm:1.0.2"],
             ["@nrwl/devkit", "npm:11.2.0"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
             ["@snuggery/core", "workspace:packages/core"],
             ["@types/json5", "npm:0.0.30"],
             ["@types/micromatch", "npm:4.0.1"],
@@ -1388,6 +1431,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-node-npm-14.14.17-a630dac402-2bb32c683d.zip/node_modules/@types/node/",
           "packageDependencies": [
             ["@types/node", "npm:14.14.17"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:14.14.35", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.35-c55176fef6-0f6320bf53.zip/node_modules/@types/node/",
+          "packageDependencies": [
+            ["@types/node", "npm:14.14.35"]
           ],
           "linkType": "HARD",
         }]
