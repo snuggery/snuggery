@@ -41,9 +41,12 @@ import('@snuggery/snuggery/cli')
           pnpapi.setup();
         }
 
-        process.env.NODE_OPTIONS = `${
-          process.env.NODE_OPTIONS || ''
-        } --require ${JSON.stringify(pnpFile)}`;
+        const pnpRequire = `--require ${
+          /\s/.test(pnpFile) ? JSON.stringify(pnpFile) : pnpFile
+        }`;
+        process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
+          ? `${process.env.NODE_OPTIONS} ${pnpRequire}`
+          : pnpRequire;
       }
     }
 
