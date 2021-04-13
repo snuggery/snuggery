@@ -75,7 +75,14 @@ export class EntryCommand extends ArchitectCommand {
       return 0;
     }
 
-    if (isJsonArray(options[1].configuration!)) {
+    if (typeof options[1].configuration === 'string') {
+      for (const value of options[1].configuration.split(',')) {
+        if (value) {
+          configurations.add(value);
+        }
+      }
+      delete options[1].configuration;
+    } else if (isJsonArray(options[1].configuration!)) {
       for (const value of options[1].configuration) {
         if (typeof value === 'string') {
           configurations.add(value);

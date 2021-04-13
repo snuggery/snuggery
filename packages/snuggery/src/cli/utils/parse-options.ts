@@ -17,11 +17,11 @@ function createOptionParserCommand({
   path = Command.Default,
   description,
 }: {
-  path?: string[];
+  path?: readonly string[];
   description?: string;
 }) {
   return class OptionParserCommand extends Command {
-    static paths = [path];
+    static paths = [[...path]];
 
     static usage = description ? {description} : undefined;
 
@@ -42,9 +42,9 @@ export function parseFreeFormArguments({
   description,
 }: {
   readonly command: AbstractCommand;
-  readonly path: string[];
+  readonly path: readonly string[];
   readonly description?: string;
-  readonly values: string[];
+  readonly values: readonly string[];
 }): ParsedArguments {
   const result: JsonObject = {};
   const leftOvers: string[] = [];
@@ -131,10 +131,10 @@ export function parseOptions({
   reservedNames,
 }: {
   readonly command: AbstractCommand;
-  readonly path: string[];
+  readonly path: readonly string[];
   readonly description?: string;
-  readonly options: Option[];
-  readonly values: string[];
+  readonly options: readonly Option[];
+  readonly values: readonly string[];
   readonly reservedNames?: ReadonlySet<string>;
 }): ParsedArguments {
   const commandKeyToOptionNameMap = new Map<string, string>();

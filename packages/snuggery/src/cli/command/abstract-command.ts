@@ -119,11 +119,11 @@ export abstract class AbstractCommand extends Command<Context> {
       values,
       pathSuffix = [],
     }: {
-      options: Option[];
-      allowExtraOptions: boolean;
-      description?: string;
-      values: string[];
-      pathSuffix?: string[];
+      readonly options: readonly Option[];
+      readonly allowExtraOptions: boolean;
+      readonly description?: string;
+      readonly values: readonly string[];
+      readonly pathSuffix?: readonly string[];
     },
     fn: (parsedOptions: JsonObject) => Promise<T>,
   ): Promise<number | T> {
@@ -153,13 +153,13 @@ export abstract class AbstractCommand extends Command<Context> {
     pathSuffix = [],
     reservedNames,
   }: {
-    options: Option[];
-    allowExtraOptions: boolean;
-    description?: string;
-    commandOptions?: Option[];
-    values: string[];
-    pathSuffix?: string[];
-    reservedNames?: Set<string>;
+    readonly options: readonly Option[];
+    readonly allowExtraOptions: boolean;
+    readonly description?: string;
+    readonly commandOptions?: readonly Option[];
+    readonly values: readonly string[];
+    readonly pathSuffix?: readonly string[];
+    readonly reservedNames?: ReadonlySet<string>;
   }): ParsedArguments {
     if (options.length === 0) {
       if (allowExtraOptions) {
