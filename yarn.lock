@@ -5,7 +5,7 @@ __metadata:
   version: 4
   cacheKey: 7
 
-"@angular-devkit/architect@npm:0.1101.2":
+"@angular-devkit/architect@npm:0.1101.2, @angular-devkit/architect@npm:>= 0.1100.0 < 0.1200.0":
   version: 0.1101.2
   resolution: "@angular-devkit/architect@npm:0.1101.2"
   dependencies:
@@ -699,6 +699,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nrwl/devkit@npm:12.0.6":
+  version: 12.0.6
+  resolution: "@nrwl/devkit@npm:12.0.6"
+  dependencies:
+    "@nrwl/tao": 12.0.6
+    ejs: ^3.1.5
+    ignore: ^5.0.4
+    semver: 7.3.4
+    strip-json-comments: 2.0.1
+    tslib: ^2.0.0
+  checksum: 854c1c0414c60a2c2d44f2d0e8f40ebb00766613ac56ec205cd5ab2989e5e3c3c2d484d2508ededbbaa99d261c8c93e2f4280cd0de0cb6f355951fda34825f57
+  languageName: node
+  linkType: hard
+
 "@nrwl/devkit@npm:^11.2.0":
   version: 11.2.0
   resolution: "@nrwl/devkit@npm:11.2.0"
@@ -710,6 +724,19 @@ __metadata:
     strip-json-comments: 2.0.1
     tslib: ^2.0.0
   checksum: 1e2e132adea800786714c86f77533f12158ad03be245a5cee8236035f52641e6eaa90f76a4de3cdc85c680a062e10382ad4094d0d59a36f3e41a15bcd4ba1a3f
+  languageName: node
+  linkType: hard
+
+"@nrwl/jest@npm:^12.0.6":
+  version: 12.0.6
+  resolution: "@nrwl/jest@npm:12.0.6"
+  dependencies:
+    "@nrwl/devkit": 12.0.6
+    jest-resolve: ^26.6.2
+    rxjs: ^6.5.4
+    strip-json-comments: 2.0.1
+    tslib: ^2.0.0
+  checksum: 6301c9b525ec3e1bfcd0576a31b069e4cf5e5be6f57de5f82db2fe552c8b1987607a2fd524230f1f19b2cf529807b6f6a8826d5b849d4d2271137d61e112cf47
   languageName: node
   linkType: hard
 
@@ -731,6 +758,27 @@ __metadata:
   bin:
     tao: index.js
   checksum: c926811e6e3226ee82b7c4b14b58ab031d24efbfddd617051f2cc832256a078590b062f69e7573a385feeb41410dcac52b66633856f9adbf25cf822666ec3d15
+  languageName: node
+  linkType: hard
+
+"@nrwl/tao@npm:12.0.6":
+  version: 12.0.6
+  resolution: "@nrwl/tao@npm:12.0.6"
+  dependencies:
+    chalk: 4.1.0
+    enquirer: ~2.3.6
+    fs-extra: 7.0.1
+    minimist: ^1.2.5
+    rxjs: ^6.5.4
+    rxjs-for-await: 0.0.2
+    semver: 7.3.4
+    strip-json-comments: 2.0.1
+    tmp: 0.0.33
+    tslib: ^2.0.0
+    yargs-parser: 20.0.0
+  bin:
+    tao: index.js
+  checksum: 310c7ac6474847e44fe9ca5916e044ef3d8f8a36d7c78cd4857ab0307dd4fbafab76392ad25d2c435d6bf9097a0840638c7cb5b8862527f9b987444e4110cb40
   languageName: node
   linkType: hard
 
@@ -767,8 +815,6 @@ __metadata:
     "@angular-devkit/core": 11.1.2
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@yarnpkg/fslib": ^2.4.0
-    jest: 26.6.3
-    ts-jest: 26.5.0
     ts-node: ^9.1.1
     typescript: 4.1.3
   languageName: unknown
@@ -3343,7 +3389,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"enquirer@npm:^2.3.5, enquirer@npm:^2.3.6":
+"enquirer@npm:^2.3.5, enquirer@npm:^2.3.6, enquirer@npm:~2.3.6":
   version: 2.3.6
   resolution: "enquirer@npm:2.3.6"
   dependencies:
@@ -7613,6 +7659,7 @@ fsevents@^2.1.2:
   version: 0.0.0-use.local
   resolution: "snuggery-workspace@workspace:."
   dependencies:
+    "@nrwl/jest": ^12.0.6
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@types/jest": ^26.0.20
@@ -7625,8 +7672,10 @@ fsevents@^2.1.2:
     eslint-plugin-import: ^2.22.1
     husky: ^5.0.9
     is-ci: ^2.0.0
+    jest: 26.6.3
     prettier: ^2.2.1
     pretty-quick: ^3.1.0
+    ts-jest: 26.5.0
     typescript: 4.1.3
   languageName: unknown
   linkType: soft

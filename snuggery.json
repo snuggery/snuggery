@@ -31,11 +31,9 @@
           }
         },
         "test": {
-          "builder": "$direct:./scripts/jest.json",
+          "builder": "@nrwl/jest:jest",
           "options": {
-            "tsConfig": "tsconfig.json",
-            "testMatch": ["packages/*/src/**/__tests__/**/*.spec.ts"],
-            "modulePathIgnorePatterns": ["packages/*/dist"]
+            "jestConfig": "jest.config.js"
           }
         }
       }
@@ -101,11 +99,9 @@
       "root": "integration",
       "architect": {
         "test": {
-          "builder": "$direct:./scripts/jest.json",
+          "builder": "@nrwl/jest:jest",
           "options": {
-            "tsConfig": "integration/tsconfig.json",
-            "setupFilesAfterEnv": ["integration/setup.ts"],
-            "testMatch": ["integration/__tests__/**/*.spec.ts"]
+            "jestConfig": "integration/jest.config.js"
           }
         }
       }
