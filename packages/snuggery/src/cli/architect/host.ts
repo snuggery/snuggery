@@ -12,6 +12,8 @@ import {basename, dirname, join} from 'path';
 import type {CliWorkspace, Context} from '../command/context';
 import {makeExecutorIntoBuilder} from '../utils/tao';
 
+const {hasOwnProperty} = Object.prototype;
+
 export class UnknownBuilderError extends Error implements ErrorWithMeta {
   public clipanion = {type: 'none'} as const;
 
@@ -63,6 +65,7 @@ export interface SnuggeryBuilderInfo extends BuilderInfo {
   packageName: string | null;
   implementationPath: string;
   implementationExport: string | null;
+  isNx: boolean | null;
 }
 
 function isBuilder(value: object): value is Builder {
@@ -81,7 +84,11 @@ export class SnuggeryArchitectHost
   private loadBuilderJson(
     packageName: string,
     builderSpec: string,
-  ): [path: string, builders: JsonObject] {
+  ): [
+    path: string,
+    builders: Record<string, JsonObject>,
+    executors?: Record<string, JsonObject>,
+  ] {
     for (const basePath of new Set(
       this.workspace != null
         ? [this.context.startCwd, this.workspace.basePath]
@@ -138,7 +145,16 @@ export class SnuggeryArchitectHost
         );
       }
 
-      return [buildersJsonPath, buildersJson.builders];
+      let executors: Record<string, JsonObject> | undefined;
+      if (isJsonObject(buildersJson.executors!)) {
+        executors = buildersJson.executors as Record<string, JsonObject>;
+      }
+
+      return [
+        buildersJsonPath,
+        buildersJson.builders as Record<string, JsonObject>,
+        executors,
+      ];
     }
 
     throw new UnknownBuilderError(
@@ -240,17 +256,26 @@ export class SnuggeryArchitectHost
   }
 
   listBuilders(packageName: string): {name: string; description?: string}[] {
-    const [, builderJson] = this.loadBuilderJson(packageName, packageName);
-
-    return (Object.entries(builderJson) as [string, JsonObject][]).map(
-      ([name, {description}]) => {
-        if (typeof description === 'string') {
-          return {name, description};
-        } else {
-          return {name};
-        }
-      },
+    const [, builderJson, executorsJson] = this.loadBuilderJson(
+      packageName,
+      packageName,
     );
+
+    const names = new Set([
+      ...Object.keys(builderJson),
+      ...Object.keys(executorsJson || {}),
+    ]);
+
+    return Array.from(names, name => {
+      const description =
+        builderJson[name]?.description ?? executorsJson?.[name]?.description;
+
+      if (typeof description === 'string') {
+        return {name, description};
+      } else {
+        return {name};
+      }
+    });
   }
 
   async resolveBuilder(builderSpec: string): Promise<SnuggeryBuilderInfo> {
@@ -267,25 +292,38 @@ export class SnuggeryArchitectHost
 
     let builderPath: string;
     let builderInfo: JsonValue;
+    let isNx: boolean | null = null;
 
     if (packageName === '$direct') {
       [builderPath, builderInfo] = await this.resolveBuilderFromPath(
         builderName,
       );
     } else {
-      let builderJson;
-      [builderPath, builderJson] = this.loadBuilderJson(
+      let builderJson, executorsJson;
+      [builderPath, builderJson, executorsJson] = this.loadBuilderJson(
         packageName,
         builderSpec,
       );
 
-      if (!Object.prototype.hasOwnProperty.call(builderJson, builderName)) {
+      // We have to give Nx executors precedence, because nx's own plugins tend to provide a
+      // fallback for the @angular/cli that fails to load snuggery.json files when looking for
+      // workspace configuration
+      if (
+        executorsJson != null &&
+        hasOwnProperty.call(executorsJson, builderName)
+      ) {
+        builderInfo = executorsJson[builderName]!;
+        isNx = true;
+      } else if (hasOwnProperty.call(builderJson, builderName)) {
+        if (executorsJson != null) {
+          isNx = false;
+        }
+        builderInfo = builderJson[builderName]!;
+      } else {
         throw new UnknownBuilderError(
           `Can't find "${builderName}" in "${packageName}"`,
         );
       }
-
-      builderInfo = builderJson[builderName]!;
     }
 
     if (
@@ -343,6 +381,7 @@ export class SnuggeryArchitectHost
       optionSchema,
       implementationPath: join(dirname(builderPath), implementationPath),
       implementationExport,
+      isNx,
     };
   }
 
@@ -371,8 +410,10 @@ export class SnuggeryArchitectHost
     }
 
     if (
-      typeof info.optionSchema === 'object' &&
-      info.optionSchema.cli === 'nx'
+      info.isNx ||
+      (info.isNx !== false &&
+        typeof info.optionSchema === 'object' &&
+        info.optionSchema.cli === 'nx')
     ) {
       return makeExecutorIntoBuilder(implementation, this.workspace);
     }
