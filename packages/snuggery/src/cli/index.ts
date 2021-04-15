@@ -1,7 +1,8 @@
-import {Cli} from 'clipanion';
+import {Cli, Command} from 'clipanion';
 // @ts-expect-error There are no good types for supports-color
 import {supportsColor} from 'supports-color';
 
+import type {AbstractCommand} from './command/abstract-command';
 import type {Context} from './command/context';
 import {EntryCommand} from './commands/entry';
 import {EntryWithProjectCommand} from './commands/entry-with-project';
@@ -67,12 +68,15 @@ export function run(
   cli.register(NewCommand);
   cli.register(RunMigrationCommand);
 
+  const command = cli.process(args);
+
   const report = new Report({
     cli,
     stdout: context.stdout,
+    verbose: (command as Command<Context> & Partial<AbstractCommand>).verbose,
   });
 
-  return cli.run(args, {
+  return cli.run(command, {
     ...context,
     report,
   });

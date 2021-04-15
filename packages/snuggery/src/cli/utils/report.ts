@@ -20,6 +20,7 @@ export type ReportOptions = {
   };
   stdout: Writable;
   json?: boolean;
+  verbose?: boolean;
 };
 
 export class Report {
@@ -31,11 +32,14 @@ export class Report {
 
   private readonly supportsColor: boolean;
 
-  constructor({cli, stdout, json = false}: ReportOptions) {
+  private readonly isVerbose: boolean;
+
+  constructor({cli, stdout, json = false, verbose = false}: ReportOptions) {
     this.json = json;
     this.stdout = stdout;
     this.isTty = (stdout as WriteStream).isTTY ?? false;
     this.supportsColor = cli.enableColors;
+    this.isVerbose = verbose;
   }
 
   reportSeparator(): void {
@@ -43,6 +47,10 @@ export class Report {
   }
 
   reportDebug(text: string): void {
+    if (!this.isVerbose) {
+      return;
+    }
+
     if (!this.json) {
       this.writeLine(text, {color: gray});
     } else {

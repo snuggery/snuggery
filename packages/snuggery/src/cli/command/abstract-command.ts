@@ -17,7 +17,12 @@ import {
   SchematicNameCollisionException,
   SchematicMissingFieldsException,
 } from '@angular-devkit/schematics/tools';
-import {Command, ErrorWithMeta, UsageError} from 'clipanion';
+import {
+  Command,
+  ErrorWithMeta,
+  Option as CommandOption,
+  UsageError,
+} from 'clipanion';
 
 import {Cached} from '../utils/decorator';
 import {Format, richFormat, textFormat} from '../utils/format';
@@ -61,6 +66,11 @@ const angularUserErrors = new Set([
 ]);
 
 export abstract class AbstractCommand extends Command<Context> {
+  verbose = CommandOption.Boolean('--verbose,-v', false, {
+    description: 'Turn on extra logging',
+    hidden: true,
+  });
+
   protected get workspace(): CliWorkspace {
     const {workspace} = this.context;
 
