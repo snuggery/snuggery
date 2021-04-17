@@ -9,6 +9,7 @@
     "directory": "packages/schematics"
   },
   "main": "index.js",
+  "schematics": "./collection.json",
   "peerDependencies": {
     "@angular-devkit/core": "^11.1.2",
     "@angular-devkit/schematics": "^11.1.2"
