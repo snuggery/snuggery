@@ -11,10 +11,14 @@
           }
         },
         "deploy": {
-          "builder": "$direct:./scripts/deploy",
+          "builder": "@snuggery/yarn:deploy",
+          "options": {
+            "useWorkspacePlugin": true,
+            "buildTarget": "build"
+          },
           "configurations": {
             "next": {
-              "tag": "next"
+              "distTag": "next"
             }
           }
         },
@@ -72,6 +76,14 @@
     },
     "@snuggery/schematics": {
       "root": "packages/schematics",
+      "architect": {
+        "build": {
+          "builder": "$direct:./scripts/build"
+        }
+      }
+    },
+    "@snuggery/yarn": {
+      "root": "packages/yarn",
       "architect": {
         "build": {
           "builder": "$direct:./scripts/build"

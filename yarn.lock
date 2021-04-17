@@ -923,6 +923,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@snuggery/yarn@workspace:packages/yarn":
+  version: 0.0.0-use.local
+  resolution: "@snuggery/yarn@workspace:packages/yarn"
+  dependencies:
+    "@angular-devkit/architect": 0.1101.2
+    "@angular-devkit/core": 11.1.2
+    "@angular-devkit/schematics": 11.1.2
+    "@snuggery-workspace/scripts": "workspace:scripts"
+    "@snuggery/architect": 0.1.0
+    "@types/node": ^14.14.17
+    "@yarnpkg/parsers": ^2.3.1-rc.2
+    rxjs: 6.6.3
+  languageName: unknown
+  linkType: soft
+
 "@szmarczak/http-timer@npm:^4.0.5":
   version: 4.0.5
   resolution: "@szmarczak/http-timer@npm:4.0.5"
@@ -1632,6 +1647,16 @@ __metadata:
     js-yaml: ^3.10.0
     tslib: ^1.13.0
   checksum: 3c221fe5e2259a71bbfab7fe03b4790c1cc4d139b64ae45701b5a0542ae7f15e06613a6c486687fbf90318d8f95508134b42591f5918421343981496b9e721f4
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/parsers@npm:^2.3.1-rc.2":
+  version: 2.3.1-rc.2
+  resolution: "@yarnpkg/parsers@npm:2.3.1-rc.2"
+  dependencies:
+    js-yaml: ^3.10.0
+    tslib: ^1.13.0
+  checksum: 079a7a5233eedb7d97b1a1e8ca854f7ba7f9812346fda4aa9f299e784d596a8c276cc2ab938dd83ae6af4c1700b7f1ee0a9e4177777160effbbecbc97f4d4bc1
   languageName: node
   linkType: hard
 
@@ -7662,6 +7687,7 @@ fsevents@^2.1.2:
     "@nrwl/jest": ^12.0.6
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/snuggery": "workspace:packages/snuggery"
+    "@snuggery/yarn": "workspace:packages/yarn"
     "@types/jest": ^26.0.20
     "@types/node": ^14.14.17
     "@typescript-eslint/eslint-plugin": ^4.12.0

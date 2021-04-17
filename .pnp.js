@@ -47,6 +47,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/snuggery"
       },
       {
+        "name": "@snuggery/yarn",
+        "reference": "workspace:packages/yarn"
+      },
+      {
         "name": "@snuggery/yarn-plugin-snuggery",
         "reference": "workspace:packages/yarn-plugin-snuggery"
       },
@@ -68,6 +72,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/global", ["workspace:packages/global"]],
       ["@snuggery/schematics", ["workspace:packages/schematics"]],
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],
+      ["@snuggery/yarn", ["workspace:packages/yarn"]],
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],
       ["integration-aa38c3", ["workspace:integration"]],
       ["snuggery-workspace", ["workspace:."]],
@@ -85,6 +90,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nrwl/jest", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:12.0.6"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
+            ["@snuggery/yarn", "workspace:packages/yarn"],
             ["@types/jest", "npm:26.0.20"],
             ["@types/node", "npm:14.14.17"],
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:4.12.0"],
@@ -1270,6 +1276,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["@snuggery/yarn", [
+        ["workspace:packages/yarn", {
+          "packageLocation": "./packages/yarn/",
+          "packageDependencies": [
+            ["@snuggery/yarn", "workspace:packages/yarn"],
+            ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@angular-devkit/schematics", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
+            ["@types/node", "npm:14.14.17"],
+            ["@yarnpkg/parsers", "npm:2.3.1-rc.2"],
+            ["rxjs", "npm:6.6.3"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
       ["@snuggery/yarn-plugin-snuggery", [
         ["workspace:packages/yarn-plugin-snuggery", {
           "packageLocation": "./packages/yarn-plugin-snuggery/",
@@ -2160,6 +2183,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@yarnpkg-parsers-npm-2.3.0-0fc08d0fb0-3c221fe5e2.zip/node_modules/@yarnpkg/parsers/",
           "packageDependencies": [
             ["@yarnpkg/parsers", "npm:2.3.0"],
+            ["js-yaml", "npm:3.14.1"],
+            ["tslib", "npm:1.14.1"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:2.3.1-rc.2", {
+          "packageLocation": "./.yarn/cache/@yarnpkg-parsers-npm-2.3.1-rc.2-dbd81fb0f6-079a7a5233.zip/node_modules/@yarnpkg/parsers/",
+          "packageDependencies": [
+            ["@yarnpkg/parsers", "npm:2.3.1-rc.2"],
             ["js-yaml", "npm:3.14.1"],
             ["tslib", "npm:1.14.1"]
           ],
@@ -9311,6 +9343,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nrwl/jest", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:12.0.6"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
+            ["@snuggery/yarn", "workspace:packages/yarn"],
             ["@types/jest", "npm:26.0.20"],
             ["@types/node", "npm:14.14.17"],
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:4.12.0"],

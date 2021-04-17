@@ -1,0 +1,16 @@
+{
+  "builders": {
+    "deploy": {
+      "implementation": "./builders/deploy",
+      "hidden": true,
+      "schema": "./builders/deploy/schema.json",
+      "description": "Create, commit, tag and publish deferred releases using @yarnpkg/plugin-version"
+    },
+    "version": {
+      "implementation": "./builders/version",
+      "hidden": true,
+      "schema": "./builders/version/schema.json",
+      "description": "Create, commit and tag deferred releases using @yarnpkg/plugin-version"
+    }
+  }
+}
