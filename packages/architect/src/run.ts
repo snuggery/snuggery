@@ -108,7 +108,7 @@ export function scheduleTarget(
           targetSpec.builder,
           {
             ...(targetSpec.options || {}),
-            options,
+            ...options,
           },
           {
             target: newTarget,
