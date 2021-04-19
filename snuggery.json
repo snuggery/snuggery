@@ -23,15 +23,11 @@
           }
         },
         "lint": {
-          "builder": "@snuggery/snuggery:execute",
+          "builder": "@nrwl/linter:eslint",
           "options": {
-            "package": "eslint",
-            "arguments": ["packages", "integration"]
-          },
-          "configurations": {
-            "fix": {
-              "arguments": ["--fix", "packages", "integration"]
-            }
+            "eslintConfig": ".eslintrc.yml",
+            "ignorePath": ".eslintignore",
+            "lintFilePatterns": ["packages/*/src/**/*.[tj]s", "integration"]
           }
         },
         "test": {
