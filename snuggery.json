@@ -46,7 +46,23 @@
       "root": "packages/snuggery",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/snuggery/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },
@@ -54,7 +70,19 @@
       "root": "packages/global",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },
@@ -62,7 +90,23 @@
       "root": "packages/architect",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/architect/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },
@@ -70,7 +114,47 @@
       "root": "packages/core",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/core/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
+        }
+      }
+    },
+    "@snuggery/node": {
+      "root": "packages/node",
+      "architect": {
+        "build": {
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/node/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },
@@ -78,7 +162,23 @@
       "root": "packages/schematics",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/schematics/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },
@@ -86,7 +186,23 @@
       "root": "packages/yarn",
       "architect": {
         "build": {
-          "builder": "$direct:./scripts/build"
+          "builder": "@snuggery/node:build",
+          "options": {
+            "assets": [
+              {
+                "include": "README.md"
+              },
+              {
+                "include": ["**/*.d.ts", "**/*.json"],
+                "from": "packages/yarn/src"
+              },
+              {
+                "include": "LICENSE.md",
+                "from": "."
+              }
+            ],
+            "packager": "@snuggery/yarn"
+          }
         }
       }
     },

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "title": "Build a node package",
+  "description": "Build a node package",
+  "type": "object",
+  "properties": {
+    "compile": {
+      "type": "boolean",
+      "description": "Whether to compile via typescript, defaults to true"
+    },
+    "tsconfig": {
+      "type": "string",
+      "description": "Path to the tsconfig.json file, defaults to `<projectFolder>/tsconfig.json`"
+    },
+    "keepScripts": {
+      "type": "boolean",
+      "description": "Whether to keep the scripts in package.json, defaults to false"
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "include": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            ],
+            "description": "Globs to include in the asset, relative to `from`"
+          },
+          "exclude": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            ],
+            "description": "Globs to exclude, relative to `from`"
+          },
+          "from": {
+            "type": "string",
+            "description": "The path to include the assets from, defaults to the root of the active project"
+          },
+          "to": {
+            "type": "string",
+            "description": "The path to write the assets to, defaults to the folder the package is being built into"
+          }
+        },
+        "required": ["include"],
+        "additionalProperties": false
+      },
+      "description": "Assets to copy"
+    },
+    "packager": {
+      "type": "string",
+      "description": "Packager to run after building, e.g. `@snuggery/yarn:pack`. If the builder name is `pack` it can be left, out, e.g. `@snuggery/yarn` will run the same builder as `@snuggery/yarn:pack`."
+    },
+    "outputFolder": {
+      "type": "string",
+      "description": "The folder to build the package to, defaults to `<projectFolder>/dist`"
+    }
+  },
+  "additionalProperties": false
+}

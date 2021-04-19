@@ -1,3 +1,4 @@
+export {AssetSpec, copyAssets} from './assets';
 export {
   getProjectPath,
   relativeWorkspacePath,

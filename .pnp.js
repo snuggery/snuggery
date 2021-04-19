@@ -39,6 +39,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/global"
       },
       {
+        "name": "@snuggery/node",
+        "reference": "workspace:packages/node"
+      },
+      {
         "name": "@snuggery/schematics",
         "reference": "workspace:packages/schematics"
       },
@@ -74,6 +78,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/architect", ["virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect", "workspace:packages/architect"]],
       ["@snuggery/core", ["workspace:packages/core"]],
       ["@snuggery/global", ["workspace:packages/global"]],
+      ["@snuggery/node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", "workspace:packages/node"]],
       ["@snuggery/schematics", ["workspace:packages/schematics"]],
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],
       ["@snuggery/yarn", ["workspace:packages/yarn"]],
@@ -94,6 +99,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@nrwl/jest", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:12.0.6"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@snuggery/yarn", "workspace:packages/yarn"],
             ["@types/jest", "npm:26.0.20"],
@@ -1160,11 +1166,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./scripts/",
           "packageDependencies": [
             ["@snuggery-workspace/scripts", "workspace:scripts"],
-            ["@angular-devkit/architect", "npm:0.1101.2"],
-            ["@angular-devkit/core", "npm:11.1.2"],
-            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
-            ["@snuggery/snuggery", "workspace:packages/snuggery"],
-            ["@yarnpkg/fslib", "npm:2.4.0"],
             ["ts-node", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:9.1.1"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
           ],
@@ -1181,8 +1182,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@types/angular-devkit__architect", null],
             ["@types/angular-devkit__core", null],
+            ["@types/fs-extra", "npm:9.0.11"],
+            ["@types/glob", "npm:7.1.3"],
             ["@types/node", "npm:14.14.35"],
             ["@types/rxjs", null],
+            ["fs-extra", "npm:9.1.0"],
+            ["glob", "npm:7.1.6"],
             ["rxjs", "npm:6.6.3"]
           ],
           "packagePeers": [
@@ -1202,7 +1207,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1101.2"],
             ["@angular-devkit/core", "npm:11.1.2"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@types/fs-extra", "npm:9.0.11"],
+            ["@types/glob", "npm:7.1.3"],
             ["@types/node", "npm:14.14.35"],
+            ["fs-extra", "npm:9.1.0"],
+            ["glob", "npm:7.1.6"],
             ["rxjs", "npm:6.6.3"]
           ],
           "linkType": "SOFT",
@@ -1230,6 +1239,43 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@types/node", "npm:14.14.17"],
             ["@yarnpkg/pnp", "npm:2.3.2"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@snuggery/node", [
+        ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", {
+          "packageLocation": "./.yarn/$$virtual/@snuggery-node-virtual-e44f2f7bc4/1/packages/node/",
+          "packageDependencies": [
+            ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],
+            ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@angular-devkit/schematics", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
+            ["@types/node", "npm:14.14.17"],
+            ["@types/typescript", null],
+            ["rxjs", "npm:6.6.3"],
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
+          ],
+          "packagePeers": [
+            "@types/typescript",
+            "typescript"
+          ],
+          "linkType": "SOFT",
+        }],
+        ["workspace:packages/node", {
+          "packageLocation": "./packages/node/",
+          "packageDependencies": [
+            ["@snuggery/node", "workspace:packages/node"],
+            ["@angular-devkit/architect", "npm:0.1101.2"],
+            ["@angular-devkit/core", "npm:11.1.2"],
+            ["@angular-devkit/schematics", "npm:11.1.2"],
+            ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
+            ["@types/node", "npm:14.14.17"],
+            ["rxjs", "npm:6.6.3"],
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
           ],
           "linkType": "SOFT",
         }]
@@ -1445,6 +1491,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/fs-extra", [
+        ["npm:9.0.11", {
+          "packageLocation": "./.yarn/cache/@types-fs-extra-npm-9.0.11-22ca86822a-e7a4df2788.zip/node_modules/@types/fs-extra/",
+          "packageDependencies": [
+            ["@types/fs-extra", "npm:9.0.11"],
+            ["@types/node", "npm:14.14.17"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/glob", [
+        ["npm:7.1.3", {
+          "packageLocation": "./.yarn/cache/@types-glob-npm-7.1.3-44516e2aab-633bf1dda9.zip/node_modules/@types/glob/",
+          "packageDependencies": [
+            ["@types/glob", "npm:7.1.3"],
+            ["@types/minimatch", "npm:3.0.4"],
+            ["@types/node", "npm:14.14.17"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/graceful-fs", [
         ["npm:4.1.4", {
           "packageLocation": "./.yarn/cache/@types-graceful-fs-npm-4.1.4-6e2b33ed9f-acffaa4f4b.zip/node_modules/@types/graceful-fs/",
@@ -1554,6 +1621,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-minimatch-npm-3.0.3-c8b0625f84-672ccdac19.zip/node_modules/@types/minimatch/",
           "packageDependencies": [
             ["@types/minimatch", "npm:3.0.3"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:3.0.4", {
+          "packageLocation": "./.yarn/cache/@types-minimatch-npm-3.0.4-f1932169cb-abbe7031d8.zip/node_modules/@types/minimatch/",
+          "packageDependencies": [
+            ["@types/minimatch", "npm:3.0.4"]
           ],
           "linkType": "HARD",
         }]
@@ -9364,6 +9438,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["snuggery-workspace", "workspace:."],
             ["@nrwl/jest", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:12.0.6"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
+            ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@snuggery/yarn", "workspace:packages/yarn"],
             ["@types/jest", "npm:26.0.20"],

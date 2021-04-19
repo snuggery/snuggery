@@ -16,6 +16,7 @@
   "devDependencies": {
     "@nrwl/jest": "^12.0.6",
     "@snuggery-workspace/scripts": "workspace:scripts",
+    "@snuggery/node": "workspace:packages/node",
     "@snuggery/snuggery": "workspace:packages/snuggery",
     "@snuggery/yarn": "workspace:packages/yarn",
     "@types/jest": "^26.0.20",
