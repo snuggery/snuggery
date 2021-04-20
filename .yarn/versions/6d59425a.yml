@@ -1,0 +1,7 @@
+releases:
+  "@snuggery/yarn": minor
+
+declined:
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn-plugin-snuggery"
+  - "@snuggery/yarn-plugin-snuggery-workspace"

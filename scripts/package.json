@@ -3,6 +3,7 @@
   "dependencies": {
     "@angular-devkit/architect": "0.1101.2",
     "@angular-devkit/core": "11.1.2",
+    "@snuggery/architect": "workspace:packages/architect",
     "@snuggery/snuggery": "workspace:packages/snuggery",
     "@yarnpkg/fslib": "^2.4.0",
     "ts-node": "^9.1.1",

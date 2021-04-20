@@ -1,13 +1,19 @@
+import type {BuilderContext} from '@angular-devkit/architect';
+import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
 import {parseSyml} from '@yarnpkg/parsers';
 import {spawn} from 'child_process';
 import {promises as fs} from 'fs';
 import {dirname, join, parse as parsePath, resolve} from 'path';
 import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {map, mapTo} from 'rxjs/operators';
 
 export interface YarnPlugin {
   name: string;
   builtin: boolean;
+}
+
+function isYarnPlugin(value: JsonObject): value is JsonObject & YarnPlugin {
+  return typeof value.name === 'string' && typeof value.builtin === 'boolean';
 }
 
 export interface AppliedVersion {
@@ -17,28 +23,48 @@ export interface AppliedVersion {
   newVersion: string;
 }
 
+function isAppliedVersion(
+  value: JsonObject,
+): value is JsonObject & AppliedVersion {
+  return (
+    typeof value.cwd === 'string' &&
+    typeof value.ident === 'string' &&
+    typeof value.oldVersion === 'string' &&
+    typeof value.newVersion === 'string'
+  );
+}
+
+export interface LogLine {
+  type: 'info' | 'warning' | 'error';
+  data: string;
+}
+
+function isLogLine(value: JsonObject): value is JsonObject & LogLine {
+  return typeof value.type === 'string' && typeof value.data === 'string';
+}
+
 class Yarn {
-  readonly #root: string;
+  readonly #context: BuilderContext;
   readonly #yarnPath: string;
 
-  constructor(root: string, yarnPath: string) {
-    this.#root = root;
+  constructor(yarnPath: string, context: BuilderContext) {
     this.#yarnPath = yarnPath;
+    this.#context = context;
   }
 
   private exec(
     args: string[],
     opts: {
-      capture: true;
+      captureNdjson: true;
       quiet?: boolean;
       cwd?: string;
       env?: NodeJS.ProcessEnv;
     },
-  ): Observable<string>;
+  ): Observable<JsonObject[]>;
   private exec(
     args: string[],
     opts: {
-      capture?: false;
+      captureNdjson?: false;
       quiet?: boolean;
       cwd?: string;
       env?: NodeJS.ProcessEnv;
@@ -47,32 +73,33 @@ class Yarn {
   private exec(
     args: string[],
     opts: {
-      capture?: boolean;
+      captureNdjson?: boolean;
       quiet?: boolean;
       cwd?: string;
       env?: NodeJS.ProcessEnv;
     },
-  ): Observable<string | void>;
+  ): Observable<JsonObject[] | void>;
   private exec(
     args: string[],
     {
-      capture,
+      captureNdjson: capture,
       quiet,
-      cwd = this.#root,
+      cwd = this.#context.workspaceRoot,
       env,
     }: {
-      capture?: boolean;
+      captureNdjson?: boolean;
       quiet?: boolean;
       cwd?: string;
       env?: NodeJS.ProcessEnv;
     },
-  ): Observable<string | void> {
+  ): Observable<JsonObject[] | void> {
     return new Observable(observer => {
       const child = spawn(process.execPath, [this.#yarnPath, ...args], {
         cwd,
         env: {
           ...process.env,
           ...env,
+          SNUGGERY_YARN: '1',
         },
         stdio: capture
           ? ['ignore', 'pipe', 'ignore']
@@ -81,9 +108,18 @@ class Yarn {
           : 'inherit',
       });
 
-      const output: Buffer[] = [];
+      const {stdout} = child;
+      const output =
+        stdout &&
+        new Promise<Buffer>((resolve, reject) => {
+          const output: Buffer[] = [];
 
-      child.stdout?.on('data', buffer => output.push(buffer));
+          stdout.on('data', buffer => output.push(buffer));
+          stdout.on('close', () => resolve(Buffer.concat(output)));
+          stdout.on('error', reject);
+        });
+
+      child.addListener('error', err => observer.error(err));
 
       child.addListener('close', (code, signal) => {
         if (signal) {
@@ -91,29 +127,62 @@ class Yarn {
         } else if (code) {
           observer.error(new Error(`Yarn exited with exit code ${code}`));
         } else {
-          observer.next(Buffer.concat(output).toString('utf8'));
-          observer.complete();
+          if (output) {
+            output.then(
+              buff => {
+                const lines = buff
+                  .toString('utf8')
+                  .split('\n')
+                  .filter(line => line.trim())
+                  .map(line => {
+                    try {
+                      return JSON.parse(line) as JsonValue;
+                    } catch {
+                      return null;
+                    }
+                  })
+                  .filter((value): value is JsonObject => isJsonObject(value));
+
+                if (!quiet) {
+                  for (const {data, type} of lines.filter(isLogLine)) {
+                    this.#context.logger[type === 'warning' ? 'warn' : type]?.(
+                      data,
+                    );
+                  }
+                }
+
+                observer.next(lines);
+                observer.complete();
+              },
+              err => observer.error(err),
+            );
+          } else {
+            observer.next();
+            observer.complete();
+          }
         }
       });
 
       return () => {
-        child.kill();
+        if (child.exitCode == null) {
+          child.kill();
+        }
       };
     });
   }
 
   listPlugins(): Observable<YarnPlugin[]> {
-    return this.exec(['plugin', 'runtime', '--json'], {capture: true}).pipe(
-      map(output => parseNDJSON<YarnPlugin>(output)),
-    );
+    return this.exec(['plugin', 'runtime', '--json'], {
+      captureNdjson: true,
+    }).pipe(map(output => output.filter(isYarnPlugin)));
   }
 
   applyVersion(): Observable<AppliedVersion[]> {
     return this.exec(['version', 'apply', '--all', '--json'], {
-      capture: true,
+      captureNdjson: true,
     }).pipe(
       map(output => {
-        const versions = parseNDJSON<AppliedVersion>(output);
+        const versions = output.filter(isAppliedVersion);
 
         if (versions.length === 0) {
           throw new Error(`No versions found to tag`);
@@ -122,6 +191,28 @@ class Yarn {
         return versions;
       }),
     );
+  }
+
+  snuggeryWorkspacePack({
+    cwd,
+    directoryToPack,
+  }: {
+    cwd: string;
+    directoryToPack: string;
+  }): Observable<void> {
+    return this.exec(
+      ['snuggery-workspace', 'pack', directoryToPack, '--json'],
+      {
+        cwd: resolve(this.#context.workspaceRoot, cwd),
+        captureNdjson: true,
+      },
+    ).pipe(mapTo(undefined));
+  }
+
+  npmPack({cwd}: {cwd: string}): Observable<void> {
+    return this.exec(['pack'], {
+      cwd: resolve(this.#context.workspaceRoot, cwd),
+    });
   }
 
   snuggeryWorkspacePublish({
@@ -137,25 +228,30 @@ class Yarn {
         'publish',
         ...(typeof tag === 'string' ? ['--tag', tag] : []),
       ],
-      {cwd: resolve(this.#root, cwd)},
-    );
+      {cwd: resolve(this.#context.workspaceRoot, cwd), captureNdjson: true},
+    ).pipe(mapTo(undefined));
   }
 
   npmPublish({tag, cwd}: {tag?: string; cwd: string}): Observable<void> {
     return this.exec(
       ['npm', 'publish', ...(typeof tag === 'string' ? ['--tag', tag] : [])],
-      {cwd: resolve(this.#root, cwd)},
+      {cwd: resolve(this.#context.workspaceRoot, cwd)},
     );
   }
 }
 
 export type {Yarn};
 
-export async function loadYarn({root}: {root: string}): Promise<Yarn> {
-  const yarnConfigurationPath = await findUp('.yarnrc.yml', root);
+export async function loadYarn(context: BuilderContext): Promise<Yarn> {
+  const yarnConfigurationPath = await findUp(
+    '.yarnrc.yml',
+    context.workspaceRoot,
+  );
 
   if (!yarnConfigurationPath) {
-    throw new Error(`Couldn't find yarn configuration for ${root}`);
+    throw new Error(
+      `Couldn't find yarn configuration for ${context.workspaceRoot}`,
+    );
   }
 
   const rawYarnConfiguration = await fs.readFile(yarnConfigurationPath, 'utf8');
@@ -163,10 +259,13 @@ export async function loadYarn({root}: {root: string}): Promise<Yarn> {
   const yarnConfiguration = parseSyml(rawYarnConfiguration);
 
   if (typeof yarnConfiguration.yarnPath !== 'string') {
-    throw new Error(`Couldn't find path to yarn in ${root}`);
+    throw new Error(`Couldn't find path to yarn in ${context.workspaceRoot}`);
   }
 
-  return new Yarn(root, yarnConfiguration.yarnPath);
+  return new Yarn(
+    resolve(dirname(yarnConfigurationPath), yarnConfiguration.yarnPath),
+    context,
+  );
 }
 
 async function findUp(name: string, from: string): Promise<string | null> {
@@ -188,11 +287,4 @@ async function findUp(name: string, from: string): Promise<string | null> {
   }
 
   return null;
-}
-
-function parseNDJSON<T>(content: string): T[] {
-  return content
-    .split('\n')
-    .filter(line => line.trim())
-    .map(line => JSON.parse(line) as T);
 }

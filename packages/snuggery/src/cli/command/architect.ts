@@ -60,7 +60,7 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
   }
 
   if (error) {
-    context.stderr.write(error + '\n');
+    context.report.reportError(error);
   }
 
   return success ? 0 : 1;

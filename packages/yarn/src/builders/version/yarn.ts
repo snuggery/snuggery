@@ -13,17 +13,14 @@ export interface VersionBuilderOutput {
 
 const versionPluginName = '@yarnpkg/plugin-version';
 
-export function applyVersion({
-  workspaceRoot,
-  logger,
-}: BuilderContext): Observable<
-  VersionBuilderOutput | (BuilderOutput & {success: false})
-> {
+export function applyVersion(
+  context: BuilderContext,
+): Observable<VersionBuilderOutput | (BuilderOutput & {success: false})> {
   return defer(async () => {
     try {
       return {
         success: true as const,
-        yarn: await loadYarn({root: workspaceRoot}),
+        yarn: await loadYarn(context),
       };
     } catch (e) {
       return {
@@ -45,7 +42,7 @@ export function applyVersion({
 
           return yarn.applyVersion().pipe(
             tap(appliedVersions => {
-              logger.info('Version updates:');
+              context.logger.info('Version updates:');
               for (const {
                 cwd,
                 ident,
@@ -53,7 +50,7 @@ export function applyVersion({
                 newVersion,
               } of appliedVersions) {
                 if (cwd && newVersion && ident) {
-                  logger.info(
+                  context.logger.info(
                     `${ident.padEnd(20, ' ')} ${oldVersion.padEnd(
                       10,
                       ' ',

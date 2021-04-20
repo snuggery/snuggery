@@ -2,6 +2,7 @@
 // @ts-check
 
 const {createBuilder} = require('@angular-devkit/architect');
+const {resolveProjectPath} = require('@snuggery/architect');
 const {xfs, npath, ppath, NodeFS} = require('@yarnpkg/fslib');
 
 const {exec} = require('./util');
@@ -85,7 +86,7 @@ module.exports = createBuilder(async function (_, ctx) {
       }),
     ]);
 
-    await pack(root);
+    await pack(ctx);
   } catch (e) {
     return {
       success: false,
@@ -109,6 +110,22 @@ function tsc(root) {
   return exec(process.argv0, [tscPath], root);
 }
 
-function pack(root) {
-  return exec('yarn', ['snuggery-workspace', 'pack'], root);
+/**
+ * @param {import('@angular-devkit/architect').BuilderContext} ctx
+ */
+async function pack(ctx) {
+  const run = await ctx.scheduleBuilder(
+    '@snuggery/yarn:pack',
+    {
+      useWorkspacePlugin: true,
+      directory: await resolveProjectPath(ctx, 'dist'),
+    },
+    {target: ctx.target},
+  );
+
+  try {
+    return await run.result;
+  } finally {
+    await run.stop();
+  }
 }

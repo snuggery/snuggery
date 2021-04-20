@@ -107,6 +107,23 @@
         }
       }
     },
+    "@snuggery/yarn-plugin-snuggery-workspace": {
+      "root": "packages/yarn-plugin-snuggery-workspace",
+      "architect": {
+        "build": {
+          "builder": "@snuggery/snuggery:execute",
+          "options": {
+            "package": "@yarnpkg/builder",
+            "arguments": ["build", "plugin"]
+          },
+          "configurations": {
+            "dev": {
+              "arguments": ["build", "plugin", "--no-minify"]
+            }
+          }
+        }
+      }
+    },
     "integration": {
       "root": "integration",
       "architect": {

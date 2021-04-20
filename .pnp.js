@@ -55,6 +55,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/yarn-plugin-snuggery"
       },
       {
+        "name": "@snuggery/yarn-plugin-snuggery-workspace",
+        "reference": "workspace:packages/yarn-plugin-snuggery-workspace"
+      },
+      {
         "name": "@snuggery-workspace/scripts",
         "reference": "workspace:scripts"
       },
@@ -74,6 +78,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],
       ["@snuggery/yarn", ["workspace:packages/yarn"]],
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],
+      ["@snuggery/yarn-plugin-snuggery-workspace", ["workspace:packages/yarn-plugin-snuggery-workspace"]],
       ["integration-aa38c3", ["workspace:integration"]],
       ["snuggery-workspace", ["workspace:."]],
       ["test-builders", ["workspace:integration/test-builders"]]
@@ -1157,6 +1162,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@angular-devkit/architect", "npm:0.1101.2"],
             ["@angular-devkit/core", "npm:11.1.2"],
+            ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@yarnpkg/fslib", "npm:2.4.0"],
             ["ts-node", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:9.1.1"],
@@ -1301,6 +1307,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/builder", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:2.1.3"],
             ["@yarnpkg/cli", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:2.4.0"],
             ["@yarnpkg/core", "npm:2.4.0"],
+            ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
+          ],
+          "linkType": "SOFT",
+        }]
+      ]],
+      ["@snuggery/yarn-plugin-snuggery-workspace", [
+        ["workspace:packages/yarn-plugin-snuggery-workspace", {
+          "packageLocation": "./packages/yarn-plugin-snuggery-workspace/",
+          "packageDependencies": [
+            ["@snuggery/yarn-plugin-snuggery-workspace", "workspace:packages/yarn-plugin-snuggery-workspace"],
+            ["@yarnpkg/builder", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:2.1.3"],
+            ["@yarnpkg/cli", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:2.4.0"],
+            ["@yarnpkg/core", "npm:2.4.0"],
+            ["@yarnpkg/fslib", "npm:2.4.0"],
+            ["@yarnpkg/plugin-npm", "virtual:2c55fa2cccad5002dafe6ada5e2ca2bddfa0a84b5abba8c6c1b33779903ce5c58ac784dd46e3db66f94b74eef81f3b39bf42eaff09bce1eb659d9ac2f8f33efc#npm:2.4.0"],
+            ["@yarnpkg/plugin-pack", "virtual:2c55fa2cccad5002dafe6ada5e2ca2bddfa0a84b5abba8c6c1b33779903ce5c58ac784dd46e3db66f94b74eef81f3b39bf42eaff09bce1eb659d9ac2f8f33efc#npm:2.2.3"],
             ["typescript", "patch:typescript@npm%3A4.1.3#builtin<compat/typescript>::version=4.1.3&hash=cc6730"]
           ],
           "linkType": "SOFT",

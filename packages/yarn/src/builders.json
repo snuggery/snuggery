@@ -2,9 +2,13 @@
   "builders": {
     "deploy": {
       "implementation": "./builders/deploy",
-      "hidden": true,
       "schema": "./builders/deploy/schema.json",
       "description": "Create, commit, tag and publish deferred releases using @yarnpkg/plugin-version"
+    },
+    "pack": {
+      "implementation": "./builders/pack",
+      "schema": "./builders/pack/schema.json",
+      "description": "Pack a package tarball"
     },
     "version": {
       "implementation": "./builders/version",

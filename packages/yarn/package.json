@@ -8,6 +8,7 @@
     "url": "https://github.com/snuggery/snuggery.git",
     "directory": "packages/yarn"
   },
+  "main": "index.js",
   "builders": "builders.json",
   "schematics": "./collection.json",
   "scripts": {
