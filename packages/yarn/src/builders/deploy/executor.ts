@@ -4,6 +4,7 @@ import {switchMapSuccessfulResult} from '@snuggery/architect/operators';
 import {concat, Observable, of} from 'rxjs';
 import {
   catchError,
+  endWith,
   first,
   ignoreElements,
   mapTo,
@@ -55,7 +56,7 @@ export function executeDeploy(
             }),
           ).pipe(
             ignoreElements(),
-            mapTo({success: true}),
+            endWith({success: true}),
             catchError(e =>
               of({
                 success: false,
