@@ -865,7 +865,7 @@ __metadata:
   resolution: "@snuggery/global@workspace:packages/global"
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/snuggery": 0.2.1
+    "@snuggery/snuggery": 0.2.2
     "@types/node": ^14.14.17
     "@yarnpkg/pnp": 2.3.2
   bin:
@@ -907,7 +907,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/snuggery@0.2.1, @snuggery/snuggery@workspace:packages/snuggery":
+"@snuggery/snuggery@0.2.2, @snuggery/snuggery@workspace:packages/snuggery":
   version: 0.0.0-use.local
   resolution: "@snuggery/snuggery@workspace:packages/snuggery"
   dependencies:
