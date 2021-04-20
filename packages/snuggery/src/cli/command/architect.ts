@@ -1,4 +1,9 @@
-import {Architect, BuilderRun, Target} from '@angular-devkit/architect';
+import {
+  Architect,
+  BuilderOutput,
+  BuilderRun,
+  Target,
+} from '@angular-devkit/architect';
 import {json, JsonObject} from '@angular-devkit/core';
 import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
@@ -32,9 +37,9 @@ export class BuilderFailedError extends Error implements ErrorWithMeta {
 }
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {
-  let error, success;
+  let result: BuilderOutput;
   try {
-    ({error, success} = await run.output.toPromise());
+    result = await run.output.toPromise();
 
     await run.stop();
   } catch (e) {
@@ -59,11 +64,18 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
     throw new BuilderFailedError(message);
   }
 
-  if (error) {
-    context.report.reportError(error);
+  if (result == null) {
+    context.report.reportWarning(
+      'Builder exited without emitting a value, assuming success',
+    );
+    result = {success: true};
   }
 
-  return success ? 0 : 1;
+  if (result.error) {
+    context.report.reportError(result.error);
+  }
+
+  return result.success ? 0 : 1;
 }
 
 export abstract class ArchitectCommand extends AbstractCommand {
