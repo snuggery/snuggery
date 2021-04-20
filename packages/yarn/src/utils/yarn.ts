@@ -227,6 +227,7 @@ class Yarn {
         'snuggery-workspace',
         'publish',
         ...(typeof tag === 'string' ? ['--tag', tag] : []),
+        '--json',
       ],
       {cwd: resolve(this.#context.workspaceRoot, cwd), captureNdjson: true},
     ).pipe(mapTo(undefined));
