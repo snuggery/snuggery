@@ -1,6 +1,0 @@
-releases:
-  "@snuggery/architect": patch
-  "@snuggery/yarn": minor
-
-declined:
-  - "@snuggery/snuggery"

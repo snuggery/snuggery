@@ -1,6 +1,6 @@
 {
   "name": "@snuggery/node",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -27,7 +27,7 @@
     "@angular-devkit/architect": "0.1101.2",
     "@angular-devkit/core": "11.1.2",
     "@angular-devkit/schematics": "11.1.2",
-    "@snuggery/architect": "0.1.0",
+    "@snuggery/architect": "0.2.0",
     "rxjs": "6.6.3"
   },
   "devDependencies": {

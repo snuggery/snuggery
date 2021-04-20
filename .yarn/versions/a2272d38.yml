@@ -1,6 +1,0 @@
-releases:
-  "@snuggery/architect": minor
-
-declined:
-  - "@snuggery/snuggery"
-  - "@snuggery/yarn"
