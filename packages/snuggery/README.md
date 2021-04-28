@@ -3,11 +3,11 @@
 An `ng`-like CLI to manage your workspace
 
 ```
-Snuggery - 0.3.0
+Snuggery - 0.2.2
 
   $ sn <command>
 
-Architect commands:
+Architect commands
 
   sn [--configuration,-c #0] <target> ...
     Run a target in the current project
@@ -21,7 +21,7 @@ Architect commands:
   sn run target <specifier> ...
     Run a target by specifier
 
-Schematic commands:
+Schematic commands
 
   sn generate ...
     Alias for `sn run schematic`
@@ -35,7 +35,7 @@ Schematic commands:
   sn run schematic [--dry-run] [--force] [--show-file-changes] <schematic> ...
     Run a schematic to generate and/or modify files
 
-Utility commands:
+Utility commands
 
   sn help
     List all available commands
@@ -43,7 +43,7 @@ Utility commands:
   sn project <projectName> <command> ...
     Run a command within a project
 
-Workspace information commands:
+Workspace information commands
 
   sn --version
     Print version information
