@@ -19,7 +19,7 @@ export class ProjectCommand extends AbstractCommand {
     examples: [
       ['Run the `build` target in project `app`', '$0 project app build'],
       [
-        'Run the `@schematics/angularcomponent` schematic in project `app`',
+        'Run the `@schematics/angular:component` schematic in project `app`',
         '$0 project app generate @schematics/angular:component',
       ],
     ],

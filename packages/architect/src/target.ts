@@ -8,7 +8,7 @@ import {
 /**
  * Resolve the given target string into a fully qualified target string
  *
- * If the given `targetString` doens't contain any `:`, it is used as target name on the current
+ * If the given `targetString` doesn't contain any `:`, it is used as target name on the current
  * project.
  *
  * @param context The builder context

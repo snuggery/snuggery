@@ -110,7 +110,7 @@ export class RunMigrationCommand extends MigrationCommand {
       }
 
       this.report.reportError(
-        `Package ${JSON.stringify(this.package)} doens't have migrations`,
+        `Package ${JSON.stringify(this.package)} doesn't have migrations`,
       );
       this.report.reportDebug(
         formatMarkdownish(

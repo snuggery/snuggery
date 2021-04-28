@@ -1,0 +1,65 @@
+{
+  "version": "0.1",
+  "words": [
+    // usernames
+    "arcanis",
+    "bgotink",
+    "dbaeumer",
+    "esbenp",
+
+    // Yarn
+    "dedupe",
+    "ndjson",
+    "npath",
+    "pnpify",
+    "postpack",
+    "plug'n'play",
+    "pnpapi",
+    "ppath",
+    "sdks",
+    "syml",
+    "zipfs",
+    "yarnpkg",
+    "yarnrc",
+
+    // Other Tooling
+    "eslintignore",
+    "nx's",
+    "parens",
+    "pnpm",
+
+    // Dependencies
+    "angular's",
+    "browserslist",
+    "clipanion",
+    "clipanion's",
+    "fslib",
+    "kleur",
+    "mktemp",
+    "nrwl",
+    "typanion",
+
+    "camelize",
+    "dasherize",
+    "devkit",
+    "markdownish",
+    "multiselect",
+    "respawn",
+    "snuggery",
+    "snuggery's",
+    "snuggeries",
+    "subdirs",
+    "subfiles",
+    "unconfigured",
+    "validatable",
+    "worktree",
+
+    "lorem",
+    "ipsum",
+    "dolor",
+    "sit",
+    "amet"
+  ],
+  "ignoreRegExpList": ["from '[^']+'"],
+  "ignorePaths": ["**/dist/**", "**/.yarn/**", ".pnp.js", "yarn.lock", "*.snap"]
+}

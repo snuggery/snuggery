@@ -17,10 +17,10 @@ export function printSchema(
     format,
   }: {supportPathFormat: boolean; report: Report; format: Format},
 ): void {
-  printObjectPropererties(report, format, supportPathFormat, schema, schema, 0);
+  printObjectProperties(report, format, supportPathFormat, schema, schema, 0);
 }
 
-function printObjectPropererties(
+function printObjectProperties(
   report: Report,
   format: Format,
   supportPathFormat: boolean,
@@ -167,7 +167,7 @@ function printObjectPropererties(
         }
 
         if (complexTypes.object != null) {
-          printObjectPropererties(
+          printObjectProperties(
             report,
             format,
             supportPathFormat,
@@ -202,7 +202,7 @@ function printObjectPropererties(
         }
 
         if (complexTypes.object != null) {
-          printObjectPropererties(
+          printObjectProperties(
             report,
             format,
             supportPathFormat,

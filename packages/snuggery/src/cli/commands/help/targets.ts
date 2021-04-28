@@ -76,7 +76,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
         );
 
         report.reportInfo(
-          `The defaul project is \`${format.code(defaultProject)}\`.`,
+          `The default project is \`${format.code(defaultProject)}\`.`,
         );
 
         if (project.targets.size === 0) {

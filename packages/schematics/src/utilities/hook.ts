@@ -39,11 +39,13 @@ export function registerHook(schematic: string, hook: Hook): Rule {
 
     const schematics = workspace.extensions.schematics as JsonObject;
 
-    if (schematics['@iapetos/helpers:hook'] == null) {
-      schematics['@iapetos/helpers:hook'] = Object.create(null) as JsonObject;
+    if (schematics['@snuggery/schematics:hook'] == null) {
+      schematics['@snuggery/schematics:hook'] = Object.create(
+        null,
+      ) as JsonObject;
     }
 
-    const hookConfig = schematics['@iapetos/helpers:hook'] as {
+    const hookConfig = schematics['@snuggery/schematics:hook'] as {
       hooks?: {[schematic: string]: Hook[]};
     };
 

@@ -39,7 +39,7 @@ export class EntryCommand extends ArchitectCommand {
         '$0 serve --open --base-href /lorem/',
       ],
       [
-        'Show all options to the `test` target that can be passed via commandline arguments',
+        'Show all options to the `test` target that can be passed via command line arguments',
         '$0 test --help',
       ],
     ],

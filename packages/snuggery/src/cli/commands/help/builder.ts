@@ -48,7 +48,7 @@ export class HelpBuilderCommand extends ArchitectCommand {
       if (optionSchema) {
         report.reportInfo(`This builder accepts all properties.\n`);
       } else {
-        report.reportInfo(`This builder doens't accept any properties.\n`);
+        report.reportInfo(`This builder doesn't accept any properties.\n`);
       }
       return;
     }

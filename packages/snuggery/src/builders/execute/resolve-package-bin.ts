@@ -71,7 +71,7 @@ export async function resolvePackageBin(
   if (!manifest.bin) {
     return {
       success: false,
-      error: `Package ${packageName} doesn't expose any binarys`,
+      error: `Package ${packageName} doesn't expose any binaries`,
     };
   }
 

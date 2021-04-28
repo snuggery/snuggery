@@ -6,7 +6,7 @@ import {
   JsonValue,
 } from '@angular-devkit/core';
 
-import {isntNull} from './varia';
+import {isNotNull} from './varia';
 
 export enum Type {
   String = 'string',
@@ -234,7 +234,7 @@ export function parseSchema({
           enum: _enum,
         };
       })
-      .filter(isntNull),
+      .filter(isNotNull),
     allowExtraOptions: additionalProperties,
     description,
   };

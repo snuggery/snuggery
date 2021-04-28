@@ -36,7 +36,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
         '$0 serve app --open --base-href /lorem/',
       ],
       [
-        'Show all options to the `test` target in the `app` project that can be passed via commandline arguments',
+        'Show all options to the `test` target in the `app` project that can be passed via command line arguments',
         '$0 test app --help',
       ],
     ],

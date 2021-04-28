@@ -14,11 +14,11 @@
     },
     "target": {
       "type": "string",
-      "description": "The target to run in the configured projects, defaults to the target this builder is configured for if neiter target nor builder are set"
+      "description": "The target to run in the configured projects, defaults to the target this builder is configured for if neither target nor builder are set"
     },
     "builder": {
       "type": "string",
-      "description": "The builder to run in the confiugred projects"
+      "description": "The builder to run in the configured projects"
     },
     "configuration": {
       "type": "string",

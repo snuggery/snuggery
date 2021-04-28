@@ -66,7 +66,7 @@ export class HelpSchematicCommand extends SchematicCommand {
     report.reportInfo(`${format.header('Properties:')}\n`);
 
     if (schemaJson == null) {
-      report.reportInfo(`This builder doens't accept any properties.\n`);
+      report.reportInfo(`This builder doesn't accept any properties.\n`);
       return;
     }
 

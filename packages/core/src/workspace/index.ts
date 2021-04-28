@@ -18,7 +18,7 @@ const types: {[format in WorkspaceFormat]: WorkspaceType} = {
 };
 
 export const workspaceFilenames = Object.freeze([
-  // Replace these if snuggary.json ever deviates from angular.json
+  // Replace these if snuggery.json ever deviates from angular.json
   'snuggery.json',
   '.snuggery.json',
 
