@@ -8,4 +8,6 @@ yarn pretty-quick --staged
 yarn cspell --no-summary $(git diff --cached --name-only)
 
 # Check for duplicate dependencies
-yarn dedupe --check
+if ! git diff --cached --quiet yarn.lock; then
+  yarn dedupe --check
+fi
