@@ -20,5 +20,6 @@
   "editor.codeActionsOnSave": {
     "source.fixAll": true
   },
-  "eslint.nodePath": ".yarn/sdks"
+  "eslint.nodePath": ".yarn/sdks",
+  "cSpell.enabled": true
 }
