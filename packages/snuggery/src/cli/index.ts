@@ -26,7 +26,7 @@ import {RunTargetCommand} from './commands/run/target';
 import {VersionCommand} from './commands/version';
 import {Report} from './utils/report';
 
-export {SnuggeryArchitectHost} from './architect/host';
+export {SnuggeryArchitectHost, createArchitectHost} from './architect';
 export {CliWorkspace, findWorkspace} from './command/context';
 
 export {Cli, Context};

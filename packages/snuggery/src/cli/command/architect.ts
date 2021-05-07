@@ -10,7 +10,11 @@ import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
 
-import {SnuggeryArchitectHost, UnknownTargetError} from '../architect/host';
+import {
+  createArchitectHost,
+  SnuggeryArchitectHost,
+  UnknownTargetError,
+} from '../architect';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 
@@ -90,7 +94,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 
   @Cached()
   protected get architectHost(): SnuggeryArchitectHost {
-    return new SnuggeryArchitectHost(this.context, this.context.workspace);
+    return createArchitectHost(this.context, this.context.workspace);
   }
 
   @Cached()

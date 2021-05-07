@@ -1,6 +1,6 @@
 import {Option, UsageError} from 'clipanion';
 
-import {UnknownTargetError} from '../../architect/host';
+import {UnknownTargetError} from '../../architect';
 import {ArchitectCommand} from '../../command/architect';
 import {formatMarkdownish} from '../../utils/format';
 

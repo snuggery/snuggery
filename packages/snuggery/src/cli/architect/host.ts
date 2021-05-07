@@ -1,64 +1,28 @@
-import type {Target, BuilderInfo} from '@angular-devkit/architect';
+import type {
+  Target,
+  BuilderInfo,
+  createBuilder,
+} from '@angular-devkit/architect';
 import {
   ArchitectHost,
   Builder,
   BuilderSymbol,
 } from '@angular-devkit/architect/src/internal';
 import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
-import type {ErrorWithMeta} from 'clipanion';
-import {createRequire} from 'module';
-import {basename, dirname, join} from 'path';
+import type {ProjectDefinition, TargetDefinition} from '@snuggery/core';
+import {dirname, join} from 'path';
 
-import type {CliWorkspace, Context} from '../command/context';
-import {makeExecutorIntoBuilder} from '../utils/tao';
+import type {Context} from '../command/context';
+import type {Executor} from '../utils/tao';
 
-const {hasOwnProperty} = Object.prototype;
+import {InvalidBuilderError, InvalidBuilderSpecifiedError} from './errors';
 
-export class UnknownBuilderError extends Error implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
+export {Builder};
 
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownBuilderError';
-  }
-}
-
-export class UnknownConfigurationError extends Error implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownConfigurationError';
-  }
-}
-
-export class InvalidBuilderSpecifiedError
-  extends Error
-  implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'InvalidBuilderSpecifiedError';
-  }
-}
-
-export class InvalidBuilderError extends Error implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'InvalidBuilderError';
-  }
-}
-
-export class UnknownTargetError extends Error implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownTargetError';
-  }
+export function isBuilder(value: object): value is Builder {
+  return (
+    BuilderSymbol in value && (value as {[BuilderSymbol]: true})[BuilderSymbol]
+  );
 }
 
 export interface SnuggeryBuilderInfo extends BuilderInfo {
@@ -68,195 +32,100 @@ export interface SnuggeryBuilderInfo extends BuilderInfo {
   isNx: boolean | null;
 }
 
-function isBuilder(value: object): value is Builder {
-  return (
-    BuilderSymbol in value && (value as {[BuilderSymbol]: true})[BuilderSymbol]
-  );
-}
-
-export class SnuggeryArchitectHost
-  implements ArchitectHost<SnuggeryBuilderInfo> {
-  constructor(
-    private readonly context: Pick<Context, 'startCwd'>,
-    private readonly workspace: CliWorkspace | null,
-  ) {}
-
-  private loadBuilderJson(
+export interface ResolverFacade {
+  /**
+   * Load the configuration for builders in the given package
+   *
+   * @param packageName Name of the builder package to load
+   * @param builderSpec Identifier of the builder to use when logging errors
+   * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
+   */
+  loadBuilders(
     packageName: string,
     builderSpec: string,
   ): [
     path: string,
     builders: Record<string, JsonObject>,
     executors?: Record<string, JsonObject>,
-  ] {
-    for (const basePath of new Set(
-      this.workspace != null
-        ? [this.context.startCwd, this.workspace.basePath]
-        : [this.context.startCwd],
-    )) {
-      const require = createRequire(join(basePath, '<synthetic>'));
+  ];
 
-      let startJsonPath: string;
-      try {
-        startJsonPath = require.resolve(join(packageName, 'package.json'));
-      } catch {
-        try {
-          startJsonPath = require.resolve(packageName);
-        } catch {
-          continue;
-        }
-      }
+  resolveBuilder(
+    packageName: string,
+    builderName: string,
+    builderSpec: string,
+  ): [builderPath: string, builderInfo: JsonValue, isNx: boolean | null];
 
-      let buildersJsonPath = startJsonPath;
-      let buildersJson: JsonObject;
+  /**
+   * Load a single builder directly from path
+   *
+   * @param path The path to load the builder from
+   * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
+   */
+  resolveDirectBuilder(path: string): Promise<[path: string, info: JsonObject]>;
+}
 
-      try {
-        buildersJson = require(buildersJsonPath);
-      } catch {
-        throw new InvalidBuilderError(
-          `Failed to load builder configuration file "${buildersJsonPath}"`,
-        );
-      }
+export interface WorkspaceFacade {
+  /**
+   * Directory the workspace is in
+   */
+  readonly basePath?: string;
 
-      while (typeof buildersJson.builders === 'string') {
-        buildersJsonPath = join(
-          dirname(buildersJsonPath),
-          buildersJson.builders,
-        );
+  /**
+   * Returns the project for the given name
+   *
+   * @param projectName The name of the project
+   * @throws if the given project name is not found or it's invalid
+   */
+  getProject(projectName: string): ProjectDefinition;
 
-        try {
-          buildersJson = require(buildersJsonPath);
-        } catch {
-          throw new InvalidBuilderError(
-            `Failed to load builder configuration file "${buildersJsonPath}"`,
-          );
-        }
-      }
+  /**
+   * Returns metadata for the project with the given name
+   *
+   * @param projectName The name of the project
+   * @throws if the given project name is not found or it's invalid
+   */
+  getProjectMetadata(projectName: string): JsonObject;
 
-      if (buildersJson.builders == null) {
-        throw new InvalidBuilderError(
-          `No builder configuration found in "${packageName}" for builder "${builderSpec}"`,
-        );
-      }
+  /**
+   * Returns the given target configuration
+   *
+   * @param target The target to look up
+   * @throws if the given target is not found or it's invalid
+   */
+  getTarget(target: Target): TargetDefinition;
 
-      if (!isJsonObject(buildersJson.builders)) {
-        throw new InvalidBuilderError(
-          `Builder configuration file "${buildersJsonPath}" for "${builderSpec}" doesn't match the schema`,
-        );
-      }
+  /**
+   * Returns the options configured for the given target
+   *
+   * @param target The target to look up
+   * @throws if the given target is not found or it's invalid
+   */
+  getOptionsForTarget(target: Target): JsonObject | null;
 
-      let executors: Record<string, JsonObject> | undefined;
-      if (isJsonObject(buildersJson.executors!)) {
-        executors = buildersJson.executors as Record<string, JsonObject>;
-      }
+  /**
+   * Convert the given executor into a builder that can be executed using the angular devkit
+   *
+   * @param executor The executor to convert
+   */
+  convertExecutorIntoBuilder(
+    executor: Executor,
+  ): ReturnType<typeof createBuilder>;
+}
 
-      return [
-        buildersJsonPath,
-        buildersJson.builders as Record<string, JsonObject>,
-        executors,
-      ];
-    }
-
-    throw new UnknownBuilderError(
-      `Couldn't find builder configuration in "${packageName}" for builder "${builderSpec}"`,
-    );
-  }
-
-  private getProject(projectName: string) {
-    const project = this.workspace?.projects.get(projectName);
-
-    if (project == null) {
-      throw new UnknownTargetError(`Unknown project: "${projectName}"`);
-    }
-
-    return project;
-  }
-
-  private getTarget(target: Target) {
-    const projectTarget = this.getProject(target.project).targets.get(
-      target.target,
-    );
-
-    if (projectTarget == null) {
-      throw new UnknownTargetError(
-        `No target named "${target.target}" found in project "${target.project}"`,
-      );
-    }
-
-    return projectTarget;
-  }
+export class SnuggeryArchitectHost
+  implements ArchitectHost<SnuggeryBuilderInfo> {
+  constructor(
+    private readonly context: Pick<Context, 'startCwd'>,
+    private readonly resolver: ResolverFacade,
+    private readonly workspace: WorkspaceFacade,
+  ) {}
 
   async getBuilderNameForTarget(target: Target): Promise<string> {
-    return this.getTarget(target).builder;
-  }
-
-  private async resolveBuilderFromPath(
-    path: string,
-  ): Promise<[path: string, info: JsonObject]> {
-    for (const basePath of new Set(
-      this.workspace != null
-        ? [this.context.startCwd, this.workspace.basePath]
-        : [this.context.startCwd],
-    )) {
-      const require = createRequire(join(basePath, '<synthetic>'));
-
-      let resolvedPath;
-      try {
-        resolvedPath = require.resolve(path);
-      } catch {
-        continue;
-      }
-
-      let schemaOrBuilder: JsonObject | Builder;
-      try {
-        schemaOrBuilder = await import(resolvedPath).then(
-          module => module.default ?? module,
-        );
-      } catch {
-        throw new InvalidBuilderError(
-          `Failed to load builder file "${resolvedPath}" for builder "${path}"`,
-        );
-      }
-
-      if (
-        schemaOrBuilder == null ||
-        typeof schemaOrBuilder !== 'object' ||
-        Array.isArray(schemaOrBuilder)
-      ) {
-        throw new InvalidBuilderError(
-          `File "${resolvedPath}" for builder "${path}" does not contain a valid builder`,
-        );
-      }
-
-      if (isBuilder(schemaOrBuilder)) {
-        return [
-          resolvedPath,
-          {
-            schema: true,
-            implementation: basename(resolvedPath),
-          },
-        ];
-      } else if (
-        typeof schemaOrBuilder.type === 'string' &&
-        typeof schemaOrBuilder.implementation === 'string'
-      ) {
-        return [
-          resolvedPath,
-          {
-            schema: basename(resolvedPath),
-            implementation: schemaOrBuilder.implementation,
-          },
-        ];
-      } else {
-        return [resolvedPath, schemaOrBuilder];
-      }
-    }
-
-    throw new UnknownBuilderError(`Can't resolve builder "${path}"`);
+    return this.workspace.getTarget(target).builder;
   }
 
   listBuilders(packageName: string): {name: string; description?: string}[] {
-    const [, builderJson, executorsJson] = this.loadBuilderJson(
+    const [, builderJson, executorsJson] = this.resolver.loadBuilders(
       packageName,
       packageName,
     );
@@ -295,35 +164,15 @@ export class SnuggeryArchitectHost
     let isNx: boolean | null = null;
 
     if (packageName === '$direct') {
-      [builderPath, builderInfo] = await this.resolveBuilderFromPath(
+      [builderPath, builderInfo] = await this.resolver.resolveDirectBuilder(
         builderName,
       );
     } else {
-      let builderJson, executorsJson;
-      [builderPath, builderJson, executorsJson] = this.loadBuilderJson(
+      [builderPath, builderInfo, isNx] = this.resolver.resolveBuilder(
         packageName,
+        builderName,
         builderSpec,
       );
-
-      // We have to give Nx executors precedence, because nx's own plugins tend to provide a
-      // fallback for the @angular/cli that fails to load snuggery.json files when looking for
-      // workspace configuration
-      if (
-        executorsJson != null &&
-        hasOwnProperty.call(executorsJson, builderName)
-      ) {
-        builderInfo = executorsJson[builderName]!;
-        isNx = true;
-      } else if (hasOwnProperty.call(builderJson, builderName)) {
-        if (executorsJson != null) {
-          isNx = false;
-        }
-        builderInfo = builderJson[builderName]!;
-      } else {
-        throw new UnknownBuilderError(
-          `Can't find "${builderName}" in "${packageName}"`,
-        );
-      }
     }
 
     if (
@@ -415,10 +264,10 @@ export class SnuggeryArchitectHost
         typeof info.optionSchema === 'object' &&
         info.optionSchema.cli === 'nx')
     ) {
-      return makeExecutorIntoBuilder(implementation, this.workspace);
+      return this.workspace.convertExecutorIntoBuilder(implementation);
     }
 
-    if (!implementation[BuilderSymbol]) {
+    if (!isBuilder(implementation)) {
       throw new InvalidBuilderError(
         `Implementation for builder "${info.builderName}" in package "${info.packageName}" is not a builder`,
       );
@@ -432,31 +281,11 @@ export class SnuggeryArchitectHost
   }
 
   getWorkspaceRoot(): Promise<string> {
-    return Promise.resolve(this.workspace?.basePath ?? this.context.startCwd);
+    return Promise.resolve(this.workspace.basePath ?? this.context.startCwd);
   }
 
   async getOptionsForTarget(target: Target): Promise<JsonObject | null> {
-    const targetDefinition = this.getTarget(target);
-    const options: JsonObject = {};
-
-    if (targetDefinition.options != null) {
-      Object.assign(options, targetDefinition.options);
-    }
-
-    for (const configuration of target.configuration?.split(',') || []) {
-      const configurationOptions =
-        targetDefinition.configurations?.[configuration];
-
-      if (configurationOptions == null) {
-        throw new UnknownConfigurationError(
-          `Target "${target.target}" in project "${target.project}" doesn't have a configuration named "${configuration}"`,
-        );
-      }
-
-      Object.assign(options, configurationOptions);
-    }
-
-    return options;
+    return this.workspace.getOptionsForTarget(target);
   }
 
   getProjectMetadata(projectName: string): Promise<JsonObject>;
@@ -464,17 +293,10 @@ export class SnuggeryArchitectHost
   async getProjectMetadata(
     projectNameOrTarget: string | Target,
   ): Promise<JsonObject> {
-    const projectDefinition = this.getProject(
+    return this.workspace.getProjectMetadata(
       typeof projectNameOrTarget === 'string'
         ? projectNameOrTarget
         : projectNameOrTarget.project,
     );
-
-    return {
-      root: projectDefinition.root,
-      sourceRoot: projectDefinition.sourceRoot!,
-      prefix: projectDefinition.prefix!,
-      ...projectDefinition.extensions,
-    };
   }
 }

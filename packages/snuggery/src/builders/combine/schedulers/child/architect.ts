@@ -5,7 +5,7 @@ import {
 } from '@angular-devkit/architect';
 import {JsonObject, logging, schema} from '@angular-devkit/core';
 import {
-  SnuggeryArchitectHost,
+  createArchitectHost,
   CliWorkspace,
   findWorkspace,
 } from '@snuggery/snuggery/cli';
@@ -23,15 +23,14 @@ export class ChildArchitect {
 
     const workspace = findWorkspace(workspaceRoot) as Promise<CliWorkspace>;
     this.workspace = workspace;
-    this.architect = (async () => {
-      const architectHost = new SnuggeryArchitectHost(
-        {
-          startCwd: process.cwd(),
-        },
-        await workspace,
-      );
-      return new Architect(architectHost, registry);
-    })();
+
+    this.architect = workspace.then(
+      workspace =>
+        new Architect(
+          createArchitectHost({startCwd: process.cwd()}, workspace),
+          registry,
+        ),
+    );
   }
 
   public executeTarget(
