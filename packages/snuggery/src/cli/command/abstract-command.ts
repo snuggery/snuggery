@@ -220,8 +220,8 @@ export abstract class AbstractCommand extends Command<Context> {
       const errors = error.errors
         .filter(error => error.message)
         .map(error =>
-          error.dataPath
-            ? `  - Input property ${error.dataPath} ${error.message}`
+          error.instancePath
+            ? `  - Input property ${error.instancePath} ${error.message}`
             : `  - Input ${error.message}`,
         );
 
