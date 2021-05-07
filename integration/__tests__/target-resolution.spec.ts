@@ -138,4 +138,39 @@ describe('target resolution', () => {
       }),
     );
   });
+
+  describe('with defaultConfiguration', () => {
+    it(
+      'should use any passed in configuration',
+      inFixture('single-project', async ({runJson}) => {
+        await expect(
+          runJson(['with-default--target', '-c', 'ipsum']),
+        ).resolves.toMatchObject({
+          project: 'fixture',
+          target: 'with-default--target',
+          configuration: 'ipsum',
+        });
+
+        await expect(
+          runJson(['with-default--value', '--configuration=ipsum']),
+        ).resolves.toMatchObject({
+          configuration: 'ipsum',
+        });
+      }),
+    );
+
+    it(
+      'should use the default configuration if no config is passed',
+      inFixture('single-project', async ({runJson}) => {
+        await expect(runJson(['with-default--target'])).resolves.toMatchObject({
+          project: 'fixture',
+          target: 'with-default--target',
+        });
+
+        await expect(runJson(['with-default--value'])).resolves.toMatchObject({
+          configuration: 'lorem',
+        });
+      }),
+    );
+  });
 });

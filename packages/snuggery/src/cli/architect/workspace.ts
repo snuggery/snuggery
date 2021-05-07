@@ -62,7 +62,9 @@ export class CliWorkspaceFacade implements WorkspaceFacade {
       Object.assign(options, targetDefinition.options);
     }
 
-    for (const configuration of target.configuration?.split(',') || []) {
+    for (const configuration of (
+      target.configuration ?? targetDefinition.defaultConfiguration
+    )?.split(',') || []) {
       const configurationOptions =
         targetDefinition.configurations?.[configuration];
 
