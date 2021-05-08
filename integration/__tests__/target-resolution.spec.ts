@@ -152,7 +152,7 @@ describe('target resolution', () => {
         });
 
         await expect(
-          runJson(['with-default--value', '--configuration=ipsum']),
+          runJson(['with-default--value', '-c', 'ipsum']),
         ).resolves.toMatchObject({
           configuration: 'ipsum',
         });

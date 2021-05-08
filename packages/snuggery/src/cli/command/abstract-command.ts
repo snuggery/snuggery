@@ -175,6 +175,7 @@ export abstract class AbstractCommand extends Command<Context> {
       if (allowExtraOptions) {
         return parseFreeFormArguments({
           command: this,
+          options: commandOptions,
           path: [...this.path, ...pathSuffix],
           values,
           description,

@@ -21,9 +21,9 @@ function createOptionParserCommand({
   description?: string;
 }) {
   return class OptionParserCommand extends Command {
-    static paths = [[...path]];
+    static readonly paths = [[...path]];
 
-    static usage = description ? {description} : undefined;
+    static readonly usage = description ? {description} : undefined;
 
     help = CommandOption.Boolean('--help,-h', false, {
       description: 'Show this help message',
@@ -37,17 +37,31 @@ function createOptionParserCommand({
 
 export function parseFreeFormArguments({
   command: {context, cli: baseCli},
+  options = [],
   path,
   values,
   description,
 }: {
   readonly command: AbstractCommand;
+  readonly options?: readonly Option[];
   readonly path: readonly string[];
   readonly description?: string;
   readonly values: readonly string[];
 }): ParsedArguments {
   const result: JsonObject = {};
   const leftOvers: string[] = [];
+
+  const aliases = new Map<string, string>();
+
+  for (const option of options) {
+    for (const alias of option.aliases) {
+      aliases.set(alias, option.name);
+    }
+  }
+
+  const setValue = (name: string, value: JsonValue) => {
+    result[aliases.get(name) ?? name] = value;
+  };
 
   for (let i = 0, {length} = values; i < length; i++) {
     const current = values[i]!;
@@ -57,45 +71,57 @@ export function parseFreeFormArguments({
       break;
     }
 
-    if (current.startsWith('--')) {
-      const equals = current.indexOf('=');
-
-      let value: JsonValue;
-      let name: string;
-      if (equals > -1) {
-        name = current.slice(2, equals);
-        value = current.slice(equals + 1);
-      } else {
-        name = current.slice(2);
-
-        const next = values[i + 1];
-        if (!next || next.startsWith('-')) {
-          value = true;
-        } else {
-          value = next;
-          i++;
-        }
-      }
-
-      if (value === 'true' || value === 'false') {
-        value = value === 'true';
-      } else if (
-        typeof value === 'string' &&
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        !isNaN(value as any) &&
-        !isNaN(parseFloat(value))
-      ) {
-        value = parseFloat(value);
-      }
-
-      result[camelize(name)] = value;
-    } else if (current.startsWith('-')) {
-      for (const flag of current.slice(1)) {
-        result[flag] = true;
-      }
-    } else {
+    if (!current.startsWith('-')) {
       leftOvers.push(current);
+      continue;
     }
+
+    const hasDoubleDash = current.startsWith('--');
+    const equals = current.indexOf('=');
+
+    let name = current.slice(
+      hasDoubleDash ? 2 : 1,
+      equals !== -1 ? equals : undefined,
+    );
+
+    if (hasDoubleDash) {
+      name = camelize(name);
+    }
+
+    if (!hasDoubleDash && name.length > 1) {
+      // multiple flags are passed, which means that every flag except the last one must be booleans
+      for (const flag of name.slice(0, -1)) {
+        setValue(flag, true);
+      }
+
+      name = name.slice(-1);
+    }
+
+    let value: JsonValue;
+    if (equals > -1) {
+      value = current.slice(equals + 1);
+    } else {
+      const next = values[i + 1];
+      if (!next || next.startsWith('-')) {
+        value = true;
+      } else {
+        value = next;
+        i++;
+      }
+    }
+
+    if (value === 'true' || value === 'false') {
+      value = value === 'true';
+    } else if (
+      typeof value === 'string' &&
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      !isNaN(value as any) &&
+      !isNaN(parseFloat(value))
+    ) {
+      value = parseFloat(value);
+    }
+
+    setValue(name, value);
   }
 
   if (leftOvers.length) {
