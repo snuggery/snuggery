@@ -1,7 +1,10 @@
-import {isJsonArray} from '@angular-devkit/core';
 import {Option} from 'clipanion';
 
-import {ArchitectCommand, configurationOption} from '../command/architect';
+import {
+  ArchitectCommand,
+  configurationOption,
+  addConfigurationsToTarget,
+} from '../command/architect';
 
 export class EntryWithProjectCommand extends ArchitectCommand {
   static paths = [ArchitectCommand.Default];
@@ -54,45 +57,25 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 
   async execute(): Promise<number> {
     const target = this.resolveTarget(this.target, this.project);
-    const configurations = new Set(this.configuration);
 
-    const options = this.parseOptionValues({
-      ...(await this.getOptionsForTarget(target)),
-      description: `Run the \`${target.target}\` target in the \`${target.project}\` project`,
-      commandOptions: [configurationOption],
-      pathSuffix: [this.target, this.project],
-      values: this.args,
-    });
-
-    if (!options[0]) {
-      return 1;
-    } else if (options[1] == null) {
-      return 0;
-    }
-
-    if (typeof options[1].configuration === 'string') {
-      for (const value of options[1].configuration.split(',')) {
-        if (value) {
-          configurations.add(value);
-        }
-      }
-      delete options[1].configuration;
-    } else if (isJsonArray(options[1].configuration!)) {
-      for (const value of options[1].configuration) {
-        if (typeof value === 'string') {
-          configurations.add(value);
-        }
-      }
-      delete options[1].configuration;
-    }
-
-    if (configurations.size > 0) {
-      target.configuration = Array.from(configurations).join(',');
-    }
-
-    return this.runTarget({
-      target,
-      options: options[1],
-    });
+    return this.withOptionValues(
+      {
+        ...(await this.getOptionsForTarget(target)),
+        description: `Run the \`${target.target}\` target in project \`${target.project}\``,
+        commandOptions: [configurationOption],
+        pathSuffix: [this.target, this.project],
+        values: this.args,
+      },
+      options => {
+        return this.runTarget({
+          target: addConfigurationsToTarget(
+            target,
+            options,
+            this.getConfigurations(),
+          ),
+          options,
+        });
+      },
+    );
   }
 }

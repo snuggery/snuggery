@@ -4,7 +4,7 @@ import {
   BuilderRun,
   Target,
 } from '@angular-devkit/architect';
-import {json, JsonObject} from '@angular-devkit/core';
+import {isJsonArray, json, JsonObject} from '@angular-devkit/core';
 import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
@@ -82,6 +82,41 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
   return result.success ? 0 : 1;
 }
 
+export function addConfigurationsToTarget(
+  target: Target,
+  options: JsonObject,
+  initialConfigurations: ReadonlySet<string>,
+): Target {
+  const configurations = new Set(initialConfigurations);
+
+  if (typeof options.configuration === 'string') {
+    for (const value of options.configuration
+      .split(',')
+      .map(configuration => configuration.trim())) {
+      if (value) {
+        configurations.add(value);
+      }
+    }
+    delete options.configuration;
+  } else if (isJsonArray(options.configuration!)) {
+    for (const value of options.configuration) {
+      if (typeof value === 'string') {
+        configurations.add(value.trim());
+      }
+    }
+    delete options.configuration;
+  }
+
+  if (configurations.size === 0) {
+    return target;
+  }
+
+  return {
+    ...target,
+    configuration: Array.from(configurations).join(','),
+  };
+}
+
 export abstract class ArchitectCommand extends AbstractCommand {
   @Cached()
   protected get registry(): json.schema.SchemaRegistry {
@@ -132,6 +167,16 @@ export abstract class ArchitectCommand extends AbstractCommand {
       Array.from(allTargets).filter(
         ([target]) => !nonUniqueTargets.has(target),
       ),
+    );
+  }
+
+  protected getConfigurations(
+    this: ArchitectCommand & {configuration?: string[]},
+  ): Set<string> {
+    return new Set(
+      this.configuration
+        ?.flatMap(c => c.split(','))
+        .map(configuration => configuration.trim()),
     );
   }
 

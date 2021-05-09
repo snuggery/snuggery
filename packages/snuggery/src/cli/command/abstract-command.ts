@@ -45,7 +45,7 @@ class PrettiedError extends Error implements ErrorWithMeta {
   }
 }
 
-// Errors the Angular API's throw that shouldn't show a stacktrace
+// Errors the Angular APIs throw that shouldn't show a stacktrace
 const angularUserErrors = new Set([
   // Schematics
   CollectionCannotBeResolvedException,
@@ -122,28 +122,10 @@ export abstract class AbstractCommand extends Command<Context> {
   }
 
   protected async withOptionValues<T>(
-    {
-      options,
-      allowExtraOptions,
-      description,
-      values,
-      pathSuffix = [],
-    }: {
-      readonly options: readonly Option[];
-      readonly allowExtraOptions: boolean;
-      readonly description?: string;
-      readonly values: readonly string[];
-      readonly pathSuffix?: readonly string[];
-    },
+    options: Parameters<AbstractCommand['parseOptionValues']>[0],
     fn: (parsedOptions: JsonObject) => Promise<T>,
   ): Promise<number | T> {
-    const [success, parsedOptions] = this.parseOptionValues({
-      options,
-      allowExtraOptions,
-      description,
-      values,
-      pathSuffix,
-    });
+    const [success, parsedOptions] = this.parseOptionValues(options);
 
     if (!success) {
       return 1;
