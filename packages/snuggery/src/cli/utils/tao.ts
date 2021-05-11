@@ -20,9 +20,9 @@ import type {
   TargetConfiguration,
   ExecutorContext,
   Executor,
-  WorkspaceConfiguration,
   FileChange,
   Generator,
+  WorkspaceJsonConfiguration,
 } from '@nrwl/devkit';
 import type {ErrorWithMeta} from 'clipanion';
 
@@ -104,7 +104,7 @@ class MappedContext implements ExecutorContext {
   }
 
   @Cached()
-  get workspace(): WorkspaceConfiguration {
+  get workspace(): WorkspaceJsonConfiguration {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     return {
       version: 2,
@@ -189,7 +189,7 @@ class MappedTree implements NxTree {
   }
 
   exists(filePath: string): boolean {
-    return this.tree.exists(filePath);
+    return this.tree.exists(filePath) || this.children(filePath).length > 0;
   }
 
   delete(filePath: string): void {

@@ -164,7 +164,6 @@ export class SnuggeryArchitectHost
     return this.workspace.getTarget(target).builder;
   }
 
-  /** @override */
   listBuilders(packageName: string): {name: string; description?: string}[] {
     const [, builderJson, executorsJson] = this.resolver.loadBuilders(
       packageName,
@@ -320,13 +319,13 @@ export class SnuggeryArchitectHost
   }
 
   /** @override */
-  getCurrentDirectory(): Promise<string> {
-    return Promise.resolve(this.context.startCwd);
+  async getCurrentDirectory(): Promise<string> {
+    return this.context.startCwd;
   }
 
   /** @override */
-  getWorkspaceRoot(): Promise<string> {
-    return Promise.resolve(this.workspace.basePath ?? this.context.startCwd);
+  async getWorkspaceRoot(): Promise<string> {
+    return this.workspace.basePath ?? this.context.startCwd;
   }
 
   /** @override */

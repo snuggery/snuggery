@@ -36,7 +36,7 @@
     "which-pm-runs": "1.0.0"
   },
   "devDependencies": {
-    "@nrwl/devkit": "^11.2.0",
+    "@nrwl/devkit": "^12.2.0",
     "@snuggery-workspace/scripts": "workspace:scripts",
     "@types/json5": "^0.0.30",
     "@types/micromatch": "^4",
