@@ -34,7 +34,8 @@ export class HelpSchematicsCommand extends SchematicCommand {
   async execute(): Promise<void> {
     const {report, format} = this;
 
-    const collectionName = this.collectionName ?? this.getDefaultCollection();
+    const collectionName =
+      this.collectionName ?? this.getDefaultCollectionName();
     const collection = this.getCollection(collectionName);
 
     report.reportInfo(

@@ -54,16 +54,9 @@ export class RunSchematicCommand extends SchematicCommand {
   }
 
   async execute(): Promise<number | void> {
-    let collectionName, schematicName;
-    if (this.schematic.includes(':')) {
-      [collectionName, schematicName] = this.schematic.split(':', 2) as [
-        string,
-        string,
-      ];
-    } else {
-      collectionName = this.getDefaultCollection();
-      schematicName = this.schematic;
-    }
+    const {collectionName, schematicName} = this.resolveSchematic(
+      this.schematic,
+    );
 
     const schematic = this.getSchematic(collectionName, schematicName, false);
 

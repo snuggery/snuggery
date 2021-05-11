@@ -1,8 +1,17 @@
+/**
+ * @fileoverview
+ *
+ * The SnuggeryArchitectHost is a re-implementation of the WorkspaceNodeModulesArchitectHost
+ * that throws different types of errors (like angular does do in the schematic workflow) and
+ * supports Tao-style executors
+ */
+
 import type {
   Target,
   BuilderInfo,
   createBuilder,
 } from '@angular-devkit/architect';
+// It would be great if we could have access to these without going through `/src/internal/`.
 import {
   ArchitectHost,
   Builder,
@@ -20,15 +29,34 @@ import {InvalidBuilderError, InvalidBuilderSpecifiedError} from './errors';
 export {Builder};
 
 export function isBuilder(value: object): value is Builder {
-  return (
-    BuilderSymbol in value && (value as {[BuilderSymbol]: true})[BuilderSymbol]
-  );
+  return BuilderSymbol in value && (value as Builder)[BuilderSymbol];
 }
 
 export interface SnuggeryBuilderInfo extends BuilderInfo {
+  /**
+   * Package or builder JSON path the builder was loaded from
+   *
+   * If this is null, the builder was referenced directly (via `$direct:path/to/builder`).
+   */
   packageName: string | null;
+
+  /**
+   * Absolute path to the builder implementation
+   */
   implementationPath: string;
+
+  /**
+   * Key the builder is exported as, default export if `null`
+   */
   implementationExport: string | null;
+
+  /**
+   * Whether the builder is a Tao executor rather than an Angular devkit builder
+   *
+   * If this is `true`, it's definitely a Tao executor.
+   * If this is `false`, it's definitely an Angular devkit builder.
+   * Otherwise, it might be an executor.
+   */
   isNx: boolean | null;
 }
 
@@ -49,6 +77,14 @@ export interface ResolverFacade {
     executors?: Record<string, JsonObject>,
   ];
 
+  /**
+   * Resolve a single builder out of a builders configuration file
+   *
+   * @param packageName Package name (or path to a builders.json) to resolve the builder from
+   * @param builderName Name of the builder to resolve
+   * @param builderSpec Identifier of the builder to use when logging errors
+   * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
+   */
   resolveBuilder(
     packageName: string,
     builderName: string,
@@ -56,7 +92,7 @@ export interface ResolverFacade {
   ): [builderPath: string, builderInfo: JsonValue, isNx: boolean | null];
 
   /**
-   * Load a single builder directly from path
+   * Resolve a single builder directly from path
    *
    * @param path The path to load the builder from
    * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
@@ -112,6 +148,9 @@ export interface WorkspaceFacade {
   ): ReturnType<typeof createBuilder>;
 }
 
+/**
+ * An architect host supporting angular-style builders and tao-style executors
+ */
 export class SnuggeryArchitectHost
   implements ArchitectHost<SnuggeryBuilderInfo> {
   constructor(
@@ -120,10 +159,12 @@ export class SnuggeryArchitectHost
     private readonly workspace: WorkspaceFacade,
   ) {}
 
+  /** @override */
   async getBuilderNameForTarget(target: Target): Promise<string> {
     return this.workspace.getTarget(target).builder;
   }
 
+  /** @override */
   listBuilders(packageName: string): {name: string; description?: string}[] {
     const [, builderJson, executorsJson] = this.resolver.loadBuilders(
       packageName,
@@ -147,6 +188,7 @@ export class SnuggeryArchitectHost
     });
   }
 
+  /** @override */
   async resolveBuilder(builderSpec: string): Promise<SnuggeryBuilderInfo> {
     const [packageName, builderName] = builderSpec.split(':', 2) as [
       string,
@@ -234,6 +276,7 @@ export class SnuggeryArchitectHost
     };
   }
 
+  /** @override */
   async loadBuilder(
     info: SnuggeryBuilderInfo,
   ): Promise<Builder<JsonObject> | null> {
@@ -276,20 +319,22 @@ export class SnuggeryArchitectHost
     return implementation;
   }
 
+  /** @override */
   getCurrentDirectory(): Promise<string> {
     return Promise.resolve(this.context.startCwd);
   }
 
+  /** @override */
   getWorkspaceRoot(): Promise<string> {
     return Promise.resolve(this.workspace.basePath ?? this.context.startCwd);
   }
 
+  /** @override */
   async getOptionsForTarget(target: Target): Promise<JsonObject | null> {
     return this.workspace.getOptionsForTarget(target);
   }
 
-  getProjectMetadata(projectName: string): Promise<JsonObject>;
-  getProjectMetadata(target: Target): Promise<JsonObject>;
+  /** @override */
   async getProjectMetadata(
     projectNameOrTarget: string | Target,
   ): Promise<JsonObject> {

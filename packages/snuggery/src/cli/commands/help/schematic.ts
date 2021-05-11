@@ -35,16 +35,9 @@ export class HelpSchematicCommand extends SchematicCommand {
   async execute(): Promise<void> {
     const {report, format} = this;
 
-    let collectionName, schematicName;
-    if (this.schematic.includes(':')) {
-      [collectionName, schematicName] = this.schematic.split(':', 2) as [
-        string,
-        string,
-      ];
-    } else {
-      collectionName = this.getDefaultCollection();
-      schematicName = this.schematic;
-    }
+    const {collectionName, schematicName} = this.resolveSchematic(
+      this.schematic,
+    );
 
     const {
       description: {description, schemaJson},

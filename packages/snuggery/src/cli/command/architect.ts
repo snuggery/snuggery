@@ -21,6 +21,9 @@ import {Option, parseSchema, Type} from '../utils/parse-schema';
 import {AbstractCommand} from './abstract-command';
 import type {Context} from './context';
 
+/**
+ * Architect commands share a `--configuration` / `-c` option
+ */
 export const configurationOption: Option = {
   name: 'configuration',
   aliases: ['c'],
@@ -119,27 +122,25 @@ export function addConfigurationsToTarget(
 
 export abstract class ArchitectCommand extends AbstractCommand {
   @Cached()
-  protected get registry(): json.schema.SchemaRegistry {
-    const registry = new json.schema.CoreSchemaRegistry();
-    registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
-    registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
-
-    return registry;
-  }
-
-  @Cached()
   protected get architectHost(): SnuggeryArchitectHost {
     return createArchitectHost(this.context, this.context.workspace);
   }
 
   @Cached()
   protected get architect(): Architect {
-    return new Architect(this.architectHost, this.registry);
+    const registry = new json.schema.CoreSchemaRegistry();
+    registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
+    registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
+
+    return new Architect(this.architectHost, registry);
   }
 
+  /**
+   * The default project, if any
+   */
   @Cached()
   protected get defaultProject(): string | null {
-    const {defaultProject} = this.workspace.extensions;
+    const defaultProject = this.context.workspace?.extensions?.defaultProject;
 
     if (typeof defaultProject === 'string') {
       return defaultProject;
@@ -148,12 +149,15 @@ export abstract class ArchitectCommand extends AbstractCommand {
     return null;
   }
 
+  /**
+   * A map that maps unique target names onto the single projects that contain them
+   */
   @Cached()
   protected get uniqueTargets(): ReadonlyMap<string, string> {
     const allTargets = new Map<string, string>();
     const nonUniqueTargets = new Set<string>();
 
-    for (const [project, {targets}] of this.workspace.projects) {
+    for (const [project, {targets}] of this.context.workspace?.projects || []) {
       for (const target of targets.keys()) {
         if (allTargets.has(target)) {
           nonUniqueTargets.add(target);
@@ -170,6 +174,9 @@ export abstract class ArchitectCommand extends AbstractCommand {
     );
   }
 
+  /**
+   * Set of configurations activated upon the command class itself
+   */
   protected getConfigurations(
     this: ArchitectCommand & {configuration?: string[]},
   ): Set<string> {
@@ -180,6 +187,9 @@ export abstract class ArchitectCommand extends AbstractCommand {
     );
   }
 
+  /**
+   * Return the option definitions for the given target
+   */
   protected async getOptionsForTarget(
     target: Target,
   ): Promise<{
@@ -192,6 +202,9 @@ export abstract class ArchitectCommand extends AbstractCommand {
     );
   }
 
+  /**
+   * Return the option definitions for the given builder
+   */
   protected async getOptionsForBuilder(
     builderConf: string,
   ): Promise<{

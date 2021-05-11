@@ -55,12 +55,28 @@ export class SchematicFailedError extends Error implements ErrorWithMeta {
 }
 
 export abstract class SchematicCommand extends AbstractCommand {
+  /**
+   * Whether to actually commit the changes of the schematic on-disk (false) or not (true)
+   *
+   * If set to true, an overview of all changed files will always be printed, regardless of `showFileChanges`.
+   */
   protected abstract readonly dryRun: boolean;
 
+  /**
+   * Commit schematic changes even if they result in conflicts
+   */
   protected abstract readonly force: boolean;
 
+  /**
+   * Print every file that gets changed
+   */
   protected abstract readonly showFileChanges: boolean;
 
+  /**
+   * Root directory for the schematic
+   *
+   * The schematic cannot change files outside of the root.
+   */
   protected abstract readonly root: string;
 
   /**
@@ -71,6 +87,12 @@ export abstract class SchematicCommand extends AbstractCommand {
    */
   protected readonly resolveSelf: boolean = false;
 
+  /**
+   * JSONSchema registry
+   *
+   * Unlike the registry in the architect family of commands, this registry supports prompting the
+   * user for missing options.
+   */
   @Cached()
   protected get registry(): schema.CoreSchemaRegistry {
     const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
@@ -189,12 +211,13 @@ export abstract class SchematicCommand extends AbstractCommand {
         continue;
       }
 
-      // collection:schematic
+      // .schematics[`${collection}:${schematic}`]
       let tmp = schematics[`${collectionName}:${schematicName}`];
       if (tmp != null && isJsonObject(tmp)) {
         Object.assign(options, tmp);
       }
 
+      // .schematics[collection][schematic]
       tmp = schematics[collectionName];
       if (
         tmp != null &&
@@ -208,7 +231,29 @@ export abstract class SchematicCommand extends AbstractCommand {
     return options;
   }
 
-  protected getDefaultCollection(): string {
+  protected resolveSchematic(
+    schematic: string,
+  ): {collectionName: string; schematicName: string} {
+    if (schematic.includes(':')) {
+      const [collectionName, schematicName] = schematic.split(':', 2) as [
+        string,
+        string,
+      ];
+      return {collectionName, schematicName};
+    } else {
+      return {
+        collectionName: this.getDefaultCollectionName(),
+        schematicName: schematic,
+      };
+    }
+  }
+
+  /**
+   * The package name of the default collection
+   *
+   * This is either configured in the project or the workspace, or the fallback is used.
+   */
+  protected getDefaultCollectionName(): string {
     const workspace = this.context.workspace;
 
     if (workspace != null) {

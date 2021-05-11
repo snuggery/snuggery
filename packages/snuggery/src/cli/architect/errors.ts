@@ -1,3 +1,9 @@
+/**
+ * @fileoverview
+ *
+ * This file contains different error types used throughout the SnuggeryArchitectHost.
+ */
+
 import type {ErrorWithMeta} from 'clipanion';
 
 export class UnknownBuilderError extends Error implements ErrorWithMeta {

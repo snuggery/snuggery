@@ -40,8 +40,10 @@
     "typanion",
 
     "camelize",
+    "CLI's",
     "dasherize",
     "devkit",
+    "fileoverview",
     "markdownish",
     "multiselect",
     "respawn",

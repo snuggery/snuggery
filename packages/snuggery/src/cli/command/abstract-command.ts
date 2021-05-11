@@ -36,6 +36,9 @@ import type {Report} from '../utils/report';
 
 import type {CliWorkspace, Context} from './context';
 
+/**
+ * An error that won't show a stack trace
+ */
 class PrettiedError extends Error implements ErrorWithMeta {
   readonly clipanion = {type: 'none'} as const;
 
@@ -45,7 +48,7 @@ class PrettiedError extends Error implements ErrorWithMeta {
   }
 }
 
-// Errors the Angular APIs throw that shouldn't show a stacktrace
+/** Errors the Angular APIs throw that shouldn't show a stacktrace */
 const angularUserErrors = new Set([
   // Schematics
   CollectionCannotBeResolvedException,
@@ -65,12 +68,23 @@ const angularUserErrors = new Set([
   SchematicMissingFieldsException,
 ]);
 
+/**
+ * Superclass for all commands
+ */
 export abstract class AbstractCommand extends Command<Context> {
+  /**
+   * Turn on extra logging
+   */
   verbose = CommandOption.Boolean('--verbose,-v', false, {
     description: 'Turn on extra logging',
     hidden: true,
   });
 
+  /**
+   * Configuration of the currently active workspace
+   *
+   * @throws if snuggery is run outside of a workspace
+   */
   protected get workspace(): CliWorkspace {
     const {workspace} = this.context;
 
@@ -83,6 +97,9 @@ export abstract class AbstractCommand extends Command<Context> {
     return workspace;
   }
 
+  /**
+   * The name of the current project, if the is one
+   */
   protected get currentProject(): string | null {
     const {workspace, startCwd} = this.context;
 
@@ -93,6 +110,9 @@ export abstract class AbstractCommand extends Command<Context> {
     );
   }
 
+  /**
+   * A logger for angular APIs that logs onto the Report of the CLI's context
+   */
   @Cached()
   protected get logger(): logging.Logger {
     const logger = new logging.Logger('');
@@ -113,14 +133,26 @@ export abstract class AbstractCommand extends Command<Context> {
     return logger;
   }
 
+  /**
+   * The Report of the CLI's context
+   */
   protected get report(): Report {
     return this.context.report;
   }
 
+  /**
+   * Formatting utility
+   */
   protected get format(): Format {
     return this.cli.enableColors ? richFormat : textFormat;
   }
 
+  /**
+   * Execute the given function `fn` with the parsed options
+   *
+   * @param options Definitions of the options
+   * @param fn Function to execute with the parsed options
+   */
   protected async withOptionValues<T>(
     options: Parameters<AbstractCommand['parseOptionValues']>[0],
     fn: (parsedOptions: JsonObject) => Promise<T>,
@@ -136,6 +168,11 @@ export abstract class AbstractCommand extends Command<Context> {
     return fn(parsedOptions);
   }
 
+  /**
+   * Parse command options
+   *
+   * @param param Definitions of the options
+   */
   protected parseOptionValues({
     options,
     allowExtraOptions,
@@ -183,6 +220,12 @@ export abstract class AbstractCommand extends Command<Context> {
     });
   }
 
+  /**
+   * Override of the `catch` hook to prettify errors before they're printed by clipanion
+   *
+   * @param e the caught error
+   * @override
+   */
   async catch(e: unknown): Promise<void> {
     if (!(e instanceof Error)) {
       return super.catch(e);
