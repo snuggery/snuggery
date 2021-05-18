@@ -10,6 +10,7 @@ import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
 
+import {AbstractError} from '../../utils/error';
 import {
   createArchitectHost,
   SnuggeryArchitectHost,
@@ -34,13 +35,8 @@ export const configurationOption: Option = {
   description: 'Configuration(s) to use',
 };
 
-export class BuilderFailedError extends Error implements ErrorWithMeta {
+export class BuilderFailedError extends AbstractError implements ErrorWithMeta {
   readonly clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'BuilderFailedError';
-  }
 }
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {

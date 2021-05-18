@@ -15,6 +15,7 @@ import {tmpdir} from 'os';
 import {dirname, join, normalize, relative} from 'path';
 import getPackageManager from 'which-pm-runs';
 
+import {AbstractError} from '../../utils/error';
 import {SnuggeryEngineHost} from '../schematic/engine-host';
 import {SnuggeryWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
@@ -45,13 +46,10 @@ export const dryRunOption: Option = {
 
 export const defaultSchematicCollection = '@schematics/angular';
 
-export class SchematicFailedError extends Error implements ErrorWithMeta {
+export class SchematicFailedError
+  extends AbstractError
+  implements ErrorWithMeta {
   readonly clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'SchematicFailedError';
-  }
 }
 
 export abstract class SchematicCommand extends AbstractCommand {

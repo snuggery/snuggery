@@ -26,6 +26,7 @@ import type {
 } from '@nrwl/devkit';
 import type {ErrorWithMeta} from 'clipanion';
 
+import {AbstractError} from '../../utils/error';
 import type {CliWorkspace} from '../command/context';
 
 import {Cached} from './decorator';
@@ -61,13 +62,10 @@ function extractResult(
   })();
 }
 
-export class InvalidExecutorError extends Error implements ErrorWithMeta {
+export class InvalidExecutorError
+  extends AbstractError
+  implements ErrorWithMeta {
   readonly clipanion = {type: 'none'} as const;
-  constructor(message: string) {
-    super(message);
-
-    this.name = 'InvalidExecutorError';
-  }
 }
 
 class MappedContext implements ExecutorContext {

@@ -6,49 +6,32 @@
 
 import type {ErrorWithMeta} from 'clipanion';
 
-export class UnknownBuilderError extends Error implements ErrorWithMeta {
-  public clipanion = {type: 'none'} as const;
+import {AbstractError} from '../../utils/error';
 
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownBuilderError';
-  }
+export class UnknownBuilderError
+  extends AbstractError
+  implements ErrorWithMeta {
+  public clipanion = {type: 'none'} as const;
 }
 
-export class UnknownConfigurationError extends Error implements ErrorWithMeta {
+export class UnknownConfigurationError
+  extends AbstractError
+  implements ErrorWithMeta {
   public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownConfigurationError';
-  }
 }
 
 export class InvalidBuilderSpecifiedError
-  extends Error
+  extends AbstractError
   implements ErrorWithMeta {
   public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'InvalidBuilderSpecifiedError';
-  }
 }
 
-export class InvalidBuilderError extends Error implements ErrorWithMeta {
+export class InvalidBuilderError
+  extends AbstractError
+  implements ErrorWithMeta {
   public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'InvalidBuilderError';
-  }
 }
 
-export class UnknownTargetError extends Error implements ErrorWithMeta {
+export class UnknownTargetError extends AbstractError implements ErrorWithMeta {
   public clipanion = {type: 'none'} as const;
-
-  constructor(message: string) {
-    super(message);
-    this.name = 'UnknownTargetError';
-  }
 }
