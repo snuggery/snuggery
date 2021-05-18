@@ -1,7 +1,8 @@
-import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
+import type {JsonObject, JsonValue} from '@angular-devkit/core';
 import {createRequire} from 'module';
 import {basename, join} from 'path';
 
+import {loadJson} from '../../utils/json-resolver';
 import type {Context} from '../command/context';
 
 import {InvalidBuilderError, UnknownBuilderError} from './errors';
@@ -15,94 +16,37 @@ export class Resolver implements ResolverFacade {
     private readonly workspace: WorkspaceFacade,
   ) {}
 
-  loadBuilders(
+  async loadBuilders(
     packageName: string,
-    builderSpec: string,
-    requestor = join(
+  ): Promise<
+    [
+      path: string,
+      builders: Record<string, JsonObject>,
+      executors?: Record<string, JsonObject>,
+    ]
+  > {
+    const [json, path] = loadJson(
       this.workspace.basePath ?? this.context.startCwd,
-      '<synthetic>',
-    ),
-    seenPaths = new Set<string>(),
-  ): [
-    path: string,
-    builders: Record<string, JsonObject>,
-    executors?: Record<string, JsonObject>,
-  ] {
-    if (seenPaths.has(requestor)) {
-      throw new InvalidBuilderError(
-        `Circular builder reference detected: ${JSON.stringify(
-          Array.from(seenPaths),
-        )}`,
-      );
-    }
-
-    const require = createRequire(requestor);
-
-    let buildersJsonPath: string;
-    try {
-      buildersJsonPath = require.resolve(join(packageName, 'package.json'));
-    } catch {
-      try {
-        buildersJsonPath = require.resolve(packageName);
-      } catch {
-        throw new UnknownBuilderError(
-          `Couldn't find builder configuration in "${packageName}" for builder "${builderSpec}"`,
-        );
-      }
-    }
-
-    let buildersJson: JsonObject;
-
-    try {
-      buildersJson = require(buildersJsonPath);
-    } catch {
-      throw new InvalidBuilderError(
-        `Failed to load builder configuration file "${buildersJsonPath}"`,
-      );
-    }
-
-    if (typeof buildersJson.builders === 'string') {
-      seenPaths.add(buildersJsonPath);
-      return this.loadBuilders(
-        buildersJson.builders,
-        builderSpec,
-        buildersJsonPath,
-        seenPaths,
-      );
-    }
-
-    if (buildersJson.builders == null) {
-      throw new InvalidBuilderError(
-        `No builder configuration found in "${packageName}" for builder "${builderSpec}"`,
-      );
-    }
-
-    if (!isJsonObject(buildersJson.builders)) {
-      throw new InvalidBuilderError(
-        `Builder configuration file "${buildersJsonPath}" for "${builderSpec}" doesn't match the schema`,
-      );
-    }
-
-    let executors: Record<string, JsonObject> | undefined;
-    if (isJsonObject(buildersJson.executors!)) {
-      executors = buildersJson.executors as Record<string, JsonObject>;
-    }
+      packageName,
+      'builders',
+      'executors',
+    );
 
     return [
-      buildersJsonPath,
-      buildersJson.builders as Record<string, JsonObject>,
-      executors,
+      path,
+      (json.builders as Record<string, JsonObject>) ?? {},
+      (json.executors as Record<string, JsonObject>) ?? {},
     ];
   }
 
-  resolveBuilder(
+  async resolveBuilder(
     packageName: string,
     builderName: string,
-    builderSpec: string,
-  ): [builderPath: string, builderInfo: JsonValue, isNx: boolean | null] {
-    const [builderPath, builderJson, executorsJson] = this.loadBuilders(
+  ): Promise<
+    [builderPath: string, builderInfo: JsonValue, isNx: boolean | null]
+  > {
+    const [builderPath, builderJson, executorsJson] = await this.loadBuilders(
       packageName,
-      builderSpec,
     );
 
     let builderInfo: JsonValue;

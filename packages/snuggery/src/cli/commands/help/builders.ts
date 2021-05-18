@@ -25,7 +25,7 @@ export class HelpBuildersCommand extends ArchitectCommand {
 
   async execute(): Promise<void> {
     const {report, format} = this;
-    const builders = this.architectHost.listBuilders(this.packageName);
+    const builders = await this.architectHost.listBuilders(this.packageName);
 
     report.reportInfo(
       formatMarkdownish(`Builders in \`${this.packageName}\`:`, {

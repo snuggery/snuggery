@@ -65,31 +65,31 @@ export interface ResolverFacade {
    * Load the configuration for builders in the given package
    *
    * @param packageName Name of the builder package to load
-   * @param builderSpec Identifier of the builder to use when logging errors
    * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
    */
   loadBuilders(
     packageName: string,
-    builderSpec: string,
-  ): [
-    path: string,
-    builders: Record<string, JsonObject>,
-    executors?: Record<string, JsonObject>,
-  ];
+  ): Promise<
+    [
+      path: string,
+      builders: Record<string, JsonObject>,
+      executors?: Record<string, JsonObject>,
+    ]
+  >;
 
   /**
    * Resolve a single builder out of a builders configuration file
    *
    * @param packageName Package name (or path to a builders.json) to resolve the builder from
    * @param builderName Name of the builder to resolve
-   * @param builderSpec Identifier of the builder to use when logging errors
    * @throws If the builder cannot be found, cannot be loaded, is invalid, etc.
    */
   resolveBuilder(
     packageName: string,
     builderName: string,
-    builderSpec: string,
-  ): [builderPath: string, builderInfo: JsonValue, isNx: boolean | null];
+  ): Promise<
+    [builderPath: string, builderInfo: JsonValue, isNx: boolean | null]
+  >;
 
   /**
    * Resolve a single builder directly from path
@@ -164,9 +164,10 @@ export class SnuggeryArchitectHost
     return this.workspace.getTarget(target).builder;
   }
 
-  listBuilders(packageName: string): {name: string; description?: string}[] {
-    const [, builderJson, executorsJson] = this.resolver.loadBuilders(
-      packageName,
+  async listBuilders(
+    packageName: string,
+  ): Promise<{name: string; description?: string}[]> {
+    const [, builderJson, executorsJson] = await this.resolver.loadBuilders(
       packageName,
     );
 
@@ -209,10 +210,9 @@ export class SnuggeryArchitectHost
         builderName,
       );
     } else {
-      [builderPath, builderInfo, isNx] = this.resolver.resolveBuilder(
+      [builderPath, builderInfo, isNx] = await this.resolver.resolveBuilder(
         packageName,
         builderName,
-        builderSpec,
       );
     }
 
@@ -258,10 +258,10 @@ export class SnuggeryArchitectHost
     let implementationExport: string | null = null;
 
     if (implementationPath.includes('#')) {
-      const index = implementationPath.indexOf('#');
-
-      implementationExport = implementationPath.slice(index + 1);
-      implementationPath = implementationPath.slice(0, index);
+      [implementationExport, implementationPath] = implementationPath.split(
+        '#',
+        2,
+      ) as [string, string];
     }
 
     return {
