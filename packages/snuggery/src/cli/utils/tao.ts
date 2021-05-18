@@ -269,7 +269,10 @@ const executeAfterSchematicTaskFactory: TaskExecutorFactory<void> = {
 export function makeGeneratorIntoSchematic(
   generator: Generator,
   root: string,
-  engineHost: FileSystemEngineHostBase,
+  engineHost: Pick<
+    FileSystemEngineHostBase,
+    'hasTaskExecutor' | 'registerTaskExecutor'
+  >,
 ): RuleFactory<JsonObject> {
   return (options: JsonObject): Rule => async (tree, context) => {
     const task = await generator(new MappedTree(tree, root), options);
