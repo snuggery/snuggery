@@ -1,11 +1,8 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# Fix Code style
-yarn pretty-quick --staged
-
-# Check for typos
-yarn cspell --no-summary $(git diff --cached --name-only)
+# Fix code style & check for typos
+yarn express-check-in --staged
 
 # Check for duplicate dependencies
 if ! git diff --cached --quiet yarn.lock; then
