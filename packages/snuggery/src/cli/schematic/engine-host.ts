@@ -96,7 +96,8 @@ function createAliasMap(object?: JsonValue): Map<string, string> {
  */
 export class SnuggeryEngineHost
   implements
-    EngineHost<SnuggeryCollectionDescription, SnuggerySchematicDescription> {
+    EngineHost<SnuggeryCollectionDescription, SnuggerySchematicDescription>
+{
   readonly #resolvePaths: readonly [string, ...string[]];
 
   readonly #context: Context;
@@ -177,26 +178,27 @@ export class SnuggeryEngineHost
   ): CollectionDescription<SnuggeryCollectionDescription> {
     const from = requester?.path ?? this.#resolvePaths;
 
-    const [
-      {extends: _rawExtends, version, schematics, generators},
-      path,
-    ] = loadJson(from, name, 'schematics', 'generators');
+    const [{extends: _rawExtends, version, schematics, generators}, path] =
+      loadJson(from, name, 'schematics', 'generators');
 
     const _extends =
       typeof _rawExtends === 'string'
         ? [_rawExtends]
         : (_rawExtends as string[] | undefined);
 
-    const collectionDescription: CollectionDescription<SnuggeryCollectionDescription> = {
-      name,
-      path,
-      extends: _extends,
-      version: version as string | undefined,
-      schematics: (schematics as unknown) as SnuggeryCollectionDescription['schematics'],
-      generators: (generators as unknown) as SnuggeryCollectionDescription['generators'],
-      schematicAliasMap: createAliasMap(schematics),
-      generatorAliasMap: createAliasMap(generators),
-    };
+    const collectionDescription: CollectionDescription<SnuggeryCollectionDescription> =
+      {
+        name,
+        path,
+        extends: _extends,
+        version: version as string | undefined,
+        schematics:
+          schematics as unknown as SnuggeryCollectionDescription['schematics'],
+        generators:
+          generators as unknown as SnuggeryCollectionDescription['generators'],
+        schematicAliasMap: createAliasMap(schematics),
+        generatorAliasMap: createAliasMap(generators),
+      };
 
     return collectionDescription;
   }
@@ -293,11 +295,7 @@ export class SnuggeryEngineHost
         ? factoryModule[factoryExport!]
         : factoryModule.default ?? factoryModule;
 
-    if (
-      !partialSchematic.factoryFn ||
-      !partialSchematic.path ||
-      !partialSchematic.description
-    ) {
+    if (!partialSchematic.description) {
       throw new SchematicMissingFieldsException(name);
     }
 
@@ -325,7 +323,7 @@ export class SnuggeryEngineHost
       (schematic.isNx == null && schematic.schemaJson?.cli === 'nx')
     ) {
       return makeGeneratorIntoSchematic(
-        (schematic.factoryFn as unknown) as Generator,
+        schematic.factoryFn as unknown as Generator,
         this.#context.workspace?.basePath ?? this.#context.startCwd,
         this,
       ) as RuleFactory<OptionT>;

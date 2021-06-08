@@ -48,7 +48,8 @@ export const defaultSchematicCollection = '@schematics/angular';
 
 export class SchematicFailedError
   extends AbstractError
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {type: 'none'} as const;
 }
 
@@ -120,7 +121,6 @@ export abstract class SchematicCommand extends AbstractCommand {
       packageManager: getPackageManager()?.name,
       registry: this.registry,
       resolvePaths: [
-        this.context.startCwd,
         this.root,
         ...(this.resolveSelf
           ? [dirname(require.resolve('@snuggery/snuggery/package.json'))]
@@ -169,9 +169,7 @@ export abstract class SchematicCommand extends AbstractCommand {
     );
   }
 
-  protected async getOptions(
-    schematic: FileSystemSchematic,
-  ): Promise<{
+  protected async getOptions(schematic: FileSystemSchematic): Promise<{
     options: Option[];
     allowExtraOptions: boolean;
     description?: string | undefined;
@@ -229,9 +227,10 @@ export abstract class SchematicCommand extends AbstractCommand {
     return options;
   }
 
-  protected resolveSchematic(
-    schematic: string,
-  ): {collectionName: string; schematicName: string} {
+  protected resolveSchematic(schematic: string): {
+    collectionName: string;
+    schematicName: string;
+  } {
     if (schematic.includes(':')) {
       const [collectionName, schematicName] = schematic.split(':', 2) as [
         string,

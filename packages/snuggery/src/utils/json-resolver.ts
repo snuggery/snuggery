@@ -10,7 +10,8 @@ import {AbstractError} from './error';
 
 export class CyclicDependencyError
   extends AbstractError
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {
     type: 'none',
   } as const;
@@ -30,7 +31,8 @@ export class CyclicDependencyError
 
 export class UnableToResolveError
   extends AbstractError
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {
     type: 'none',
   } as const;
@@ -42,7 +44,8 @@ export class UnableToResolveError
 
 export class InvalidDefinitionError
   extends AbstractError
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {
     type: 'none',
   } as const;
@@ -127,15 +130,20 @@ export function loadJson(
     );
   }
 
-  for (const f in from) {
+  for (const f of from) {
     try {
-      return loadJsonStep(f, request, angularKey, nxKey, new Set(), request);
+      return loadJsonStep(
+        join(f, '<workspace>'),
+        request,
+        angularKey,
+        nxKey,
+        new Set(),
+        request,
+      );
     } catch (e) {
-      if (e instanceof UnableToResolveError) {
-        continue;
+      if (!(e instanceof UnableToResolveError)) {
+        throw e;
       }
-
-      throw e;
     }
   }
 
