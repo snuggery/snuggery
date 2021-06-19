@@ -56,15 +56,32 @@ export class HelpSchematicsCommand extends SchematicCommand {
         }),
       );
 
-      const {description} = collection.createSchematic(
-        schematicName,
-        false,
-      ).description;
+      try {
+        const {description} = collection.createSchematic(
+          schematicName,
+          false,
+        ).description;
 
-      if (description) {
-        report.reportInfo(
-          formatMarkdownish(description, {
+        if (description) {
+          report.reportInfo(
+            formatMarkdownish(description, {
+              format,
+              indentation: 2,
+            }),
+          );
+        }
+      } catch (e: unknown) {
+        let error;
+        if (e instanceof Error) {
+          error = this.prettifyError(e);
+        } else {
+          error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
+        }
+
+        report.reportError(
+          formatMarkdownish(error.message, {
             format,
+            maxLineLength: Infinity,
             indentation: 2,
           }),
         );

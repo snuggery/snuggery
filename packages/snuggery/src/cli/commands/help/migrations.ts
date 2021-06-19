@@ -66,21 +66,38 @@ export class HelpMigrationsCommand extends MigrationCommand {
         }),
       );
 
-      const {version} = collection.createSchematic(
-        schematicName,
-        false,
-      ).description;
+      try {
+        const {version} = collection.createSchematic(
+          schematicName,
+          false,
+        ).description;
 
-      report.reportInfo(
-        formatMarkdownish(
-          version ? `Version \`${version}\`` : 'Not linked to a version',
-          {
+        report.reportInfo(
+          formatMarkdownish(
+            version ? `Version \`${version}\`` : 'Not linked to a version',
+            {
+              format,
+              maxLineLength: Infinity,
+              indentation: 2,
+            },
+          ),
+        );
+      } catch (e: unknown) {
+        let error;
+        if (e instanceof Error) {
+          error = this.prettifyError(e);
+        } else {
+          error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
+        }
+
+        report.reportError(
+          formatMarkdownish(error.message, {
             format,
             maxLineLength: Infinity,
             indentation: 2,
-          },
-        ),
-      );
+          }),
+        );
+      }
 
       report.reportSeparator();
     }

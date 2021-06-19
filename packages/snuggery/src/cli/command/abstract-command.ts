@@ -227,12 +227,10 @@ export abstract class AbstractCommand extends Command<Context> {
    * @override
    */
   async catch(e: unknown): Promise<void> {
-    if (!(e instanceof Error)) {
-      return super.catch(e);
-    }
+    return super.catch(e instanceof Error ? this.prettifyError(e) : e);
+  }
 
-    let error = e;
-
+  protected prettifyError(error: Error): Error {
     // Extending from the Error class is often done without overriding the name
     // property to something other than 'Error'
     if (error.name === 'Error' && error.constructor !== Error) {
@@ -272,6 +270,6 @@ export abstract class AbstractCommand extends Command<Context> {
       error.name = error.name.replace(/(?:Error|Exception)$/, '');
     }
 
-    await super.catch(error);
+    return error;
   }
 }
