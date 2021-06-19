@@ -152,7 +152,8 @@ export interface WorkspaceFacade {
  * An architect host supporting angular-style builders and tao-style executors
  */
 export class SnuggeryArchitectHost
-  implements ArchitectHost<SnuggeryBuilderInfo> {
+  implements ArchitectHost<SnuggeryBuilderInfo>
+{
   constructor(
     private readonly context: Pick<Context, 'startCwd'>,
     private readonly resolver: ResolverFacade,
@@ -258,7 +259,7 @@ export class SnuggeryArchitectHost
     let implementationExport: string | null = null;
 
     if (implementationPath.includes('#')) {
-      [implementationExport, implementationPath] = implementationPath.split(
+      [implementationPath, implementationExport] = implementationPath.split(
         '#',
         2,
       ) as [string, string];

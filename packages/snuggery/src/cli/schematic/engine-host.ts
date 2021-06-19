@@ -263,7 +263,7 @@ export class SnuggeryEngineHost
     let factoryExport: string | null = null;
 
     if (factoryPath.includes('#')) {
-      [factoryExport, factoryPath] = factoryPath.split('#', 2) as [
+      [factoryPath, factoryExport] = factoryPath.split('#', 2) as [
         string,
         string,
       ];
