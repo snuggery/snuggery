@@ -53,50 +53,47 @@ export function executeBuild(
     }),
 
     switchMap(({outputFolder, manifest}) => {
-      return (compile || hasTypescript
-        ? from(tsc(context, {compile, tsconfig}, outputFolder))
-        : of<BuilderOutput>({success: true})
+      return (
+        compile || hasTypescript
+          ? from(tsc(context, {compile, tsconfig}, outputFolder))
+          : of<BuilderOutput>({success: true})
       ).pipe(
-        switchMapSuccessfulResult(
-          async (): Promise<BuilderOutput> => {
-            try {
-              await writeManifest(manifest, {keepScripts}, outputFolder);
-              return {success: true};
-            } catch (e) {
-              return {
-                success: false,
-                error: `Failed to copy ${manifestFilename}: ${e.message}`,
-              };
-            }
-          },
-        ),
+        switchMapSuccessfulResult(async (): Promise<BuilderOutput> => {
+          try {
+            await writeManifest(manifest, {keepScripts}, outputFolder);
+            return {success: true};
+          } catch (e) {
+            return {
+              success: false,
+              error: `Failed to copy ${manifestFilename}: ${e.message}`,
+            };
+          }
+        }),
 
         switchMapSuccessfulResult(() => {
           context.logger.debug('Copying assets...');
           return copyAssets(context, outputFolder, assets || []);
         }),
 
-        switchMapSuccessfulResult(
-          (): ObservableInput<BuilderOutput> => {
-            if (!packager) {
-              return of({success: true});
-            }
+        switchMapSuccessfulResult((): ObservableInput<BuilderOutput> => {
+          if (!packager) {
+            return of({success: true});
+          }
 
-            context.logger.debug('Running packager');
+          context.logger.debug('Running packager');
 
-            const packageBuilder = packager.includes(':')
-              ? packager
-              : `${packager}:pack`;
+          const packageBuilder = packager.includes(':')
+            ? packager
+            : `${packager}:pack`;
 
-            return scheduleTarget(
-              {
-                builder: packageBuilder,
-              },
-              {directory: outputFolder},
-              context,
-            ).pipe(take(1));
-          },
-        ),
+          return scheduleTarget(
+            {
+              builder: packageBuilder,
+            },
+            {directory: outputFolder},
+            context,
+          ).pipe(take(1));
+        }),
 
         tap(() =>
           context.logger.debug(`Build for ${manifest.name} is complete`),

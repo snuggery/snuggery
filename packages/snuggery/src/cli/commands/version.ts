@@ -98,10 +98,10 @@ export class VersionCommand extends AbstractCommand {
 
       for (const [packageName, versions] of builderVersions) {
         report.reportInfo(
-          `${packageName.padEnd(
-            longestPackageNameLength,
-            ' ',
-          )}  ${Array.from(versions, v => format.code(v)).join(', ')}`,
+          `${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
+            versions,
+            v => format.code(v),
+          ).join(', ')}`,
         );
       }
 
@@ -160,10 +160,10 @@ export class VersionCommand extends AbstractCommand {
 
       for (const [packageName, versions] of schematicVersions) {
         report.reportInfo(
-          `${packageName.padEnd(
-            longestPackageNameLength,
-            ' ',
-          )}  ${Array.from(versions, v => format.code(v)).join(', ')}`,
+          `${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
+            versions,
+            v => format.code(v),
+          ).join(', ')}`,
         );
       }
 

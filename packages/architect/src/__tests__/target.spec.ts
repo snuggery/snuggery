@@ -3,12 +3,12 @@ import type {BuilderContext} from '@angular-devkit/architect';
 import {resolveTargetString} from '..';
 
 describe('resolveTargetString', () => {
-  const contextWithoutTarget = ({
+  const contextWithoutTarget = {
     target: undefined,
-  } as Partial<BuilderContext>) as BuilderContext;
-  const contextWithTarget = ({
+  } as Partial<BuilderContext> as BuilderContext;
+  const contextWithTarget = {
     target: {project: 'test-proj', target: 'test-target'},
-  } as Partial<BuilderContext>) as BuilderContext;
+  } as Partial<BuilderContext> as BuilderContext;
 
   it('should return fully resolved arguments', () => {
     for (const target of ['application:build', 'lorem:ipsum:dolor,sit,amet']) {

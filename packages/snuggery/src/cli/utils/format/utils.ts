@@ -13,9 +13,10 @@ export function stripIndent(text: string): string {
 
   const indent = Math.min(...match.map(el => el.length));
 
-  return (indent > 0
-    ? text.replace(new RegExp('^[ \\t]{' + indent + '}', 'gm'), '')
-    : text
+  return (
+    indent > 0
+      ? text.replace(new RegExp('^[ \\t]{' + indent + '}', 'gm'), '')
+      : text
   ).trim();
 }
 

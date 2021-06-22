@@ -1,8 +1,10 @@
 import {BaseCommand} from '@yarnpkg/cli';
 import {Configuration, Project, scriptUtils, structUtils} from '@yarnpkg/core';
 
-const snuggeryIdentHash = structUtils.makeIdent('snuggery', 'snuggery')
-  .identHash;
+const snuggeryIdentHash = structUtils.makeIdent(
+  'snuggery',
+  'snuggery',
+).identHash;
 
 export class SnCommand extends BaseCommand {
   public args: string[] = [];

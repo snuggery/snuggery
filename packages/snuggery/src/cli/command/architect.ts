@@ -186,9 +186,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
   /**
    * Return the option definitions for the given target
    */
-  protected async getOptionsForTarget(
-    target: Target,
-  ): Promise<{
+  protected async getOptionsForTarget(target: Target): Promise<{
     options: Option[];
     allowExtraOptions: boolean;
     description?: string | undefined;
@@ -201,9 +199,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
   /**
    * Return the option definitions for the given builder
    */
-  protected async getOptionsForBuilder(
-    builderConf: string,
-  ): Promise<{
+  protected async getOptionsForBuilder(builderConf: string): Promise<{
     options: Option[];
     allowExtraOptions: boolean;
     description?: string | undefined;

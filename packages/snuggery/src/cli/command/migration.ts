@@ -12,7 +12,8 @@ import {SchematicCommand} from './schematic';
 
 export class MigrationCollectionCannotBeResolvedError
   extends Error
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {type: 'none'} as const;
   name = 'MigrationCollectionCannotBeResolvedError';
 }

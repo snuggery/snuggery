@@ -64,7 +64,8 @@ function extractResult(
 
 export class InvalidExecutorError
   extends AbstractError
-  implements ErrorWithMeta {
+  implements ErrorWithMeta
+{
   readonly clipanion = {type: 'none'} as const;
 }
 
@@ -245,7 +246,8 @@ interface ExecuteAfterSchematicOptions {
 }
 
 class ExecuteAfterSchematicTask
-  implements TaskConfigurationGenerator<ExecuteAfterSchematicOptions> {
+  implements TaskConfigurationGenerator<ExecuteAfterSchematicOptions>
+{
   constructor(private readonly task: () => void | Promise<void>) {}
 
   toConfiguration(): TaskConfiguration<ExecuteAfterSchematicOptions> {
@@ -274,15 +276,18 @@ export function makeGeneratorIntoSchematic(
     'hasTaskExecutor' | 'registerTaskExecutor'
   >,
 ): RuleFactory<JsonObject> {
-  return (options: JsonObject): Rule => async (tree, context) => {
-    const task = await generator(new MappedTree(tree, root), options);
+  return (options: JsonObject): Rule =>
+    async (tree, context) => {
+      const task = await generator(new MappedTree(tree, root), options);
 
-    if (task != null) {
-      if (!engineHost.hasTaskExecutor(executeAfterSchematicTaskFactory.name)) {
-        engineHost.registerTaskExecutor(executeAfterSchematicTaskFactory);
+      if (task != null) {
+        if (
+          !engineHost.hasTaskExecutor(executeAfterSchematicTaskFactory.name)
+        ) {
+          engineHost.registerTaskExecutor(executeAfterSchematicTaskFactory);
+        }
+
+        context.addTask(new ExecuteAfterSchematicTask(() => task()));
       }
-
-      context.addTask(new ExecuteAfterSchematicTask(() => task()));
-    }
-  };
+    };
 }

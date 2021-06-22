@@ -52,7 +52,8 @@ import('@snuggery/snuggery/cli')
 
     try {
       const require = createRequire(join(workspace.basePath, '<workspace>'));
-      const localCli = require('@snuggery/snuggery/cli') as typeof import('@snuggery/snuggery/cli');
+      const localCli =
+        require('@snuggery/snuggery/cli') as typeof import('@snuggery/snuggery/cli');
 
       if (
         typeof localCli.run === 'function' &&

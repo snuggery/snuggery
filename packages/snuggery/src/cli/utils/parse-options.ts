@@ -180,7 +180,7 @@ export function parseOptions({
 
       let restOption: Option | null = null;
 
-      const self = (this as unknown) as Record<string, JsonValue | undefined>;
+      const self = this as unknown as Record<string, JsonValue | undefined>;
 
       for (const option of options) {
         if (option.name === '--') {
@@ -254,7 +254,7 @@ export function parseOptions({
     }
 
     get value(): JsonObject {
-      const self = (this as unknown) as Record<string, JsonValue | undefined>;
+      const self = this as unknown as Record<string, JsonValue | undefined>;
 
       const res = Object.fromEntries(
         Array.from(commandKeyToOptionNameMap)

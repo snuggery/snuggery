@@ -1,0 +1,6 @@
+declined:
+  - "@snuggery/core"
+  - "@snuggery/global"
+  - "@snuggery/node"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn-plugin-snuggery"

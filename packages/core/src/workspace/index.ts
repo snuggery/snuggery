@@ -32,7 +32,8 @@ export const workspaceFilenames = Object.freeze([
 export type WorkspaceHost = workspaces.WorkspaceHost;
 
 export type ProjectDefinition = workspaces.ProjectDefinition;
-export type ProjectDefinitionCollection = workspaces.ProjectDefinitionCollection;
+export type ProjectDefinitionCollection =
+  workspaces.ProjectDefinitionCollection;
 export type TargetDefinition = workspaces.TargetDefinition;
 export type TargetDefinitionCollection = workspaces.TargetDefinitionCollection;
 export type WorkspaceDefinition = workspaces.WorkspaceDefinition;
