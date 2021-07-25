@@ -26,7 +26,7 @@ import('./cli')
     });
   })
   .catch(e => {
-    process.stderr.write(`Failed to start Snuggery:\n\n${e?.stack ?? e}`);
+    process.stderr.write(`Failed to start Snuggery:\n\n${e?.stack ?? e}\n`);
     return 1;
   })
   .then(returnCode => process.exit(returnCode));
