@@ -1,13 +1,11 @@
 import {BaseCommand} from '@yarnpkg/cli';
 import {Configuration, Project, scriptUtils, structUtils} from '@yarnpkg/core';
-
-const snuggeryIdentHash = structUtils.makeIdent(
-  'snuggery',
-  'snuggery',
-).identHash;
+import {Option} from 'clipanion';
 
 export class SnCommand extends BaseCommand {
-  public args: string[] = [];
+  static paths = [['sn']];
+
+  args = Option.Proxy();
 
   async execute(): Promise<number | void> {
     const configuration = await Configuration.find(
@@ -20,6 +18,11 @@ export class SnCommand extends BaseCommand {
     );
 
     await project.restoreInstallState();
+
+    const snuggeryIdentHash = structUtils.makeIdent(
+      'snuggery',
+      'snuggery',
+    ).identHash;
 
     const workspacesToLook = [project.topLevelWorkspace];
 
@@ -53,6 +56,3 @@ export class SnCommand extends BaseCommand {
     return this.cli.run(['run', 'sn', ...this.args]);
   }
 }
-
-SnCommand.addOption('args', BaseCommand.Proxy());
-SnCommand.addPath('sn');

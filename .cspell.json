@@ -33,6 +33,7 @@
     "browserslist",
     "clipanion",
     "clipanion's",
+    "esbuild",
     "fslib",
     "kleur",
     "mktemp",
@@ -52,6 +53,7 @@
     "snuggeries",
     "subdirs",
     "subfiles",
+    "struct",
     "unconfigured",
     "validatable",
     "worktree",
@@ -63,5 +65,11 @@
     "amet"
   ],
   "ignoreRegExpList": ["from '[^']+'"],
-  "ignorePaths": ["**/dist/**", "**/.yarn/**", ".pnp.js", "yarn.lock", "*.snap"]
+  "ignorePaths": [
+    "**/dist/**",
+    "**/.yarn/**",
+    ".pnp.cjs",
+    "yarn.lock",
+    "*.snap"
+  ]
 }

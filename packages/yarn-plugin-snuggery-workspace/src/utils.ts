@@ -1,9 +1,9 @@
 import {Manifest, tgzUtils, Workspace} from '@yarnpkg/core';
-import {CwdFS, PortablePath, xfs} from '@yarnpkg/fslib';
+import {CwdFS, xfs} from '@yarnpkg/fslib';
 
 export function createPublishWorkspace(
   workspace: Workspace,
-  cwd: PortablePath,
+  cwd: Workspace['cwd'],
   rawManifest: Manifest['raw'],
 ): Workspace {
   return Object.create(workspace, {
@@ -14,7 +14,13 @@ export function createPublishWorkspace(
     },
 
     manifest: {
-      value: Manifest.fromText(JSON.stringify(rawManifest)),
+      value: Object.create(workspace.manifest, {
+        raw: {
+          value: JSON.parse(JSON.stringify(rawManifest)),
+          writable: false,
+          configurable: true,
+        },
+      }),
       writable: false,
       configurable: true,
     },

@@ -11,13 +11,16 @@ import {
 } from '@yarnpkg/core';
 import {Filename, npath, ppath, xfs} from '@yarnpkg/fslib';
 import {packUtils} from '@yarnpkg/plugin-pack';
+import {Option} from 'clipanion';
 
 import {createPublishWorkspace} from '../utils';
 
 export class PackCommand extends BaseCommand {
-  json = false;
+  static paths = [['snuggery-workspace', 'pack']];
 
-  directory!: string;
+  json = Option.Boolean('--json');
+
+  directory = Option.String({required: true});
 
   async execute(): Promise<number> {
     const configuration = await Configuration.find(
@@ -47,7 +50,11 @@ export class PackCommand extends BaseCommand {
         if (workspace.manifest.name == null) {
           report.reportError(
             MessageName.UNNAMED,
-            `Package at ${workspace.relativeCwd} doesn't have a name`,
+            `Package at ${formatUtils.pretty(
+              configuration,
+              workspace.relativeCwd,
+              FormatType.PATH,
+            )} doesn't have a name`,
           );
           return;
         }
@@ -71,9 +78,10 @@ export class PackCommand extends BaseCommand {
         if (!(await xfs.existsPromise(source))) {
           report.reportError(
             MessageName.UNNAMED,
-            `Build package ${structUtils.prettyIdent(
+            `Build package ${formatUtils.pretty(
               configuration,
               workspace.manifest.name,
+              FormatType.IDENT,
             )} first`,
           );
           return;
@@ -87,12 +95,14 @@ export class PackCommand extends BaseCommand {
         if (ident.identHash !== workspace.anchoredDescriptor.identHash) {
           report.reportError(
             MessageName.UNNAMED,
-            `Invalid distribution folder: found package ${structUtils.prettyIdent(
+            `Invalid distribution folder: found package ${formatUtils.pretty(
               configuration,
               ident,
-            )} but expected ${structUtils.prettyIdent(
+              FormatType.IDENT,
+            )} but expected ${formatUtils.pretty(
               configuration,
               workspace.anchoredDescriptor,
+              FormatType.IDENT,
             )}`,
           );
           return;
@@ -113,13 +123,13 @@ export class PackCommand extends BaseCommand {
 
         report.reportInfo(
           null,
-          `Packed ${structUtils.prettyIdent(
+          `Packed ${formatUtils.pretty(
             configuration,
             ident,
+            FormatType.IDENT,
           )} into ${formatUtils.pretty(
             configuration,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            target as any,
+            target,
             FormatType.PATH,
           )}`,
         );
@@ -129,7 +139,3 @@ export class PackCommand extends BaseCommand {
     return report.exitCode();
   }
 }
-
-PackCommand.addPath('snuggery-workspace', 'pack');
-PackCommand.addOption('json', PackCommand.Boolean('--json'));
-PackCommand.addOption('directory', PackCommand.String({required: true}));

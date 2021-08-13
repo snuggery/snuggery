@@ -14,13 +14,16 @@ import {
   npmHttpUtils,
   npmPublishUtils,
 } from '@yarnpkg/plugin-npm';
+import {Option} from 'clipanion';
 
 import {createPublishWorkspace, getManifestFromTarball} from '../utils';
 
 export class PublishCommand extends BaseCommand {
-  tag = 'latest';
+  static paths = [['snuggery-workspace', 'publish']];
 
-  json = false;
+  tag = Option.String('--tag', 'latest');
+
+  json = Option.Boolean('--json');
 
   async execute(): Promise<number> {
     const configuration = await Configuration.find(
@@ -68,9 +71,10 @@ export class PublishCommand extends BaseCommand {
         if (!(await xfs.existsPromise(tgz))) {
           report.reportError(
             MessageName.UNNAMED,
-            `Pack package ${structUtils.prettyIdent(
+            `Pack package ${formatUtils.pretty(
               configuration,
               ident,
+              FormatType.IDENT,
             )} first`,
           );
           return;
@@ -87,10 +91,11 @@ export class PublishCommand extends BaseCommand {
             MessageName.UNNAMED,
             `Tarball for package ${
               manifest.name &&
-              structUtils.prettyIdent(configuration, manifest.name)
-            } cannot be published in workspace for ${structUtils.prettyIdent(
+              formatUtils.pretty(configuration, manifest.name, FormatType.IDENT)
+            } cannot be published in workspace for ${formatUtils.pretty(
               configuration,
               ident,
+              FormatType.IDENT,
             )}`,
           );
           return;
@@ -132,11 +137,10 @@ export class PublishCommand extends BaseCommand {
 
         if (!report.hasErrors()) {
           report.reportInfo(
-            MessageName.UNNAMED,
+            null,
             `Published ${formatUtils.pretty(
               configuration,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              structUtils.makeDescriptor(ident, manifest.version!) as any,
+              structUtils.makeDescriptor(ident, manifest.version!),
               FormatType.DESCRIPTOR,
             )}`,
           );
@@ -147,7 +151,3 @@ export class PublishCommand extends BaseCommand {
     return report.exitCode();
   }
 }
-
-PublishCommand.addPath('snuggery-workspace', 'publish');
-PublishCommand.addOption('tag', PublishCommand.String(`--tag`));
-PublishCommand.addOption('json', PublishCommand.Boolean(`--json`));
