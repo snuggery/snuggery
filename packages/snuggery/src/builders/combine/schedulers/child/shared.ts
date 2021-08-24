@@ -2,7 +2,7 @@ import type {BuilderOutput} from '@angular-devkit/architect';
 import type {JsonObject, logging} from '@angular-devkit/core';
 import type {Observable} from 'rxjs';
 
-export const enum MessageType {
+export enum MessageType {
   ScheduleTarget = 'scheduleTarget',
   ScheduleBuilder = 'scheduleBuilder',
 }
@@ -23,7 +23,7 @@ export interface ExecuteBuilderMessage {
 
 export type Message = ExecuteTargetMessage | ExecuteBuilderMessage;
 
-export const enum ChildMessageType {
+export enum ChildMessageType {
   Output = 'output',
   Logging = 'logging',
 }

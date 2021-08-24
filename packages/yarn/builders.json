@@ -1,12 +1,12 @@
 {
   "builders": {
     "deploy": {
-      "implementation": "./src/builders/deploy",
+      "implementation": "./src/builders/deploy/index.js",
       "schema": "./src/builders/deploy/schema.json",
       "description": "Create, commit, tag and publish deferred releases using @yarnpkg/plugin-version"
     },
     "pack": {
-      "implementation": "./src/builders/pack",
+      "implementation": "./src/builders/pack/index.js",
       "schema": "./src/builders/pack/schema.json",
       "description": "Pack a package tarball"
     }

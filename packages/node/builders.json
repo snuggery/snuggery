@@ -1,7 +1,7 @@
 {
   "builders": {
     "build": {
-      "implementation": "./src/builders/build",
+      "implementation": "./src/builders/build/index.js",
       "schema": "./src/builders/build/schema.json",
       "description": "Build a package via typescript"
     }

@@ -13,7 +13,7 @@ import {
   MessageType,
 } from './shared';
 
-export const enum SpawnChildMessageType {
+export enum SpawnChildMessageType {
   Done = 'done',
 }
 

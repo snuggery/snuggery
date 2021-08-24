@@ -128,10 +128,12 @@ export class CliWorkspace implements workspaces.WorkspaceDefinition {
     let project;
     if (projectName == null) {
       projectName = '@synthetic/project';
-      project = this.syntheticProject ??= this.projects.add({
-        name: projectName,
-        root: '',
-      });
+      project =
+        this.syntheticProject ??
+        (this.syntheticProject = this.projects.add({
+          name: projectName,
+          root: '',
+        }));
     } else {
       project = this.tryGetProjectByName(projectName);
       if (project == null) {

@@ -1,3 +1,4 @@
-require('ts-node').register({
-  project: require.resolve('../tsconfig.json'),
+require('esbuild-register/dist/node').register({
+  format: 'cjs',
+  target: ['node12'],
 });

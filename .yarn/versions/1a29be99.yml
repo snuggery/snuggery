@@ -1,0 +1,4 @@
+declined:
+  - "@snuggery/node"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn"

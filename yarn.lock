@@ -1161,7 +1161,8 @@ __metadata:
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
     "@types/node": ^14.14.17
-    ts-node: ^10.0.0
+    esbuild: "npm:esbuild-wasm@0.12.20"
+    esbuild-register: ^3.0.0
     typescript: 4.3.4
   languageName: unknown
   linkType: soft
@@ -1345,34 +1346,6 @@ __metadata:
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
   checksum: e1fb1bbbc12089a0cb9433dc290f97bddd062deadb6178ce9bcb93bb7c1aecde5e60184bc7065aec42fe1663622a213493c48bbd4972d931aae48315f18e1be9
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node10@npm:^1.0.7":
-  version: 1.0.8
-  resolution: "@tsconfig/node10@npm:1.0.8"
-  checksum: b8d5fffbc6b17ef64ef74f7fdbccee02a809a063ade785c3648dae59406bc207f70ea2c4296f92749b33019fa36a5ae716e42e49cc7f1bbf0fd147be0d6b970a
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node12@npm:^1.0.7":
-  version: 1.0.9
-  resolution: "@tsconfig/node12@npm:1.0.9"
-  checksum: a01b2400ab3582b86b589c6d31dcd0c0656f333adecde85d6d7d4086adb059808b82692380bb169546d189bf771ae21d02544a75b57bd6da4a5dd95f8567bec9
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node14@npm:^1.0.0":
-  version: 1.0.1
-  resolution: "@tsconfig/node14@npm:1.0.1"
-  checksum: 976345e896c0f059867f94f8d0f6ddb8b1844fb62bf36b727de8a9a68f024857e5db97ed51d3325e23e0616a5e48c034ff51a8d595b3fe7e955f3587540489be
-  languageName: node
-  linkType: hard
-
-"@tsconfig/node16@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "@tsconfig/node16@npm:1.0.1"
-  checksum: 5fdfd91e48dc1f406cb59d19fd450a594ea6279f3be54a50bd6fd6b8d189a53bb930f2e7d496cbc3bb45fbb23f0ce5c69086f90c796ce8441cbd2a26fb738fd5
   languageName: node
   linkType: hard
 
@@ -2681,13 +2654,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arg@npm:^4.1.0":
-  version: 4.1.3
-  resolution: "arg@npm:4.1.3"
-  checksum: 544af8dd3f60546d3e4aff084d451b96961d2267d668670199692f8d054f0415d86fc5497d0e641e91546f0aa920e7c29e5250e99fc89f5552a34b5d93b77f43
-  languageName: node
-  linkType: hard
-
 "argparse@npm:^1.0.7":
   version: 1.0.10
   resolution: "argparse@npm:1.0.10"
@@ -3437,13 +3403,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"create-require@npm:^1.1.0":
-  version: 1.1.1
-  resolution: "create-require@npm:1.1.1"
-  checksum: a9a1503d4390d8b59ad86f4607de7870b39cad43d929813599a23714831e81c520bddf61bcdd1f8e30f05fd3a2b71ae8538e946eb2786dc65c2bbc520f692eff
-  languageName: node
-  linkType: hard
-
 "cross-spawn@npm:7.0.3, cross-spawn@npm:^7.0.2, cross-spawn@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-spawn@npm:7.0.3"
@@ -3911,12 +3870,32 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild-register@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "esbuild-register@npm:3.0.0"
+  dependencies:
+    jsonc-parser: ^3.0.0
+  peerDependencies:
+    esbuild: ">=0.12 <1"
+  checksum: 54fc34d54bf7153bcac39a8e3ea749f175422ee810653ebdde95ccaf6ad0ba3a6c9d7aa6c084d09803fe5100b100cb4c0a1abf0fcf53dc4cad17d28f7d0a1535
+  languageName: node
+  linkType: hard
+
 "esbuild-wasm@npm:^0.11.20":
   version: 0.11.23
   resolution: "esbuild-wasm@npm:0.11.23"
   bin:
     esbuild: bin/esbuild
   checksum: eafd3203667b777c3453538b1ace65ad1c95351da681c00d1d19413548b29ee5c42ab05766f69ea17ffc037acc67b3d2b7a22bb56dee746793934d91d979b0be
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:esbuild-wasm@0.12.20":
+  version: 0.12.20
+  resolution: "esbuild-wasm@npm:0.12.20"
+  bin:
+    esbuild: bin/esbuild
+  checksum: 58f2b2ab4f25d8af6d9f07186ab5d00b31113cb3fe38d3b665157f03a5b9b2344f9c6c5788e4c725ab909acc5e5f5f55d3740bf6871256204acb33d13e989ac5
   languageName: node
   linkType: hard
 
@@ -6082,7 +6061,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"jsonc-parser@npm:3.0.0":
+"jsonc-parser@npm:3.0.0, jsonc-parser@npm:^3.0.0":
   version: 3.0.0
   resolution: "jsonc-parser@npm:3.0.0"
   checksum: 1df2326f1f9688de30c70ff19c5b2a83ba3b89a1036160da79821d1361090775e9db502dc57a67c11b56e1186fc1ed70b887f25c5febf9a3ec4f91435836c99d
@@ -6319,7 +6298,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"make-error@npm:1.x, make-error@npm:^1.1.1":
+"make-error@npm:1.x":
   version: 1.3.6
   resolution: "make-error@npm:1.3.6"
   checksum: b86e5e0e25f7f777b77fabd8e2cbf15737972869d852a22b7e73c17623928fccb826d8e46b9951501d3f20e51ad74ba8c59ed584f610526a48f8ccf88aaec402
@@ -7792,7 +7771,7 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.17, source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.12, source-map-support@npm:~0.5.19":
+"source-map-support@npm:^0.5.6, source-map-support@npm:~0.5.12, source-map-support@npm:~0.5.19":
   version: 0.5.19
   resolution: "source-map-support@npm:0.5.19"
   dependencies:
@@ -8422,40 +8401,6 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "ts-node@npm:10.0.0"
-  dependencies:
-    "@tsconfig/node10": ^1.0.7
-    "@tsconfig/node12": ^1.0.7
-    "@tsconfig/node14": ^1.0.0
-    "@tsconfig/node16": ^1.0.1
-    arg: ^4.1.0
-    create-require: ^1.1.0
-    diff: ^4.0.1
-    make-error: ^1.1.1
-    source-map-support: ^0.5.17
-    yn: 3.1.1
-  peerDependencies:
-    "@swc/core": ">=1.2.45"
-    "@swc/wasm": ">=1.2.45"
-    "@types/node": "*"
-    typescript: ">=2.7"
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    "@swc/wasm":
-      optional: true
-  bin:
-    ts-node: dist/bin.js
-    ts-node-cwd: dist/bin-cwd.js
-    ts-node-script: dist/bin-script.js
-    ts-node-transpile-only: dist/bin-transpile.js
-    ts-script: dist/bin-script-deprecated.js
-  checksum: 96d633774e13eb90ad49d644f397e99f5da72818e36040bf5b6bd66d0ab369dbb4348e499193c0fa45071f8e9559bb7724174139389e56bb562db36a3842484e
-  languageName: node
-  linkType: hard
-
 "tsconfig-paths@npm:^3.9.0":
   version: 3.9.0
   resolution: "tsconfig-paths@npm:3.9.0"
@@ -9039,13 +8984,6 @@ typescript@4.3.4:
     y18n: ^5.0.5
     yargs-parser: ^20.2.2
   checksum: b14afbb51e3251a204d81937c86a7e9d4bdbf9a2bcee38226c900d00f522969ab675703bee2a6f99f8e20103f608382936034e64d921b74df82b63c07c5e8f59
-  languageName: node
-  linkType: hard
-
-"yn@npm:3.1.1":
-  version: 3.1.1
-  resolution: "yn@npm:3.1.1"
-  checksum: 2c487b0e149e746ef48cda9f8bad10fc83693cd69d7f9dcd8be4214e985de33a29c9e24f3c0d6bcf2288427040a8947406ab27f7af67ee9456e6b84854f02dd6
   languageName: node
   linkType: hard
 

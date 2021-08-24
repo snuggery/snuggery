@@ -14,7 +14,8 @@ import {concat, merge, Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 
 import {calculate} from '../calculator';
-import {ParallelTarget, SerialTarget, Target, Type} from '../schema';
+import type {ParallelTarget, SerialTarget, Target} from '../schema';
+import {Type} from '../types';
 
 import type {Child} from './child/shared';
 

@@ -1,7 +1,7 @@
 import {JsonObject} from '@angular-devkit/core';
 
 import {ParallelOptions, SerialOptions} from '../combine';
-import {SchedulerType} from '../combine/schema';
+import {SchedulerType} from '../combine/types';
 
 interface AbstractSchema {
   /**

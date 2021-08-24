@@ -14,7 +14,8 @@ import {
 import {catchError, endWith, mergeMap, mergeMapTo, tap} from 'rxjs/operators';
 
 import {createScheduler} from './schedulers';
-import {ParallelTarget, Schema, SerialTarget, Target, Type} from './schema';
+import type {ParallelTarget, Schema, SerialTarget, Target} from './schema';
+import {Type} from './types';
 
 class BuildFailedError extends Error {
   public constructor(public readonly output: BuilderOutput) {

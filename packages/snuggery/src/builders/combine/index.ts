@@ -10,10 +10,9 @@ export {execute} from './builder';
 export {
   ParallelOptions,
   ParallelTarget,
-  SchedulerType,
   Schema,
   SerialOptions,
   SerialTarget,
   Target,
-  Type,
 } from './schema';
+export {SchedulerType, Type} from './types';

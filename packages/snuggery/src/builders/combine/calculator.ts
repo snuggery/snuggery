@@ -1,13 +1,13 @@
 import {cpus} from 'os';
 
-const enum Operator {
+enum Operator {
   Plus = '+',
   Minus = '-',
   Times = '*',
   Divide = '/',
 }
 
-const enum Group {
+enum Group {
   Start = '(',
   End = ')',
 }

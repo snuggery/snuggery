@@ -1,6 +1,6 @@
 import type {BuilderContext} from '@angular-devkit/architect';
 
-import {SchedulerType} from '../schema';
+import {SchedulerType} from '../types';
 
 import type {Scheduler} from './abstract';
 import {InProcessScheduler} from './in-process';
