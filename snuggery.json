@@ -8,13 +8,18 @@
           "builder": "@snuggery/snuggery:glob",
           "options": {
             "include": "@snuggery/*"
+          },
+          "configurations": {
+            "without-yarn-plugins": {
+              "exclude": "@snuggery/yarn-plugin-*"
+            }
           }
         },
         "deploy": {
           "builder": "@snuggery/yarn:deploy",
           "options": {
             "useWorkspacePlugin": true,
-            "buildTarget": "build"
+            "buildTarget": ":build:without-yarn-plugins"
           },
           "configurations": {
             "next": {
