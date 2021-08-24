@@ -1708,6 +1708,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nrwl/devkit", "virtual:c85bd3b9d77ae614b39c6be432cd090ef6845a24db1fccd59e8a151e966c665bf16a6055f9b61bb771fc29e96cecdaa286d7a98372d2e605f357dc860bff56be#npm:12.7.1"],
             ["@types/jest", "npm:26.0.20"],
             ["chalk", "npm:4.1.0"],
+            ["dotenv", "npm:10.0.0"],
             ["identity-obj-proxy", "npm:3.0.0"],
             ["jest", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:27.0.6"],
             ["jest-config", "virtual:1c18b0b1d905efee5651b19b9fb770769849332d343762c9aaa22a59b6f01a8031fe2a7ad38a465f98e8f9b5cd96482a74a9d3b90af0f35f591be204e177de64#npm:27.0.6"],
@@ -5095,6 +5096,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["dot-prop", "npm:5.3.0"],
             ["is-obj", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["dotenv", [
+        ["npm:10.0.0", {
+          "packageLocation": "./.yarn/cache/dotenv-npm-10.0.0-36b272df25-f412c5fe8c.zip/node_modules/dotenv/",
+          "packageDependencies": [
+            ["dotenv", "npm:10.0.0"]
           ],
           "linkType": "HARD",
         }]

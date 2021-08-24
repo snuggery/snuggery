@@ -33,6 +33,7 @@
     "browserslist",
     "clipanion",
     "clipanion's",
+    "dotenv",
     "esbuild",
     "fslib",
     "kleur",

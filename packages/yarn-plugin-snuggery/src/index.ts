@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-
 import type {Plugin, Hooks} from '@yarnpkg/core';
 
 import {SnCommand} from './commands/sn';
