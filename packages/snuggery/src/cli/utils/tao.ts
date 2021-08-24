@@ -174,9 +174,17 @@ export function makeExecutorIntoBuilder(
 
 class MappedTree implements NxTree {
   constructor(private readonly tree: NgTree, readonly root: string) {}
+  changePermissions(): void {
+    throw new Error('Method not implemented.');
+  }
 
-  read(filePath: string): Buffer | null {
-    return this.tree.read(filePath);
+  read(filePath: string): Buffer | null;
+  read(filePath: string, encoding: BufferEncoding): string | null;
+  read(filePath: string, encoding?: BufferEncoding): Buffer | string | null {
+    const buffer = this.tree.read(filePath);
+    return encoding != null && buffer != null
+      ? buffer.toString(encoding)
+      : buffer;
   }
 
   write(filePath: string, content: string | Buffer): void {
