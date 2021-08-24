@@ -1,5 +1,5 @@
 import type {BuilderContext} from '@angular-devkit/architect';
-import {getProjectPath} from '@snuggery/architect';
+import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
 import {createRequire} from 'module';
 import {dirname, join} from 'path';
 
@@ -26,9 +26,16 @@ function getUnscopedName(packageName: string) {
  * @param context Context of the builder
  */
 export async function resolvePackageBin(
-  packageName: string,
-  binary: string | undefined,
   context: BuilderContext,
+  {
+    packageName,
+    resolveFrom,
+    binary,
+  }: {
+    packageName: string;
+    resolveFrom: string | string[] | undefined;
+    binary: string | undefined;
+  },
 ): Promise<{success: true; bin: string} | {success: false; error: string}> {
   if (!isPackage(packageName)) {
     return {
@@ -37,9 +44,17 @@ export async function resolvePackageBin(
     };
   }
 
+  if (resolveFrom == null) {
+    resolveFrom = [await getProjectPath(context), context.workspaceRoot];
+  } else if (typeof resolveFrom === 'string') {
+    resolveFrom = [resolveWorkspacePath(context, resolveFrom)];
+  } else {
+    resolveFrom = resolveFrom.map(path => resolveWorkspacePath(context, path));
+  }
+
   let manifestPath: string | undefined;
 
-  for (const path of [await getProjectPath(context), context.workspaceRoot]) {
+  for (const path of resolveFrom) {
     const require = createRequire(join(path, '<synthetic>'));
     try {
       manifestPath = require.resolve(`${packageName}/package.json`);

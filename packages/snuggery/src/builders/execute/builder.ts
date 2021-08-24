@@ -24,11 +24,11 @@ export function execute(
     if (!isPackageConfiguration(config)) {
       binary = config.binary;
     } else {
-      const resolvedBin = await resolvePackageBin(
-        config.package,
-        config.binary,
-        context,
-      );
+      const resolvedBin = await resolvePackageBin(context, {
+        packageName: config.package,
+        binary: config.binary,
+        resolveFrom: config.resolveFrom,
+      });
 
       if (!resolvedBin.success) {
         return of(resolvedBin);

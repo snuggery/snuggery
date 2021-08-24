@@ -37,6 +37,11 @@ export interface PackageBinarySchema extends AbstractSchema {
   package: string;
 
   /**
+   * Path(s) to resolve the package from, defaults to the project the target is in and the workspace root
+   */
+  resolveFrom?: string | string[];
+
+  /**
    * The binary to run
    *
    * If the `binary` is a relative path, e.g. `./foo.js`, it is resolved relative to the package.

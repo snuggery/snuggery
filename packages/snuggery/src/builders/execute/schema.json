@@ -7,6 +7,16 @@
       "type": "string",
       "description": "The package to load the executable from"
     },
+    "resolveFrom": {
+      "oneOf": [
+        {"type": "string"},
+        {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      ],
+      "description": "Path(s) to resolve the package from, defaults to the project the target is in and the workspace root"
+    },
     "binary": {
       "type": "string",
       "description": "The name of the binary to run, if empty it uses the single binary of the package"
