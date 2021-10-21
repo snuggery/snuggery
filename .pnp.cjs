@@ -144,6 +144,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["source-map", "npm:0.7.3"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:12.2.11", {
+          "packageLocation": "./.yarn/cache/@angular-devkit-core-npm-12.2.11-87a6e0d971-9f0597e413.zip/node_modules/@angular-devkit/core/",
+          "packageDependencies": [
+            ["@angular-devkit/core", "npm:12.2.11"],
+            ["ajv", "npm:8.6.2"],
+            ["ajv-formats", "virtual:87a6e0d971d50348f16f146c3ecb58fde81da2cc80cfffd654b76e5e89f687d4c5323d581c5b5f6425adff65e460998b8565e2fbb603a712193850115166468a#npm:2.1.0"],
+            ["fast-json-stable-stringify", "npm:2.1.0"],
+            ["magic-string", "npm:0.25.7"],
+            ["rxjs", "npm:6.6.7"],
+            ["source-map", "npm:0.7.3"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["@angular-devkit/schematics", [
@@ -153,6 +166,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/schematics", "npm:12.0.0-rc.2"],
             ["@angular-devkit/core", "npm:12.0.0-rc.2"],
             ["ora", "npm:5.4.0"],
+            ["rxjs", "npm:6.6.7"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:12.2.11", {
+          "packageLocation": "./.yarn/cache/@angular-devkit-schematics-npm-12.2.11-6075a98e67-2fd8fcab7d.zip/node_modules/@angular-devkit/schematics/",
+          "packageDependencies": [
+            ["@angular-devkit/schematics", "npm:12.2.11"],
+            ["@angular-devkit/core", "npm:12.2.11"],
+            ["ora", "npm:5.4.1"],
             ["rxjs", "npm:6.6.7"]
           ],
           "linkType": "HARD",
@@ -1730,6 +1753,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@nrwl/linter", "npm:12.7.1"],
             ["@angular-devkit/architect", "npm:0.1200.0-rc.2"],
+            ["@angular-devkit/core", "npm:12.2.11"],
+            ["@angular-devkit/schematics", "npm:12.2.11"],
             ["@nrwl/devkit", "virtual:c85bd3b9d77ae614b39c6be432cd090ef6845a24db1fccd59e8a151e966c665bf16a6055f9b61bb771fc29e96cecdaa286d7a98372d2e605f357dc860bff56be#npm:12.7.1"],
             ["glob", "npm:7.1.4"],
             ["minimatch", "npm:3.0.4"],
@@ -1943,7 +1968,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"],
             ["@types/prettier", "npm:2.3.2"],
             ["@types/prompts", "npm:2.4.0"],
-            ["@types/semver", "npm:7.3.4"],
+            ["@types/semver", "npm:7.3.8"],
             ["@types/which-pm-runs", "npm:1.0.0"],
             ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.1"],
             ["json5", "npm:2.1.3"],
@@ -1996,13 +2021,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/yarn-plugin-snuggery-workspace/",
           "packageDependencies": [
             ["@snuggery/yarn-plugin-snuggery-workspace", "workspace:packages/yarn-plugin-snuggery-workspace"],
+            ["@types/semver", "npm:7.3.8"],
             ["@yarnpkg/builder", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:3.0.1"],
             ["@yarnpkg/cli", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:3.0.1"],
             ["@yarnpkg/core", "npm:3.0.0"],
             ["@yarnpkg/fslib", "npm:2.5.1"],
+            ["@yarnpkg/plugin-essentials", "virtual:84fecaa82b13274b527537070104d1a24c8f21c34b303faf1665fbce16820125f9dc2034867461136bab2e56a79090ea95d7fcf44bc1aecbdcb8f51264735849#npm:3.0.0"],
             ["@yarnpkg/plugin-npm", "virtual:84fecaa82b13274b527537070104d1a24c8f21c34b303faf1665fbce16820125f9dc2034867461136bab2e56a79090ea95d7fcf44bc1aecbdcb8f51264735849#npm:2.5.0"],
             ["@yarnpkg/plugin-pack", "virtual:84fecaa82b13274b527537070104d1a24c8f21c34b303faf1665fbce16820125f9dc2034867461136bab2e56a79090ea95d7fcf44bc1aecbdcb8f51264735849#npm:3.0.0"],
             ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.0.1"],
+            ["semver", "npm:7.3.1"],
             ["typescript", "patch:typescript@npm%3A4.3.4#~builtin<compat/typescript>::version=4.3.4&hash=d8b4e7"]
           ],
           "linkType": "SOFT",
@@ -2331,10 +2359,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/semver", [
-        ["npm:7.3.4", {
-          "packageLocation": "./.yarn/cache/@types-semver-npm-7.3.4-96fde085ea-577dc7f607.zip/node_modules/@types/semver/",
+        ["npm:7.3.8", {
+          "packageLocation": "./.yarn/cache/@types-semver-npm-7.3.8-5cef470bfc-bc90f5a9d5.zip/node_modules/@types/semver/",
           "packageDependencies": [
-            ["@types/semver", "npm:7.3.4"]
+            ["@types/semver", "npm:7.3.8"]
           ],
           "linkType": "HARD",
         }]
@@ -2844,7 +2872,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["@yarnpkg/core", "npm:3.0.0"],
             ["@arcanis/slice-ansi", "npm:1.0.2"],
-            ["@types/semver", "npm:7.3.4"],
+            ["@types/semver", "npm:7.3.8"],
             ["@types/treeify", "npm:1.0.0"],
             ["@yarnpkg/fslib", "npm:2.5.1"],
             ["@yarnpkg/json-proxy", "npm:2.1.1"],
@@ -3096,7 +3124,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@yarnpkg-plugin-git-virtual-6cae427875/0/cache/@yarnpkg-plugin-git-npm-2.4.0-2f908a64f8-2769565724.zip/node_modules/@yarnpkg/plugin-git/",
           "packageDependencies": [
             ["@yarnpkg/plugin-git", "virtual:84fecaa82b13274b527537070104d1a24c8f21c34b303faf1665fbce16820125f9dc2034867461136bab2e56a79090ea95d7fcf44bc1aecbdcb8f51264735849#npm:2.4.0"],
-            ["@types/semver", "npm:7.3.4"],
+            ["@types/semver", "npm:7.3.8"],
             ["@types/yarnpkg__core", null],
             ["@yarnpkg/core", "npm:3.0.0"],
             ["@yarnpkg/fslib", "npm:2.5.1"],
@@ -3397,7 +3425,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@yarnpkg-plugin-pnp-virtual-62c9100755/0/cache/@yarnpkg-plugin-pnp-npm-3.0.1-2909056955-682fdaab91.zip/node_modules/@yarnpkg/plugin-pnp/",
           "packageDependencies": [
             ["@yarnpkg/plugin-pnp", "virtual:84fecaa82b13274b527537070104d1a24c8f21c34b303faf1665fbce16820125f9dc2034867461136bab2e56a79090ea95d7fcf44bc1aecbdcb8f51264735849#npm:3.0.1"],
-            ["@types/semver", "npm:7.3.4"],
+            ["@types/semver", "npm:7.3.8"],
             ["@types/yarnpkg__cli", null],
             ["@types/yarnpkg__core", null],
             ["@yarnpkg/cli", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:3.0.1"],
@@ -3654,12 +3682,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
+        ["npm:2.1.0", {
+          "packageLocation": "./.yarn/cache/ajv-formats-npm-2.1.0-25e31ead92-fae7947f41.zip/node_modules/ajv-formats/",
+          "packageDependencies": [
+            ["ajv-formats", "npm:2.1.0"]
+          ],
+          "linkType": "SOFT",
+        }],
         ["virtual:6136dd149cc4203a8e6e40a816d183af236eab4c2fb0a8490e1bf0f5df2bad04bb3660a6ec56707273ed583a1a2e2e2d55f3e7f0d1ea5c3c1cb3b6fbff66695a#npm:2.0.2", {
           "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-9ec4b90f13/0/cache/ajv-formats-npm-2.0.2-bae5ba1f55-1db638917c.zip/node_modules/ajv-formats/",
           "packageDependencies": [
             ["ajv-formats", "virtual:6136dd149cc4203a8e6e40a816d183af236eab4c2fb0a8490e1bf0f5df2bad04bb3660a6ec56707273ed583a1a2e2e2d55f3e7f0d1ea5c3c1cb3b6fbff66695a#npm:2.0.2"],
             ["@types/ajv", null],
             ["ajv", "npm:8.2.0"]
+          ],
+          "packagePeers": [
+            "@types/ajv",
+            "ajv"
+          ],
+          "linkType": "HARD",
+        }],
+        ["virtual:87a6e0d971d50348f16f146c3ecb58fde81da2cc80cfffd654b76e5e89f687d4c5323d581c5b5f6425adff65e460998b8565e2fbb603a712193850115166468a#npm:2.1.0", {
+          "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-c5cab86d4a/0/cache/ajv-formats-npm-2.1.0-25e31ead92-fae7947f41.zip/node_modules/ajv-formats/",
+          "packageDependencies": [
+            ["ajv-formats", "virtual:87a6e0d971d50348f16f146c3ecb58fde81da2cc80cfffd654b76e5e89f687d4c5323d581c5b5f6425adff65e460998b8565e2fbb603a712193850115166468a#npm:2.1.0"],
+            ["@types/ajv", null],
+            ["ajv", "npm:8.6.2"]
           ],
           "packagePeers": [
             "@types/ajv",
@@ -8627,6 +8675,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["wcwidth", "npm:1.0.1"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:5.4.1", {
+          "packageLocation": "./.yarn/cache/ora-npm-5.4.1-4f0343adb7-28d476ee6c.zip/node_modules/ora/",
+          "packageDependencies": [
+            ["ora", "npm:5.4.1"],
+            ["bl", "npm:4.1.0"],
+            ["chalk", "npm:4.1.1"],
+            ["cli-cursor", "npm:3.1.0"],
+            ["cli-spinners", "npm:2.5.0"],
+            ["is-interactive", "npm:1.0.0"],
+            ["is-unicode-supported", "npm:0.1.0"],
+            ["log-symbols", "npm:4.1.0"],
+            ["strip-ansi", "npm:6.0.0"],
+            ["wcwidth", "npm:1.0.1"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["p-cancelable", [
@@ -9563,6 +9627,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/semver-npm-6.3.0-b3eace8bfd-1b26ecf6db.zip/node_modules/semver/",
           "packageDependencies": [
             ["semver", "npm:6.3.0"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:7.3.1", {
+          "packageLocation": "./.yarn/cache/semver-npm-7.3.1-cdd3531f27-e46a602ae0.zip/node_modules/semver/",
+          "packageDependencies": [
+            ["semver", "npm:7.3.1"]
           ],
           "linkType": "HARD",
         }],

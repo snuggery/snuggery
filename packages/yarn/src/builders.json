@@ -10,6 +10,12 @@
       "schema": "./builders/pack/schema.json",
       "description": "Pack a package tarball"
     },
+    "update": {
+      "implementation": "./builders/update",
+      "hidden": true,
+      "schema": "./builders/update/schema.json",
+      "description": "Actual implementation for `sn run update` for yarn projects"
+    },
     "version": {
       "implementation": "./builders/version",
       "hidden": true,

@@ -13,7 +13,6 @@ import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {dirname, join, normalize, relative} from 'path';
-import getPackageManager from 'which-pm-runs';
 
 import {AbstractError} from '../../utils/error';
 import {SnuggeryEngineHost} from '../schematic/engine-host';
@@ -118,7 +117,7 @@ export abstract class SchematicCommand extends AbstractCommand {
           ...current,
         }),
       ],
-      packageManager: getPackageManager()?.name,
+      packageManager: this.packageManager,
       registry: this.registry,
       resolvePaths: [
         this.root,

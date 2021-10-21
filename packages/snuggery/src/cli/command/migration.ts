@@ -2,11 +2,17 @@ import {isJsonObject, JsonObject} from '@angular-devkit/core';
 import type {Collection} from '@angular-devkit/schematics';
 import type {
   FileSystemCollectionDescription,
+  FileSystemSchematic,
   FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
 import {ErrorWithMeta, UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
+import {
+  Range,
+  valid as validateSemVer,
+  compare as compareVersions,
+} from 'semver';
 
 import {SchematicCommand} from './schematic';
 
@@ -28,7 +34,9 @@ export abstract class MigrationCommand extends SchematicCommand {
     return this.workspace.basePath;
   }
 
-  getMigrationCollection(pkgName: string): MigrationCollection | null {
+  protected getMigrationCollection(
+    pkgName: string,
+  ): MigrationCollection | null {
     let pkgJsonPath: string;
     let pkgJson: JsonObject;
     const {root} = this; // explicitly do this outside of the try-catch in case it throws
@@ -79,5 +87,48 @@ export abstract class MigrationCommand extends SchematicCommand {
     }
 
     return collection;
+  }
+
+  protected getMigrationsInRange(
+    collection: MigrationCollection,
+    from: string,
+    to: string,
+  ): {
+    version: string;
+    schematic: FileSystemSchematic;
+  }[] {
+    const range = new Range(`> ${from} <= ${to}`, {
+      includePrerelease: true,
+    });
+    const includedSchematics: ReturnType<
+      MigrationCommand['getMigrationsInRange']
+    > = [];
+
+    for (const schematicName of collection.listSchematicNames()) {
+      const schematic = collection.createSchematic(schematicName);
+      const version =
+        schematic.description.version != null
+          ? validateSemVer(schematic.description.version)
+          : null;
+
+      if (version == null || !range.test(version)) {
+        continue;
+      }
+
+      includedSchematics.push({schematic, version});
+    }
+
+    includedSchematics.sort(
+      (a, b) =>
+        // Run versions in order
+        compareVersions(a.version, b.version) ||
+        // If multiple migration schematics are listed for a single version,
+        // run these alphabetically
+        a.schematic.description.name.localeCompare(
+          b.schematic.description.name,
+        ),
+    );
+
+    return includedSchematics;
   }
 }

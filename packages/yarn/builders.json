@@ -9,6 +9,12 @@
       "implementation": "./src/builders/pack/index.js",
       "schema": "./src/builders/pack/schema.json",
       "description": "Pack a package tarball"
+    },
+    "update": {
+      "implementation": "./src/builders/update/index.js",
+      "hidden": true,
+      "schema": "./src/builders/update/schema.json",
+      "description": "Actual implementation for `sn run update` for yarn projects"
     }
   }
 }

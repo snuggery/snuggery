@@ -1,11 +1,5 @@
-import type {FileSystemSchematic} from '@angular-devkit/schematics/tools';
 import {Option, UsageError} from 'clipanion';
-import {
-  Range,
-  compare as compareVersions,
-  valid as validateSemVer,
-  SemVer,
-} from 'semver';
+import type {SemVer} from 'semver';
 
 import {MigrationCollection, MigrationCommand} from '../../command/migration';
 import {formatMarkdownish} from '../../utils/format';
@@ -15,7 +9,7 @@ export class RunMigrationCommand extends MigrationCommand {
   static paths = [['run', 'migration']];
 
   static usage = MigrationCommand.Usage({
-    category: 'Schematic commands',
+    category: 'Update commands',
     description: 'Run migration(s) of a package',
     details: `
       This command migrates a package from an older version to the currently installed version by running schematics.
@@ -153,27 +147,11 @@ export class RunMigrationCommand extends MigrationCommand {
       );
     }
 
-    const range = new Range(`> ${from.format()} <= ${toVersion}`, {
-      includePrerelease: true,
-    });
-
-    const includedSchematics: {
-      version: string;
-      schematic: FileSystemSchematic;
-    }[] = [];
-    for (const schematicName of collection.listSchematicNames()) {
-      const schematic = collection.createSchematic(schematicName);
-      const version =
-        schematic.description.version != null
-          ? validateSemVer(schematic.description.version)
-          : null;
-
-      if (version == null || !range.test(version)) {
-        continue;
-      }
-
-      includedSchematics.push({schematic, version});
-    }
+    const includedSchematics = this.getMigrationsInRange(
+      collection,
+      from.format(),
+      toVersion,
+    );
 
     if (includedSchematics.length === 0) {
       const message = formatMarkdownish(
@@ -196,17 +174,6 @@ export class RunMigrationCommand extends MigrationCommand {
       );
       return 1;
     }
-
-    includedSchematics.sort(
-      (a, b) =>
-        // Run versions in order
-        compareVersions(a.version, b.version) ||
-        // If multiple migration schematics are listed for a single version,
-        // run these alphabetically
-        a.schematic.description.name.localeCompare(
-          b.schematic.description.name,
-        ),
-    );
 
     this.report.reportInfo(
       formatMarkdownish(

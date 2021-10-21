@@ -29,6 +29,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular-devkit/core@npm:12.2.11, @angular-devkit/core@npm:^12.0.0-rc.2":
+  version: 12.2.11
+  resolution: "@angular-devkit/core@npm:12.2.11"
+  dependencies:
+    ajv: 8.6.2
+    ajv-formats: 2.1.0
+    fast-json-stable-stringify: 2.1.0
+    magic-string: 0.25.7
+    rxjs: 6.6.7
+    source-map: 0.7.3
+  checksum: 9f0597e413b1418ae35c4e2221900d5dce5b1b9eb20cac04c86d126ac49f6641b0fa1c0c792f1a73bfa23fcc207e246cacf7229562194d923d5c2a0177a0be89
+  languageName: node
+  linkType: hard
+
 "@angular-devkit/schematics@npm:12.0.0-rc.2":
   version: 12.0.0-rc.2
   resolution: "@angular-devkit/schematics@npm:12.0.0-rc.2"
@@ -37,6 +51,17 @@ __metadata:
     ora: 5.4.0
     rxjs: 6.6.7
   checksum: d7f64b44c4f4d442239974b9dcaf4c630a402f54a9aa692741355327a06b71ba23922ff530c94fa60af52d1d5a9e9a0066c7aa36a719622eac8c3e314852998d
+  languageName: node
+  linkType: hard
+
+"@angular-devkit/schematics@npm:^12.0.0-rc.2":
+  version: 12.2.11
+  resolution: "@angular-devkit/schematics@npm:12.2.11"
+  dependencies:
+    "@angular-devkit/core": 12.2.11
+    ora: 5.4.1
+    rxjs: 6.6.7
+  checksum: 2fd8fcab7d14296a6c63eefa7c5a1c8e9b88ad6a5058b6557c6c7966c66341a04f82f05c10bb9ceb5b54b8e6e90e8ecfe7947f45bc49729ef29e46fafb2038a2
   languageName: node
   linkType: hard
 
@@ -1284,21 +1309,26 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/yarn-plugin-snuggery-workspace@workspace:packages/yarn-plugin-snuggery-workspace"
   dependencies:
+    "@types/semver": ^7.3.8
     "@yarnpkg/builder": 3.0.1
     "@yarnpkg/cli": 3.0.1
     "@yarnpkg/core": 3.0.0
     "@yarnpkg/fslib": 2.5.1
+    "@yarnpkg/plugin-essentials": 3.0.0
     "@yarnpkg/plugin-npm": 2.5.0
     "@yarnpkg/plugin-pack": 3.0.0
     clipanion: 3.0.1
+    semver: 7.3.1
     typescript: 4.3.4
   peerDependencies:
     "@yarnpkg/cli": ^3.0.1
     "@yarnpkg/core": ^3.0.0
     "@yarnpkg/fslib": ^2.5.1
+    "@yarnpkg/plugin-essentials": ^3.0.0
     "@yarnpkg/plugin-npm": ^2.5.0
     "@yarnpkg/plugin-pack": ^3.0.0
     clipanion: ^3.0.1
+    semver: ^7.3.1
   languageName: unknown
   linkType: soft
 
@@ -1610,10 +1640,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:^7, @types/semver@npm:^7.1.0":
-  version: 7.3.4
-  resolution: "@types/semver@npm:7.3.4"
-  checksum: 577dc7f607fbf46cf185f61ba726e4cfecea41c4b17e55069e70a64b6cd92658f8286aa075a607303455658e87ed045d3d14c32a513c0eff381d64aecd7b72a7
+"@types/semver@npm:^7, @types/semver@npm:^7.1.0, @types/semver@npm:^7.3.8":
+  version: 7.3.8
+  resolution: "@types/semver@npm:7.3.8"
+  checksum: bc90f5a9d5430e36f766c08c898e3c28af88830ebc7736baef8ffc74783bad2efb32f29c40d450e85fc341847ee74e2dd97b76cfc7da407e4232ba9ecae4ff9c
   languageName: node
   linkType: hard
 
@@ -2133,7 +2163,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/plugin-essentials@npm:^3.0.0":
+"@yarnpkg/plugin-essentials@npm:3.0.0, @yarnpkg/plugin-essentials@npm:^3.0.0":
   version: 3.0.0
   resolution: "@yarnpkg/plugin-essentials@npm:3.0.0"
   dependencies:
@@ -2513,6 +2543,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv-formats@npm:2.1.0":
+  version: 2.1.0
+  resolution: "ajv-formats@npm:2.1.0"
+  dependencies:
+    ajv: ^8.0.0
+  peerDependencies:
+    ajv: ^8.0.0
+  peerDependenciesMeta:
+    ajv:
+      optional: true
+  checksum: fae7947f4118c3db374587d08c36c4e6584575dcb8281610feef64f25f59b6d918e253007fb30c174bbab320cb13a9161e44a9da3710cb0a93a8db47462c3df1
+  languageName: node
+  linkType: hard
+
 "ajv-keywords@npm:^3.4.1, ajv-keywords@npm:^3.5.2":
   version: 3.5.2
   resolution: "ajv-keywords@npm:3.5.2"
@@ -2534,6 +2578,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv@npm:8.6.2, ajv@npm:^8.0.0, ajv@npm:^8.0.1":
+  version: 8.6.2
+  resolution: "ajv@npm:8.6.2"
+  dependencies:
+    fast-deep-equal: ^3.1.1
+    json-schema-traverse: ^1.0.0
+    require-from-string: ^2.0.2
+    uri-js: ^4.2.2
+  checksum: b86d6cb86c69abbd8ce71ab7d4ff272660bf6d34fa9fbe770f73e54da59d531b2546692e36e2b35bbcfb11d20db774b4c09189671335185b8c799d65194e5169
+  languageName: node
+  linkType: hard
+
 "ajv@npm:^6.10.0, ajv@npm:^6.12.2, ajv@npm:^6.12.3, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
@@ -2543,18 +2599,6 @@ __metadata:
     json-schema-traverse: ^0.4.1
     uri-js: ^4.2.2
   checksum: 874972efe5c4202ab0a68379481fbd3d1b5d0a7bd6d3cc21d40d3536ebff3352a2a1fabb632d4fd2cc7fe4cbdcd5ed6782084c9bbf7f32a1536d18f9da5007d4
-  languageName: node
-  linkType: hard
-
-"ajv@npm:^8.0.0, ajv@npm:^8.0.1":
-  version: 8.6.2
-  resolution: "ajv@npm:8.6.2"
-  dependencies:
-    fast-deep-equal: ^3.1.1
-    json-schema-traverse: ^1.0.0
-    require-from-string: ^2.0.2
-    uri-js: ^4.2.2
-  checksum: b86d6cb86c69abbd8ce71ab7d4ff272660bf6d34fa9fbe770f73e54da59d531b2546692e36e2b35bbcfb11d20db774b4c09189671335185b8c799d65194e5169
   languageName: node
   linkType: hard
 
@@ -6808,6 +6852,23 @@ fsevents@^2.3.2:
   languageName: node
   linkType: hard
 
+"ora@npm:5.4.1":
+  version: 5.4.1
+  resolution: "ora@npm:5.4.1"
+  dependencies:
+    bl: ^4.1.0
+    chalk: ^4.1.0
+    cli-cursor: ^3.1.0
+    cli-spinners: ^2.5.0
+    is-interactive: ^1.0.0
+    is-unicode-supported: ^0.1.0
+    log-symbols: ^4.1.0
+    strip-ansi: ^6.0.0
+    wcwidth: ^1.0.1
+  checksum: 28d476ee6c1049d68368c0dc922e7225e3b5600c3ede88fade8052837f9ed342625fdaa84a6209302587c8ddd9b664f71f0759833cbdb3a4cf81344057e63c63
+  languageName: node
+  linkType: hard
+
 "p-cancelable@npm:^2.0.0":
   version: 2.0.0
   resolution: "p-cancelable@npm:2.0.0"
@@ -7625,6 +7686,15 @@ fsevents@^2.3.2:
   bin:
     semver: ./bin/semver
   checksum: 57fd0acfd0bac382ee87cd52cd0aaa5af086a7dc8d60379dfe65fea491fb2489b6016400813930ecd61fd0952dae75c115287a1b16c234b1550887117744dfaf
+  languageName: node
+  linkType: hard
+
+"semver@npm:7.3.1":
+  version: 7.3.1
+  resolution: "semver@npm:7.3.1"
+  bin:
+    semver: bin/semver.js
+  checksum: e46a602ae0bf7dba90c61df5f1432481e306ae5149194a9f8c7c536df3d0c9c2af04021cd8c9e34978f95b4f4083c393603fe1ee41ad7c0bfcde1035ba6d9455
   languageName: node
   linkType: hard
 

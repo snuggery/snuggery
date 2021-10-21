@@ -239,6 +239,12 @@ class Yarn {
       {cwd: resolve(this.#context.workspaceRoot, cwd)},
     );
   }
+
+  snuggeryWorkspaceUp(packages: string[]): Observable<void> {
+    return this.exec(['snuggery-workspace', 'up', ...packages], {
+      cwd: this.#context.workspaceRoot,
+    }).pipe(mapTo(undefined));
+  }
 }
 
 export type {Yarn};

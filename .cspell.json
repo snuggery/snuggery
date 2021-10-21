@@ -23,6 +23,7 @@
     "yarnrc",
 
     // Other Tooling
+    "cnpm",
     "eslintignore",
     "nx's",
     "parens",

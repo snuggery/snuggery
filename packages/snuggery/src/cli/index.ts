@@ -17,12 +17,15 @@ import {HelpSchematicCommand} from './commands/help/schematic';
 import {HelpSchematicsCommand} from './commands/help/schematics';
 import {HelpTargetCommand} from './commands/help/target';
 import {HelpTargetsCommand} from './commands/help/targets';
+import {HelpUpdateCommand} from './commands/help/update';
 import {NewCommand} from './commands/new';
 import {ProjectCommand} from './commands/project';
 import {RunBuilderCommand} from './commands/run/builder';
 import {RunMigrationCommand} from './commands/run/migration';
+import {RunMigrationsCommand} from './commands/run/migrations';
 import {RunSchematicCommand} from './commands/run/schematic';
 import {RunTargetCommand} from './commands/run/target';
+import {RunUpdateCommand} from './commands/run/update';
 import {VersionCommand} from './commands/version';
 import {Report} from './utils/report';
 
@@ -53,6 +56,7 @@ export function run(
   cli.register(HelpSchematicsCommand);
   cli.register(HelpTargetCommand);
   cli.register(HelpTargetsCommand);
+  cli.register(HelpUpdateCommand);
 
   cli.register(VersionCommand);
 
@@ -66,7 +70,10 @@ export function run(
   cli.register(RunSchematicCommand);
   cli.register(GenerateCommand);
   cli.register(NewCommand);
+
+  cli.register(RunUpdateCommand);
   cli.register(RunMigrationCommand);
+  cli.register(RunMigrationsCommand);
 
   const command = cli.process(args);
 

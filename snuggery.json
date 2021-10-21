@@ -252,5 +252,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "packageManager": "yarn"
   }
 }

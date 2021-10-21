@@ -1,4 +1,4 @@
-import {JsonObject, logging, schema} from '@angular-devkit/core';
+import {isJsonObject, JsonObject, logging, schema} from '@angular-devkit/core';
 import {
   CircularCollectionException,
   UnknownCollectionException,
@@ -23,6 +23,7 @@ import {
   Option as CommandOption,
   UsageError,
 } from 'clipanion';
+import getPackageManager from 'which-pm-runs';
 
 import {Cached} from '../utils/decorator';
 import {Format, richFormat, textFormat} from '../utils/format';
@@ -145,6 +146,24 @@ export abstract class AbstractCommand extends Command<Context> {
    */
   protected get format(): Format {
     return this.cli.enableColors ? richFormat : textFormat;
+  }
+
+  /**
+   * Name of the package manager to use
+   *
+   * This will typically be `yarn`, `npm`, `pnpm` or `cnpm`.
+   */
+  protected get packageManager(): string | undefined {
+    const cliExtension = this.context.workspace?.extensions?.cli;
+
+    if (
+      isJsonObject(cliExtension!) &&
+      typeof cliExtension.packageManager === 'string'
+    ) {
+      return cliExtension.packageManager;
+    }
+
+    return getPackageManager()?.name;
   }
 
   /**

@@ -1,10 +1,19 @@
-import {Option} from 'clipanion';
+import {Option, UsageError} from 'clipanion';
+import * as semver from 'semver';
+import * as t from 'typanion';
 
 import {MigrationCommand} from '../../command/migration';
 import {formatMarkdownish} from '../../utils/format';
+import {isSemVer} from '../../utils/typanion';
 
 export class HelpMigrationsCommand extends MigrationCommand {
   static paths = [['help', 'migrations']];
+
+  static schema = [
+    t.hasKeyRelationship('to', t.KeyRelationship.Requires, ['from'], {
+      ignore: ['', undefined],
+    }),
+  ];
 
   static usage = MigrationCommand.Usage({
     category: 'Workspace information commands',
@@ -14,7 +23,22 @@ export class HelpMigrationsCommand extends MigrationCommand {
         'Print information about the migrations in `@schematics/angular`',
         '$0 help migrations @schematics/angular',
       ],
+      [
+        'Print information about the migrations in `@schematics/angular` from 9.0.0 up to the installed version',
+        '$0 help migrations @schematics/angular --from 9.0.0',
+      ],
     ],
+  });
+
+  from = Option.String('--from', {
+    description: 'The version from which to start listing migrations',
+    validator: isSemVer(),
+  });
+
+  to = Option.String('--to', {
+    description:
+      'The highest version to include in the listed migrations, can only be set if `--from` is set',
+    validator: isSemVer(),
   });
 
   package = Option.String();
@@ -43,59 +67,110 @@ export class HelpMigrationsCommand extends MigrationCommand {
     }
 
     const currentVersion = collection.version ?? collection.description.version;
-    report.reportInfo(
-      formatMarkdownish(
-        `Migrations for \`${this.package}\` (${
-          currentVersion
-            ? `currently at \`${currentVersion}\``
-            : 'version number not found'
-        }):`,
-        {
-          format,
-          maxLineLength: Infinity,
-        },
-      ),
-    );
-    report.reportSeparator();
 
-    for (const schematicName of collection.listSchematicNames()) {
-      report.reportInfo(
-        formatMarkdownish(`- \`${schematicName}\``, {
-          format,
-          maxLineLength: Infinity,
-        }),
+    let schematics;
+    if (this.from) {
+      const toVersion = this.to?.format() ?? currentVersion;
+
+      if (toVersion == null) {
+        throw new UsageError(
+          `Package ${JSON.stringify(
+            this.package,
+          )} doesn't define a version, specify the current version via --to`,
+        );
+      }
+
+      if (currentVersion != null && semver.gt(toVersion, currentVersion)) {
+        throw new UsageError(
+          `Limit ${toVersion} is higher than the installed version ${currentVersion}`,
+        );
+      }
+
+      schematics = this.getMigrationsInRange(
+        collection,
+        this.from.format(),
+        toVersion,
       );
 
-      try {
-        const {version} = collection.createSchematic(
-          schematicName,
-          false,
-        ).description;
+      report.reportInfo(
+        formatMarkdownish(
+          `Migrations for \`${
+            this.package
+          }\` between \`${this.from.format()}\` and \`${toVersion}:\``,
+          {
+            format,
+            maxLineLength: Infinity,
+          },
+        ),
+      );
+    } else {
+      schematics = collection.listSchematicNames().map(name => {
+        try {
+          const schematic = collection.createSchematic(name, false);
 
+          return {schematic, version: schematic.description.version};
+        } catch (e: unknown) {
+          let error;
+          if (e instanceof Error) {
+            error = this.prettifyError(e);
+          } else {
+            error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
+          }
+
+          return {name, error};
+        }
+      });
+
+      report.reportInfo(
+        formatMarkdownish(
+          `Migrations for \`${this.package}\` (${
+            currentVersion
+              ? `currently at \`${currentVersion}\``
+              : 'version number not found'
+          }):`,
+          {
+            format,
+            maxLineLength: Infinity,
+          },
+        ),
+      );
+    }
+
+    report.reportSeparator();
+
+    for (const schematic of schematics) {
+      if ('error' in schematic && schematic.error != null) {
+        report.reportInfo(
+          formatMarkdownish(`- \`${schematic.name}\``, {
+            format,
+            maxLineLength: Infinity,
+          }),
+        );
+        report.reportError(
+          formatMarkdownish(schematic.error.message, {
+            format,
+            maxLineLength: Infinity,
+            indentation: 2,
+          }),
+        );
+      } else {
+        report.reportInfo(
+          formatMarkdownish(`- \`${schematic.schematic.description.name}\``, {
+            format,
+            maxLineLength: Infinity,
+          }),
+        );
         report.reportInfo(
           formatMarkdownish(
-            version ? `Version \`${version}\`` : 'Not linked to a version',
+            schematic.version
+              ? `Version \`${schematic.version}\``
+              : 'Not linked to a version',
             {
               format,
               maxLineLength: Infinity,
               indentation: 2,
             },
           ),
-        );
-      } catch (e: unknown) {
-        let error;
-        if (e instanceof Error) {
-          error = this.prettifyError(e);
-        } else {
-          error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
-        }
-
-        report.reportError(
-          formatMarkdownish(error.message, {
-            format,
-            maxLineLength: Infinity,
-            indentation: 2,
-          }),
         );
       }
 
