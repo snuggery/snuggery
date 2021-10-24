@@ -1,8 +1,8 @@
 import {
-  Architect,
-  BuilderOutput,
-  BuilderRun,
-  Target,
+	Architect,
+	BuilderOutput,
+	BuilderRun,
+	Target,
 } from '@angular-devkit/architect';
 import {isJsonArray, json, JsonObject} from '@angular-devkit/core';
 import type {ErrorWithMeta} from 'clipanion';
@@ -12,9 +12,9 @@ import {join} from 'path';
 
 import {AbstractError} from '../../utils/error';
 import {
-  createArchitectHost,
-  SnuggeryArchitectHost,
-  UnknownTargetError,
+	createArchitectHost,
+	SnuggeryArchitectHost,
+	UnknownTargetError,
 } from '../architect';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
@@ -26,264 +26,264 @@ import type {Context} from './context';
  * Architect commands share a `--configuration` / `-c` option
  */
 export const configurationOption: Option = {
-  name: 'configuration',
-  aliases: ['c'],
-  hasDefault: false,
-  hidden: false,
-  required: false,
-  type: Type.StringArray,
-  description: 'Configuration(s) to use',
+	name: 'configuration',
+	aliases: ['c'],
+	hasDefault: false,
+	hidden: false,
+	required: false,
+	type: Type.StringArray,
+	description: 'Configuration(s) to use',
 };
 
 export class BuilderFailedError extends AbstractError implements ErrorWithMeta {
-  readonly clipanion = {type: 'none'} as const;
+	readonly clipanion = {type: 'none'} as const;
 }
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {
-  let result: BuilderOutput;
-  try {
-    result = await run.output.toPromise();
+	let result: BuilderOutput;
+	try {
+		result = await run.output.toPromise();
 
-    await run.stop();
-  } catch (e) {
-    if (!(e instanceof Error)) {
-      throw new BuilderFailedError(
-        `Builder failed with non-error: ${JSON.stringify(e)}`,
-      );
-    }
+		await run.stop();
+	} catch (e) {
+		if (!(e instanceof Error)) {
+			throw new BuilderFailedError(
+				`Builder failed with non-error: ${JSON.stringify(e)}`,
+			);
+		}
 
-    let message = `Build failed with underlying ${e.name}: ${e.message}`;
+		let message = `Build failed with underlying ${e.name}: ${e.message}`;
 
-    if (e.stack) {
-      const file = join(
-        await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
-        'error.log',
-      );
-      await fs.writeFile(file, e.stack);
+		if (e.stack) {
+			const file = join(
+				await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
+				'error.log',
+			);
+			await fs.writeFile(file, e.stack);
 
-      message += `\nSee ${file} for more information on the error`;
-    }
+			message += `\nSee ${file} for more information on the error`;
+		}
 
-    throw new BuilderFailedError(message);
-  }
+		throw new BuilderFailedError(message);
+	}
 
-  if (result == null) {
-    context.report.reportWarning(
-      'Builder exited without emitting a value, assuming success',
-    );
-    result = {success: true};
-  }
+	if (result == null) {
+		context.report.reportWarning(
+			'Builder exited without emitting a value, assuming success',
+		);
+		result = {success: true};
+	}
 
-  if (result.error) {
-    context.report.reportError(result.error);
-  }
+	if (result.error) {
+		context.report.reportError(result.error);
+	}
 
-  return result.success ? 0 : 1;
+	return result.success ? 0 : 1;
 }
 
 export function addConfigurationsToTarget(
-  target: Target,
-  options: JsonObject,
-  initialConfigurations: ReadonlySet<string>,
+	target: Target,
+	options: JsonObject,
+	initialConfigurations: ReadonlySet<string>,
 ): Target {
-  const configurations = new Set(initialConfigurations);
+	const configurations = new Set(initialConfigurations);
 
-  if (typeof options.configuration === 'string') {
-    for (const value of options.configuration
-      .split(',')
-      .map(configuration => configuration.trim())) {
-      if (value) {
-        configurations.add(value);
-      }
-    }
-    delete options.configuration;
-  } else if (isJsonArray(options.configuration!)) {
-    for (const value of options.configuration) {
-      if (typeof value === 'string') {
-        configurations.add(value.trim());
-      }
-    }
-    delete options.configuration;
-  }
+	if (typeof options.configuration === 'string') {
+		for (const value of options.configuration
+			.split(',')
+			.map(configuration => configuration.trim())) {
+			if (value) {
+				configurations.add(value);
+			}
+		}
+		delete options.configuration;
+	} else if (isJsonArray(options.configuration!)) {
+		for (const value of options.configuration) {
+			if (typeof value === 'string') {
+				configurations.add(value.trim());
+			}
+		}
+		delete options.configuration;
+	}
 
-  if (configurations.size === 0) {
-    return target;
-  }
+	if (configurations.size === 0) {
+		return target;
+	}
 
-  return {
-    ...target,
-    configuration: Array.from(configurations).join(','),
-  };
+	return {
+		...target,
+		configuration: Array.from(configurations).join(','),
+	};
 }
 
 export abstract class ArchitectCommand extends AbstractCommand {
-  @Cached()
-  protected get architectHost(): SnuggeryArchitectHost {
-    return createArchitectHost(this.context, this.context.workspace);
-  }
+	@Cached()
+	protected get architectHost(): SnuggeryArchitectHost {
+		return createArchitectHost(this.context, this.context.workspace);
+	}
 
-  @Cached()
-  protected get architect(): Architect {
-    const registry = new json.schema.CoreSchemaRegistry();
-    registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
-    registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
+	@Cached()
+	protected get architect(): Architect {
+		const registry = new json.schema.CoreSchemaRegistry();
+		registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
+		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
 
-    return new Architect(this.architectHost, registry);
-  }
+		return new Architect(this.architectHost, registry);
+	}
 
-  /**
-   * The default project, if any
-   */
-  @Cached()
-  protected get defaultProject(): string | null {
-    const defaultProject = this.context.workspace?.extensions?.defaultProject;
+	/**
+	 * The default project, if any
+	 */
+	@Cached()
+	protected get defaultProject(): string | null {
+		const defaultProject = this.context.workspace?.extensions?.defaultProject;
 
-    if (typeof defaultProject === 'string') {
-      return defaultProject;
-    }
+		if (typeof defaultProject === 'string') {
+			return defaultProject;
+		}
 
-    return null;
-  }
+		return null;
+	}
 
-  /**
-   * A map that maps unique target names onto the single projects that contain them
-   */
-  @Cached()
-  protected get uniqueTargets(): ReadonlyMap<string, string> {
-    const allTargets = new Map<string, string>();
-    const nonUniqueTargets = new Set<string>();
+	/**
+	 * A map that maps unique target names onto the single projects that contain them
+	 */
+	@Cached()
+	protected get uniqueTargets(): ReadonlyMap<string, string> {
+		const allTargets = new Map<string, string>();
+		const nonUniqueTargets = new Set<string>();
 
-    for (const [project, {targets}] of this.context.workspace?.projects || []) {
-      for (const target of targets.keys()) {
-        if (allTargets.has(target)) {
-          nonUniqueTargets.add(target);
-        } else {
-          allTargets.set(target, project);
-        }
-      }
-    }
+		for (const [project, {targets}] of this.context.workspace?.projects || []) {
+			for (const target of targets.keys()) {
+				if (allTargets.has(target)) {
+					nonUniqueTargets.add(target);
+				} else {
+					allTargets.set(target, project);
+				}
+			}
+		}
 
-    return new Map(
-      Array.from(allTargets).filter(
-        ([target]) => !nonUniqueTargets.has(target),
-      ),
-    );
-  }
+		return new Map(
+			Array.from(allTargets).filter(
+				([target]) => !nonUniqueTargets.has(target),
+			),
+		);
+	}
 
-  /**
-   * Set of configurations activated upon the command class itself
-   */
-  protected getConfigurations(
-    this: ArchitectCommand & {configuration?: string[]},
-  ): Set<string> {
-    return new Set(
-      this.configuration
-        ?.flatMap(c => c.split(','))
-        .map(configuration => configuration.trim()),
-    );
-  }
+	/**
+	 * Set of configurations activated upon the command class itself
+	 */
+	protected getConfigurations(
+		this: ArchitectCommand & {configuration?: string[]},
+	): Set<string> {
+		return new Set(
+			this.configuration
+				?.flatMap(c => c.split(','))
+				.map(configuration => configuration.trim()),
+		);
+	}
 
-  /**
-   * Return the option definitions for the given target
-   */
-  protected async getOptionsForTarget(target: Target): Promise<{
-    options: Option[];
-    allowExtraOptions: boolean;
-    description?: string | undefined;
-  }> {
-    return this.getOptionsForBuilder(
-      await this.architectHost.getBuilderNameForTarget(target),
-    );
-  }
+	/**
+	 * Return the option definitions for the given target
+	 */
+	protected async getOptionsForTarget(target: Target): Promise<{
+		options: Option[];
+		allowExtraOptions: boolean;
+		description?: string | undefined;
+	}> {
+		return this.getOptionsForBuilder(
+			await this.architectHost.getBuilderNameForTarget(target),
+		);
+	}
 
-  /**
-   * Return the option definitions for the given builder
-   */
-  protected async getOptionsForBuilder(builderConf: string): Promise<{
-    options: Option[];
-    allowExtraOptions: boolean;
-    description?: string | undefined;
-  }> {
-    const {description, optionSchema} = await this.architectHost.resolveBuilder(
-      builderConf,
-    );
+	/**
+	 * Return the option definitions for the given builder
+	 */
+	protected async getOptionsForBuilder(builderConf: string): Promise<{
+		options: Option[];
+		allowExtraOptions: boolean;
+		description?: string | undefined;
+	}> {
+		const {description, optionSchema} = await this.architectHost.resolveBuilder(
+			builderConf,
+		);
 
-    return parseSchema({
-      description,
-      schema: optionSchema,
-    });
-  }
+		return parseSchema({
+			description,
+			schema: optionSchema,
+		});
+	}
 
-  protected async runTarget({
-    target,
-    options = {},
-  }: {
-    target: Target;
-    options?: JsonObject;
-  }): Promise<number> {
-    return handleBuilderRun(
-      await this.architect.scheduleTarget(target, options, {
-        logger: this.logger,
-      }),
-      this.context,
-    );
-  }
+	protected async runTarget({
+		target,
+		options = {},
+	}: {
+		target: Target;
+		options?: JsonObject;
+	}): Promise<number> {
+		return handleBuilderRun(
+			await this.architect.scheduleTarget(target, options, {
+				logger: this.logger,
+			}),
+			this.context,
+		);
+	}
 
-  protected async runBuilder({
-    builder,
-    options = {},
-  }: {
-    builder: string;
-    options?: JsonObject;
-  }): Promise<number> {
-    return handleBuilderRun(
-      await this.architect.scheduleBuilder(builder, options, {
-        logger: this.logger,
-      }),
-      this.context,
-    );
-  }
+	protected async runBuilder({
+		builder,
+		options = {},
+	}: {
+		builder: string;
+		options?: JsonObject;
+	}): Promise<number> {
+		return handleBuilderRun(
+			await this.architect.scheduleBuilder(builder, options, {
+				logger: this.logger,
+			}),
+			this.context,
+		);
+	}
 
-  protected resolveTarget(target: string, projectName: string | null): Target {
-    if (projectName != null) {
-      return {project: projectName, target};
-    }
+	protected resolveTarget(target: string, projectName: string | null): Target {
+		if (projectName != null) {
+			return {project: projectName, target};
+		}
 
-    const {currentProject, workspace} = this;
+		const {currentProject, workspace} = this;
 
-    if (currentProject != null) {
-      const project = workspace.getProjectByName(currentProject);
-      if (project.targets.has(target)) {
-        return {project: currentProject, target};
-      }
-    }
+		if (currentProject != null) {
+			const project = workspace.getProjectByName(currentProject);
+			if (project.targets.has(target)) {
+				return {project: currentProject, target};
+			}
+		}
 
-    const {defaultProject} = this;
+		const {defaultProject} = this;
 
-    if (typeof defaultProject === 'string') {
-      const project = workspace.tryGetProjectByName(defaultProject);
+		if (typeof defaultProject === 'string') {
+			const project = workspace.tryGetProjectByName(defaultProject);
 
-      if (project == null) {
-        this.context.report.reportWarning(
-          `Couldn't find configured default project ${JSON.stringify(
-            defaultProject,
-          )} in the workspace`,
-        );
-      } else if (project.targets.has(target)) {
-        return {project: defaultProject, target};
-      }
-    }
+			if (project == null) {
+				this.context.report.reportWarning(
+					`Couldn't find configured default project ${JSON.stringify(
+						defaultProject,
+					)} in the workspace`,
+				);
+			} else if (project.targets.has(target)) {
+				return {project: defaultProject, target};
+			}
+		}
 
-    const {uniqueTargets} = this;
+		const {uniqueTargets} = this;
 
-    if (uniqueTargets.has(target)) {
-      return {project: uniqueTargets.get(target)!, target};
-    }
+		if (uniqueTargets.has(target)) {
+			return {project: uniqueTargets.get(target)!, target};
+		}
 
-    throw new UnknownTargetError(
-      `Failed to resolve target ${JSON.stringify(
-        target,
-      )}, try passing a project name`,
-    );
-  }
+		throw new UnknownTargetError(
+			`Failed to resolve target ${JSON.stringify(
+				target,
+			)}, try passing a project name`,
+		);
+	}
 }

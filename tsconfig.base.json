@@ -1,21 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "es2019",
-    "lib": ["es2020"],
-    "module": "commonjs",
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "importsNotUsedAsValues": "error",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "useUnknownInCatchVariables": true
-  }
+	"compilerOptions": {
+		"target": "es2019",
+		"lib": ["es2020"],
+		"module": "commonjs",
+		"strict": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedIndexedAccess": true,
+		"importsNotUsedAsValues": "error",
+		"moduleResolution": "node",
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"declaration": true,
+		"useUnknownInCatchVariables": true
+	}
 }

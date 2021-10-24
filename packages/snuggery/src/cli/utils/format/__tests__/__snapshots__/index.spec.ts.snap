@@ -46,6 +46,11 @@ exports[`formatMarkdownish should format correctly 11`] = `
 real code."
 `;
 
+exports[`formatMarkdownish should format correctly 12`] = `
+"This text is already indented because it's multiline and part of a section of
+real code."
+`;
+
 exports[`formatMarkdownish should format correctly with format 1`] = `"lorem"`;
 
 exports[`formatMarkdownish should format correctly with format 2`] = `"lorem"`;
@@ -134,6 +139,16 @@ real code."
 `;
 
 exports[`formatMarkdownish should format correctly with format 22`] = `
+"This text is already indented because it's multiline and part of a section of
+real code."
+`;
+
+exports[`formatMarkdownish should format correctly with format 23`] = `
+"This text is already indented because it's multiline and part of a section of
+real code."
+`;
+
+exports[`formatMarkdownish should format correctly with format 24`] = `
 "This text is already indented because it's multiline and part of a section of
 real code."
 `;
@@ -232,6 +247,16 @@ exports[`formatMarkdownish should format correctly with indentation 22`] = `
                     part of a section of real code."
 `;
 
+exports[`formatMarkdownish should format correctly with indentation 23`] = `
+"  This text is already indented because it's multiline and part of a section of
+  real code."
+`;
+
+exports[`formatMarkdownish should format correctly with indentation 24`] = `
+"                    This text is already indented because it's multiline and
+                    part of a section of real code."
+`;
+
 exports[`formatMarkdownish should format correctly with infinite line length 1`] = `"lorem"`;
 
 exports[`formatMarkdownish should format correctly with infinite line length 2`] = `"lorem ipsum"`;
@@ -268,3 +293,5 @@ exports[`formatMarkdownish should format correctly with infinite line length 9`]
 exports[`formatMarkdownish should format correctly with infinite line length 10`] = `"what happens when bold text is split over multiple lines? **let's find out shan't we?**"`;
 
 exports[`formatMarkdownish should format correctly with infinite line length 11`] = `"This text is already indented because it's multiline and part of a section of real code."`;
+
+exports[`formatMarkdownish should format correctly with infinite line length 12`] = `"This text is already indented because it's multiline and part of a section of real code."`;

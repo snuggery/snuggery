@@ -6,29 +6,29 @@ import {Observable} from 'rxjs';
 import type {Schema} from './schema';
 
 function getResultOfChild(child: ChildProcess): Observable<BuilderOutput> {
-  return new Observable(observer => {
-    child.addListener('close', (code, signal) => {
-      if (signal) {
-        observer.next({
-          success: false,
-          error: `Command exited with signal ${signal}`,
-        });
-      } else if (code) {
-        observer.next({
-          success: false,
-          error: `Command exited with exit code ${code}`,
-        });
-      } else {
-        observer.next({
-          success: true,
-        });
-      }
+	return new Observable(observer => {
+		child.addListener('close', (code, signal) => {
+			if (signal) {
+				observer.next({
+					success: false,
+					error: `Command exited with signal ${signal}`,
+				});
+			} else if (code) {
+				observer.next({
+					success: false,
+					error: `Command exited with exit code ${code}`,
+				});
+			} else {
+				observer.next({
+					success: true,
+				});
+			}
 
-      observer.complete();
-    });
+			observer.complete();
+		});
 
-    return () => child.kill();
-  });
+		return () => child.kill();
+	});
 }
 
 /**
@@ -39,26 +39,26 @@ function getResultOfChild(child: ChildProcess): Observable<BuilderOutput> {
  * @param options Options
  */
 export function exec(
-  cwd: string,
-  binary: string,
-  {stdio = 'inherit', env = {}, arguments: args = []}: Schema,
+	cwd: string,
+	binary: string,
+	{stdio = 'inherit', env = {}, arguments: args = []}: Schema,
 ): Observable<BuilderOutput> {
-  const childOptions: ForkOptions = {
-    cwd,
-    stdio,
-    env: {
-      ...process.env,
-      ...env,
-    },
-  };
+	const childOptions: ForkOptions = {
+		cwd,
+		stdio,
+		env: {
+			...process.env,
+			...env,
+		},
+	};
 
-  if (/^\.[cm]?js$/.test(extname(binary))) {
-    if (Array.isArray(childOptions.stdio)) {
-      childOptions.stdio.push('ipc');
-    }
+	if (/^\.[cm]?js$/.test(extname(binary))) {
+		if (Array.isArray(childOptions.stdio)) {
+			childOptions.stdio.push('ipc');
+		}
 
-    return getResultOfChild(fork(binary, args, childOptions));
-  } else {
-    return getResultOfChild(spawn(binary, args, childOptions));
-  }
+		return getResultOfChild(fork(binary, args, childOptions));
+	} else {
+		return getResultOfChild(spawn(binary, args, childOptions));
+	}
 }

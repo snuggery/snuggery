@@ -7,14 +7,14 @@ import match, {not as matchNot} from 'micromatch';
  * @param options The options
  */
 export function filterByPatterns(
-  list: string[],
-  {include, exclude}: {include: string | string[]; exclude?: string | string[]},
+	list: string[],
+	{include, exclude}: {include: string | string[]; exclude?: string | string[]},
 ): string[] {
-  const included = match(list, include);
+	const included = match(list, include);
 
-  if (exclude == null || exclude.length === 0) {
-    return included;
-  }
+	if (exclude == null || exclude.length === 0) {
+		return included;
+	}
 
-  return matchNot(included, exclude);
+	return matchNot(included, exclude);
 }

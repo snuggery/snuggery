@@ -1,25 +1,25 @@
 {
-  "version": 1,
-  "projects": {
-    "fixture": {
-      "root": "",
-      "architect": {
-        "installed-builder": {
-          "builder": "test-builders:echo-builders-fixture"
-        },
-        "local-builder": {
-          "builder": "./builder/builders.json:builder"
-        },
-        "local-builder-single": {
-          "builder": "$direct:./builder/builder.json"
-        },
-        "local-builder-implementation": {
-          "builder": "$direct:./builder/builder.js"
-        },
-        "local-builder-schema": {
-          "builder": "$direct:./builder/schema.json"
-        }
-      }
-    }
-  }
+	"version": 1,
+	"projects": {
+		"fixture": {
+			"root": "",
+			"architect": {
+				"installed-builder": {
+					"builder": "test-builders:echo-builders-fixture"
+				},
+				"local-builder": {
+					"builder": "./builder/builders.json:builder"
+				},
+				"local-builder-single": {
+					"builder": "$direct:./builder/builder.json"
+				},
+				"local-builder-implementation": {
+					"builder": "$direct:./builder/builder.js"
+				},
+				"local-builder-schema": {
+					"builder": "$direct:./builder/schema.json"
+				}
+			}
+		}
+	}
 }

@@ -1,19 +1,19 @@
 {
-  "builders": {
-    "echo": {
-      "implementation": "./builders/echo",
-      "schema": "./builders/echo/schema.json",
-      "description": "Echo arguments"
-    },
-    "echo-builders-fixture": {
-      "implementation": "./builders/echo-builders-fixture",
-      "schema": "./builders/echo-builders-fixture/schema.json",
-      "description": "Echo arguments"
-    },
-    "log-target": {
-      "implementation": "./builders/log-target",
-      "schema": "./builders/log-target/schema.json",
-      "description": "Log running target"
-    }
-  }
+	"builders": {
+		"echo": {
+			"implementation": "./builders/echo",
+			"schema": "./builders/echo/schema.json",
+			"description": "Echo arguments"
+		},
+		"echo-builders-fixture": {
+			"implementation": "./builders/echo-builders-fixture",
+			"schema": "./builders/echo-builders-fixture/schema.json",
+			"description": "Echo arguments"
+		},
+		"log-target": {
+			"implementation": "./builders/log-target",
+			"schema": "./builders/log-target/schema.json",
+			"description": "Log running target"
+		}
+	}
 }

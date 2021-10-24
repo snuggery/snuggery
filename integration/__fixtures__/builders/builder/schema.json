@@ -1,12 +1,12 @@
 {
-  "implementation": "./builder.js",
-  "type": "object",
-  "properties": {
-    "foo": {"type": "string"},
-    "withDefault": {
-      "type": "string",
-      "default": "defaultValue"
-    }
-  },
-  "additionalProperties": false
+	"implementation": "./builder.js",
+	"type": "object",
+	"properties": {
+		"foo": {"type": "string"},
+		"withDefault": {
+			"type": "string",
+			"default": "defaultValue"
+		}
+	},
+	"additionalProperties": false
 }

@@ -11,36 +11,36 @@ import type {Schema, PackageBinarySchema} from './schema';
  * Execute a binary, depending on config either globally installed or installed in a node package
  */
 export function execute(
-  config: Schema,
-  context: BuilderContext,
+	config: Schema,
+	context: BuilderContext,
 ): Observable<BuilderOutput> {
-  return defer(async () => {
-    const cwd = config.cwd
-      ? resolveWorkspacePath(context, config.cwd)
-      : await getProjectPath(context);
+	return defer(async () => {
+		const cwd = config.cwd
+			? resolveWorkspacePath(context, config.cwd)
+			: await getProjectPath(context);
 
-    let binary: string;
+		let binary: string;
 
-    if (!isPackageConfiguration(config)) {
-      binary = config.binary;
-    } else {
-      const resolvedBin = await resolvePackageBin(context, {
-        packageName: config.package,
-        binary: config.binary,
-        resolveFrom: config.resolveFrom,
-      });
+		if (!isPackageConfiguration(config)) {
+			binary = config.binary;
+		} else {
+			const resolvedBin = await resolvePackageBin(context, {
+				packageName: config.package,
+				binary: config.binary,
+				resolveFrom: config.resolveFrom,
+			});
 
-      if (!resolvedBin.success) {
-        return of(resolvedBin);
-      }
+			if (!resolvedBin.success) {
+				return of(resolvedBin);
+			}
 
-      binary = resolvedBin.bin;
-    }
+			binary = resolvedBin.bin;
+		}
 
-    return exec(cwd, binary, config);
-  }).pipe(concatAll());
+		return exec(cwd, binary, config);
+	}).pipe(concatAll());
 }
 
 function isPackageConfiguration(config: Schema): config is PackageBinarySchema {
-  return 'package' in config && !!config.package;
+	return 'package' in config && !!config.package;
 }

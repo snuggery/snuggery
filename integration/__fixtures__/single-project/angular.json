@@ -1,39 +1,39 @@
 {
-  "version": 1,
-  "projects": {
-    "fixture": {
-      "root": "",
-      "architect": {
-        "build": {
-          "builder": "test-builders:log-target"
-        },
-        "test": {
-          "builder": "test-builders:log-target"
-        },
-        "lint": {
-          "builder": "test-builders:log-target",
-          "configurations": {
-            "foo": {},
-            "bar": {}
-          }
-        },
-        "with-default--value": {
-          "builder": "test-builders:echo",
-          "configurations": {
-            "lorem": {"configuration": "lorem"},
-            "ipsum": {"configuration": "ipsum"}
-          },
-          "defaultConfiguration": "lorem"
-        },
-        "with-default--target": {
-          "builder": "test-builders:log-target",
-          "configurations": {
-            "lorem": {},
-            "ipsum": {}
-          },
-          "defaultConfiguration": "lorem"
-        }
-      }
-    }
-  }
+	"version": 1,
+	"projects": {
+		"fixture": {
+			"root": "",
+			"architect": {
+				"build": {
+					"builder": "test-builders:log-target"
+				},
+				"test": {
+					"builder": "test-builders:log-target"
+				},
+				"lint": {
+					"builder": "test-builders:log-target",
+					"configurations": {
+						"foo": {},
+						"bar": {}
+					}
+				},
+				"with-default--value": {
+					"builder": "test-builders:echo",
+					"configurations": {
+						"lorem": {"configuration": "lorem"},
+						"ipsum": {"configuration": "ipsum"}
+					},
+					"defaultConfiguration": "lorem"
+				},
+				"with-default--target": {
+					"builder": "test-builders:log-target",
+					"configurations": {
+						"lorem": {},
+						"ipsum": {}
+					},
+					"defaultConfiguration": "lorem"
+				}
+			}
+		}
+	}
 }

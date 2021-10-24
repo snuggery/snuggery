@@ -1,5 +1,5 @@
 {
-  "schema": "./schema.json",
-  "implementation": "./builder.js",
-  "description": "Local builder via builder.json"
+	"schema": "./schema.json",
+	"implementation": "./builder.js",
+	"description": "Local builder via builder.json"
 }

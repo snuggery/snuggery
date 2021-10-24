@@ -1,9 +1,9 @@
 {
-  "builders": {
-    "build": {
-      "implementation": "./builders/build",
-      "schema": "./builders/build/schema.json",
-      "description": "Build a package via typescript"
-    }
-  }
+	"builders": {
+		"build": {
+			"implementation": "./builders/build",
+			"schema": "./builders/build/schema.json",
+			"description": "Build a package via typescript"
+		}
+	}
 }

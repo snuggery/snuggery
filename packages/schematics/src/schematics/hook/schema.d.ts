@@ -1,15 +1,15 @@
 import {JsonObject} from '@angular-devkit/core';
 
 export interface HookWithOptions {
-  /**
-   * The schematic to run in this hook
-   */
-  schematic: string;
+	/**
+	 * The schematic to run in this hook
+	 */
+	schematic: string;
 
-  /**
-   * Options to pass into the hook schematic
-   */
-  options?: JsonObject;
+	/**
+	 * Options to pass into the hook schematic
+	 */
+	options?: JsonObject;
 }
 
 /**
@@ -18,18 +18,18 @@ export interface HookWithOptions {
 export type Hook = string | HookWithOptions;
 
 export interface Schema {
-  /**
-   * Schematic to run the hooks for
-   */
-  schematic: string;
+	/**
+	 * Schematic to run the hooks for
+	 */
+	schematic: string;
 
-  /**
-   * Options to pass into the hook schematic
-   */
-  options?: JsonObject;
+	/**
+	 * Options to pass into the hook schematic
+	 */
+	options?: JsonObject;
 
-  /**
-   * Registered hooks
-   */
-  hooks: {[schematic: string]: Hook[]};
+	/**
+	 * Registered hooks
+	 */
+	hooks: {[schematic: string]: Hook[]};
 }

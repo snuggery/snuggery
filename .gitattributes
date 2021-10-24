@@ -1,13 +1,13 @@
 # This line does two things:
 # - enable git's CRLF -> LF modification
 # - tell git to guess whether files are text or binary
-*                 text=auto
+*									text=auto
 
 # Set the language for these files to json5 to ensure GitHub doesn't show the comments as errors
-/.vscode/*.json   linguist-language=JSON5
+/.vscode/*.json		linguist-language=JSON5
 
 # Hide .yarn from GitHub's language detection
-/.yarn/**         linguist-vendored
+/.yarn/**					linguist-vendored
 
 # Mark .pnp.js as generated for GitHub's language detection
-/.pnp.js          linguist-generated
+/.pnp.js					linguist-generated

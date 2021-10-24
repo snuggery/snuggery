@@ -6,10 +6,10 @@ import type {Observable} from 'rxjs';
 import {RegularScheduler} from './abstract';
 
 export class InProcessScheduler extends RegularScheduler {
-  public runSingleTarget(
-    targetSpec: TargetSpecifier,
-    extraOptions: JsonObject = {},
-  ): Observable<BuilderOutput> {
-    return scheduleTarget(targetSpec, extraOptions, this.context);
-  }
+	public runSingleTarget(
+		targetSpec: TargetSpecifier,
+		extraOptions: JsonObject = {},
+	): Observable<BuilderOutput> {
+		return scheduleTarget(targetSpec, extraOptions, this.context);
+	}
 }

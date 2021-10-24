@@ -1,7 +1,7 @@
 export interface Schema {
-  useWorkspacePlugin?: boolean;
+	useWorkspacePlugin?: boolean;
 
-  buildTarget?: string;
+	buildTarget?: string;
 
-  distTag?: string;
+	distTag?: string;
 }

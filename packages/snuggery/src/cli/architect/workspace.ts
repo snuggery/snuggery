@@ -1,8 +1,8 @@
 import type {createBuilder, Target} from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
 import type {
-  ProjectDefinition,
-  TargetDefinition,
+	ProjectDefinition,
+	TargetDefinition,
 } from '@angular-devkit/core/src/workspace';
 import type {Executor} from '@nrwl/devkit';
 
@@ -13,76 +13,76 @@ import {UnknownConfigurationError, UnknownTargetError} from './errors';
 import type {WorkspaceFacade} from './host';
 
 export class CliWorkspaceFacade implements WorkspaceFacade {
-  constructor(private readonly workspace: CliWorkspace | null = null) {}
+	constructor(private readonly workspace: CliWorkspace | null = null) {}
 
-  public get basePath(): string | undefined {
-    return this.workspace?.basePath;
-  }
+	public get basePath(): string | undefined {
+		return this.workspace?.basePath;
+	}
 
-  getProject(projectName: string): ProjectDefinition {
-    const project = this.workspace?.projects.get(projectName);
+	getProject(projectName: string): ProjectDefinition {
+		const project = this.workspace?.projects.get(projectName);
 
-    if (project == null) {
-      throw new UnknownTargetError(`Unknown project: "${projectName}"`);
-    }
+		if (project == null) {
+			throw new UnknownTargetError(`Unknown project: "${projectName}"`);
+		}
 
-    return project;
-  }
+		return project;
+	}
 
-  getProjectMetadata(projectName: string): JsonObject {
-    const projectDefinition = this.getProject(projectName);
+	getProjectMetadata(projectName: string): JsonObject {
+		const projectDefinition = this.getProject(projectName);
 
-    return {
-      root: projectDefinition.root,
-      sourceRoot: projectDefinition.sourceRoot!,
-      prefix: projectDefinition.prefix!,
-      ...projectDefinition.extensions,
-    };
-  }
+		return {
+			root: projectDefinition.root,
+			sourceRoot: projectDefinition.sourceRoot!,
+			prefix: projectDefinition.prefix!,
+			...projectDefinition.extensions,
+		};
+	}
 
-  getTarget(target: Target): TargetDefinition {
-    const projectTarget = this.getProject(target.project).targets.get(
-      target.target,
-    );
+	getTarget(target: Target): TargetDefinition {
+		const projectTarget = this.getProject(target.project).targets.get(
+			target.target,
+		);
 
-    if (projectTarget == null) {
-      throw new UnknownTargetError(
-        `No target named "${target.target}" found in project "${target.project}"`,
-      );
-    }
+		if (projectTarget == null) {
+			throw new UnknownTargetError(
+				`No target named "${target.target}" found in project "${target.project}"`,
+			);
+		}
 
-    return projectTarget;
-  }
+		return projectTarget;
+	}
 
-  getOptionsForTarget(target: Target): JsonObject | null {
-    const targetDefinition = this.getTarget(target);
-    const options: JsonObject = {};
+	getOptionsForTarget(target: Target): JsonObject | null {
+		const targetDefinition = this.getTarget(target);
+		const options: JsonObject = {};
 
-    if (targetDefinition.options != null) {
-      Object.assign(options, targetDefinition.options);
-    }
+		if (targetDefinition.options != null) {
+			Object.assign(options, targetDefinition.options);
+		}
 
-    for (const configuration of (
-      target.configuration ?? targetDefinition.defaultConfiguration
-    )?.split(',') || []) {
-      const configurationOptions =
-        targetDefinition.configurations?.[configuration];
+		for (const configuration of (
+			target.configuration ?? targetDefinition.defaultConfiguration
+		)?.split(',') || []) {
+			const configurationOptions =
+				targetDefinition.configurations?.[configuration];
 
-      if (configurationOptions == null) {
-        throw new UnknownConfigurationError(
-          `Target "${target.target}" in project "${target.project}" doesn't have a configuration named "${configuration}"`,
-        );
-      }
+			if (configurationOptions == null) {
+				throw new UnknownConfigurationError(
+					`Target "${target.target}" in project "${target.project}" doesn't have a configuration named "${configuration}"`,
+				);
+			}
 
-      Object.assign(options, configurationOptions);
-    }
+			Object.assign(options, configurationOptions);
+		}
 
-    return options;
-  }
+		return options;
+	}
 
-  convertExecutorIntoBuilder(
-    executor: Executor,
-  ): ReturnType<typeof createBuilder> {
-    return makeExecutorIntoBuilder(executor, this.workspace);
-  }
+	convertExecutorIntoBuilder(
+		executor: Executor,
+	): ReturnType<typeof createBuilder> {
+		return makeExecutorIntoBuilder(executor, this.workspace);
+	}
 }

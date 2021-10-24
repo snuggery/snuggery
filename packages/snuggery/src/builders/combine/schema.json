@@ -1,112 +1,112 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Combine multiple targets",
-  "description": "Target options for combining multiple targets into one",
-  "type": "object",
-  "properties": {
-    "targets": {
-      "description": "The targets to run",
-      "oneOf": [
-        {
-          "type": "array",
-          "items": [
-            {
-              "$ref": "#/definitions/any-target"
-            }
-          ],
-          "minLength": 1
-        },
-        {
-          "$ref": "#/definitions/serial"
-        },
-        {
-          "$ref": "#/definitions/parallel"
-        }
-      ]
-    },
-    "options": {
-      "type": "object"
-    },
-    "scheduler": {
-      "type": "string",
-      "enum": ["in process", "spawn", "worker", "respawn"],
-      "additionalItems": false
-    }
-  },
-  "additionalProperties": true,
-  "required": ["targets"],
-  "definitions": {
-    "targets": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/any-target"
-      }
-    },
-    "serial": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["serial"],
-          "additionalItems": false
-        },
-        "targets": {
-          "$ref": "#/definitions/targets"
-        }
-      },
-      "required": ["type", "targets"],
-      "additionalProperties": false
-    },
-    "parallel": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string",
-          "enum": ["parallel"],
-          "additionalItems": false
-        },
-        "targets": {
-          "$ref": "#/definitions/targets"
-        },
-        "maxParallel": {
-          "oneOf": [{"type": "number"}, {"type": "string"}],
-          "description": "The maximum number of jobs to have running at a time"
-        }
-      },
-      "required": ["type", "targets"],
-      "additionalProperties": false
-    },
-    "any-target": {
-      "oneOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "object",
-          "properties": {
-            "builder": {
-              "type": "string",
-              "description": "The builder to run"
-            },
-            "project": {
-              "type": "string",
-              "description": "The project to run the builder in, defaults to the project running the combine builder"
-            },
-            "options": {
-              "type": "object",
-              "description": "Options to pass into the builder"
-            }
-          },
-          "additionalProperties": false,
-          "required": ["builder"]
-        },
-        {
-          "$ref": "#/definitions/serial"
-        },
-        {
-          "$ref": "#/definitions/parallel"
-        }
-      ]
-    }
-  }
+	"$schema": "http://json-schema.org/schema",
+	"title": "Combine multiple targets",
+	"description": "Target options for combining multiple targets into one",
+	"type": "object",
+	"properties": {
+		"targets": {
+			"description": "The targets to run",
+			"oneOf": [
+				{
+					"type": "array",
+					"items": [
+						{
+							"$ref": "#/definitions/any-target"
+						}
+					],
+					"minLength": 1
+				},
+				{
+					"$ref": "#/definitions/serial"
+				},
+				{
+					"$ref": "#/definitions/parallel"
+				}
+			]
+		},
+		"options": {
+			"type": "object"
+		},
+		"scheduler": {
+			"type": "string",
+			"enum": ["in process", "spawn", "worker", "respawn"],
+			"additionalItems": false
+		}
+	},
+	"additionalProperties": true,
+	"required": ["targets"],
+	"definitions": {
+		"targets": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/any-target"
+			}
+		},
+		"serial": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": ["serial"],
+					"additionalItems": false
+				},
+				"targets": {
+					"$ref": "#/definitions/targets"
+				}
+			},
+			"required": ["type", "targets"],
+			"additionalProperties": false
+		},
+		"parallel": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"type": "string",
+					"enum": ["parallel"],
+					"additionalItems": false
+				},
+				"targets": {
+					"$ref": "#/definitions/targets"
+				},
+				"maxParallel": {
+					"oneOf": [{"type": "number"}, {"type": "string"}],
+					"description": "The maximum number of jobs to have running at a time"
+				}
+			},
+			"required": ["type", "targets"],
+			"additionalProperties": false
+		},
+		"any-target": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "object",
+					"properties": {
+						"builder": {
+							"type": "string",
+							"description": "The builder to run"
+						},
+						"project": {
+							"type": "string",
+							"description": "The project to run the builder in, defaults to the project running the combine builder"
+						},
+						"options": {
+							"type": "object",
+							"description": "Options to pass into the builder"
+						}
+					},
+					"additionalProperties": false,
+					"required": ["builder"]
+				},
+				{
+					"$ref": "#/definitions/serial"
+				},
+				{
+					"$ref": "#/definitions/parallel"
+				}
+			]
+		}
+	}
 }

@@ -5,10 +5,10 @@ import {PublishCommand} from './commands/publish';
 import {UpCommand} from './commands/up';
 
 const plugin: Plugin<Hooks> = {
-  commands:
-    process.env.SNUGGERY_YARN === '1'
-      ? [PackCommand, PublishCommand, UpCommand]
-      : [],
+	commands:
+		process.env.SNUGGERY_YARN === '1'
+			? [PackCommand, PublishCommand, UpCommand]
+			: [],
 };
 
 export default plugin;

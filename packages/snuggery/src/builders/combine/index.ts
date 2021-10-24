@@ -8,11 +8,11 @@ export default createBuilder<JsonObject & Schema>(execute);
 
 export {execute} from './builder';
 export {
-  ParallelOptions,
-  ParallelTarget,
-  Schema,
-  SerialOptions,
-  SerialTarget,
-  Target,
+	ParallelOptions,
+	ParallelTarget,
+	Schema,
+	SerialOptions,
+	SerialTarget,
+	Target,
 } from './schema';
 export {SchedulerType, Type} from './types';

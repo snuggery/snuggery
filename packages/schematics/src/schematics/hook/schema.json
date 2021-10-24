@@ -1,51 +1,51 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "id": "SnuggerySchematicsHook",
-  "title": "Options schema for running a hook after other schematics",
-  "type": "object",
-  "properties": {
-    "schematic": {
-      "type": "string",
-      "description": "Base scope to start from in the packages folder"
-    },
-    "options": {
-      "type": "object",
-      "description": "Options to pass into the hooked schematics"
-    },
-    "hooks": {
-      "type": "object",
-      "description": "Registered hooks",
-      "propertyNames": {
-        "pattern": "^.+:.+$"
-      },
-      "additionalProperties": {
-        "type": "array",
-        "items": {
-          "oneOf": [
-            {
-              "type": "string",
-              "description": "The schematic to run"
-            },
-            {
-              "type": "object",
-              "properties": {
-                "schematic": {
-                  "type": "string",
-                  "description": "The schematic to run"
-                },
-                "options": {
-                  "type": "object",
-                  "description": "Extra options for the schematic"
-                }
-              },
-              "additionalProperties": false,
-              "required": ["schematic"]
-            }
-          ]
-        }
-      },
-      "default": {}
-    }
-  },
-  "required": ["schematic"]
+	"$schema": "http://json-schema.org/schema",
+	"id": "SnuggerySchematicsHook",
+	"title": "Options schema for running a hook after other schematics",
+	"type": "object",
+	"properties": {
+		"schematic": {
+			"type": "string",
+			"description": "Base scope to start from in the packages folder"
+		},
+		"options": {
+			"type": "object",
+			"description": "Options to pass into the hooked schematics"
+		},
+		"hooks": {
+			"type": "object",
+			"description": "Registered hooks",
+			"propertyNames": {
+				"pattern": "^.+:.+$"
+			},
+			"additionalProperties": {
+				"type": "array",
+				"items": {
+					"oneOf": [
+						{
+							"type": "string",
+							"description": "The schematic to run"
+						},
+						{
+							"type": "object",
+							"properties": {
+								"schematic": {
+									"type": "string",
+									"description": "The schematic to run"
+								},
+								"options": {
+									"type": "object",
+									"description": "Extra options for the schematic"
+								}
+							},
+							"additionalProperties": false,
+							"required": ["schematic"]
+						}
+					]
+				}
+			},
+			"default": {}
+		}
+	},
+	"required": ["schematic"]
 }

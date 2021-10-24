@@ -6,20 +6,20 @@ import {CliWorkspaceFacade} from './workspace';
 
 export * from './errors';
 export {
-  SnuggeryArchitectHost,
-  ResolverFacade,
-  WorkspaceFacade,
-  SnuggeryBuilderInfo,
+	SnuggeryArchitectHost,
+	ResolverFacade,
+	WorkspaceFacade,
+	SnuggeryBuilderInfo,
 } from './host';
 
 export function createArchitectHost(
-  context: Pick<Context, 'startCwd'>,
-  workspace?: CliWorkspace | null,
+	context: Pick<Context, 'startCwd'>,
+	workspace?: CliWorkspace | null,
 ): SnuggeryArchitectHost {
-  const workspaceFacade = new CliWorkspaceFacade(workspace);
-  return new SnuggeryArchitectHost(
-    context,
-    new Resolver(context, workspaceFacade),
-    workspaceFacade,
-  );
+	const workspaceFacade = new CliWorkspaceFacade(workspace);
+	return new SnuggeryArchitectHost(
+		context,
+		new Resolver(context, workspaceFacade),
+		workspaceFacade,
+	);
 }

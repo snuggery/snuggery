@@ -1,259 +1,259 @@
 {
-  "version": 1,
-  "projects": {
-    "all": {
-      "root": "",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/snuggery:glob",
-          "options": {
-            "include": "@snuggery/*"
-          },
-          "configurations": {
-            "without-yarn-plugins": {
-              "exclude": "@snuggery/yarn-plugin-*"
-            }
-          }
-        },
-        "deploy": {
-          "builder": "@snuggery/yarn:deploy",
-          "options": {
-            "useWorkspacePlugin": true,
-            "buildTarget": ":build:without-yarn-plugins"
-          },
-          "configurations": {
-            "next": {
-              "distTag": "next"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "eslintConfig": ".eslintrc.yml",
-            "ignorePath": ".eslintignore",
-            "lintFilePatterns": ["packages/*/src/**/*.[tj]s", "integration"]
-          }
-        },
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "jest.config.js"
-          }
-        }
-      }
-    },
-    "@snuggery/snuggery": {
-      "root": "packages/snuggery",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/snuggery/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/global": {
-      "root": "packages/global",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/architect": {
-      "root": "packages/architect",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/architect/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/core": {
-      "root": "packages/core",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/core/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/node": {
-      "root": "packages/node",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/node/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/schematics": {
-      "root": "packages/schematics",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/schematics/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/yarn": {
-      "root": "packages/yarn",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/node:build",
-          "options": {
-            "assets": [
-              {
-                "include": "README.md"
-              },
-              {
-                "include": ["**/*.d.ts", "**/*.json"],
-                "from": "packages/yarn/src"
-              },
-              {
-                "include": "LICENSE.md",
-                "from": "."
-              }
-            ],
-            "packager": "@snuggery/yarn"
-          }
-        }
-      }
-    },
-    "@snuggery/yarn-plugin-snuggery": {
-      "root": "packages/yarn-plugin-snuggery",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/snuggery:execute",
-          "options": {
-            "package": "@yarnpkg/builder",
-            "arguments": ["build", "plugin"]
-          },
-          "configurations": {
-            "dev": {
-              "arguments": ["build", "plugin", "--no-minify"]
-            }
-          }
-        }
-      }
-    },
-    "@snuggery/yarn-plugin-snuggery-workspace": {
-      "root": "packages/yarn-plugin-snuggery-workspace",
-      "architect": {
-        "build": {
-          "builder": "@snuggery/snuggery:execute",
-          "options": {
-            "package": "@yarnpkg/builder",
-            "arguments": ["build", "plugin"]
-          },
-          "configurations": {
-            "dev": {
-              "arguments": ["build", "plugin", "--no-minify"]
-            }
-          }
-        }
-      }
-    },
-    "integration": {
-      "root": "integration",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "options": {
-            "jestConfig": "integration/jest.config.js"
-          }
-        }
-      }
-    }
-  },
-  "cli": {
-    "packageManager": "yarn"
-  }
+	"version": 1,
+	"projects": {
+		"all": {
+			"root": "",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/snuggery:glob",
+					"options": {
+						"include": "@snuggery/*"
+					},
+					"configurations": {
+						"without-yarn-plugins": {
+							"exclude": "@snuggery/yarn-plugin-*"
+						}
+					}
+				},
+				"deploy": {
+					"builder": "@snuggery/yarn:deploy",
+					"options": {
+						"useWorkspacePlugin": true,
+						"buildTarget": ":build:without-yarn-plugins"
+					},
+					"configurations": {
+						"next": {
+							"distTag": "next"
+						}
+					}
+				},
+				"lint": {
+					"builder": "@nrwl/linter:eslint",
+					"options": {
+						"eslintConfig": ".eslintrc.yml",
+						"ignorePath": ".eslintignore",
+						"lintFilePatterns": ["packages/*/src/**/*.[tj]s", "integration"]
+					}
+				},
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "jest.config.js"
+					}
+				}
+			}
+		},
+		"@snuggery/snuggery": {
+			"root": "packages/snuggery",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/snuggery/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/global": {
+			"root": "packages/global",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/architect": {
+			"root": "packages/architect",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/architect/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/core": {
+			"root": "packages/core",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/core/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/node": {
+			"root": "packages/node",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/node/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/schematics": {
+			"root": "packages/schematics",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/schematics/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/yarn": {
+			"root": "packages/yarn",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/node:build",
+					"options": {
+						"assets": [
+							{
+								"include": "README.md"
+							},
+							{
+								"include": ["**/*.d.ts", "**/*.json"],
+								"from": "packages/yarn/src"
+							},
+							{
+								"include": "LICENSE.md",
+								"from": "."
+							}
+						],
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		},
+		"@snuggery/yarn-plugin-snuggery": {
+			"root": "packages/yarn-plugin-snuggery",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/snuggery:execute",
+					"options": {
+						"package": "@yarnpkg/builder",
+						"arguments": ["build", "plugin"]
+					},
+					"configurations": {
+						"dev": {
+							"arguments": ["build", "plugin", "--no-minify"]
+						}
+					}
+				}
+			}
+		},
+		"@snuggery/yarn-plugin-snuggery-workspace": {
+			"root": "packages/yarn-plugin-snuggery-workspace",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/snuggery:execute",
+					"options": {
+						"package": "@yarnpkg/builder",
+						"arguments": ["build", "plugin"]
+					},
+					"configurations": {
+						"dev": {
+							"arguments": ["build", "plugin", "--no-minify"]
+						}
+					}
+				}
+			}
+		},
+		"integration": {
+			"root": "integration",
+			"architect": {
+				"test": {
+					"builder": "@nrwl/jest:jest",
+					"options": {
+						"jestConfig": "integration/jest.config.js"
+					}
+				}
+			}
+		}
+	},
+	"cli": {
+		"packageManager": "yarn"
+	}
 }

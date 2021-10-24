@@ -2,3 +2,4 @@ singleQuote: true
 trailingComma: all
 bracketSpacing: false
 arrowParens: avoid
+useTabs: true

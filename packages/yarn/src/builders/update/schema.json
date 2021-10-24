@@ -1,14 +1,14 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Update npm packages",
-  "description": "Update npm packages",
-  "type": "object",
-  "properties": {
-    "packages": {
-      "type": "array",
-      "items": {"type": "string"},
-      "description": "The packages to update"
-    }
-  },
-  "additionalProperties": false
+	"$schema": "http://json-schema.org/schema",
+	"title": "Update npm packages",
+	"description": "Update npm packages",
+	"type": "object",
+	"properties": {
+		"packages": {
+			"type": "array",
+			"items": {"type": "string"},
+			"description": "The packages to update"
+		}
+	},
+	"additionalProperties": false
 }

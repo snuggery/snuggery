@@ -1,21 +1,21 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Create version via yarn and publish",
-  "description": "Target options for creating versions and deploying using yarn",
-  "type": "object",
-  "properties": {
-    "useWorkspacePlugin": {
-      "type": "boolean",
-      "description": "Whether to use the @yarnpkg/plugin-snuggery-workspace plugin to deploy"
-    },
-    "buildTarget": {
-      "type": "string",
-      "description": "Target to execute after tagging and before publishing"
-    },
-    "distTag": {
-      "type": "string",
-      "description": "The tag to distribute this release under, defaults to 'latest'"
-    }
-  },
-  "additionalProperties": false
+	"$schema": "http://json-schema.org/schema",
+	"title": "Create version via yarn and publish",
+	"description": "Target options for creating versions and deploying using yarn",
+	"type": "object",
+	"properties": {
+		"useWorkspacePlugin": {
+			"type": "boolean",
+			"description": "Whether to use the @yarnpkg/plugin-snuggery-workspace plugin to deploy"
+		},
+		"buildTarget": {
+			"type": "string",
+			"description": "Target to execute after tagging and before publishing"
+		},
+		"distTag": {
+			"type": "string",
+			"description": "The tag to distribute this release under, defaults to 'latest'"
+		}
+	},
+	"additionalProperties": false
 }

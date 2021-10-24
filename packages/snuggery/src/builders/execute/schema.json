@@ -1,73 +1,73 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Run a dependency binary",
-  "type": "object",
-  "properties": {
-    "package": {
-      "type": "string",
-      "description": "The package to load the executable from"
-    },
-    "resolveFrom": {
-      "oneOf": [
-        {"type": "string"},
-        {
-          "type": "array",
-          "items": {"type": "string"}
-        }
-      ],
-      "description": "Path(s) to resolve the package from, defaults to the project the target is in and the workspace root"
-    },
-    "binary": {
-      "type": "string",
-      "description": "The name of the binary to run, if empty it uses the single binary of the package"
-    },
-    "arguments": {
-      "type": "array",
-      "items": {"type": "string"},
-      "description": "Arguments to pass in"
-    },
-    "cwd": {
-      "type": "string",
-      "description": "The working directory for running the command in, defaults to the project's root"
-    },
-    "env": {
-      "type": "object",
-      "description": "Extra environment variables to pass into the child process",
-      "additionalProperties": {"type": "string"}
-    },
-    "stdio": {
-      "$ref": "#/definitions/io",
-      "description": "Configuration for standard input and output",
-      "default": "inherit"
-    }
-  },
-  "anyOf": [
-    {
-      "required": ["package"]
-    },
-    {
-      "required": ["binary"]
-    }
-  ],
-  "additionalProperties": false,
-  "definitions": {
-    "ioValue": {
-      "type": "string",
-      "enum": ["inherit", "ignore"]
-    },
-    "io": {
-      "oneOf": [
-        {"$ref": "#/definitions/ioValue"},
-        {
-          "type": "array",
-          "items": [
-            {"$ref": "#/definitions/ioValue"},
-            {"$ref": "#/definitions/ioValue"},
-            {"$ref": "#/definitions/ioValue"}
-          ],
-          "additionalItems": false
-        }
-      ]
-    }
-  }
+	"$schema": "http://json-schema.org/schema",
+	"title": "Run a dependency binary",
+	"type": "object",
+	"properties": {
+		"package": {
+			"type": "string",
+			"description": "The package to load the executable from"
+		},
+		"resolveFrom": {
+			"oneOf": [
+				{"type": "string"},
+				{
+					"type": "array",
+					"items": {"type": "string"}
+				}
+			],
+			"description": "Path(s) to resolve the package from, defaults to the project the target is in and the workspace root"
+		},
+		"binary": {
+			"type": "string",
+			"description": "The name of the binary to run, if empty it uses the single binary of the package"
+		},
+		"arguments": {
+			"type": "array",
+			"items": {"type": "string"},
+			"description": "Arguments to pass in"
+		},
+		"cwd": {
+			"type": "string",
+			"description": "The working directory for running the command in, defaults to the project's root"
+		},
+		"env": {
+			"type": "object",
+			"description": "Extra environment variables to pass into the child process",
+			"additionalProperties": {"type": "string"}
+		},
+		"stdio": {
+			"$ref": "#/definitions/io",
+			"description": "Configuration for standard input and output",
+			"default": "inherit"
+		}
+	},
+	"anyOf": [
+		{
+			"required": ["package"]
+		},
+		{
+			"required": ["binary"]
+		}
+	],
+	"additionalProperties": false,
+	"definitions": {
+		"ioValue": {
+			"type": "string",
+			"enum": ["inherit", "ignore"]
+		},
+		"io": {
+			"oneOf": [
+				{"$ref": "#/definitions/ioValue"},
+				{
+					"type": "array",
+					"items": [
+						{"$ref": "#/definitions/ioValue"},
+						{"$ref": "#/definitions/ioValue"},
+						{"$ref": "#/definitions/ioValue"}
+					],
+					"additionalItems": false
+				}
+			]
+		}
+	}
 }

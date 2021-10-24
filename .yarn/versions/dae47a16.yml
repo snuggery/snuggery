@@ -1,0 +1,10 @@
+declined:
+  - "@snuggery/architect"
+  - "@snuggery/core"
+  - "@snuggery/global"
+  - "@snuggery/node"
+  - "@snuggery/schematics"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn"
+  - "@snuggery/yarn-plugin-snuggery"
+  - "@snuggery/yarn-plugin-snuggery-workspace"

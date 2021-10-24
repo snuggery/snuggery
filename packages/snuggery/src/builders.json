@@ -1,19 +1,19 @@
 {
-  "builders": {
-    "combine": {
-      "implementation": "./builders/combine/index",
-      "schema": "./builders/combine/schema.json",
-      "description": "Combine multiple targets into one"
-    },
-    "execute": {
-      "implementation": "./builders/execute/index",
-      "schema": "./builders/execute/schema.json",
-      "description": "Execute a command from a dependency"
-    },
-    "glob": {
-      "implementation": "./builders/glob/index",
-      "schema": "./builders/glob/schema.json",
-      "description": "Run a target in all projects matching a glob"
-    }
-  }
+	"builders": {
+		"combine": {
+			"implementation": "./builders/combine/index",
+			"schema": "./builders/combine/schema.json",
+			"description": "Combine multiple targets into one"
+		},
+		"execute": {
+			"implementation": "./builders/execute/index",
+			"schema": "./builders/execute/schema.json",
+			"description": "Execute a command from a dependency"
+		},
+		"glob": {
+			"implementation": "./builders/glob/index",
+			"schema": "./builders/glob/schema.json",
+			"description": "Run a target in all projects matching a glob"
+		}
+	}
 }

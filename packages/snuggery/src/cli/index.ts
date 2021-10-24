@@ -35,56 +35,56 @@ export {CliWorkspace, findWorkspace} from './command/context';
 export {Cli, Context};
 
 export function run(
-  args: string[],
-  context: Omit<Context, 'report'>,
+	args: string[],
+	context: Omit<Context, 'report'>,
 ): Promise<number> {
-  const cli = new Cli<Context>({
-    binaryLabel: 'Snuggery',
-    binaryName: 'sn',
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    binaryVersion: require('@snuggery/snuggery/package.json').version,
-    enableColors: supportsColor(context.stdout).level > 0,
-  });
+	const cli = new Cli<Context>({
+		binaryLabel: 'Snuggery',
+		binaryName: 'sn',
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		binaryVersion: require('@snuggery/snuggery/package.json').version,
+		enableColors: supportsColor(context.stdout).level > 0,
+	});
 
-  cli.register(HelpCommand);
-  cli.register(HelpBuilderCommand);
-  cli.register(HelpBuildersCommand);
-  cli.register(HelpMigrationsCommand);
-  cli.register(HelpProjectCommand);
-  cli.register(HelpProjectsCommand);
-  cli.register(HelpSchematicCommand);
-  cli.register(HelpSchematicsCommand);
-  cli.register(HelpTargetCommand);
-  cli.register(HelpTargetsCommand);
-  cli.register(HelpUpdateCommand);
+	cli.register(HelpCommand);
+	cli.register(HelpBuilderCommand);
+	cli.register(HelpBuildersCommand);
+	cli.register(HelpMigrationsCommand);
+	cli.register(HelpProjectCommand);
+	cli.register(HelpProjectsCommand);
+	cli.register(HelpSchematicCommand);
+	cli.register(HelpSchematicsCommand);
+	cli.register(HelpTargetCommand);
+	cli.register(HelpTargetsCommand);
+	cli.register(HelpUpdateCommand);
 
-  cli.register(VersionCommand);
+	cli.register(VersionCommand);
 
-  cli.register(EntryCommand);
-  cli.register(EntryWithProjectCommand);
-  cli.register(ProjectCommand);
+	cli.register(EntryCommand);
+	cli.register(EntryWithProjectCommand);
+	cli.register(ProjectCommand);
 
-  cli.register(RunTargetCommand);
-  cli.register(RunBuilderCommand);
+	cli.register(RunTargetCommand);
+	cli.register(RunBuilderCommand);
 
-  cli.register(RunSchematicCommand);
-  cli.register(GenerateCommand);
-  cli.register(NewCommand);
+	cli.register(RunSchematicCommand);
+	cli.register(GenerateCommand);
+	cli.register(NewCommand);
 
-  cli.register(RunUpdateCommand);
-  cli.register(RunMigrationCommand);
-  cli.register(RunMigrationsCommand);
+	cli.register(RunUpdateCommand);
+	cli.register(RunMigrationCommand);
+	cli.register(RunMigrationsCommand);
 
-  const command = cli.process(args);
+	const command = cli.process(args);
 
-  const report = new Report({
-    cli,
-    stdout: context.stdout,
-    verbose: (command as Command<Context> & Partial<AbstractCommand>).verbose,
-  });
+	const report = new Report({
+		cli,
+		stdout: context.stdout,
+		verbose: (command as Command<Context> & Partial<AbstractCommand>).verbose,
+	});
 
-  return cli.run(command, {
-    ...context,
-    report,
-  });
+	return cli.run(command, {
+		...context,
+		report,
+	});
 }

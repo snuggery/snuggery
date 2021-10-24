@@ -1,3 +1,3 @@
 export interface Schema {
-  packages: string[];
+	packages: string[];
 }

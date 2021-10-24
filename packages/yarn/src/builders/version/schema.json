@@ -1,7 +1,7 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Create yarn version",
-  "description": "Target options for creating versions using yarn",
-  "type": "object",
-  "additionalProperties": false
+	"$schema": "http://json-schema.org/schema",
+	"title": "Create yarn version",
+	"description": "Target options for creating versions using yarn",
+	"type": "object",
+	"additionalProperties": false
 }

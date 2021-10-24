@@ -1,10 +1,10 @@
 {
-  "schematics": {
-    "hook": {
-      "factory": "./schematics/hook/index",
-      "schema": "./schematics/hook/schema.json",
-      "description": "Run all hooks for a schematic ",
-      "hidden": true
-    }
-  }
+	"schematics": {
+		"hook": {
+			"factory": "./schematics/hook/index",
+			"schema": "./schematics/hook/schema.json",
+			"description": "Run all hooks for a schematic ",
+			"hidden": true
+		}
+	}
 }

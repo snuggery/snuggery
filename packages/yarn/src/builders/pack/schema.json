@@ -1,17 +1,17 @@
 {
-  "$schema": "http://json-schema.org/schema",
-  "title": "Pack an npm package",
-  "description": "Pack an npm package",
-  "type": "object",
-  "properties": {
-    "useWorkspacePlugin": {
-      "type": "boolean",
-      "description": "Whether to use the @yarnpkg/plugin-snuggery-workspace plugin to deploy"
-    },
-    "directory": {
-      "type": "string",
-      "description": "The directory to package, defaults to the project folder"
-    }
-  },
-  "additionalProperties": false
+	"$schema": "http://json-schema.org/schema",
+	"title": "Pack an npm package",
+	"description": "Pack an npm package",
+	"type": "object",
+	"properties": {
+		"useWorkspacePlugin": {
+			"type": "boolean",
+			"description": "Whether to use the @yarnpkg/plugin-snuggery-workspace plugin to deploy"
+		},
+		"directory": {
+			"type": "string",
+			"description": "The directory to package, defaults to the project folder"
+		}
+	},
+	"additionalProperties": false
 }

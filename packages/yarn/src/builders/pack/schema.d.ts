@@ -1,5 +1,5 @@
 export interface Schema {
-  useWorkspacePlugin?: boolean;
+	useWorkspacePlugin?: boolean;
 
-  directory?: string;
+	directory?: string;
 }
