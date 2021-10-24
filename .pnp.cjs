@@ -105,7 +105,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"],
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.1.0"],
             ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.1.0"],
-            ["cspell-lib", "npm:5.6.7"],
+            ["cspell-lib", "npm:5.12.3"],
             ["eslint", "npm:7.32.0"],
             ["eslint-config-prettier", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:8.3.0"],
             ["eslint-import-resolver-node", "npm:0.3.5"],
@@ -982,24 +982,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/cspell-bundled-dicts", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/@cspell-cspell-bundled-dicts-npm-5.6.7-26da667307-e6374849f4.zip/node_modules/@cspell/cspell-bundled-dicts/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/@cspell-cspell-bundled-dicts-npm-5.12.3-e1b2b9bd64-56425cd624.zip/node_modules/@cspell/cspell-bundled-dicts/",
           "packageDependencies": [
-            ["@cspell/cspell-bundled-dicts", "npm:5.6.7"],
+            ["@cspell/cspell-bundled-dicts", "npm:5.12.3"],
             ["@cspell/dict-ada", "npm:1.1.2"],
             ["@cspell/dict-aws", "npm:1.0.14"],
             ["@cspell/dict-bash", "npm:1.0.15"],
             ["@cspell/dict-companies", "npm:1.0.40"],
-            ["@cspell/dict-cpp", "npm:1.1.39"],
+            ["@cspell/dict-cpp", "npm:1.1.40"],
             ["@cspell/dict-cryptocurrencies", "npm:1.0.10"],
             ["@cspell/dict-csharp", "npm:1.0.11"],
             ["@cspell/dict-css", "npm:1.0.12"],
             ["@cspell/dict-django", "npm:1.0.26"],
-            ["@cspell/dict-dotnet", "npm:1.0.29"],
+            ["@cspell/dict-dotnet", "npm:1.0.32"],
             ["@cspell/dict-elixir", "npm:1.0.25"],
-            ["@cspell/dict-en-gb", "npm:1.1.32"],
-            ["@cspell/dict-en_us", "npm:1.2.45"],
-            ["@cspell/dict-filetypes", "npm:1.1.7"],
+            ["@cspell/dict-en-gb", "npm:1.1.33"],
+            ["@cspell/dict-en_us", "npm:2.1.2"],
+            ["@cspell/dict-filetypes", "npm:1.1.8"],
             ["@cspell/dict-fonts", "npm:1.0.14"],
             ["@cspell/dict-fullstack", "npm:1.0.38"],
             ["@cspell/dict-golang", "npm:1.1.24"],
@@ -1011,24 +1011,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@cspell/dict-lorem-ipsum", "npm:1.0.22"],
             ["@cspell/dict-lua", "npm:1.0.16"],
             ["@cspell/dict-node", "npm:1.0.12"],
-            ["@cspell/dict-npm", "npm:1.0.15"],
+            ["@cspell/dict-npm", "npm:1.0.16"],
             ["@cspell/dict-php", "npm:1.0.24"],
             ["@cspell/dict-powershell", "npm:1.0.18"],
-            ["@cspell/dict-python", "npm:1.0.37"],
+            ["@cspell/dict-public-licenses", "npm:1.0.3"],
+            ["@cspell/dict-python", "npm:2.0.4"],
             ["@cspell/dict-ruby", "npm:1.0.14"],
             ["@cspell/dict-rust", "npm:1.0.23"],
             ["@cspell/dict-scala", "npm:1.0.21"],
-            ["@cspell/dict-software-terms", "npm:1.0.39"],
+            ["@cspell/dict-software-terms", "npm:1.0.48"],
             ["@cspell/dict-typescript", "npm:1.0.19"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["@cspell/cspell-types", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/@cspell-cspell-types-npm-5.6.7-9e91ce32af-1267dd8390.zip/node_modules/@cspell/cspell-types/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/@cspell-cspell-types-npm-5.12.3-df4335cb8a-9cbd1cb643.zip/node_modules/@cspell/cspell-types/",
           "packageDependencies": [
-            ["@cspell/cspell-types", "npm:5.6.7"]
+            ["@cspell/cspell-types", "npm:5.12.3"]
           ],
           "linkType": "HARD",
         }]
@@ -1070,10 +1071,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/dict-cpp", [
-        ["npm:1.1.39", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-cpp-npm-1.1.39-16df7c213c-ef4fd12d78.zip/node_modules/@cspell/dict-cpp/",
+        ["npm:1.1.40", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-cpp-npm-1.1.40-c025a34615-4bfa605b31.zip/node_modules/@cspell/dict-cpp/",
           "packageDependencies": [
-            ["@cspell/dict-cpp", "npm:1.1.39"]
+            ["@cspell/dict-cpp", "npm:1.1.40"]
           ],
           "linkType": "HARD",
         }]
@@ -1115,10 +1116,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/dict-dotnet", [
-        ["npm:1.0.29", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-dotnet-npm-1.0.29-ba586dd330-ee3479eb4c.zip/node_modules/@cspell/dict-dotnet/",
+        ["npm:1.0.32", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-dotnet-npm-1.0.32-79de6384d3-70e0adef63.zip/node_modules/@cspell/dict-dotnet/",
           "packageDependencies": [
-            ["@cspell/dict-dotnet", "npm:1.0.29"]
+            ["@cspell/dict-dotnet", "npm:1.0.32"]
           ],
           "linkType": "HARD",
         }]
@@ -1133,28 +1134,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/dict-en-gb", [
-        ["npm:1.1.32", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-en-gb-npm-1.1.32-2acf172a63-2589f832ae.zip/node_modules/@cspell/dict-en-gb/",
+        ["npm:1.1.33", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-en-gb-npm-1.1.33-40b98cbc5f-09a9e7a3ee.zip/node_modules/@cspell/dict-en-gb/",
           "packageDependencies": [
-            ["@cspell/dict-en-gb", "npm:1.1.32"]
+            ["@cspell/dict-en-gb", "npm:1.1.33"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["@cspell/dict-en_us", [
-        ["npm:1.2.45", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-en_us-npm-1.2.45-3326daa055-7f0da8865d.zip/node_modules/@cspell/dict-en_us/",
+        ["npm:2.1.2", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-en_us-npm-2.1.2-313b018248-7889907204.zip/node_modules/@cspell/dict-en_us/",
           "packageDependencies": [
-            ["@cspell/dict-en_us", "npm:1.2.45"]
+            ["@cspell/dict-en_us", "npm:2.1.2"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["@cspell/dict-filetypes", [
-        ["npm:1.1.7", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-filetypes-npm-1.1.7-a41847d5f9-d807c49e3d.zip/node_modules/@cspell/dict-filetypes/",
+        ["npm:1.1.8", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-filetypes-npm-1.1.8-29d2b825a6-ab1c1d1be3.zip/node_modules/@cspell/dict-filetypes/",
           "packageDependencies": [
-            ["@cspell/dict-filetypes", "npm:1.1.7"]
+            ["@cspell/dict-filetypes", "npm:1.1.8"]
           ],
           "linkType": "HARD",
         }]
@@ -1259,10 +1260,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/dict-npm", [
-        ["npm:1.0.15", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-npm-npm-1.0.15-85092c42ee-9aeb768ae5.zip/node_modules/@cspell/dict-npm/",
+        ["npm:1.0.16", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-npm-npm-1.0.16-7b0d74e72f-88f82e1712.zip/node_modules/@cspell/dict-npm/",
           "packageDependencies": [
-            ["@cspell/dict-npm", "npm:1.0.15"]
+            ["@cspell/dict-npm", "npm:1.0.16"]
           ],
           "linkType": "HARD",
         }]
@@ -1285,11 +1286,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["@cspell/dict-python", [
-        ["npm:1.0.37", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-python-npm-1.0.37-9ec8d6ae00-f1672f1b21.zip/node_modules/@cspell/dict-python/",
+      ["@cspell/dict-public-licenses", [
+        ["npm:1.0.3", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-public-licenses-npm-1.0.3-725c799902-2d92bc8e8f.zip/node_modules/@cspell/dict-public-licenses/",
           "packageDependencies": [
-            ["@cspell/dict-python", "npm:1.0.37"]
+            ["@cspell/dict-public-licenses", "npm:1.0.3"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@cspell/dict-python", [
+        ["npm:2.0.4", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-python-npm-2.0.4-84d54f38a0-f6b6934077.zip/node_modules/@cspell/dict-python/",
+          "packageDependencies": [
+            ["@cspell/dict-python", "npm:2.0.4"]
           ],
           "linkType": "HARD",
         }]
@@ -1322,10 +1332,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@cspell/dict-software-terms", [
-        ["npm:1.0.39", {
-          "packageLocation": "./.yarn/cache/@cspell-dict-software-terms-npm-1.0.39-f8c251977a-256dd49a8a.zip/node_modules/@cspell/dict-software-terms/",
+        ["npm:1.0.48", {
+          "packageLocation": "./.yarn/cache/@cspell-dict-software-terms-npm-1.0.48-7f8c67f8d4-7285877afc.zip/node_modules/@cspell/dict-software-terms/",
           "packageDependencies": [
-            ["@cspell/dict-software-terms", "npm:1.0.39"]
+            ["@cspell/dict-software-terms", "npm:1.0.48"]
           ],
           "linkType": "HARD",
         }]
@@ -4768,10 +4778,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:7.0.0", {
-          "packageLocation": "./.yarn/cache/cosmiconfig-npm-7.0.0-b9d0d7d156-6801feaa02.zip/node_modules/cosmiconfig/",
+        ["npm:7.0.1", {
+          "packageLocation": "./.yarn/cache/cosmiconfig-npm-7.0.1-dd19ae2403-4be63e7117.zip/node_modules/cosmiconfig/",
           "packageDependencies": [
-            ["cosmiconfig", "npm:7.0.0"],
+            ["cosmiconfig", "npm:7.0.1"],
             ["@types/parse-json", "npm:4.0.0"],
             ["import-fresh", "npm:3.3.0"],
             ["parse-json", "npm:5.1.0"],
@@ -4803,40 +4813,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["cspell-glob", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/cspell-glob-npm-5.6.7-aa460583fa-62696cd9fb.zip/node_modules/cspell-glob/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/cspell-glob-npm-5.12.3-9de2e95121-541d72c703.zip/node_modules/cspell-glob/",
           "packageDependencies": [
-            ["cspell-glob", "npm:5.6.7"],
+            ["cspell-glob", "npm:5.12.3"],
             ["micromatch", "npm:4.0.4"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["cspell-io", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/cspell-io-npm-5.6.7-503c244e52-6814b4f4c6.zip/node_modules/cspell-io/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/cspell-io-npm-5.12.3-1eeb32da8d-2108ceba30.zip/node_modules/cspell-io/",
           "packageDependencies": [
-            ["cspell-io", "npm:5.6.7"],
-            ["iconv-lite", "npm:0.6.3"],
-            ["iterable-to-stream", "npm:2.0.0"]
+            ["cspell-io", "npm:5.12.3"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["cspell-lib", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/cspell-lib-npm-5.6.7-cd0c92a96f-c71dd3afd9.zip/node_modules/cspell-lib/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/cspell-lib-npm-5.12.3-ade26b0dd4-4ab70e8d7e.zip/node_modules/cspell-lib/",
           "packageDependencies": [
-            ["cspell-lib", "npm:5.6.7"],
-            ["@cspell/cspell-bundled-dicts", "npm:5.6.7"],
-            ["@cspell/cspell-types", "npm:5.6.7"],
+            ["cspell-lib", "npm:5.12.3"],
+            ["@cspell/cspell-bundled-dicts", "npm:5.12.3"],
+            ["@cspell/cspell-types", "npm:5.12.3"],
             ["clear-module", "npm:4.1.1"],
             ["comment-json", "npm:4.1.1"],
             ["configstore", "npm:5.0.1"],
-            ["cosmiconfig", "npm:7.0.0"],
-            ["cspell-glob", "npm:5.6.7"],
-            ["cspell-io", "npm:5.6.7"],
-            ["cspell-trie-lib", "npm:5.6.7"],
+            ["cosmiconfig", "npm:7.0.1"],
+            ["cspell-glob", "npm:5.12.3"],
+            ["cspell-io", "npm:5.12.3"],
+            ["cspell-trie-lib", "npm:5.12.3"],
             ["find-up", "npm:5.0.0"],
             ["fs-extra", "npm:10.0.0"],
             ["gensequence", "npm:3.1.1"],
@@ -4849,10 +4857,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["cspell-trie-lib", [
-        ["npm:5.6.7", {
-          "packageLocation": "./.yarn/cache/cspell-trie-lib-npm-5.6.7-9498b3a17a-355120da8b.zip/node_modules/cspell-trie-lib/",
+        ["npm:5.12.3", {
+          "packageLocation": "./.yarn/cache/cspell-trie-lib-npm-5.12.3-0d32dec098-e3761651a7.zip/node_modules/cspell-trie-lib/",
           "packageDependencies": [
-            ["cspell-trie-lib", "npm:5.6.7"],
+            ["cspell-trie-lib", "npm:5.12.3"],
             ["fs-extra", "npm:10.0.0"],
             ["gensequence", "npm:3.1.1"]
           ],
@@ -5765,7 +5773,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cspell-lib", null],
             ["@types/prettier", null],
             ["chalk", "npm:4.1.1"],
-            ["cspell-lib", "npm:5.6.7"],
+            ["cspell-lib", "npm:5.12.3"],
             ["execa", "npm:5.1.1"],
             ["mri", "npm:1.1.6"],
             ["multimatch", "npm:5.0.0"],
@@ -6598,14 +6606,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["safer-buffer", "npm:2.1.2"]
           ],
           "linkType": "HARD",
-        }],
-        ["npm:0.6.3", {
-          "packageLocation": "./.yarn/cache/iconv-lite-npm-0.6.3-24b8aae27e-3f60d47a5c.zip/node_modules/iconv-lite/",
-          "packageDependencies": [
-            ["iconv-lite", "npm:0.6.3"],
-            ["safer-buffer", "npm:2.1.2"]
-          ],
-          "linkType": "HARD",
         }]
       ]],
       ["identity-obj-proxy", [
@@ -7089,15 +7089,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["istanbul-reports", "npm:3.0.2"],
             ["html-escaper", "npm:2.0.2"],
             ["istanbul-lib-report", "npm:3.0.0"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["iterable-to-stream", [
-        ["npm:2.0.0", {
-          "packageLocation": "./.yarn/cache/iterable-to-stream-npm-2.0.0-36430ea9ad-02728a3071.zip/node_modules/iterable-to-stream/",
-          "packageDependencies": [
-            ["iterable-to-stream", "npm:2.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -9797,7 +9788,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"],
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.1.0"],
             ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.1.0"],
-            ["cspell-lib", "npm:5.6.7"],
+            ["cspell-lib", "npm:5.12.3"],
             ["eslint", "npm:7.32.0"],
             ["eslint-config-prettier", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:8.3.0"],
             ["eslint-import-resolver-node", "npm:0.3.5"],
