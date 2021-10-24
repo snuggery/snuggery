@@ -65,7 +65,9 @@ export function executeBuild(
           } catch (e) {
             return {
               success: false,
-              error: `Failed to copy ${manifestFilename}: ${e.message}`,
+              error: `Failed to copy ${manifestFilename}: ${
+                e instanceof Error ? e.message : e
+              }`,
             };
           }
         }),

@@ -70,7 +70,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
             }),
           );
         }
-      } catch (e: unknown) {
+      } catch (e) {
         let error;
         if (e instanceof Error) {
           error = this.prettifyError(e);

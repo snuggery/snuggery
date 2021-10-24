@@ -47,7 +47,7 @@ async function findFormat(
       try {
         return await findFormat(posix.join(path, filename), host);
       } catch (e) {
-        if (e.code !== 'ENOENT') {
+        if ((e as NodeJS.ErrnoException)?.code !== 'ENOENT') {
           throw e;
         }
 

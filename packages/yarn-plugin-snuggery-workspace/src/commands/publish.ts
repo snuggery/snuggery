@@ -122,7 +122,8 @@ export class PublishCommand extends BaseCommand {
             ident,
             jsonResponse: true,
           });
-        } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
           if (error.name !== 'HTTPError') {
             throw error;
           } else {

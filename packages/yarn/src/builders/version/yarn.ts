@@ -25,7 +25,7 @@ export function applyVersion(
     } catch (e) {
       return {
         success: false as const,
-        error: e.message as string,
+        error: e instanceof Error ? e.message : `${e}`,
         yarn: null,
       };
     }

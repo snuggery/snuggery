@@ -47,7 +47,9 @@ export async function copyAssets(
     } catch (e) {
       return {
         success: false,
-        error: `Failed to match pattern in asset ${i}: ${e.message}`,
+        error: `Failed to match pattern in asset ${i}: ${
+          e instanceof Error ? e.message : e
+        }`,
       };
     }
 
@@ -61,7 +63,9 @@ export async function copyAssets(
     } catch (e) {
       return {
         success: false,
-        error: `Failed to copy asset ${i}: ${e.message}`,
+        error: `Failed to copy asset ${i}: ${
+          e instanceof Error ? e.message : e
+        }`,
       };
     }
   }

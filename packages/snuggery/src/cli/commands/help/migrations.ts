@@ -109,7 +109,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
           const schematic = collection.createSchematic(name, false);
 
           return {schematic, version: schematic.description.version};
-        } catch (e: unknown) {
+        } catch (e) {
           let error;
           if (e instanceof Error) {
             error = this.prettifyError(e);
