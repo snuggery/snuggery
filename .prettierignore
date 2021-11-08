@@ -1,5 +1,5 @@
 .yarn
-.pnp.cjs
+.pnp.*
 
 /dist
 /packages/*/dist

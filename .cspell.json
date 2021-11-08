@@ -68,11 +68,5 @@
 		"amet"
 	],
 	"ignoreRegExpList": ["from '[^']+'"],
-	"ignorePaths": [
-		"**/dist/**",
-		"**/.yarn/**",
-		".pnp.cjs",
-		"yarn.lock",
-		"*.snap"
-	]
+	"ignorePaths": ["**/dist/**", "**/.yarn/**", ".pnp.*", "yarn.lock", "*.snap"]
 }
