@@ -36,6 +36,7 @@
 		"clipanion's",
 		"dotenv",
 		"esbuild",
+		"fsevents",
 		"fslib",
 		"kleur",
 		"mktemp",
