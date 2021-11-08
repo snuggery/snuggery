@@ -22,7 +22,7 @@ import type {
 	Executor,
 	FileChange,
 	Generator,
-	WorkspaceJsonConfiguration,
+	Workspace,
 } from '@nrwl/devkit';
 import type {ErrorWithMeta} from 'clipanion';
 
@@ -103,7 +103,7 @@ class MappedContext implements ExecutorContext {
 	}
 
 	@Cached()
-	get workspace(): WorkspaceJsonConfiguration {
+	get workspace(): Workspace {
 		/* eslint-disable @typescript-eslint/no-explicit-any */
 		return {
 			version: 2,
@@ -148,6 +148,10 @@ class MappedContext implements ExecutorContext {
 			defaultProject: this.workspace?.defaultProject ?? undefined,
 			cli: this.snuggeryWorkspace?.extensions.cli as any,
 			generators: this.snuggeryWorkspace?.extensions.schematics as any,
+
+			// npmScope is required, but we only have it certain cases... pass null and hope for the best
+			npmScope: (this.snuggeryWorkspace?.extensions.npmScope ??
+				null!) as string,
 		};
 		/* eslint-enable @typescript-eslint/no-explicit-any */
 	}

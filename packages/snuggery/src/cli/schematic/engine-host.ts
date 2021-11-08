@@ -144,7 +144,6 @@ export class SnuggeryEngineHost
 			rootDirectory,
 		});
 		this.registerTaskExecutor(BuiltinTaskExecutor.RunSchematic);
-		this.registerTaskExecutor(BuiltinTaskExecutor.TslintFix);
 
 		if (optionTransforms) {
 			for (const transform of optionTransforms) {
