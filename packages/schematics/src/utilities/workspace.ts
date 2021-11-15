@@ -4,7 +4,7 @@ import {
 	updateWorkspace as _updateWorkspace,
 	WorkspaceHost,
 	WorkspaceDefinition,
-	parseWorkspace,
+	readWorkspace,
 } from '@snuggery/core';
 
 function createHost(tree: Tree): WorkspaceHost {
@@ -34,7 +34,7 @@ function createHost(tree: Tree): WorkspaceHost {
 }
 
 export function getWorkspace(tree: Tree): Promise<WorkspaceDefinition> {
-	return parseWorkspace('/', {host: createHost(tree)});
+	return readWorkspace('/', {host: createHost(tree)});
 }
 
 export function updateWorkspace(

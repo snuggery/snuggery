@@ -4,6 +4,7 @@ import {NxWorkspaceHandle} from './workspace/nx';
 import type {WorkspaceHandle, WorkspaceHandleFactory} from './workspace/types';
 
 export {
+	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
 	TargetDefinition,

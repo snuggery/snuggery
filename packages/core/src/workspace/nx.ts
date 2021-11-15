@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Implements two-way conversion between the workspace configuration types and
+ * nx's configuration format version 2 (used by workspace.json)
+ */
+
 import type {workspaces} from '@angular-devkit/core';
 
 import type {FileHandle} from '../file';
@@ -7,11 +12,11 @@ import {
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
-	JsonValue,
 } from '../types';
 
 import {AngularWorkspaceDefinition} from './angular';
 import {
+	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
 	TargetDefinition,
@@ -75,7 +80,15 @@ class NxTargetDefinition implements TargetDefinition {
 	}
 
 	static fromValue(
-		{builder, configurations, defaultConfiguration, options}: TargetDefinition,
+		{
+			builder,
+			configurations,
+			defaultConfiguration,
+			options,
+			extensions,
+		}:
+			| TargetDefinition
+			| (workspaces.TargetDefinition & {extensions?: undefined}),
 		raw: JsonObject,
 	) {
 		raw.executor = builder;
@@ -92,13 +105,28 @@ class NxTargetDefinition implements TargetDefinition {
 			raw.configurations = configurations as Record<string, JsonObject>;
 		}
 
-		return new this(raw as NxTargetDefinitionData);
+		const instance = new this(raw as NxTargetDefinitionData);
+
+		Object.assign(instance.extensions, extensions);
+
+		return instance;
 	}
 
 	readonly #data: NxTargetDefinitionData;
 
+	readonly extensions: JsonObject;
+
 	private constructor(data: NxTargetDefinitionData) {
 		this.#data = data;
+
+		this.extensions = proxyObject(data, {
+			remove: new Set([
+				'executor',
+				'defaultConfiguration',
+				'options',
+				'configurations',
+			]),
+		});
 	}
 
 	get builder(): string {
@@ -169,7 +197,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	static fromValue(
-		value: workspaces.TargetDefinitionCollection,
+		value: TargetDefinitionCollection | workspaces.TargetDefinitionCollection,
 		raw: JsonObject,
 	) {
 		const initial = Object.fromEntries(
@@ -244,7 +272,10 @@ class NxProjectDefinition implements ProjectDefinition {
 		return new this(targets, raw);
 	}
 
-	static fromValue(value: ProjectDefinition, raw: JsonObject) {
+	static fromValue(
+		value: ProjectDefinition | workspaces.ProjectDefinition,
+		raw: JsonObject,
+	) {
 		raw.root = value.root;
 
 		if (value.sourceRoot != null) {
@@ -352,7 +383,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	static fromValue(
-		value: workspaces.ProjectDefinitionCollection,
+		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
 		raw: JsonObject,
 	) {
 		const initial = Object.fromEntries(
@@ -378,7 +409,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 }
 
-export class NxWorkspaceDefinition implements WorkspaceDefinition {
+export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 	static fromConfiguration(raw: JsonObject) {
 		if (typeof raw.version !== 'number') {
 			throw new InvalidConfigurationError('Configuration must have a version');
@@ -416,7 +447,9 @@ export class NxWorkspaceDefinition implements WorkspaceDefinition {
 		return new this(projects, raw);
 	}
 
-	static fromValue(value: workspaces.WorkspaceDefinition) {
+	static fromValue(
+		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	) {
 		if (value instanceof NxWorkspaceDefinition) {
 			return value;
 		}
@@ -439,12 +472,13 @@ export class NxWorkspaceDefinition implements WorkspaceDefinition {
 		return instance;
 	}
 
-	readonly extensions: Record<string, JsonValue | undefined>;
+	readonly extensions: JsonObject;
 	readonly projects: NxProjectDefinitionCollection;
 
 	readonly data: JsonObject;
 
 	constructor(projects: NxProjectDefinitionCollection, raw: JsonObject) {
+		super();
 		this.projects = projects;
 
 		this.extensions = proxyObject(raw, {
@@ -463,7 +497,7 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 		this.#file = file;
 	}
 
-	async read(): Promise<WorkspaceDefinition> {
+	async read(): Promise<ConvertibleWorkspaceDefinition> {
 		const data = await this.#file.read();
 
 		if (data.version === 1) {
@@ -473,7 +507,9 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 		}
 	}
 
-	async write(value: WorkspaceDefinition): Promise<void> {
+	async write(
+		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	): Promise<void> {
 		if (
 			value instanceof AngularWorkspaceDefinition ||
 			value instanceof NxWorkspaceDefinition
@@ -485,7 +521,7 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async update(
-		updater: (value: WorkspaceDefinition) => void | Promise<void>,
+		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void> {
 		await this.#file.update(data =>
 			updater(

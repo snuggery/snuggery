@@ -1,3 +1,8 @@
+/**
+ * @fileoverview Implements two-way conversion between the workspace configuration types and
+ * angular's configuration format version 1 (used by angular.json, workspace.json and snuggery.json)
+ */
+
 import type {workspaces} from '@angular-devkit/core';
 
 import type {FileHandle} from '../file';
@@ -7,10 +12,10 @@ import {
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
-	JsonValue,
 } from '../types';
 
 import {
+	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
 	TargetDefinition,
@@ -74,7 +79,15 @@ class AngularTargetDefinition implements TargetDefinition {
 	}
 
 	static fromValue(
-		{builder, configurations, defaultConfiguration, options}: TargetDefinition,
+		{
+			builder,
+			configurations,
+			defaultConfiguration,
+			options,
+			extensions = {},
+		}:
+			| TargetDefinition
+			| (workspaces.TargetDefinition & {extensions?: undefined}),
 		raw: JsonObject,
 	) {
 		raw.builder = builder;
@@ -91,13 +104,28 @@ class AngularTargetDefinition implements TargetDefinition {
 			raw.configurations = configurations as Record<string, JsonObject>;
 		}
 
-		return new this(raw as AngularTargetDefinitionData);
+		const instance = new this(raw as AngularTargetDefinitionData);
+
+		Object.assign(instance.extensions, extensions);
+
+		return instance;
 	}
 
 	readonly #data: AngularTargetDefinitionData;
 
+	readonly extensions: JsonObject;
+
 	private constructor(data: AngularTargetDefinitionData) {
 		this.#data = data;
+
+		this.extensions = proxyObject(data, {
+			remove: new Set([
+				'builder',
+				'defaultConfiguration',
+				'options',
+				'configurations',
+			]),
+		});
 	}
 
 	get builder(): string {
@@ -190,7 +218,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	protected _wrapValue(
-		value: TargetDefinition,
+		value: TargetDefinition | workspaces.TargetDefinition,
 		raw: JsonObject,
 	): TargetDefinition {
 		return AngularTargetDefinition.fromValue(value, raw);
@@ -257,7 +285,10 @@ class AngularProjectDefinition implements ProjectDefinition {
 		return new this(targets, raw);
 	}
 
-	static fromValue(value: ProjectDefinition, raw: JsonObject) {
+	static fromValue(
+		value: ProjectDefinition | workspaces.ProjectDefinition,
+		raw: JsonObject,
+	) {
 		raw.root = value.root;
 
 		if (value.sourceRoot != null) {
@@ -364,7 +395,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	static fromValue(
-		value: workspaces.ProjectDefinitionCollection,
+		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
 		raw: JsonObject,
 	) {
 		const initial = Object.fromEntries(
@@ -390,7 +421,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 }
 
-export class AngularWorkspaceDefinition implements WorkspaceDefinition {
+export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 	static fromConfiguration(raw: JsonObject) {
 		if (typeof raw.version !== 'number') {
 			throw new InvalidConfigurationError('Configuration must have a version');
@@ -428,7 +459,9 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 		return new this(projects, raw);
 	}
 
-	static fromValue(value: workspaces.WorkspaceDefinition) {
+	static fromValue(
+		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	) {
 		if (value instanceof AngularWorkspaceDefinition) {
 			return value;
 		}
@@ -451,12 +484,13 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 		return instance;
 	}
 
-	readonly extensions: Record<string, JsonValue | undefined>;
+	readonly extensions: JsonObject;
 	readonly projects: AngularProjectDefinitionCollection;
 
 	readonly data: JsonObject;
 
 	constructor(projects: AngularProjectDefinitionCollection, raw: JsonObject) {
+		super();
 		this.projects = projects;
 
 		this.extensions = proxyObject(raw, {
@@ -474,18 +508,20 @@ export class AngularWorkspaceHandle implements WorkspaceHandle {
 		this.#file = file;
 	}
 
-	async read(): Promise<WorkspaceDefinition> {
+	async read(): Promise<ConvertibleWorkspaceDefinition> {
 		return AngularWorkspaceDefinition.fromConfiguration(
 			await this.#file.read(),
 		);
 	}
 
-	async write(value: WorkspaceDefinition): Promise<void> {
+	async write(
+		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	): Promise<void> {
 		await this.#file.write(AngularWorkspaceDefinition.fromValue(value).data);
 	}
 
 	async update(
-		updater: (value: WorkspaceDefinition) => void | Promise<void>,
+		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void> {
 		await this.#file.update(data =>
 			updater(AngularWorkspaceDefinition.fromConfiguration(data)),

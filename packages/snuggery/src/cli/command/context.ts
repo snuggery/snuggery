@@ -1,6 +1,6 @@
 import type {Target} from '@angular-devkit/architect';
 import type {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
-import {parseWorkspace, workspaceFilenames} from '@snuggery/core';
+import {readWorkspace, workspaceFilenames} from '@snuggery/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 
@@ -165,7 +165,7 @@ export async function findWorkspace(
 	}
 
 	return new CliWorkspace(
-		await parseWorkspace(workspacePath),
+		await readWorkspace(workspacePath),
 		dirname(workspacePath),
 	);
 }
