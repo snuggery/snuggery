@@ -72,6 +72,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular-devkit/core@patch:@angular-devkit/core@13.0.1#.yarn/patches/@angular-devkit__core.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 13.0.1
+  resolution: "@angular-devkit/core@patch:@angular-devkit/core@npm%3A13.0.1#.yarn/patches/@angular-devkit__core.patch::version=13.0.1&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    ajv: 8.6.3
+    ajv-formats: 2.1.1
+    fast-json-stable-stringify: 2.1.0
+    magic-string: 0.25.7
+    rxjs: 6.6.7
+    source-map: 0.7.3
+  peerDependencies:
+    chokidar: ^3.5.2
+  peerDependenciesMeta:
+    chokidar:
+      optional: true
+  checksum: acfdbd53129a597b30e2b100586985f290155c218cadc084b915a895c4db7475b3da0861b45d51b5fa75f9b79bb63f12ddfe229f72d64e38c8b19f0d549b2c8d
+  languageName: node
+  linkType: hard
+
 "@angular-devkit/schematics@npm:13.0.1":
   version: 13.0.1
   resolution: "@angular-devkit/schematics@npm:13.0.1"

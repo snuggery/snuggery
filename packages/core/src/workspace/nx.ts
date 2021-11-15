@@ -10,6 +10,7 @@ import {
 	JsonValue,
 } from '../types';
 
+import {AngularWorkspaceDefinition} from './angular';
 import {
 	ProjectDefinition,
 	ProjectDefinitionCollection,
@@ -19,18 +20,18 @@ import {
 	WorkspaceHandle,
 } from './types';
 
-type AngularTargetDefinitionData = JsonObject & {
-	builder: string;
+type NxTargetDefinitionData = JsonObject & {
+	executor: string;
 	defaultConfiguration?: string;
 	options?: JsonObject;
 	configurations?: Record<string, JsonObject>;
 };
 
-class AngularTargetDefinition implements TargetDefinition {
+class NxTargetDefinition implements TargetDefinition {
 	static fromConfiguration(path: JsonPropertyPath, data: JsonObject) {
-		if (typeof data.builder !== 'string') {
+		if (typeof data.executor !== 'string') {
 			throw new InvalidConfigurationError(
-				'Property "builder" is required and must be a string',
+				'Property "executor" is required and must be a string',
 				path,
 			);
 		}
@@ -70,14 +71,14 @@ class AngularTargetDefinition implements TargetDefinition {
 			}
 		}
 
-		return new this(data as AngularTargetDefinitionData);
+		return new this(data as NxTargetDefinitionData);
 	}
 
 	static fromValue(
 		{builder, configurations, defaultConfiguration, options}: TargetDefinition,
 		raw: JsonObject,
 	) {
-		raw.builder = builder;
+		raw.executor = builder;
 
 		if (defaultConfiguration != null) {
 			raw.defaultConfiguration = defaultConfiguration;
@@ -91,21 +92,21 @@ class AngularTargetDefinition implements TargetDefinition {
 			raw.configurations = configurations as Record<string, JsonObject>;
 		}
 
-		return new this(raw as AngularTargetDefinitionData);
+		return new this(raw as NxTargetDefinitionData);
 	}
 
-	readonly #data: AngularTargetDefinitionData;
+	readonly #data: NxTargetDefinitionData;
 
-	private constructor(data: AngularTargetDefinitionData) {
+	private constructor(data: NxTargetDefinitionData) {
 		this.#data = data;
 	}
 
 	get builder(): string {
-		return this.#data.builder;
+		return this.#data.executor;
 	}
 
 	set builder(builder: string) {
-		this.#data.builder = builder;
+		this.#data.executor = builder;
 	}
 
 	get defaultConfiguration(): string | undefined {
@@ -145,7 +146,7 @@ class AngularTargetDefinition implements TargetDefinition {
 	}
 }
 
-class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
+class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
 		return new this(
 			raw,
@@ -160,10 +161,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 
 					return [
 						targetName,
-						AngularTargetDefinition.fromConfiguration(
-							[...path, targetName],
-							target,
-						),
+						NxTargetDefinition.fromConfiguration([...path, targetName], target),
 					];
 				}),
 			),
@@ -177,7 +175,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
-				const definition = AngularTargetDefinition.fromValue(
+				const definition = NxTargetDefinition.fromValue(
 					originalDefinition,
 					raw[name] as JsonObject,
 				);
@@ -193,11 +191,11 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		value: TargetDefinition,
 		raw: JsonObject,
 	): TargetDefinition {
-		return AngularTargetDefinition.fromValue(value, raw);
+		return NxTargetDefinition.fromValue(value, raw);
 	}
 }
 
-class AngularProjectDefinition implements ProjectDefinition {
+class NxProjectDefinition implements ProjectDefinition {
 	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
 		if (typeof raw.root !== 'string') {
 			throw new InvalidConfigurationError(
@@ -220,37 +218,26 @@ class AngularProjectDefinition implements ProjectDefinition {
 			);
 		}
 
-		const hasArchitect = Reflect.has(raw, 'architect');
-		const hasTargets = Reflect.has(raw, 'targets');
-
-		if (hasArchitect && hasTargets) {
-			throw new InvalidConfigurationError(
-				'Project has both "targets" and "architect", but can have only one',
-				path,
-			);
-		}
-
-		const targetKey = hasArchitect ? 'architect' : 'targets';
 		let targets;
 
-		if (!Reflect.has(raw, targetKey)) {
+		if (!Reflect.has(raw, 'targets')) {
 			// TODO this always adds a "target" property if no targets are configured, is that bad?
-			raw[targetKey] = {};
-			targets = AngularTargetDefinitionCollection.fromConfiguration(
-				[...path, targetKey],
-				raw[targetKey] as JsonObject,
+			raw.targets = {};
+			targets = NxTargetDefinitionCollection.fromConfiguration(
+				[...path, 'targets'],
+				raw.targets as JsonObject,
 			);
 		} else {
-			if (!isJsonObject(raw[targetKey])) {
+			if (!isJsonObject(raw.targets)) {
 				throw new InvalidConfigurationError('Targets must be an object', [
 					...path,
-					targetKey,
+					'targets',
 				]);
 			}
 
-			targets = AngularTargetDefinitionCollection.fromConfiguration(
-				[...path, targetKey],
-				raw[targetKey] as JsonObject,
+			targets = NxTargetDefinitionCollection.fromConfiguration(
+				[...path, 'targets'],
+				raw.targets,
 			);
 		}
 
@@ -269,7 +256,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 		}
 
 		raw.targets = {};
-		const targets = AngularTargetDefinitionCollection.fromValue(
+		const targets = NxTargetDefinitionCollection.fromValue(
 			value.targets,
 			raw.targets as JsonObject,
 		);
@@ -283,7 +270,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 	}
 
 	readonly extensions: JsonObject;
-	readonly targets: AngularTargetDefinitionCollection;
+	readonly targets: NxTargetDefinitionCollection;
 
 	readonly #data: JsonObject & {
 		root: string;
@@ -291,11 +278,12 @@ class AngularProjectDefinition implements ProjectDefinition {
 		sourceRoot?: string;
 	};
 
-	constructor(targets: AngularTargetDefinitionCollection, raw: JsonObject) {
+	constructor(targets: NxTargetDefinitionCollection, raw: JsonObject) {
 		this.targets = targets;
 
 		this.extensions = proxyObject(raw, {
 			remove: new Set(['root', 'prefix', 'sourceRoot', 'targets', 'architect']),
+			rename: new Map([['schematics', 'generators']]),
 		});
 
 		this.#data = raw as JsonObject & {
@@ -338,7 +326,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 	}
 }
 
-class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
+class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
 		return new this(
 			raw,
@@ -353,7 +341,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 					return [
 						projectName,
-						AngularProjectDefinition.fromConfiguration(
+						NxProjectDefinition.fromConfiguration(
 							[...path, projectName],
 							project,
 						),
@@ -370,7 +358,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
-				const definition = AngularProjectDefinition.fromValue(
+				const definition = NxProjectDefinition.fromValue(
 					originalDefinition,
 					raw[name] as JsonObject,
 				);
@@ -386,19 +374,19 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		value: ProjectDefinition,
 		raw: JsonObject,
 	): ProjectDefinition {
-		return AngularProjectDefinition.fromValue(value, raw);
+		return NxProjectDefinition.fromValue(value, raw);
 	}
 }
 
-export class AngularWorkspaceDefinition implements WorkspaceDefinition {
+export class NxWorkspaceDefinition implements WorkspaceDefinition {
 	static fromConfiguration(raw: JsonObject) {
 		if (typeof raw.version !== 'number') {
 			throw new InvalidConfigurationError('Configuration must have a version');
 		}
 
-		if (raw.version !== 1) {
+		if (raw.version !== 2) {
 			throw new InvalidConfigurationError(
-				'Unrecognized configuration version, expected version 1',
+				'Unrecognized configuration version, expected version 2',
 				['version'],
 			);
 		}
@@ -408,7 +396,7 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 		if (!Reflect.has(raw, 'projects')) {
 			// TODO this always adds a "projects" property if no projects are configured, is that bad?
 			raw.projects = {};
-			projects = AngularProjectDefinitionCollection.fromConfiguration(
+			projects = NxProjectDefinitionCollection.fromConfiguration(
 				['projects'],
 				raw.projects as JsonObject,
 			);
@@ -419,7 +407,7 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 				]);
 			}
 
-			projects = AngularProjectDefinitionCollection.fromConfiguration(
+			projects = NxProjectDefinitionCollection.fromConfiguration(
 				['projects'],
 				raw.projects,
 			);
@@ -429,16 +417,16 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 	}
 
 	static fromValue(value: workspaces.WorkspaceDefinition) {
-		if (value instanceof AngularWorkspaceDefinition) {
+		if (value instanceof NxWorkspaceDefinition) {
 			return value;
 		}
 
 		const raw: JsonObject = {
-			version: 1,
+			version: 2,
 		};
 
 		const instance = new this(
-			AngularProjectDefinitionCollection.fromValue(
+			NxProjectDefinitionCollection.fromValue(
 				value.projects,
 				(raw.projects = {}),
 			),
@@ -452,22 +440,23 @@ export class AngularWorkspaceDefinition implements WorkspaceDefinition {
 	}
 
 	readonly extensions: Record<string, JsonValue | undefined>;
-	readonly projects: AngularProjectDefinitionCollection;
+	readonly projects: NxProjectDefinitionCollection;
 
 	readonly data: JsonObject;
 
-	constructor(projects: AngularProjectDefinitionCollection, raw: JsonObject) {
+	constructor(projects: NxProjectDefinitionCollection, raw: JsonObject) {
 		this.projects = projects;
 
 		this.extensions = proxyObject(raw, {
 			remove: new Set(['projects', 'version', '$schema']),
+			rename: new Map([['schematics', 'generators']]),
 		});
 
 		this.data = raw;
 	}
 }
 
-export class AngularWorkspaceHandle implements WorkspaceHandle {
+export class NxWorkspaceHandle implements WorkspaceHandle {
 	readonly #file: FileHandle;
 
 	constructor(file: FileHandle) {
@@ -475,20 +464,35 @@ export class AngularWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async read(): Promise<WorkspaceDefinition> {
-		return AngularWorkspaceDefinition.fromConfiguration(
-			await this.#file.read(),
-		);
+		const data = await this.#file.read();
+
+		if (data.version === 1) {
+			return AngularWorkspaceDefinition.fromConfiguration(data);
+		} else {
+			return NxWorkspaceDefinition.fromConfiguration(data);
+		}
 	}
 
 	async write(value: WorkspaceDefinition): Promise<void> {
-		await this.#file.write(AngularWorkspaceDefinition.fromValue(value).data);
+		if (
+			value instanceof AngularWorkspaceDefinition ||
+			value instanceof NxWorkspaceDefinition
+		) {
+			await this.#file.write(value.data);
+		} else {
+			await this.#file.write(NxWorkspaceDefinition.fromValue(value).data);
+		}
 	}
 
 	async update(
 		updater: (value: WorkspaceDefinition) => void | Promise<void>,
 	): Promise<void> {
 		await this.#file.update(data =>
-			updater(AngularWorkspaceDefinition.fromConfiguration(data)),
+			updater(
+				data.version === 1
+					? AngularWorkspaceDefinition.fromConfiguration(data)
+					: NxWorkspaceDefinition.fromConfiguration(data),
+			),
 		);
 	}
 }

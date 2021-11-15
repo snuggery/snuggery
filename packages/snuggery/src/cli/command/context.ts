@@ -2,7 +2,6 @@ import type {Target} from '@angular-devkit/architect';
 import type {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
 import {parseWorkspace, workspaceFilenames} from '@snuggery/core';
 import {BaseContext, UsageError} from 'clipanion';
-import {promises as fs} from 'fs';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 
 import {findUp} from '../utils/find-up';
@@ -166,33 +165,7 @@ export async function findWorkspace(
 	}
 
 	return new CliWorkspace(
-		await parseWorkspace(workspacePath, workspaceHost),
+		await parseWorkspace(workspacePath),
 		dirname(workspacePath),
 	);
 }
-
-const workspaceHost: workspaces.WorkspaceHost = {
-	async readFile(path: string): Promise<string> {
-		return fs.readFile(path, 'utf-8');
-	},
-
-	async writeFile(path: string, data: string): Promise<void> {
-		await fs.writeFile(path, data);
-	},
-
-	async isDirectory(path: string): Promise<boolean> {
-		try {
-			return (await fs.stat(path)).isDirectory();
-		} catch {
-			return false;
-		}
-	},
-
-	async isFile(path: string): Promise<boolean> {
-		try {
-			return (await fs.stat(path)).isFile();
-		} catch {
-			return false;
-		}
-	},
-};

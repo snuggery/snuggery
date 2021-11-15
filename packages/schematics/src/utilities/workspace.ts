@@ -9,14 +9,14 @@ import {
 
 function createHost(tree: Tree): WorkspaceHost {
 	return {
-		async readFile(path) {
+		async read(path) {
 			const data = tree.read(path);
 			if (!data) {
 				throw new Error('File not found.');
 			}
 			return virtualFs.fileBufferToString(data);
 		},
-		async writeFile(path, data) {
+		async write(path, data) {
 			return tree.overwrite(path, data);
 		},
 		async isDirectory(path) {
@@ -26,17 +26,21 @@ function createHost(tree: Tree): WorkspaceHost {
 		async isFile(path) {
 			return tree.exists(path);
 		},
+		async readdir(path) {
+			const dir = tree.getDir(path);
+			return [...dir.subfiles, ...dir.subdirs];
+		},
 	};
 }
 
 export function getWorkspace(tree: Tree): Promise<WorkspaceDefinition> {
-	return parseWorkspace('/', createHost(tree));
+	return parseWorkspace('/', {host: createHost(tree)});
 }
 
 export function updateWorkspace(
 	updater: (workspace: WorkspaceDefinition) => void | Promise<void>,
 ): Rule {
 	return async tree => {
-		await _updateWorkspace('/', createHost(tree), updater);
+		await _updateWorkspace('/', updater, {host: createHost(tree)});
 	};
 }
