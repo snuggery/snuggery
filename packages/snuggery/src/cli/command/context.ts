@@ -1,6 +1,12 @@
 import type {Target} from '@angular-devkit/architect';
-import type {JsonArray, JsonObject, workspaces} from '@angular-devkit/core';
-import {readWorkspace, workspaceFilenames} from '@snuggery/core';
+import type {JsonObject, workspaces} from '@angular-devkit/core';
+import {
+	ProjectDefinition,
+	ProjectDefinitionCollection,
+	readWorkspace,
+	WorkspaceDefinition,
+	workspaceFilenames,
+} from '@snuggery/core';
 import {BaseContext, UsageError} from 'clipanion';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 
@@ -29,22 +35,19 @@ export interface Context extends BaseContext {
 	globalManifest?: string;
 }
 
-export class CliWorkspace implements workspaces.WorkspaceDefinition {
-	private syntheticProject?: workspaces.ProjectDefinition;
+export class CliWorkspace implements WorkspaceDefinition {
+	private syntheticProject?: ProjectDefinition;
 
 	constructor(
-		private readonly workspace: workspaces.WorkspaceDefinition,
+		private readonly workspace: WorkspaceDefinition,
 		public readonly basePath: string,
 	) {}
 
-	get extensions(): Record<
-		string,
-		string | number | boolean | JsonArray | JsonObject | null | undefined
-	> {
+	get extensions(): JsonObject {
 		return this.workspace.extensions;
 	}
 
-	get projects(): workspaces.ProjectDefinitionCollection {
+	get projects(): ProjectDefinitionCollection {
 		return this.workspace.projects;
 	}
 
