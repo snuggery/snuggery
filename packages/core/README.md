@@ -1,6 +1,6 @@
 # `@snuggery/core`
 
-Shared interfaces and utilities for snuggery packages.
+Shared interfaces and utilities for packages interfacing with angular's `ng`, nrwl's `nx` or snuggery's `sn`.
 
 ## License
 
