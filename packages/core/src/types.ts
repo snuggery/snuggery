@@ -26,7 +26,7 @@ export function isJsonObject(
 	return typeof value === 'object' && value != null && !Array.isArray(value);
 }
 
-function stringifyPath(path: JsonPropertyPath): string {
+export function stringifyPath(path: JsonPropertyPath): string {
 	if (path.length === 0) {
 		return '<configuration file>';
 	}

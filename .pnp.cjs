@@ -2084,7 +2084,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/core", "virtual:f2128cab816dee0263e258d9d592c6403d7340a0ecbd37a75a5b4764ba8eceac5e8c5f5ab95ae4984cbc7cb47792025789e7270269898a4ce3f9100bee8a1f65#patch:@angular-devkit/core@npm%3A13.0.1#.yarn/patches/@angular-devkit__core.patch::version=13.0.1&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
             ["@types/node", "npm:14.14.35"],
-            ["jsonc-parser", "npm:3.0.0"]
+            ["jsonc-parser", "npm:3.0.0"],
+            ["yaml", "npm:2.0.0-9"]
           ],
           "linkType": "SOFT",
         }]
@@ -11540,6 +11541,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/yaml-npm-1.10.2-0e780aebdf-ce4ada136e.zip/node_modules/yaml/",
           "packageDependencies": [
             ["yaml", "npm:1.10.2"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:2.0.0-9", {
+          "packageLocation": "./.yarn/cache/yaml-npm-2.0.0-9-72ab87be2c-a8b2b7e391.zip/node_modules/yaml/",
+          "packageDependencies": [
+            ["yaml", "npm:2.0.0-9"]
           ],
           "linkType": "HARD",
         }]

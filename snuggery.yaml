@@ -1,0 +1,159 @@
+# This file has a format identical to Angular CLI's angular.json, except it's a YAML file
+
+version: 1
+
+# Not actually a useful object, it's just a container for all anchor definitions
+__anchors:
+  readmeAsset: &readmeAsset
+    include: README.md
+  licenseAsset: &licenseAsset
+    include: LICENSE.md
+    from: '.'
+  builderOrSchematicAsset: &builderOrSchematicAsset
+    include:
+      - '**/*.d.ts'
+      - '**/*.json'
+
+  yarnPluginProject: &yarnPluginProject
+    architect:
+      build:
+        builder: '@snuggery/snuggery:execute'
+        options:
+          package: '@yarnpkg/builder'
+          arguments: ['build', 'plugin']
+        configurations:
+          dev:
+            arguments: ['build', 'plugin', '--no-minify']
+
+projects:
+  all:
+    root: ''
+    architect:
+      build:
+        builder: '@snuggery/snuggery:glob'
+        options:
+          include: '@snuggery/*'
+        configurations:
+          without-yarn-plugins:
+            exclude: '@snuggery/yarn-plugin-*'
+      deploy:
+        builder: '@snuggery/yarn:deploy'
+        options:
+          useWorkspacePlugin: true
+          buildTarget: :build:without-yarn-plugins
+        configurations:
+          next:
+            distTag: next
+      lint:
+        builder: '@nrwl/linter:eslint'
+        options:
+          eslintConfig: .eslintrc.yml
+          ignorePath: .eslintignore
+          lintFilePatterns:
+            - packages/*/src/**/*.[tj]s
+            - integration
+      test:
+        builder: '@nrwl/jest:jest'
+        options:
+          jestConfig: jest.config.js
+
+  '@snuggery/snuggery':
+    root: packages/snuggery
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/snuggery/src
+          packager: '@snuggery/yarn'
+  '@snuggery/global':
+    root: packages/global
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+          packager: '@snuggery/yarn'
+  '@snuggery/architect':
+    root: packages/architect
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/architect/src
+          packager: '@snuggery/yarn'
+  '@snuggery/core':
+    root: packages/core
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/core/src
+          packager: '@snuggery/yarn'
+  '@snuggery/node':
+    root: packages/node
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/node/src
+          packager: '@snuggery/yarn'
+  '@snuggery/schematics':
+    root: packages/schematics
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/schematics/src
+          packager: '@snuggery/yarn'
+  '@snuggery/yarn':
+    root: packages/yarn
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          packager: '@snuggery/yarn'
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/yarn/src
+
+  '@snuggery/yarn-plugin-snuggery':
+    <<: *yarnPluginProject
+    root: packages/yarn-plugin-snuggery
+  '@snuggery/yarn-plugin-snuggery-workspace':
+    <<: *yarnPluginProject
+    root: packages/yarn-plugin-snuggery-workspace
+
+  integration:
+    root: integration
+    architect:
+      test:
+        builder: '@nrwl/jest:jest'
+        options:
+          jestConfig: integration/jest.config.js
+
+cli:
+  packageManager: yarn

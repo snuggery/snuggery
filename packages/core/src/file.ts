@@ -2,11 +2,13 @@ import {extname, join} from 'path';
 
 import {JsonFileHandle} from './file/json';
 import type {WorkspaceHost, FileHandle, FileHandleFactory} from './file/types';
+import {YamlFileHandle} from './file/yaml';
 
 export type {FileHandle, WorkspaceHost};
 
 const knownHandleTypes = new Map<string, FileHandleFactory>([
 	['.json', JsonFileHandle],
+	['.yaml', YamlFileHandle],
 ]);
 
 export async function createFileHandle(

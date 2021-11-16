@@ -11,7 +11,8 @@
 	"main": "index.js",
 	"dependencies": {
 		"@angular-devkit/core": "13.0.1",
-		"jsonc-parser": "3.0.0"
+		"jsonc-parser": "3.0.0",
+		"yaml": "2.0.0-9"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

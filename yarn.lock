@@ -1390,6 +1390,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/node": ^14.14.17
     jsonc-parser: 3.0.0
+    yaml: 2.0.0-9
   languageName: unknown
   linkType: soft
 
@@ -9312,6 +9313,13 @@ typescript@4.4.4:
   version: 4.0.0
   resolution: "yallist@npm:4.0.0"
   checksum: 343617202af32df2a15a3be36a5a8c0c8545208f3d3dfbc6bb7c3e3b7e8c6f8e7485432e4f3b88da3031a6e20afa7c711eded32ddfb122896ac5d914e75848d5
+  languageName: node
+  linkType: hard
+
+"yaml@npm:2.0.0-9":
+  version: 2.0.0-9
+  resolution: "yaml@npm:2.0.0-9"
+  checksum: a8b2b7e391859297bf525af4f40ef1c6343c86c983aa27cb1881febf44418ce269e86d057330a61bded16a93cbbdc406445bfea52e787312f29317a9bf95cc83
   languageName: node
   linkType: hard
 

@@ -23,7 +23,7 @@ function processParseErrors(errors: readonly ParseError[]) {
 	} else if (errors.length > 0) {
 		throw new InvalidConfigurationError(
 			`Errors while parsing JSON file:\n- ${errors
-				.map(error => `printParseErrorCode(error.error)} at ${error.offset}`)
+				.map(error => `${printParseErrorCode(error.error)} at ${error.offset}`)
 				.join('\n- ')}`,
 		);
 	}

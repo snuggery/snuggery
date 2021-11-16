@@ -171,7 +171,19 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 				return false;
 			}
 
-			if (!Reflect.has(source, prop)) {
+			if (value === undefined && !isArray) {
+				if (Reflect.has(source, prop)) {
+					const clonedParent = ensureCloning();
+
+					// @ts-expect-error typescript can't tell prop indexes source
+					const oldValue = source[prop];
+
+					// @ts-expect-error typescript can't tell prop indexes source
+					delete clonedParent[prop];
+
+					changes.delete(prop, oldValue);
+				}
+			} else if (!Reflect.has(source, prop)) {
 				const clonedParent = ensureCloning();
 
 				const clonedValue = cloneValueDeep(value);
