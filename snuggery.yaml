@@ -28,9 +28,8 @@ __anchors:
   testTarget: &testTarget
     builder: '@snuggery/snuggery:execute'
     options:
-      binary: yarn
+      package: uvu
       arguments:
-        - uvu
         - --require
         - '@snuggery-workspace/scripts/load-ts'
         - --ignore

@@ -61,7 +61,22 @@ export async function resolvePackageBin(
 			break;
 		} catch (e) {
 			if ((e as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') {
-				throw e;
+				// Maybe the package doesn't have ./package.json in its exports...
+				// Try to work around that by resolving the package itself and looking for the package
+				// folder
+				try {
+					const main = require.resolve(packageName);
+					const maybePackageFolder = main.slice(
+						0,
+						main.search(`[/\\\\]node_modules[/\\\\]${packageName}[/\\\\]`),
+					);
+
+					manifestPath = require.resolve(
+						`${maybePackageFolder}/node_modules/${packageName}/package.json`,
+					);
+				} catch {
+					throw e;
+				}
 			}
 		}
 	}
