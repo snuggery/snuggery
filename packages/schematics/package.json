@@ -15,8 +15,8 @@
 		"@angular-devkit/schematics": "^12.0.0-rc.2 || ^13.0.0"
 	},
 	"devDependencies": {
-		"@angular-devkit/core": "13.0.1",
-		"@angular-devkit/schematics": "13.0.1",
+		"@angular-devkit/core": "13.0.2",
+		"@angular-devkit/schematics": "13.0.2",
 		"@snuggery-workspace/scripts": "workspace:scripts"
 	},
 	"dependencies": {

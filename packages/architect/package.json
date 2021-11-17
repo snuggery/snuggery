@@ -19,8 +19,8 @@
 		"glob": "7.2.0"
 	},
 	"devDependencies": {
-		"@angular-devkit/architect": "0.1300.1",
-		"@angular-devkit/core": "13.0.1",
+		"@angular-devkit/architect": "0.1300.2",
+		"@angular-devkit/core": "13.0.2",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/fs-extra": "9.0.11",
 		"@types/glob": "7.1.3",

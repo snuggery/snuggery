@@ -4,7 +4,7 @@
 		"test-builders"
 	],
 	"devDependencies": {
-		"@angular-devkit/architect": "0.1300.1",
+		"@angular-devkit/architect": "0.1300.2",
 		"@snuggery/core": "workspace:packages/core",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@types/node": "^14.14.17",
