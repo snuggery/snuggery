@@ -16,6 +16,8 @@
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/node": "^14.14.17"
+		"@types/node": "^14.14.17",
+		"expect": "^27.3.1",
+		"uvu": "^0.5.2"
 	}
 }

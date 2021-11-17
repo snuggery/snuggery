@@ -1,7 +1,7 @@
 import {basename} from 'path';
 import * as YAML from 'yaml';
-import {ChangeType, makeCombinedTracker} from '../proxy';
 
+import {ChangeType, makeCombinedTracker} from '../proxy';
 import {
 	InvalidConfigurationError,
 	isJsonObject,

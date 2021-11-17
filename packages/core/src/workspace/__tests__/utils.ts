@@ -1,4 +1,6 @@
 import {workspaces} from '@angular-devkit/core';
+import expect from 'expect';
+import type {Test} from 'uvu';
 
 import type {FileHandle} from '../../file';
 import type {JsonObject} from '../../types';
@@ -41,10 +43,11 @@ export class TestFileHandle implements FileHandle {
 }
 
 export function itShouldHandleAngularConfiguration(
+	test: Test,
 	Factory: WorkspaceHandleFactory,
 	{skipWriteOnly = false} = {},
 ) {
-	it('should read correctly', async () => {
+	test('should read angular configuration correctly', async () => {
 		const handle = new Factory(
 			new TestFileHandle({
 				version: 1,
@@ -91,7 +94,7 @@ export function itShouldHandleAngularConfiguration(
 	});
 
 	if (!skipWriteOnly) {
-		it('should write workspaces correctly', async () => {
+		test('should write workspaces correctly to angular configuration', async () => {
 			const file = new TestFileHandle({});
 
 			await new Factory(file).write({
@@ -146,7 +149,7 @@ export function itShouldHandleAngularConfiguration(
 		});
 	}
 
-	it('should update workspaces correctly via read + write', async () => {
+	test('should update workspaces correctly via read + write as angular configuration', async () => {
 		const file = new TestFileHandle({
 			version: 1,
 			projects: {
@@ -232,7 +235,7 @@ export function itShouldHandleAngularConfiguration(
 		});
 	});
 
-	it('should update workspaces correctly via update', async () => {
+	test('should update workspaces correctly via update as angular configuration', async () => {
 		const file = new TestFileHandle({
 			version: 1,
 			projects: {

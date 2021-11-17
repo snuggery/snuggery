@@ -23,7 +23,7 @@ export function stripIndent(text: string): string {
 export function indentBy(indentation: number, text: string): string {
 	const prefix = ' '.repeat(indentation);
 
-	return prefix + stripIndent(text).replace(/\n/g, '\n' + prefix);
+	return prefix + stripIndent(text).replace(/\n(?=[^\n])/g, '\n' + prefix);
 }
 
 export function splitLines(maxLength: number, text: string): string[] {

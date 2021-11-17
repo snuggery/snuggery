@@ -6,6 +6,12 @@ import {createWorkspaceHandle, WorkspaceDefinition} from './workspace';
 import type {ConvertibleWorkspaceDefinition} from './workspace/types';
 
 export type {WorkspaceHost} from './file';
+export type {
+	JsonObject,
+	JsonPropertyName,
+	JsonPropertyPath,
+	JsonValue,
+} from './types';
 export {
 	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,

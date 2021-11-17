@@ -25,6 +25,17 @@ __anchors:
           dev:
             arguments: ['build', 'plugin', '--no-minify']
 
+  testTarget: &testTarget
+    builder: '@snuggery/snuggery:execute'
+    options:
+      binary: yarn
+      arguments:
+        - uvu
+        - --require
+        - '@snuggery-workspace/scripts/load-ts'
+        - --ignore
+        - integration
+
 projects:
   all:
     root: ''
@@ -45,17 +56,14 @@ projects:
           next:
             distTag: next
       lint:
-        builder: '@nrwl/linter:eslint'
+        builder: '@angular-eslint/builder:lint'
         options:
           eslintConfig: .eslintrc.yml
           ignorePath: .eslintignore
           lintFilePatterns:
             - packages/*/src/**/*.[tj]s
             - integration
-      test:
-        builder: '@nrwl/jest:jest'
-        options:
-          jestConfig: jest.config.js
+      test: *testTarget
 
   '@snuggery/snuggery':
     root: packages/snuggery
@@ -150,10 +158,7 @@ projects:
   integration:
     root: integration
     architect:
-      test:
-        builder: '@nrwl/jest:jest'
-        options:
-          jestConfig: integration/jest.config.js
+      test: *testTarget
 
 cli:
   packageManager: yarn

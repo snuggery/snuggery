@@ -21,6 +21,9 @@ type Version = Record<never, never>;
 
 const versions = new WeakMap<JsonObject | JsonValue[], Version>();
 
+/** isNaN accepts non-number values, but typescript doesn't seem to know that */
+declare function isNaN(value: unknown): boolean;
+
 function cloneValue<T extends JsonValue>(value: T): T {
 	if (typeof value !== 'object' || value == null) {
 		return value;
@@ -112,7 +115,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			if (
 				typeof prop === 'symbol' ||
 				!Reflect.has(source, prop) ||
-				(isArray && isNaN(prop as any))
+				(isArray && isNaN(prop))
 			) {
 				// JSON can't use symbol keys
 				return undefined;
@@ -148,7 +151,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 				return false;
 			}
 
-			if (!Reflect.has(source, prop) || (isArray && isNaN(prop as any))) {
+			if (!Reflect.has(source, prop) || (isArray && isNaN(prop))) {
 				return false;
 			}
 
@@ -166,7 +169,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 				return false;
 			}
 
-			if (isArray && (isNaN(prop as any) || !Number.isInteger(Number(prop)))) {
+			if (isArray && (isNaN(prop) || !Number.isInteger(Number(prop)))) {
 				// JSON doesn't allow index properties on arrays
 				return false;
 			}

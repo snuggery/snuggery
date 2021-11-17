@@ -44,6 +44,8 @@
 		"@types/prettier": "^2",
 		"@types/prompts": "^2",
 		"@types/semver": "^7",
-		"@types/which-pm-runs": "^1.0.0"
+		"@types/which-pm-runs": "^1.0.0",
+		"expect": "^27.3.1",
+		"uvu": "^0.5.2"
 	}
 }

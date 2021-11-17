@@ -1,11 +1,11 @@
 {
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
-		"types": ["jest", "node"],
+		"types": ["node"],
 		"paths": {
 			"@snuggery/snuggery/package.json": ["./packages/snuggery/package.json"],
 			"@snuggery/snuggery/*": ["./packages/snuggery/src/*"]
 		}
 	},
-	"include": ["packages/*/src/**/*.ts"]
+	"include": ["packages/*/src/**/*.ts", "integration/**/*.ts"]
 }
