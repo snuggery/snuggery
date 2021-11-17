@@ -3,7 +3,7 @@
 An `ng`-like CLI to manage your workspace
 
 ```
-Snuggery - 0.2.2
+Snuggery
 
   $ sn <command>
 
@@ -29,11 +29,22 @@ Schematic commands
   sn new [--dry-run] [--force] [--show-file-changes] <collection> ...
     Create a new workspace
 
+  sn run schematic [--dry-run] [--force] [--show-file-changes] <schematic> ...
+    Run a schematic to generate and/or modify files
+
+Update commands
+
+  sn help update
+    Print extensive information on the update process and all steps to take
+
   sn run migration [--dry-run] [--force] [--show-file-changes] [--ignore-missing-migrations] [--name #0] [--from #0] [--to #0] <package>
     Run migration(s) of a package
 
-  sn run schematic [--dry-run] [--force] [--show-file-changes] <schematic> ...
-    Run a schematic to generate and/or modify files
+  sn run migrations [--prepare] [--dry-run] [--force] [--show-file-changes] [--ignore-missing-migrations] [file]
+    Run registered migrations
+
+  sn run update ...
+    Update packages and prepare migrations
 
 Utility commands
 
@@ -54,7 +65,7 @@ Workspace information commands
   sn help builders <packageName>
     Show information about the builders of a package
 
-  sn help migrations <package>
+  sn help migrations [--from #0] [--to #0] <package>
     Show information about migrations for a package
 
   sn help project [project]

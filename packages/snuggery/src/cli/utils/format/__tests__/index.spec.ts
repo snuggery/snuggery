@@ -228,4 +228,41 @@ test('it formats correctly with format', () => {
 	}
 });
 
+test('it handles lists properly', () => {
+	expect(
+		formatMarkdownish(stripIndent`
+			- one
+
+			- two
+			- three
+		`),
+	).toBe(stripIndent`
+		- one
+		- two
+		- three
+	`);
+
+	expect(
+		formatMarkdownish(stripIndent`
+			test
+
+			- one
+
+			- two
+
+			- three
+
+			test
+		`),
+	).toBe(stripIndent`
+		test
+
+		- one
+		- two
+		- three
+
+		test
+	`);
+});
+
 test.run();

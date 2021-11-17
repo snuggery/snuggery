@@ -44,7 +44,7 @@ export function formatMarkdownish(
 	text = stripIndent(text);
 
 	// List items always end with two spaces (in order not to be collapsed)
-	text = text.replace(/^-([^\n]*?)\n+/gm, '-$1  \n');
+	text = text.replace(/^-([^\n]*?)\n(?:\n*(?=-))?/gm, '-$1  \n');
 
 	// Collapse single newlines, unless the line ends with two spaces
 	text = text.replace(/( {2})?(?<!\n)\n(?!\n)/g, (_, insertNewline) =>
