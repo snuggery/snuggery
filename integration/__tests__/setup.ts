@@ -84,7 +84,7 @@ function createRunner(dir: PortablePath): Fixture['run'] {
 
 		assert.equal(
 			workspace?.basePath,
-			dir,
+			npath.fromPortablePath(dir),
 			`found workspace at ${workspace?.basePath} instead of ${dir}`,
 		);
 
