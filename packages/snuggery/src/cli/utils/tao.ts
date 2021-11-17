@@ -24,7 +24,6 @@ import type {
 	Generator,
 	Workspace,
 } from '@nrwl/devkit';
-import type {ErrorWithMeta} from 'clipanion';
 
 import {AbstractError} from '../../utils/error';
 import type {CliWorkspace} from '../command/context';
@@ -62,12 +61,7 @@ function extractResult(
 	})();
 }
 
-export class InvalidExecutorError
-	extends AbstractError
-	implements ErrorWithMeta
-{
-	readonly clipanion = {type: 'none'} as const;
-}
+export class InvalidExecutorError extends AbstractError {}
 
 class MappedContext implements ExecutorContext {
 	constructor(

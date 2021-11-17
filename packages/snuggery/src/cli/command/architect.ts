@@ -5,7 +5,6 @@ import {
 	Target,
 } from '@angular-devkit/architect';
 import {isJsonArray, json, JsonObject} from '@angular-devkit/core';
-import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
@@ -35,9 +34,7 @@ export const configurationOption: Option = {
 	description: 'Configuration(s) to use',
 };
 
-export class BuilderFailedError extends AbstractError implements ErrorWithMeta {
-	readonly clipanion = {type: 'none'} as const;
-}
+export class BuilderFailedError extends AbstractError {}
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {
 	let result: BuilderOutput;

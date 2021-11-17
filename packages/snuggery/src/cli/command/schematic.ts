@@ -9,7 +9,6 @@ import type {
 	FileSystemSchematic,
 	FileSystemSchematicDescription,
 } from '@angular-devkit/schematics/tools';
-import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {dirname, join, normalize, relative} from 'path';
@@ -45,12 +44,7 @@ export const dryRunOption: Option = {
 
 export const defaultSchematicCollection = '@schematics/angular';
 
-export class SchematicFailedError
-	extends AbstractError
-	implements ErrorWithMeta
-{
-	readonly clipanion = {type: 'none'} as const;
-}
+export class SchematicFailedError extends AbstractError {}
 
 export abstract class SchematicCommand extends AbstractCommand {
 	/**

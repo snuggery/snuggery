@@ -2,20 +2,12 @@
 
 import {isJsonObject, JsonObject} from '@angular-devkit/core';
 import {capitalize} from '@angular-devkit/core/src/utils/strings';
-import type {ErrorWithMeta} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
 
 import {AbstractError} from './error';
 
-export class CyclicDependencyError
-	extends AbstractError
-	implements ErrorWithMeta
-{
-	readonly clipanion = {
-		type: 'none',
-	} as const;
-
+export class CyclicDependencyError extends AbstractError {
 	constructor(
 		angularKey: string,
 		originalRequest: string,
@@ -29,27 +21,13 @@ export class CyclicDependencyError
 	}
 }
 
-export class UnableToResolveError
-	extends AbstractError
-	implements ErrorWithMeta
-{
-	readonly clipanion = {
-		type: 'none',
-	} as const;
-
+export class UnableToResolveError extends AbstractError {
 	constructor(angularKey: string, request: string, from: string) {
 		super(`Unable to resolve ${angularKey} ${request} from ${from}`);
 	}
 }
 
-export class InvalidDefinitionError
-	extends AbstractError
-	implements ErrorWithMeta
-{
-	readonly clipanion = {
-		type: 'none',
-	} as const;
-
+export class InvalidDefinitionError extends AbstractError {
 	constructor(angularKey: string, originalRequest: string) {
 		super(`Invalid definition found for ${angularKey} in ${originalRequest}`);
 
