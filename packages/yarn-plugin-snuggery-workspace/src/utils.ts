@@ -23,13 +23,7 @@ export function createPublishWorkspace(
 		},
 
 		manifest: {
-			value: Object.create(workspace.manifest, {
-				raw: {
-					value: JSON.parse(JSON.stringify(rawManifest)),
-					writable: false,
-					configurable: true,
-				},
-			}),
+			value: Manifest.fromText(JSON.stringify(rawManifest)),
 			writable: false,
 			configurable: true,
 		},
