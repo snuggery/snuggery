@@ -922,7 +922,6 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": 0.3.0
     "@snuggery/core": 0.2.0
-    "@types/micromatch": ^4
     "@types/node": ^14.14.17
     "@types/prettier": ^2
     "@types/prompts": ^2
@@ -932,7 +931,6 @@ __metadata:
     expect: ^27.3.1
     json5: 2.2.0
     kleur: 4.1.4
-    micromatch: 4.0.2
     prompts: 2.4.2
     rxjs: 6.6.7
     semver: 7.3.5
