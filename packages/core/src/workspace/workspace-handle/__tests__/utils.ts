@@ -58,7 +58,7 @@ export function itShouldHandleAngularConfiguration(
 							build: {
 								builder: '@snuggery/snuggery:glob',
 								options: {
-									include: '*',
+									include: '**',
 								},
 							},
 						},
@@ -81,7 +81,7 @@ export function itShouldHandleAngularConfiguration(
 		expect(workspace.projects.get('all')!.root).toBe('');
 		expect(
 			workspace.projects.get('all')!.targets.get('build')!.options,
-		).toEqual({include: '*'});
+		).toEqual({include: '**'});
 
 		expect(workspace.extensions.schematics).toEqual(expect.any(Object));
 		expect(
@@ -114,7 +114,7 @@ export function itShouldHandleAngularConfiguration(
 							build: {
 								builder: '@snuggery/snuggery:glob',
 								options: {
-									include: '*',
+									include: '**',
 								},
 							},
 						}),
@@ -132,7 +132,7 @@ export function itShouldHandleAngularConfiguration(
 							build: {
 								builder: '@snuggery/snuggery:glob',
 								options: {
-									include: '*',
+									include: '**',
 								},
 							},
 						},
@@ -159,7 +159,7 @@ export function itShouldHandleAngularConfiguration(
 						build: {
 							builder: '@snuggery/snuggery:glob',
 							options: {
-								include: '*',
+								include: '**',
 							},
 						},
 						test: {
@@ -195,7 +195,7 @@ export function itShouldHandleAngularConfiguration(
 
 		allProject.targets.delete('test');
 		allProject.targets.delete('e2e');
-		allProject.targets.get('build')!.options!.include = ['*'];
+		allProject.targets.get('build')!.options!.include = ['**'];
 
 		await handle.write(workspace);
 
@@ -208,7 +208,7 @@ export function itShouldHandleAngularConfiguration(
 						build: {
 							builder: '@snuggery/snuggery:glob',
 							options: {
-								include: ['*'],
+								include: ['**'],
 							},
 						},
 					},
@@ -245,7 +245,7 @@ export function itShouldHandleAngularConfiguration(
 						build: {
 							builder: '@snuggery/snuggery:glob',
 							options: {
-								include: '*',
+								include: '**',
 							},
 						},
 						test: {
@@ -279,7 +279,7 @@ export function itShouldHandleAngularConfiguration(
 
 			allProject.targets.delete('test');
 			allProject.targets.delete('e2e');
-			allProject.targets.get('build')!.options!.include = ['*'];
+			allProject.targets.get('build')!.options!.include = ['**'];
 		});
 
 		expect(file.value).toEqual({
@@ -291,7 +291,7 @@ export function itShouldHandleAngularConfiguration(
 						build: {
 							builder: '@snuggery/snuggery:glob',
 							options: {
-								include: ['*'],
+								include: ['**'],
 							},
 						},
 					},

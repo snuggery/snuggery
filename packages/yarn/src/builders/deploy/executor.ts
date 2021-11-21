@@ -24,7 +24,7 @@ import type {Schema} from './schema';
 const snuggeryWorkspacePlugin = '@yarnpkg/plugin-snuggery-workspace';
 
 export function executeDeploy(
-	{buildTarget, distTag, useWorkspacePlugin, include = '*', exclude}: Schema,
+	{buildTarget, distTag, useWorkspacePlugin, include = '**', exclude}: Schema,
 	context: BuilderContext,
 ): Observable<BuilderOutput> {
 	return executeVersion({}, context).pipe(

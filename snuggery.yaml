@@ -51,7 +51,10 @@ projects:
         options:
           useWorkspacePlugin: true
           buildTarget: :build:without-yarn-plugins
-          exclude: '@snuggery/yarn-plugin-*'
+          exclude:
+            - '@snuggery/yarn-plugin-*'
+            - integration
+            - all
         configurations:
           next:
             distTag: next

@@ -14,7 +14,7 @@
 		},
 		"include": {
 			"$ref": "#/definitions/glob",
-			"default": "*",
+			"default": "**",
 			"description": "Projects to include, defaults to including all projects"
 		},
 		"exclude": {

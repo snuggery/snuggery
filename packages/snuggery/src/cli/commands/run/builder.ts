@@ -11,7 +11,7 @@ export class RunBuilderCommand extends ArchitectCommand {
 		examples: [
 			[
 				'Run the `build` target in all projects of the workspace using the `@snuggery/snuggery:glob` builder',
-				'$0 run builder @snuggery/snuggery:glob --target "build" --include "*"',
+				'$0 run builder @snuggery/snuggery:glob --target "build" --include "**"',
 			],
 		],
 	});
