@@ -65,7 +65,7 @@ export function commitAndTag(
 		mapTo({success: true}),
 		catchError(err =>
 			of({
-				success: false as const,
+				success: false,
 				error: err.message,
 			}),
 		),

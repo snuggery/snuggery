@@ -71,7 +71,7 @@ export function scheduleTarget(
 				);
 			} catch (err) {
 				return of({
-					success: false as const,
+					success: false,
 					error: String((err as Error)?.message || err),
 				});
 			}
@@ -96,7 +96,7 @@ export function scheduleTarget(
 				};
 			} else {
 				return of({
-					success: false as const,
+					success: false,
 					error: `Cannot run target without project ${JSON.stringify(
 						targetSpec,
 					)} in a context without project`,

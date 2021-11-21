@@ -1,1 +1,0 @@
-export {filterByPatterns} from './patterns';

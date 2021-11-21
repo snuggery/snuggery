@@ -1,3 +1,4 @@
+export {filterByPatterns} from './pattern';
 export {
 	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,

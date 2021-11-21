@@ -1,8 +1,13 @@
+import type {JsonObject} from '@snuggery/core';
 import {ObservableInput, of, OperatorFunction} from 'rxjs';
 import {concatMap, exhaustMap, map, mergeMap, switchMap} from 'rxjs/operators';
 
 type Successful<T extends {success: boolean}> = T & {success: true};
 type Failed<T extends {success: boolean}> = T & {success: false};
+
+export type ValuedBuilderOutput<S, E = {}> =
+	| (S & {success: true})
+	| (E & JsonObject & {success: false; error?: string});
 
 function ifSuccessful<T extends {success: boolean}, R1, R2>(
 	ifSuccessful: (value: Successful<T>) => R1,

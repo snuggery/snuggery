@@ -4,15 +4,26 @@ import {
 	Target as ArchitectTarget,
 	targetStringFromTarget,
 } from '@angular-devkit/architect';
-import type {TargetSpecifier} from '@snuggery/architect';
-import {findWorkspace} from '@snuggery/snuggery/cli';
-import {filterByPatterns} from '@snuggery/snuggery/utils';
+import {tags} from '@angular-devkit/core';
+import {
+	findProjects,
+	findWorkspace,
+	TargetSpecifier,
+} from '@snuggery/architect';
+import {
+	mapSuccessfulResult,
+	switchMapSuccessfulResult,
+	ValuedBuilderOutput,
+} from '@snuggery/architect/operators';
 import {defer, Observable} from 'rxjs';
-import {switchMap, map} from 'rxjs/operators';
 
 import {execute as executeCombine, Schema as CombineSchema} from '../combine';
 
 import type {Schema} from './schema';
+
+function stringifyArray(values: string[]) {
+	return values.map(value => JSON.stringify(value)).join(', ');
+}
 
 /**
  * Execute a target in multiple projects, defined using glob patterns
@@ -60,69 +71,132 @@ export function execute(
 		targetOptions = undefined;
 	}
 
-	return defer(() => findWorkspace(context.workspaceRoot)).pipe(
-		map(workspace =>
-			filterByPatterns(Array.from(workspace?.projects.keys() ?? []), {
+	return defer(
+		async (): Promise<ValuedBuilderOutput<{targets: TargetSpecifier[]}>> => {
+			const workspace = await findWorkspace(context);
+			const projects = await findProjects(context, {
+				workspace,
 				include,
 				exclude,
-			}).flatMap(project => {
-				if (builder != null) {
-					return {
-						builder,
-						project,
-					};
-				} else {
-					if (unknownTarget === 'skip') {
-						const projectDefinition = workspace!.projects.get(project)!;
+			});
 
-						if (!projectDefinition.targets.has(target!)) {
-							return [];
-						}
+			if (builder != null) {
+				return {
+					success: true,
+					targets: projects.map(project => ({builder, project})),
+				};
+			}
+
+			const targets: string[] = [];
+			const missingTargets: string[] = [];
+			const missingConfigurations = new Map<string, string[]>();
+
+			outer: for (const project of projects) {
+				const projectDefinition = workspace!.projects.get(project)!;
+				const targetDefinition = projectDefinition.targets.get(target!);
+
+				if (targetDefinition == null) {
+					if (unknownTarget !== 'skip') {
+						missingTargets.push(project);
 					}
 
+					continue;
+				}
+
+				const requestedConfigurations = configuration?.split(',') ?? [];
+				let modified = false;
+				const missingConfigurationsForProject: string[] = [];
+
+				for (const [i, config] of requestedConfigurations.entries()) {
 					if (
-						unknownConfiguration != null &&
-						unknownConfiguration !== 'error'
+						targetDefinition.configurations == null ||
+						!Reflect.has(targetDefinition.configurations, config)
 					) {
-						const targetDefinition = workspace!.projects
-							.get(project)!
-							.targets.get(target!);
-						if (targetDefinition != null) {
-							const requestedConfigurations = configuration?.split(',') ?? [];
-							let modified = false;
-
-							for (const [i, config] of requestedConfigurations.entries()) {
-								if (
-									targetDefinition.configurations == null ||
-									!Reflect.has(targetDefinition.configurations, config)
-								) {
-									switch (unknownConfiguration) {
-										case 'skip':
-											return [];
-										case 'run':
-											requestedConfigurations.splice(i);
-											modified = true;
-									}
-								}
-							}
-
-							if (modified) {
-								configuration = requestedConfigurations.join(',');
-							}
+						switch (unknownConfiguration) {
+							case 'skip':
+								continue outer;
+							case 'run':
+								requestedConfigurations.splice(i);
+								modified = true;
+								break;
+							case 'error':
+							default:
+								missingConfigurationsForProject.push(config);
 						}
 					}
+				}
 
-					return targetStringFromTarget({
+				if (missingConfigurationsForProject.length) {
+					missingConfigurations.set(project, missingConfigurationsForProject);
+					continue;
+				}
+
+				if (modified) {
+					configuration = requestedConfigurations.join(',');
+				}
+
+				targets.push(
+					targetStringFromTarget({
 						project,
 						target,
 						configuration,
-					} as ArchitectTarget);
+					} as ArchitectTarget),
+				);
+			}
+
+			if (missingTargets.length > 0) {
+				return {
+					success: false,
+					error: tags.stripIndent`
+					${
+						missingTargets.length === 1
+							? `Project ${stringifyArray(missingTargets)} does`
+							: `Projects ${stringifyArray(missingTargets)} do`
+					} not declare a target ${JSON.stringify(target)}.
+					Set the "unknownTarget" option to "skip" to skip these projects.
+				`,
+				};
+			}
+
+			if (missingConfigurations.size > 0) {
+				const errors = Array.from(
+					missingConfigurations,
+					([project, configs]) => {
+						return `Project ${JSON.stringify(project)} is missing ${
+							configs.length === 1 ? 'configuration' : 'configurations'
+						} ${stringifyArray(configs)}`;
+					},
+				);
+
+				if (errors.length === 1) {
+					return {
+						success: false,
+						error: tags.stripIndent`
+							${errors[0]!} for target ${JSON.stringify(target)}
+							Set the "unknownConfiguration" option to "skip" or "run" to either skip this project or run the target in this project without the missing configurations.
+						`,
+					};
+				} else {
+					return {
+						success: false,
+						error: tags.stripIndents`
+							The following projects are missing configurations for target ${JSON.stringify(
+								target,
+							)}:
+							- ${errors.join('\n- ')}
+							Set the "unknownConfiguration" option to "skip" or "run" to either skip these projects or run the target in these projects without the missing configurations.
+						`,
+					};
 				}
-			}),
-		),
-		map<TargetSpecifier[], CombineSchema>(targets => {
+			}
+
+			return {success: true, targets};
+		},
+	).pipe(
+		mapSuccessfulResult(({targets}): ValuedBuilderOutput<CombineSchema> => {
 			if (targetOptions != null) {
 				return {
+					success: true,
 					targets: {
 						...targetOptions,
 						targets,
@@ -132,10 +206,12 @@ export function execute(
 					...otherOptions,
 				};
 			} else {
-				return {targets, options, scheduler, ...otherOptions};
+				return {success: true, targets, options, scheduler, ...otherOptions};
 			}
 		}),
-		switchMap(combineConfig => executeCombine(combineConfig, context)),
+		switchMapSuccessfulResult(({success, ...combineConfig}) =>
+			executeCombine(combineConfig, context),
+		),
 	);
 }
 

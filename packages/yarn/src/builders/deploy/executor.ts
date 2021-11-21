@@ -41,7 +41,7 @@ export function executeDeploy(
 
 					if (useWorkspacePlugin && !hasPlugin) {
 						return of({
-							success: false as const,
+							success: false,
 							error: `Couldn't find ${snuggeryWorkspacePlugin}`,
 						});
 					}
