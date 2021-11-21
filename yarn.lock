@@ -864,7 +864,7 @@ __metadata:
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
     "@types/node": ^14.14.17
-    esbuild: "npm:esbuild-wasm@0.12.20"
+    esbuild: "npm:esbuild-wasm@0.13.15"
     esbuild-register: ^3.0.0
     typescript: 4.4.4
   languageName: unknown
@@ -3104,12 +3104,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:esbuild-wasm@0.12.20":
-  version: 0.12.20
-  resolution: "esbuild-wasm@npm:0.12.20"
+"esbuild@npm:esbuild-wasm@0.13.15":
+  version: 0.13.15
+  resolution: "esbuild-wasm@npm:0.13.15"
   bin:
     esbuild: bin/esbuild
-  checksum: 58f2b2ab4f25d8af6d9f07186ab5d00b31113cb3fe38d3b665157f03a5b9b2344f9c6c5788e4c725ab909acc5e5f5f55d3740bf6871256204acb33d13e989ac5
+  checksum: 9f12204c2a73e795e0c5e5ef5b926cc4e9510e20788f3a48862902a0f47ea19a01e65edfc3be6c7a474a90f705d468c8dcaa308647b212cc377ee24a9cc46f01
   languageName: node
   linkType: hard
 
@@ -5821,9 +5821,6 @@ resolve@^1.20.0:
     prettier: ^2.4.1
     typescript: 4.4.4
     uvu: ^0.5.2
-  dependenciesMeta:
-    fsevents:
-      built: true
   languageName: unknown
   linkType: soft
 

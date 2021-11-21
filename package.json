@@ -34,11 +34,6 @@
 		"typescript": "4.4.4",
 		"uvu": "^0.5.2"
 	},
-	"dependenciesMeta": {
-		"fsevents": {
-			"built": true
-		}
-	},
 	"resolutions": {
 		"@angular-devkit/core@13.0.2": "patch:@angular-devkit/core@13.0.2#.yarn/patches/@angular-devkit__core.patch"
 	},
