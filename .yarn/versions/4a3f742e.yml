@@ -1,5 +1,0 @@
-releases:
-  "@snuggery/global": patch
-  "@snuggery/snuggery": patch
-  "@snuggery/yarn": patch
-  "@snuggery/yarn-plugin-snuggery-workspace": patch
