@@ -5,7 +5,7 @@ import {concatMap, exhaustMap, map, mergeMap, switchMap} from 'rxjs/operators';
 type Successful<T extends {success: boolean}> = T & {success: true};
 type Failed<T extends {success: boolean}> = T & {success: false};
 
-export type ValuedBuilderOutput<S, E = {}> =
+export type ValuedBuilderOutput<S, E = object> =
 	| (S & {success: true})
 	| (E & JsonObject & {success: false; error?: string});
 

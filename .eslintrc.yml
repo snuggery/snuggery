@@ -52,3 +52,6 @@ overrides:
         - error
         - types:
             object: false
+      '@typescript-eslint/no-unused-vars':
+        - error
+        - ignoreRestSiblings: true
