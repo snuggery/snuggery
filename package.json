@@ -14,7 +14,7 @@
 		"test": "sn test"
 	},
 	"devDependencies": {
-		"@angular-eslint/builder": "patch:@angular-eslint/builder@^12.6.1#.yarn/patches/@angular-eslint__builder.patch",
+		"@angular-eslint/builder": "13.0.1",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/node": "workspace:packages/node",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
