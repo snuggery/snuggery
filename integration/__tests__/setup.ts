@@ -1,15 +1,15 @@
 import type {JsonObject} from '@snuggery/core';
 import * as snuggery from '@snuggery/snuggery/cli';
-import {Filename, PortablePath, npath, ppath} from '@yarnpkg/fslib';
+import path from 'path';
 import {Readable, Writable} from 'stream';
 import * as assert from 'uvu/assert';
 
-const fixtureRoot = npath.toPortablePath(__dirname + '/../__fixtures__');
+const fixtureRoot = path.resolve(__dirname, '../__fixtures__');
 
 process.env.FORCE_COLOR = 'false';
 
 export interface Fixture {
-	directory: PortablePath;
+	directory: string;
 	run(
 		args: string[],
 		options?: {cwd?: string},
@@ -21,7 +21,7 @@ export function inFixture(
 	name: string,
 	callback: (fixture: Fixture) => PromiseLike<void> | void,
 ) {
-	const fixtureDir = ppath.join(fixtureRoot, name as Filename);
+	const fixtureDir = path.join(fixtureRoot, name);
 	const run = createRunner(fixtureDir);
 
 	return async () => {
@@ -74,17 +74,15 @@ class CollectingWritable extends Writable {
 	}
 }
 
-function createRunner(dir: PortablePath): Fixture['run'] {
+function createRunner(dir: string): Fixture['run'] {
 	return async function run(args: string[], options = {}) {
-		const startCwd = options.cwd
-			? npath.resolve(npath.fromPortablePath(dir), options.cwd)
-			: npath.fromPortablePath(dir);
+		const startCwd = options.cwd ? path.resolve(dir, options.cwd) : dir;
 
 		const workspace = await snuggery.findWorkspace(startCwd);
 
 		assert.equal(
 			workspace?.basePath,
-			npath.fromPortablePath(dir),
+			dir,
 			`found workspace at ${workspace?.basePath} instead of ${dir}`,
 		);
 

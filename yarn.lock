@@ -1638,16 +1638,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/fslib@npm:2.4.0":
-  version: 2.4.0
-  resolution: "@yarnpkg/fslib@npm:2.4.0"
-  dependencies:
-    "@yarnpkg/libzip": ^2.2.1
-    tslib: ^1.13.0
-  checksum: 97f787d9b56a4a44a12eedb3a1c0195080c910c8162028883fbc1dc74494b7d61b5fb90430f8b4fb77651994209fc9e83c2792909156306d6050dc257cfa6937
-  languageName: node
-  linkType: hard
-
 "@yarnpkg/fslib@npm:2.6.0, @yarnpkg/fslib@npm:^2.5.0, @yarnpkg/fslib@npm:^2.6.0":
   version: 2.6.0
   resolution: "@yarnpkg/fslib@npm:2.6.0"
@@ -1668,7 +1658,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yarnpkg/libzip@npm:^2.2.1, @yarnpkg/libzip@npm:^2.2.2":
+"@yarnpkg/libzip@npm:^2.2.2":
   version: 2.2.2
   resolution: "@yarnpkg/libzip@npm:2.2.2"
   dependencies:
@@ -3975,7 +3965,6 @@ __metadata:
     "@snuggery/core": "workspace:packages/core"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@types/node": ^14.14.17
-    "@yarnpkg/fslib": 2.4.0
     expect: ^27.3.1
     test-builders: "workspace:*"
     uvu: ^0.5.2

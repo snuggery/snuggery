@@ -2135,15 +2135,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@yarnpkg/fslib", [
-        ["npm:2.4.0", {
-          "packageLocation": "./.yarn/cache/@yarnpkg-fslib-npm-2.4.0-79c250a2c9-97f787d9b5.zip/node_modules/@yarnpkg/fslib/",
-          "packageDependencies": [
-            ["@yarnpkg/fslib", "npm:2.4.0"],
-            ["@yarnpkg/libzip", "npm:2.2.2"],
-            ["tslib", "npm:1.14.1"]
-          ],
-          "linkType": "HARD",
-        }],
         ["npm:2.6.0", {
           "packageLocation": "./.yarn/cache/@yarnpkg-fslib-npm-2.6.0-ec8b110e16-4affa8fbd4.zip/node_modules/@yarnpkg/fslib/",
           "packageDependencies": [
@@ -5123,7 +5114,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/core", "workspace:packages/core"],
             ["@snuggery/snuggery", "workspace:packages/snuggery"],
             ["@types/node", "npm:14.14.35"],
-            ["@yarnpkg/fslib", "npm:2.4.0"],
             ["expect", "npm:27.3.1"],
             ["test-builders", "workspace:integration/test-builders"],
             ["uvu", "npm:0.5.2"]
