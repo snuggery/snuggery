@@ -12,10 +12,34 @@
 			"type": "string",
 			"description": "Target to execute after tagging and before publishing"
 		},
+		"include": {
+			"$ref": "#/definitions/glob",
+			"default": "*",
+			"description": "Projects to include, defaults to including all projects"
+		},
+		"exclude": {
+			"$ref": "#/definitions/glob",
+			"description": "Projects to exclude"
+		},
 		"distTag": {
 			"type": "string",
 			"description": "The tag to distribute this release under, defaults to 'latest'"
 		}
 	},
-	"additionalProperties": false
+	"additionalProperties": false,
+	"definitions": {
+		"glob": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			]
+		}
+	}
 }

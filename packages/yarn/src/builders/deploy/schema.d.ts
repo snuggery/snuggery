@@ -3,5 +3,9 @@ export interface Schema {
 
 	buildTarget?: string;
 
+	include?: string | string[];
+
+	exclude?: string | string[];
+
 	distTag?: string;
 }
