@@ -89,6 +89,11 @@ projects:
           assets:
             - *readmeAsset
             - *licenseAsset
+            - include:
+                - bin.sh
+                - NOTICE.md
+            - include: .pnp.loader.mjs
+              from: '.'
           packager: '@snuggery/yarn'
   '@snuggery/architect':
     root: packages/architect

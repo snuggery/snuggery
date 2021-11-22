@@ -872,7 +872,7 @@ __metadata:
     "@types/node": ^14.14.17
     "@yarnpkg/pnp": 3.1.0
   bin:
-    sn: bin.js
+    sn: bin.sh
   languageName: unknown
   linkType: soft
 

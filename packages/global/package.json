@@ -9,7 +9,7 @@
 		"directory": "packages/global"
 	},
 	"bin": {
-		"sn": "bin.js"
+		"sn": "bin.sh"
 	},
 	"dependencies": {
 		"@snuggery/snuggery": "0.5.0"

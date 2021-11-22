@@ -45,11 +45,13 @@
 
 		"camelize",
 		"CLI's",
+		"coreutils",
 		"dasherize",
 		"devkit",
 		"fileoverview",
 		"markdownish",
 		"multiselect",
+		"readlink",
 		"respawn",
 		"snuggery",
 		"snuggery's",
