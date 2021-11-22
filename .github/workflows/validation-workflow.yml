@@ -4,7 +4,7 @@ on:
       - main
   pull_request:
 
-name: 'CI'
+name: 'Validation'
 jobs:
   code-style:
     name: 'Code Style'
@@ -42,6 +42,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 16.x
+
+      - name: Type-Check
+        shell: bash
+        run: |
+          yarn tsc --noEmit
 
       - name: Build
         shell: bash
