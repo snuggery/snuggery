@@ -34,7 +34,12 @@ export function executePack(
 								? resolveWorkspacePath(context, directory)
 								: cwd;
 
-							if (useWorkspacePlugin !== false && hasPlugin) {
+							if (
+								useWorkspacePlugin === true ||
+								(useWorkspacePlugin !== false &&
+									hasPlugin &&
+									directoryToPack !== cwd)
+							) {
 								return yarn.snuggeryWorkspacePack({
 									cwd,
 									directoryToPack,
