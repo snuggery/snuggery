@@ -9,11 +9,14 @@ import {
 } from './workspace-handle';
 
 export type {WorkspaceHost} from './file';
-export type {
+export {
 	JsonObject,
 	JsonPropertyName,
 	JsonPropertyPath,
 	JsonValue,
+	isJsonArray,
+	isJsonObject,
+	getPrintableType,
 } from './types';
 export {
 	ConvertibleWorkspaceDefinition,

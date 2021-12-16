@@ -1,0 +1,24 @@
+{
+	"builders": {
+		"run": {
+			"implementation": "./builders/run/index.js",
+			"schema": "./builders/run/schema.json",
+			"description": "Run a target in all affected projects"
+		},
+		"with-files": {
+			"implementation": "./builders/with-files/index.js",
+			"schema": "./builders/with-files/schema.json",
+			"description": "Run a target, passing in a list of affected files"
+		},
+		"with-project-files": {
+			"implementation": "./builders/with-project-files/index.js",
+			"schema": "./builders/with-project-files/schema.json",
+			"description": "Run a target, passing in a list of files in affected projects"
+		},
+		"with-projects": {
+			"implementation": "./builders/with-projects/index.js",
+			"schema": "./builders/with-projects/schema.json",
+			"description": "Run a target, passing in a list of affected projects"
+		}
+	}
+}

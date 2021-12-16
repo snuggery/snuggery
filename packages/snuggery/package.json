@@ -12,6 +12,10 @@
 		"sn": "bin.js"
 	},
 	"builders": "builders.json",
+	"exports": {
+		"./builders": "./builders.ts",
+		"./": "./"
+	},
 	"scripts": {
 		"build": "sn build",
 		"test": "sn test"

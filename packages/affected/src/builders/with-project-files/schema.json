@@ -1,0 +1,104 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"type": "object",
+	"properties": {
+		"printOnly": {
+			"type": "boolean",
+			"default": false,
+			"description": "If true, only print the changed projects and exit, without running anything"
+		},
+		"fromRevision": {
+			"type": "string",
+			"description": "The revision to use as base, defaults to the latest commit"
+		},
+		"toRevision": {
+			"type": "string",
+			"description": "The revision to use as head, leave empty to use the current working directory"
+		},
+		"affectedFiles": {
+			"type": "array",
+			"items": {"type": "string"},
+			"description": "Override what files to consider changed, does not support globs"
+		},
+
+		"files": {
+			"oneOf": [
+				{"type": "string"},
+				{
+					"type": "array",
+					"items": {"item": "string"}
+				}
+			],
+			"default": ".",
+			"description": "Files to pass in per affected project, relative to the project folders. Does not support globs"
+		},
+
+		"optionName": {
+			"type": "string",
+			"description": "The name of the option to in which the list of changed projects will be passed into the target"
+		},
+
+		"include": {
+			"$ref": "#/$defs/glob",
+			"default": "**",
+			"description": "Projects to include"
+		},
+		"exclude": {
+			"$ref": "#/$defs/glob",
+			"description": "Projects to exclude, note that the project running the glob builder is excluded by default if the target is the target this builder is registered for"
+		},
+
+		"target": {
+			"type": "string",
+			"description": "The target to run with the configured projects, if not configuring a builder"
+		},
+		"builder": {
+			"type": "string",
+			"description": "The builder to run with the configured projects, if not configuring a target"
+		},
+		"configuration": {
+			"type": "string",
+			"description": "The configuration to run the target with"
+		},
+		"options": {
+			"type": "object",
+			"description": "Options to pass into the configured target or builder",
+			"additionalProperties": true
+		}
+	},
+	"additionalProperties": true,
+	"oneOf": [
+		{
+			"required": ["target"]
+		},
+		{
+			"required": ["builder"]
+		}
+	],
+	"dependencies": {
+		"builder": {
+			"not": {
+				"required": ["target", "configuration"]
+			}
+		},
+		"target": {
+			"not": {
+				"required": ["builder"]
+			}
+		}
+	},
+	"required": ["optionName"],
+	"$defs": {
+		"glob": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {"type": "string"}
+				}
+			]
+		}
+	}
+}

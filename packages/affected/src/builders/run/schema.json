@@ -1,0 +1,133 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"type": "object",
+	"properties": {
+		"printOnly": {
+			"type": "boolean",
+			"default": false,
+			"description": "If true, only print the changed projects and exit, without running anything"
+		},
+		"fromRevision": {
+			"type": "string",
+			"description": "The revision to use as base, defaults to the latest commit"
+		},
+		"toRevision": {
+			"type": "string",
+			"description": "The revision to use as head, leave empty to use the current working directory"
+		},
+		"affectedFiles": {
+			"type": "array",
+			"items": {"type": "string"},
+			"description": "Override what files to consider changed, does not support globs"
+		},
+
+		"include": {
+			"$ref": "#/$defs/glob",
+			"default": "**",
+			"description": "Projects to include"
+		},
+		"exclude": {
+			"$ref": "#/$defs/glob",
+			"description": "Projects to exclude, note that the project running the glob builder is excluded by default if the target is the target this builder is registered for"
+		},
+		"target": {
+			"type": "string",
+			"description": "The target to run in the configured projects, if not configuring a builder. Defaults to the target this builder is configured for if neither target nor builder are set"
+		},
+		"builder": {
+			"type": "string",
+			"description": "The builder to run in the configured projects, if not configuring a target"
+		},
+		"configuration": {
+			"type": "string",
+			"description": "The configuration to run the target with"
+		},
+		"options": {
+			"type": "object",
+			"description": "Options to pass into the configured target or builder",
+			"additionalProperties": true
+		},
+		"unknownTarget": {
+			"type": "string",
+			"description": "What to do if the glob encounters a project that doesn't include the requested target: fail or skip the project",
+			"enum": ["error", "skip"],
+			"default": "error"
+		},
+		"unknownConfiguration": {
+			"type": "string",
+			"description": "What to do if the glob encounters a target that is missing a requested configuration: fail, skip the project or run without the unknown configuration",
+			"enum": ["error", "skip", "run"],
+			"default": "error"
+		},
+		"targetOptions": {
+			"description": "Options for running the targets",
+			"oneOf": [
+				{
+					"type": "object",
+					"properties": {
+						"type": {
+							"type": "string",
+							"enum": ["serial"],
+							"additionalItems": false
+						}
+					},
+					"required": ["type"],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"type": {
+							"type": "string",
+							"enum": ["parallel"],
+							"additionalItems": false
+						},
+						"maxParallel": {
+							"oneOf": [{"type": "number"}, {"type": "string"}],
+							"description": "The maximum number of jobs to have running at a time"
+						}
+					},
+					"required": ["type"],
+					"additionalProperties": false
+				}
+			]
+		},
+		"scheduler": {
+			"description": "Define the scheduler to run jobs with",
+			"type": "string",
+			"enum": ["in process", "spawn", "worker", "respawn"],
+			"additionalItems": false
+		}
+	},
+	"additionalProperties": true,
+	"dependencies": {
+		"builder": {
+			"not": {
+				"required": [
+					"target",
+					"configuration",
+					"unknownTarget",
+					"unknownConfiguration"
+				]
+			}
+		},
+		"target": {
+			"not": {
+				"required": ["builder"]
+			}
+		}
+	},
+	"$defs": {
+		"glob": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {"type": "string"}
+				}
+			]
+		}
+	}
+}

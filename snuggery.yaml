@@ -46,6 +46,18 @@ projects:
         configurations:
           without-yarn-plugins:
             exclude: '@snuggery/yarn-plugin-*'
+      build-affected:
+        builder: '@snuggery/affected:run'
+        options:
+          target: 'build'
+        configurations:
+          without-yarn-plugins:
+            exclude: '@snuggery/yarn-plugin-*'
+        # '@snuggery/affected':
+        #   strategyConfigurations:
+        #     '@snuggery/affected/strategies#packageDependencies':
+        #       includeDependencies: true
+        #       includeDependents: false
       deploy:
         builder: '@snuggery/yarn:deploy'
         options:
@@ -66,6 +78,14 @@ projects:
           lintFilePatterns:
             - packages/*/src/**/*.[tj]s
             - integration
+      lint-affected:
+        builder: '@snuggery/affected:with-files'
+        options:
+          optionName: lintFilePatterns
+          target: lint
+          include:
+            - '**/*.{,m,c}ts'
+            - '**/*.{,m,c}js'
       test: *testTarget
 
   '@snuggery/snuggery':
@@ -94,6 +114,18 @@ projects:
                 - NOTICE.md
             - include: .pnp.loader.mjs
               from: '.'
+          packager: '@snuggery/yarn'
+  '@snuggery/affected':
+    root: packages/affected
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - <<: *builderOrSchematicAsset
+              from: packages/affected/src
           packager: '@snuggery/yarn'
   '@snuggery/architect':
     root: packages/architect

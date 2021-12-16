@@ -1,0 +1,9 @@
+releases:
+  "@snuggery/affected": minor
+  "@snuggery/core": patch
+  "@snuggery/global": patch
+  "@snuggery/snuggery": patch
+
+declined:
+  - "@snuggery/architect"
+  - "@snuggery/schematics"

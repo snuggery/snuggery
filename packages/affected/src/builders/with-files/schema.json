@@ -1,0 +1,87 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"type": "object",
+	"properties": {
+		"printOnly": {
+			"type": "boolean",
+			"default": false,
+			"description": "If true, only print the changed files and exit, without running anything"
+		},
+		"fromRevision": {
+			"type": "string",
+			"description": "The revision to use as base, defaults to the latest commit"
+		},
+		"toRevision": {
+			"type": "string",
+			"description": "The revision to use as head, leave empty to use the current working directory"
+		},
+
+		"optionName": {
+			"type": "string",
+			"description": "The name of the option to in which the list of changed files will be passed into the target"
+		},
+
+		"include": {
+			"$ref": "#/$defs/glob",
+			"default": "**",
+			"description": "Files to include"
+		},
+		"exclude": {
+			"$ref": "#/$defs/glob",
+			"description": "Files to exclude"
+		},
+
+		"target": {
+			"type": "string",
+			"description": "The target to run with the changed files, if not configuring a builder"
+		},
+		"builder": {
+			"type": "string",
+			"description": "The builder to run with the changed files, if not configuring a target"
+		},
+		"configuration": {
+			"type": "string",
+			"description": "The configuration to run the target with"
+		},
+		"options": {
+			"type": "object",
+			"description": "Options to pass into the configured target or builder",
+			"additionalProperties": true
+		}
+	},
+	"additionalProperties": true,
+	"oneOf": [
+		{
+			"required": ["target"]
+		},
+		{
+			"required": ["builder"]
+		}
+	],
+	"dependencies": {
+		"builder": {
+			"not": {
+				"required": ["target", "configuration"]
+			}
+		},
+		"target": {
+			"not": {
+				"required": ["builder"]
+			}
+		}
+	},
+	"required": ["optionName"],
+	"$defs": {
+		"glob": {
+			"oneOf": [
+				{
+					"type": "string"
+				},
+				{
+					"type": "array",
+					"items": {"type": "string"}
+				}
+			]
+		}
+	}
+}

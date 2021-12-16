@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@angular-eslint/builder": "13.0.1",
 		"@snuggery-workspace/scripts": "workspace:scripts",
+		"@snuggery/affected": "workspace:packages/affected",
 		"@snuggery/node": "workspace:packages/node",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",

@@ -26,6 +26,18 @@ export function isJsonObject(
 	return typeof value === 'object' && value != null && !Array.isArray(value);
 }
 
+export function getPrintableType(value: JsonValue | undefined): string {
+	if (value == null) {
+		return String(value);
+	}
+
+	if (typeof value !== 'object') {
+		return `a ${typeof value}`;
+	}
+
+	return Array.isArray(value) ? 'an array' : 'an object';
+}
+
 export function stringifyPath(path: JsonPropertyPath): string {
 	if (path.length === 0) {
 		return '<configuration file>';
