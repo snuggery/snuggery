@@ -7,7 +7,8 @@ import {
 import {promises as fs} from 'fs';
 import {
 	CompilerOptions,
-	createProgram,
+	createEmitAndSemanticDiagnosticsBuilderProgram as createIncrementalProgram,
+	createAbstractBuilder as createProgram,
 	Diagnostic,
 	DiagnosticCategory,
 	formatDiagnostic,
@@ -16,6 +17,11 @@ import {
 	parseJsonConfigFileContent,
 	readConfigFile,
 	sys,
+	createIncrementalCompilerHost,
+	createCompilerHost,
+	createSolutionBuilder,
+	createSolutionBuilderHost,
+	ExitStatus,
 } from 'typescript';
 
 import type {Schema} from './schema';
@@ -66,17 +72,76 @@ export async function tsc(
 		await getProjectPath(context),
 	);
 
-	parsedConfig.options.outDir = outputFolder;
+	// When in a composite project, we'll use the typescript API to trigger the
+	// equivalent of `tsc --build`. This API doesn't accept a tsconfig object,
+	// so we can only validate that the config is correct (outDir should point
+	// to the output folder).
+	// For non-composite projects we can set the outDir ourselves on the config
+	// object that we pass into typescript's non-build API.
 
-	const program = createProgram({
-		options: parsedConfig.options,
-		rootNames: parsedConfig.fileNames,
-		configFileParsingDiagnostics: parsedConfig.errors,
-	});
+	if (parsedConfig.options.composite) {
+		if (parsedConfig.options.outDir !== outputFolder) {
+			return {
+				success: false,
+				error: `Expected outDir in ${tsconfigPath} to point towards ${outputFolder}`,
+			};
+		}
 
-	const diagnostics = program.emit();
+		const formatDiagnosticsHost = getFormatDiagnosticsHost(
+			parsedConfig.options,
+		);
+		const host = createSolutionBuilderHost(sys, undefined, diagnostic => {
+			const message = formatDiagnostic(diagnostic, formatDiagnosticsHost);
 
-	return processResult(diagnostics.diagnostics, parsedConfig.options);
+			switch (diagnostic.category) {
+				case DiagnosticCategory.Error:
+					context.logger.error(message);
+					break;
+				case DiagnosticCategory.Warning:
+					context.logger.warn(message);
+					break;
+				default:
+					context.logger.info(message);
+			}
+		});
+
+		const builder = createSolutionBuilder(host, [tsconfigPath], {
+			incremental: parsedConfig.options.incremental,
+		});
+
+		if (builder.build(tsconfigPath) === ExitStatus.Success) {
+			return {success: true};
+		} else {
+			return {
+				success: false,
+				error: 'Compilation failed',
+			};
+		}
+	} else {
+		parsedConfig.options.outDir = outputFolder;
+
+		const host = (
+			parsedConfig.options.incremental
+				? createIncrementalCompilerHost
+				: createCompilerHost
+		)(parsedConfig.options);
+
+		const program = (
+			parsedConfig.options.incremental
+				? createIncrementalProgram
+				: createProgram
+		)(
+			parsedConfig.fileNames,
+			parsedConfig.options,
+			host,
+			undefined,
+			parsedConfig.errors,
+			parsedConfig.projectReferences,
+		);
+
+		const {diagnostics} = program.emit();
+		return processResult(diagnostics, parsedConfig.options);
+	}
 }
 
 async function getTsConfigPath(
