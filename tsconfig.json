@@ -1,11 +1,15 @@
 {
-	"extends": "./tsconfig.base.json",
-	"compilerOptions": {
-		"types": ["node"],
-		"paths": {
-			"@snuggery/snuggery/package.json": ["./packages/snuggery/package.json"],
-			"@snuggery/snuggery/*": ["./packages/snuggery/src/*"]
-		}
-	},
-	"include": ["packages/*/src/**/*.ts", "integration/**/*.ts"]
+	"include": [],
+	"references": [
+		{"path": "./packages/affected"},
+		{"path": "./packages/architect"},
+		{"path": "./packages/core"},
+		{"path": "./packages/global"},
+		{"path": "./packages/node"},
+		{"path": "./packages/schematics"},
+		{"path": "./packages/snuggery"},
+		{"path": "./packages/yarn"},
+		{"path": "./packages/yarn-plugin-snuggery"},
+		{"path": "./packages/yarn-plugin-snuggery-workspace"}
+	]
 }

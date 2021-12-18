@@ -8,3 +8,6 @@
 
 /packages/*/dist
 /dist
+
+*.tsbuildinfo
+/packages/yarn-plugin-*/out-tsc

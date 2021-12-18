@@ -2,7 +2,13 @@
 	"compilerOptions": {
 		"target": "es2019",
 		"lib": ["es2020"],
+
 		"module": "commonjs",
+		"moduleResolution": "node",
+
+		"composite": true,
+		"incremental": true,
+
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
@@ -10,12 +16,12 @@
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedIndexedAccess": true,
 		"importsNotUsedAsValues": "error",
-		"moduleResolution": "node",
+		"forceConsistentCasingInFileNames": true,
+		"useUnknownInCatchVariables": true,
+
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
 		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-		"declaration": true,
-		"useUnknownInCatchVariables": true
+		"declaration": true
 	}
 }
