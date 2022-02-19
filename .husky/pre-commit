@@ -4,9 +4,6 @@
 # Fix code style & check for typos
 yarn express-check-in --staged
 
-# Check whether version info was created
-yarn version check
-
 # Check for duplicate dependencies
 if ! git diff --cached --quiet yarn.lock; then
 	yarn dedupe --check
