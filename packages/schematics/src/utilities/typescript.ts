@@ -57,6 +57,7 @@ export function createSystem({
 	logger,
 	tree,
 }: Pick<CreateProgramOptions, 'logger' | 'tree'>): ts.System {
+	/* eslint-disable @typescript-eslint/no-explicit-any */
 	type SystemMethod = {
 		[key in keyof ts.System]-?: ts.System[key] extends (
 			path: string,
@@ -78,11 +79,12 @@ export function createSystem({
 			if (path.startsWith(virtualFileSystemFolder)) {
 				return impl(path.slice(virtualFileSystemFolder.length), ...args);
 			} else {
-				// @ts-expect-error
+				// @ts-expect-error Typescript can't tell we can pass ...args into the function
 				return ts.sys[name](path, ...args);
 			}
 		};
 	}
+	/* eslint-enable @typescript-eslint/no-explicit-any */
 
 	return {
 		args: [],

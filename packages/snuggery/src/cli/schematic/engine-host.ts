@@ -287,6 +287,7 @@ export class SnuggeryEngineHost
 			schemaJson = require(partialSchematic.schema);
 		}
 
+		// eslint-disable-next-line @typescript-eslint/ban-types
 		const realFactoryFn: Promise<RuleFactory<{}>> = dynamicImport(
 			factoryPath,
 		).then(module => {
@@ -294,6 +295,7 @@ export class SnuggeryEngineHost
 				? module[factoryExport!]
 				: module.default ?? module;
 		});
+		// eslint-disable-next-line @typescript-eslint/ban-types
 		const factoryFn: RuleFactory<{}> = options => () =>
 			realFactoryFn.then(factory => factory(options));
 

@@ -1,5 +1,6 @@
 const realImport = eval('path => import(path)');
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function dynamicImport(path: string): Promise<any> {
 	try {
 		return await import(path);
