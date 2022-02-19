@@ -71,5 +71,12 @@
 		"amet"
 	],
 	"ignoreRegExpList": ["from '[^']+'"],
-	"ignorePaths": ["**/dist/**", "**/.yarn/**", ".pnp.*", "yarn.lock", "*.snap"]
+	"ignorePaths": [
+		"**/dist/**",
+		"**/.yarn/**",
+		".pnp.*",
+		"yarn.lock",
+		"*.snap",
+		".gitignore"
+	]
 }

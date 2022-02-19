@@ -8,7 +8,13 @@ import match, {not as matchNot} from 'micromatch';
  */
 export function filterByPatterns(
 	list: string[],
-	{include, exclude}: {include: string | string[]; exclude?: string | string[]},
+	{
+		include,
+		exclude,
+	}: {
+		include: string | readonly string[];
+		exclude?: string | readonly string[];
+	},
 ): string[] {
 	const included = match(list, include);
 

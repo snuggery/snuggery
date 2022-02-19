@@ -1,0 +1,7 @@
+releases:
+  "@snuggery/core": patch
+  "@snuggery/schematics": patch
+
+declined:
+  - "@snuggery/architect"
+  - "@snuggery/snuggery"

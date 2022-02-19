@@ -1251,7 +1251,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/core", "virtual:277f0f65dd85681b35d92d10e265316130942204d1df1648a8e11284ec6f374f09316ead5e87cd2ac492db855bd8dcb8f805fa067975dba7c52f9f57f671c3a5#patch:@angular-devkit/core@npm%3A13.0.2#.yarn/patches/@angular-devkit__core.patch::version=13.0.2&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],
             ["@angular-devkit/schematics", "npm:13.0.2"],
             ["@snuggery-workspace/scripts", "workspace:scripts"],
-            ["@snuggery/core", "workspace:packages/core"]
+            ["@snuggery/core", "workspace:packages/core"],
+            ["typescript", "patch:typescript@npm%3A4.4.4#~builtin<compat/typescript>::version=4.4.4&hash=ddd1e8"]
           ],
           "linkType": "SOFT",
         }]
