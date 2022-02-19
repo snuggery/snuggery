@@ -39,6 +39,7 @@ import type {Url} from 'url';
 
 import {loadJson} from '../../utils/json-resolver';
 import type {Context} from '../command/context';
+import {dynamicImport} from '../utils/dynamic-import';
 import {makeGeneratorIntoSchematic, Generator} from '../utils/tao';
 
 export interface SnuggeryCollectionDescription
@@ -286,13 +287,15 @@ export class SnuggeryEngineHost
 			schemaJson = require(partialSchematic.schema);
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		const factoryModule = require(factoryPath);
-		// eslint-disable-next-line @typescript-eslint/ban-types
-		const factoryFn: RuleFactory<{}> =
-			factoryExport != null
-				? factoryModule[factoryExport!]
-				: factoryModule.default ?? factoryModule;
+		const realFactoryFn: Promise<RuleFactory<{}>> = dynamicImport(
+			factoryPath,
+		).then(module => {
+			return factoryExport != null
+				? module[factoryExport!]
+				: module.default ?? module;
+		});
+		const factoryFn: RuleFactory<{}> = options => () =>
+			realFactoryFn.then(factory => factory(options));
 
 		if (!partialSchematic.description) {
 			throw new SchematicMissingFieldsException(name);

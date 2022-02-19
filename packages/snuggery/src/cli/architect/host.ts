@@ -22,6 +22,7 @@ import type {ProjectDefinition, TargetDefinition} from '@snuggery/core';
 import {dirname, join} from 'path';
 
 import type {Context} from '../command/context';
+import {dynamicImport} from '../utils/dynamic-import';
 import type {Executor} from '../utils/tao';
 
 import {InvalidBuilderError, InvalidBuilderSpecifiedError} from './errors';
@@ -282,7 +283,7 @@ export class SnuggeryArchitectHost
 	): Promise<Builder<JsonObject> | null> {
 		let implementation;
 		try {
-			implementation = await import(info.implementationPath).then(
+			implementation = await dynamicImport(info.implementationPath).then(
 				info.implementationExport != null
 					? module => module[info.implementationExport!]
 					: module => module.default ?? module,

@@ -6,7 +6,7 @@
 			"description": "Echo arguments"
 		},
 		"echo-builders-fixture": {
-			"implementation": "./builders/echo-builders-fixture",
+			"implementation": "./builders/echo-builders-fixture/index.mjs",
 			"schema": "./builders/echo-builders-fixture/schema.json",
 			"description": "Echo arguments"
 		},
