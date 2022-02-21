@@ -25,7 +25,6 @@ import type {
 	Workspace,
 } from '@nrwl/devkit';
 
-import {AbstractError} from '../../utils/error';
 import type {CliWorkspace} from '../command/context';
 
 import {Cached} from './decorator';
@@ -61,8 +60,6 @@ function extractResult(
 	})();
 }
 
-export class InvalidExecutorError extends AbstractError {}
-
 class MappedContext implements ExecutorContext {
 	constructor(
 		private readonly snuggeryWorkspace: CliWorkspace | null,
@@ -75,6 +72,14 @@ class MappedContext implements ExecutorContext {
 
 	get projectName() {
 		return this.ngContext.target?.project;
+	}
+
+	get targetName() {
+		return this.ngContext.target?.target;
+	}
+
+	get configurationName() {
+		return this.ngContext.target?.configuration;
 	}
 
 	@Cached()
@@ -93,6 +98,7 @@ class MappedContext implements ExecutorContext {
 			executor: this.ngContext.builder.builderName,
 			options: target?.options,
 			configurations: target?.configurations,
+			defaultConfiguration: target?.defaultConfiguration,
 		};
 	}
 
@@ -111,16 +117,17 @@ class MappedContext implements ExecutorContext {
 								targets: Object.fromEntries(
 									Array.from(
 										project.targets,
-										([targetName, {builder, configurations, options}]): [
-											string,
-											TargetConfiguration,
-										] => {
+										([
+											targetName,
+											{builder, configurations, options, defaultConfiguration},
+										]): [string, TargetConfiguration] => {
 											return [
 												targetName,
 												{
 													executor: builder,
 													configurations,
 													options,
+													defaultConfiguration,
 												},
 											];
 										},

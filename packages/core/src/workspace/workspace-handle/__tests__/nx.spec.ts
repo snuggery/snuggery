@@ -127,7 +127,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 						},
 					},
 					test: {
-						executor: '@nx/jest:jest',
+						executor: '@nrwl/jest:jest',
 					},
 				},
 			},
@@ -213,7 +213,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 						},
 					},
 					test: {
-						executor: '@nx/jest:jest',
+						executor: '@nrwl/jest:jest',
 					},
 				},
 			},

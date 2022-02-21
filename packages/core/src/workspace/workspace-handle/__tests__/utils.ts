@@ -163,7 +163,7 @@ export function itShouldHandleAngularConfiguration(
 							},
 						},
 						test: {
-							builder: '@nx/jest:jest',
+							builder: '@nrwl/jest:jest',
 						},
 					},
 				},
@@ -249,7 +249,7 @@ export function itShouldHandleAngularConfiguration(
 							},
 						},
 						test: {
-							builder: '@nx/jest:jest',
+							builder: '@nrwl/jest:jest',
 						},
 					},
 				},

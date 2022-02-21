@@ -59,7 +59,8 @@ export class Resolver implements ResolverFacade {
 			executorsJson != null &&
 			hasOwnProperty.call(executorsJson, builderName)
 		) {
-			(builderInfo = executorsJson[builderName]!), (isNx = true);
+			builderInfo = executorsJson[builderName]!;
+			isNx = true;
 		} else if (hasOwnProperty.call(builderJson, builderName)) {
 			if (executorsJson != null) {
 				isNx = false;
