@@ -1,7 +1,6 @@
-import {basename} from 'path';
 import * as YAML from 'yaml';
 
-import {ChangeType, makeCombinedTracker} from '../proxy';
+import {Change, ChangeType} from '../proxy';
 import {
 	InvalidConfigurationError,
 	isJsonObject,
@@ -10,7 +9,7 @@ import {
 	stringifyPath,
 } from '../types';
 
-import type {FileHandle, WorkspaceHost} from './types';
+import {AbstractFileHandle} from './abstract';
 
 const yamlOptions: YAML.DocumentOptions &
 	YAML.SchemaOptions &
@@ -41,27 +40,18 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 	}
 }
 
-export class YamlFileHandle implements FileHandle {
-	readonly #source: WorkspaceHost;
-	readonly #path: string;
-
-	readonly filename: string;
-
-	constructor(source: WorkspaceHost, path: string) {
-		this.#source = source;
-		this.#path = path;
-
-		this.filename = basename(path);
-	}
-
-	async read(): Promise<JsonObject> {
-		const document = YAML.parseDocument(
-			await this.#source.read(this.#path),
-			yamlOptions,
-		);
+export class YamlFileHandle extends AbstractFileHandle<
+	YAML.Document.Parsed<YAML.ParsedNode>
+> {
+	async parse(source: string): Promise<YAML.Document.Parsed<YAML.ParsedNode>> {
+		const document = YAML.parseDocument(source, yamlOptions);
 
 		processParseErrors(document.errors);
 
+		return document;
+	}
+
+	getValue(document: YAML.Document.Parsed<YAML.ParsedNode>): JsonObject {
 		const value = document.toJSON();
 
 		if (!isJsonObject(value)) {
@@ -71,28 +61,15 @@ export class YamlFileHandle implements FileHandle {
 		return value;
 	}
 
-	async write(value: JsonObject): Promise<void> {
-		await this.#source.write(this.#path, YAML.stringify(value, yamlOptions));
+	stringify(value: JsonObject): string {
+		return YAML.stringify(value, yamlOptions);
 	}
 
-	async update(
-		updater: (value: JsonObject) => void | Promise<void>,
-	): Promise<void> {
-		const document = YAML.parseDocument(
-			await this.#source.read(this.#path),
-			yamlOptions,
-		);
-
-		processParseErrors(document.errors);
-
-		const value = document.toJSON();
-
-		if (!isJsonObject(value)) {
-			throw new InvalidConfigurationError('Configuration must be an object');
-		}
-
-		const changes = await makeCombinedTracker(value).open(updater);
-
+	applyChanges(
+		_source: string,
+		document: YAML.Document.Parsed<YAML.ParsedNode>,
+		changes: readonly Change[],
+	): string {
 		function assertIsCollection(
 			node: YAML.ParsedNode | YAML.Node | null | undefined,
 			path: JsonPropertyPath,
@@ -244,6 +221,6 @@ export class YamlFileHandle implements FileHandle {
 			}
 		}
 
-		await this.#source.write(this.#path, document.toString());
+		return document.toString();
 	}
 }

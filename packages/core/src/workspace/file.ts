@@ -14,15 +14,21 @@ const knownHandleTypes = new Map<string, FileHandleFactory>([
 export async function createFileHandle(
 	source: WorkspaceHost,
 	path: string,
-	supportedFilenames: readonly string[],
+	supportedFilenames?: readonly string[],
 ): Promise<FileHandle> {
 	if (await source.isFile(path)) {
 		const Factory = knownHandleTypes.get(extname(path));
 
 		if (Factory != null) {
-			return new Factory(source, path);
+			return new Factory(
+				{
+					source,
+					createFileHandle: (p, sf) => createFileHandle(source, p, sf),
+				},
+				path,
+			);
 		}
-	} else if (await source.isDirectory(path)) {
+	} else if (supportedFilenames != null && (await source.isDirectory(path))) {
 		const allFiles = new Set(await source.readdir(path));
 		const filename = supportedFilenames.find(name => allFiles.has(name));
 

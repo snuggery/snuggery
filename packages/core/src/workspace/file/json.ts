@@ -5,12 +5,11 @@ import {
 	ParseError,
 	printParseErrorCode,
 } from 'jsonc-parser';
-import {basename} from 'path';
 
-import {makeCombinedTracker, ChangeType} from '../proxy';
+import {ChangeType, Change} from '../proxy';
 import {InvalidConfigurationError, isJsonObject, JsonObject} from '../types';
 
-import type {WorkspaceHost, FileHandle} from './types';
+import {AbstractFileHandle} from './abstract';
 
 function processParseErrors(errors: readonly ParseError[]) {
 	if (errors.length === 1) {
@@ -29,22 +28,10 @@ function processParseErrors(errors: readonly ParseError[]) {
 	}
 }
 
-export class JsonFileHandle implements FileHandle {
-	readonly #source: WorkspaceHost;
-	readonly #path: string;
-
-	readonly filename: string;
-
-	constructor(source: WorkspaceHost, path: string) {
-		this.#source = source;
-		this.#path = path;
-
-		this.filename = basename(path);
-	}
-
-	async read(): Promise<JsonObject> {
+export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
+	parse(source: string): JsonObject {
 		const errors: ParseError[] = [];
-		const value = parse(await this.#source.read(this.#path), errors, {
+		const value = parse(source, errors, {
 			allowEmptyContent: true,
 			allowTrailingComma: true,
 			disallowComments: false,
@@ -59,55 +46,39 @@ export class JsonFileHandle implements FileHandle {
 		return value;
 	}
 
-	async write(value: JsonObject): Promise<void> {
-		await this.#source.write(this.#path, JSON.stringify(value, null, 2));
+	getValue(value: JsonObject): JsonObject {
+		return value;
 	}
 
-	async update(
-		updater: (value: JsonObject) => void | Promise<void>,
-	): Promise<void> {
-		const errors: ParseError[] = [];
-		const source = await this.#source.read(this.#path);
-		const value = parse(source, errors, {
-			allowEmptyContent: true,
-			allowTrailingComma: true,
-			disallowComments: false,
-		});
+	stringify(value: JsonObject): string {
+		return JSON.stringify(value, null, 2);
+	}
 
-		processParseErrors(errors);
-
-		if (!isJsonObject(value)) {
-			throw new InvalidConfigurationError(
-				`Configuration must be an object, got ${JSON.stringify(
-					value,
-				)} from ${source}`,
-			);
-		}
-
-		const changes = await makeCombinedTracker(value).open(updater);
-
-		let currentSource = source;
-
+	applyChanges(
+		source: string,
+		_value: JsonObject,
+		changes: readonly Change[],
+	): string {
 		for (const change of changes) {
 			let edits;
 
 			switch (change.type) {
 				case ChangeType.Add:
-					edits = modify(currentSource, change.path, change.value, {
+					edits = modify(source, change.path, change.value, {
 						isArrayInsertion: true,
 					});
 					break;
 				case ChangeType.Modify:
-					edits = modify(currentSource, change.path, change.value, {});
+					edits = modify(source, change.path, change.value, {});
 					break;
 				case ChangeType.Delete:
-					edits = modify(currentSource, change.path, undefined, {});
+					edits = modify(source, change.path, undefined, {});
 					break;
 			}
 
-			currentSource = applyEdits(currentSource, edits);
+			source = applyEdits(source, edits);
 		}
 
-		await this.#source.write(this.#path, currentSource);
+		return source;
 	}
 }

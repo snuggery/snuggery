@@ -32,6 +32,8 @@ type NxTargetDefinitionData = JsonObject & {
 	configurations?: Record<string, JsonObject>;
 };
 
+const projectFilenames = ['project.json', '.project.json'];
+
 class NxTargetDefinition implements TargetDefinition {
 	static fromConfiguration(path: JsonPropertyPath, data: JsonObject) {
 		if (typeof data.executor !== 'string') {
@@ -358,26 +360,42 @@ class NxProjectDefinition implements ProjectDefinition {
 }
 
 class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
-	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
+	static async fromConfiguration(
+		path: JsonPropertyPath,
+		raw: JsonObject,
+		file?: FileHandle,
+		objectsAndFiles?: [JsonObject, FileHandle][],
+	) {
 		return new this(
 			raw,
 			Object.fromEntries(
-				Object.entries(raw).map(([projectName, project]) => {
-					if (!isJsonObject(project)) {
-						throw new InvalidConfigurationError(
-							'Project configuration must be an object',
-							[...path, projectName],
-						);
-					}
+				await Promise.all(
+					Object.entries(raw).map(async ([projectName, project]) => {
+						let projectFile: FileHandle | undefined;
 
-					return [
-						projectName,
-						NxProjectDefinition.fromConfiguration(
-							[...path, projectName],
-							project,
-						),
-					];
-				}),
+						if (file != null && typeof project == 'string') {
+							projectFile = await file.readRelative(project, projectFilenames);
+							project = await projectFile.read();
+
+							objectsAndFiles!.push([project, projectFile]);
+						}
+
+						if (!isJsonObject(project)) {
+							throw new InvalidConfigurationError(
+								'Project configuration must be an object',
+								[...path, projectName],
+							);
+						}
+
+						return [
+							projectName,
+							NxProjectDefinition.fromConfiguration(
+								[...path, projectName],
+								project,
+							),
+						];
+					}),
+				),
 			),
 		);
 	}
@@ -410,7 +428,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 }
 
 export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
-	static fromConfiguration(raw: JsonObject) {
+	static async fromConfiguration(raw: JsonObject, file?: FileHandle) {
 		if (typeof raw.version !== 'number') {
 			throw new InvalidConfigurationError('Configuration must have a version');
 		}
@@ -423,13 +441,18 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		}
 
 		let projects;
+		let projectsAndFiles: [JsonObject, FileHandle][] | undefined = file
+			? [[raw, file]]
+			: undefined;
 
 		if (!Reflect.has(raw, 'projects')) {
 			// TODO this always adds a "projects" property if no projects are configured, is that bad?
 			raw.projects = {};
-			projects = NxProjectDefinitionCollection.fromConfiguration(
+			projects = await NxProjectDefinitionCollection.fromConfiguration(
 				['projects'],
 				raw.projects as JsonObject,
+				file,
+				projectsAndFiles,
 			);
 		} else {
 			if (!isJsonObject(raw.projects)) {
@@ -438,13 +461,15 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 				]);
 			}
 
-			projects = NxProjectDefinitionCollection.fromConfiguration(
+			projects = await NxProjectDefinitionCollection.fromConfiguration(
 				['projects'],
 				raw.projects,
+				file,
+				projectsAndFiles,
 			);
 		}
 
-		return new this(projects, raw);
+		return new this(projects, raw, projectsAndFiles);
 	}
 
 	static fromValue(
@@ -477,9 +502,16 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 
 	readonly data: JsonObject;
 
-	constructor(projects: NxProjectDefinitionCollection, raw: JsonObject) {
+	readonly #files?: [JsonObject, FileHandle][];
+
+	constructor(
+		projects: NxProjectDefinitionCollection,
+		raw: JsonObject,
+		files?: [JsonObject, FileHandle][],
+	) {
 		super();
 		this.projects = projects;
+		this.#files = files;
 
 		this.extensions = proxyObject(raw, {
 			remove: new Set(['projects', 'version', '$schema']),
@@ -487,6 +519,18 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		});
 
 		this.data = raw;
+	}
+
+	public async tryWrite(): Promise<boolean> {
+		if (this.#files == null) {
+			return false;
+		}
+
+		await Promise.all(
+			Array.from(this.#files, ([data, file]) => file.write(data)),
+		);
+
+		return true;
 	}
 }
 
@@ -503,17 +547,18 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 		if (data.version === 1) {
 			return AngularWorkspaceDefinition.fromConfiguration(data);
 		} else {
-			return NxWorkspaceDefinition.fromConfiguration(data);
+			return NxWorkspaceDefinition.fromConfiguration(data, this.#file);
 		}
 	}
 
 	async write(
 		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
 	): Promise<void> {
-		if (
-			value instanceof AngularWorkspaceDefinition ||
-			value instanceof NxWorkspaceDefinition
-		) {
+		if (value instanceof NxWorkspaceDefinition) {
+			if (!(await value.tryWrite())) {
+				await this.#file.write(value.data);
+			}
+		} else if (value instanceof AngularWorkspaceDefinition) {
 			await this.#file.write(value.data);
 		} else {
 			await this.#file.write(NxWorkspaceDefinition.fromValue(value).data);
@@ -523,11 +568,15 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 	async update(
 		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void> {
-		await this.#file.update(data =>
+		// The FileHandle#update function automatically tracks file reads and will
+		// ensure updates are written to disk. Unlike `write` where we do not have
+		// the link between FileHandle and the content of the file that's being
+		// written, we do not have to track anything extra here.
+		await this.#file.update(async data =>
 			updater(
 				data.version === 1
 					? AngularWorkspaceDefinition.fromConfiguration(data)
-					: NxWorkspaceDefinition.fromConfiguration(data),
+					: await NxWorkspaceDefinition.fromConfiguration(data, this.#file),
 			),
 		);
 	}

@@ -16,21 +16,19 @@ export {
 	WorkspaceHandle,
 } from './workspace-handle/types';
 
-const knownTypes = new Map<string, WorkspaceHandleFactory>(
-	(
-		[
-			// Extend with own configuration when useful
-			['snuggery', AngularWorkspaceHandle],
-			['angular', AngularWorkspaceHandle],
-			['workspace', NxWorkspaceHandle],
-		] as [string, WorkspaceHandleFactory][]
-	).flatMap(([basename, HandleFactory]) => [
-		[`${basename}.json`, HandleFactory],
-		[`${basename}.yaml`, HandleFactory],
-		[`.${basename}.json`, HandleFactory],
-		[`.${basename}.yaml`, HandleFactory],
-	]),
-);
+const knownTypes = new Map<string, WorkspaceHandleFactory>([
+	// Extend with own configuration when useful
+	['snuggery.json', AngularWorkspaceHandle],
+	['.snuggery.json', AngularWorkspaceHandle],
+	['snuggery.yaml', AngularWorkspaceHandle],
+	['.snuggery.yaml', AngularWorkspaceHandle],
+
+	['angular.json', AngularWorkspaceHandle],
+	['.angular.json', AngularWorkspaceHandle],
+
+	['workspace.json', NxWorkspaceHandle],
+	['.workspace.json', NxWorkspaceHandle],
+]);
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
 

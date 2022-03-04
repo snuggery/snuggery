@@ -20,8 +20,24 @@ export interface FileHandle {
 	write(value: JsonObject): Promise<void>;
 
 	update(updater: (value: JsonObject) => void | Promise<void>): Promise<void>;
+
+	readRelative(
+		path: string,
+		supportedFilenames?: string[],
+	): Promise<FileHandle>;
+}
+
+export interface FileHandleContext {
+	readonly source: WorkspaceHost;
+
+	updateReady?: Promise<unknown>;
+
+	createFileHandle(
+		path: string,
+		supportedFilenames?: string[],
+	): Promise<FileHandle>;
 }
 
 export interface FileHandleFactory {
-	new (source: WorkspaceHost, path: string): FileHandle;
+	new (context: FileHandleContext, path: string): FileHandle;
 }

@@ -120,6 +120,26 @@ function getAllChanges(map: ChangeMap, changes: Change[]) {
 	return changes;
 }
 
+function combineChanges(allChanges: readonly Change[]): Change[] {
+	const changeMap: ChangeMap = new Map();
+
+	for (const change of allChanges) {
+		const closestChange = findChange(changeMap, change.path);
+
+		if (closestChange == null) {
+			// Property didn't change yet, nor one of its parent objects -> record the change
+			setChange(changeMap, change);
+		} else if (change.path.length === closestChange.path.length) {
+			// Property itself changed multiple times, merge changes
+			mergeChanges(changeMap, change, closestChange);
+		} else {
+			// A parent object changed, we can ignore this change
+		}
+	}
+
+	return getAllChanges(changeMap, []);
+}
+
 export function makeCombinedTracker<T extends JsonObject | JsonValue[]>(
 	value: T,
 ): Tracker<T>;
@@ -133,24 +153,7 @@ export function makeCombinedTracker<T extends JsonObject | JsonValue[]>(
 			return originalTracker.value;
 		},
 		async open(cb) {
-			const allChanges = await originalTracker.open(cb);
-			const changeMap: ChangeMap = new Map();
-
-			for (const change of allChanges) {
-				const closestChange = findChange(changeMap, change.path);
-
-				if (closestChange == null) {
-					// Property didn't change yet, nor one of its parent objects -> record the change
-					setChange(changeMap, change);
-				} else if (change.path.length === closestChange.path.length) {
-					// Property itself changed multiple times, merge changes
-					mergeChanges(changeMap, change, closestChange);
-				} else {
-					// A parent object changed, we can ignore this change
-				}
-			}
-
-			return getAllChanges(changeMap, []);
+			return combineChanges(await originalTracker.open(cb));
 		},
 	};
 }
