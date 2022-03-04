@@ -12,7 +12,9 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 
 import('./cli')
 	.then(async ({findWorkspace, run}) => {
-		const startCwd = process.cwd();
+		// Allow overriding the startCwd using an environment variable. This is
+		// useful when running a local clone of `sn`
+		const startCwd = process.env.SNUGGERY_CWD || process.cwd();
 		const {stderr, stdin, stdout} = process;
 
 		const workspace = await findWorkspace(startCwd);
