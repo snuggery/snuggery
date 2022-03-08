@@ -7,9 +7,9 @@ import {
 } from '../command/architect';
 
 export class EntryWithProjectCommand extends ArchitectCommand {
-	static paths = [ArchitectCommand.Default];
+	static override readonly paths = [ArchitectCommand.Default];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Architect commands',
 		description: 'Run a target in a project',
 		details: `

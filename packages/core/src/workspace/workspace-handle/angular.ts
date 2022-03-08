@@ -217,7 +217,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected _wrapValue(
+	protected override _wrapValue(
 		value: TargetDefinition | workspaces.TargetDefinition,
 		raw: JsonObject,
 	): TargetDefinition {
@@ -413,7 +413,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected _wrapValue(
+	protected override _wrapValue(
 		value: ProjectDefinition,
 		raw: JsonObject,
 	): ProjectDefinition {

@@ -21,11 +21,11 @@ function createOptionParserCommand({
 	description?: string;
 }) {
 	return class OptionParserCommand extends Command {
-		static readonly paths = [[...path]];
+		static override readonly paths = [[...path]];
 
-		static readonly usage = description ? {description} : undefined;
+		static override readonly usage = description ? {description} : undefined;
 
-		help = CommandOption.Boolean('--help,-h', false, {
+		override help = CommandOption.Boolean('--help,-h', false, {
 			description: 'Show this help message',
 		});
 
@@ -267,7 +267,7 @@ export function parseOptions({
 	}
 
 	class HelpCommand extends Command {
-		static paths = [
+		static override readonly paths = [
 			[...path, '-h'],
 			[...path, '--help'],
 		];

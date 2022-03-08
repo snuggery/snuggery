@@ -1,9 +1,14 @@
 import {AbstractCommand} from '../command/abstract-command';
 
 export class HelpCommand extends AbstractCommand {
-	static paths = [['help'], ['--help'], ['-h'], AbstractCommand.Default];
+	static override readonly paths = [
+		['help'],
+		['--help'],
+		['-h'],
+		AbstractCommand.Default,
+	];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Utility commands',
 		description: 'List all available commands',
 	});

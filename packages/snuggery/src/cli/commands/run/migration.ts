@@ -6,9 +6,9 @@ import {formatMarkdownish} from '../../utils/format';
 import {isSemVer} from '../../utils/typanion';
 
 export class RunMigrationCommand extends MigrationCommand {
-	static paths = [['run', 'migration']];
+	static override readonly paths = [['run', 'migration']];
 
-	static usage = MigrationCommand.Usage({
+	static override readonly usage = MigrationCommand.Usage({
 		category: 'Update commands',
 		description: 'Run migration(s) of a package',
 		details: `
@@ -51,7 +51,7 @@ export class RunMigrationCommand extends MigrationCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean('--help,-h', false, {hidden: true});
 
 	dryRun = Option.Boolean('--dry-run', false, {
 		description: 'Run the schematics without writing the results to disk',

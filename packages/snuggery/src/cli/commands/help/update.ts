@@ -3,9 +3,9 @@ import {formatMarkdownish} from '../../utils/format';
 import {defaultMigrationFilename} from '../run/migrations';
 
 export class HelpUpdateCommand extends AbstractCommand {
-	static paths = [['help', 'update']];
+	static override readonly paths = [['help', 'update']];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Update commands',
 		description:
 			'Print extensive information on the update process and all steps to take',

@@ -8,9 +8,9 @@ import {defaultSchematicCollection} from '../../command/schematic';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpProjectCommand extends AbstractCommand {
-	static paths = [['help', 'project']];
+	static override readonly paths = [['help', 'project']];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about a project',
 	});

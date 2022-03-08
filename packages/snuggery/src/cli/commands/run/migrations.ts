@@ -36,9 +36,9 @@ const validateMigrationFile: t.StrictValidator<unknown, Migration[]> =
 export const defaultMigrationFilename = 'migrations.json';
 
 export class RunMigrationsCommand extends MigrationCommand {
-	static paths = [['run', 'migrations']];
+	static override readonly paths = [['run', 'migrations']];
 
-	static usage = MigrationCommand.Usage({
+	static override readonly usage = MigrationCommand.Usage({
 		category: 'Update commands',
 		description: 'Run registered migrations',
 		details: `
@@ -74,7 +74,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean('--help,-h', false, {hidden: true});
 
 	prepare = Option.Boolean('--prepare', false, {
 		description: 'Prepare the migrations file',

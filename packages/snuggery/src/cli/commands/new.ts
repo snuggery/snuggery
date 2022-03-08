@@ -3,9 +3,9 @@ import {Option} from 'clipanion';
 import {SchematicCommand} from '../command/schematic';
 
 export class NewCommand extends SchematicCommand {
-	static paths = [['new']];
+	static override readonly paths = [['new']];
 
-	static usage = SchematicCommand.Usage({
+	static override readonly usage = SchematicCommand.Usage({
 		category: 'Schematic commands',
 		description: 'Create a new workspace',
 		examples: [['Create a new workspace ', '$0 new @schematics/angular']],
@@ -31,7 +31,7 @@ export class NewCommand extends SchematicCommand {
 		return this.context.startCwd;
 	}
 
-	protected readonly resolveSelf = true;
+	protected override readonly resolveSelf = true;
 
 	async execute(): Promise<number | void> {
 		const schematic = this.getSchematic(this.collection, 'ng-new', true);

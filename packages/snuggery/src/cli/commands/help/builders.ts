@@ -4,9 +4,9 @@ import {ArchitectCommand} from '../../command/architect';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpBuildersCommand extends ArchitectCommand {
-	static paths = [['help', 'builders']];
+	static override readonly paths = [['help', 'builders']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about the builders of a package',
 		examples: [

@@ -3,9 +3,9 @@ import {Option} from 'clipanion';
 import {AbstractCommand} from '../command/abstract-command';
 
 export class GenerateCommand extends AbstractCommand {
-	static paths = [['generate']];
+	static override readonly paths = [['generate']];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Schematic commands',
 		description: 'Alias for `sn run schematic`',
 		details: `

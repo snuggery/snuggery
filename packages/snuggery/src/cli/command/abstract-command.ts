@@ -245,7 +245,7 @@ export abstract class AbstractCommand extends Command<Context> {
 	 * @param e the caught error
 	 * @override
 	 */
-	async catch(e: unknown): Promise<void> {
+	override async catch(e: unknown): Promise<void> {
 		return super.catch(e instanceof Error ? this.prettifyError(e) : e);
 	}
 

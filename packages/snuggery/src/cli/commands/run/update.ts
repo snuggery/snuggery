@@ -3,9 +3,9 @@ import {Option, UsageError} from 'clipanion';
 import {ArchitectCommand} from '../../command/architect';
 
 export class RunUpdateCommand extends ArchitectCommand {
-	static paths = [['run', 'update']];
+	static override readonly paths = [['run', 'update']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Update commands',
 		description: 'Update packages and prepare migrations',
 		details: `
@@ -37,7 +37,7 @@ export class RunUpdateCommand extends ArchitectCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean('--help,-h', false, {hidden: true});
 
 	packages = Option.Rest({name: 'package@version'});
 

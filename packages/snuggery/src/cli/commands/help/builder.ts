@@ -5,9 +5,9 @@ import {formatMarkdownish} from '../../utils/format';
 import {printSchema} from '../../utils/print-schema';
 
 export class HelpBuilderCommand extends ArchitectCommand {
-	static paths = [['help', 'builder']];
+	static override readonly paths = [['help', 'builder']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about a builder',
 		examples: [

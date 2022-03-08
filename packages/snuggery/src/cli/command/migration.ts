@@ -21,7 +21,7 @@ export class MigrationCollectionCannotBeResolvedError
 	implements ErrorWithMeta
 {
 	readonly clipanion = {type: 'none'} as const;
-	name = 'MigrationCollectionCannotBeResolvedError';
+	override name = 'MigrationCollectionCannotBeResolvedError';
 }
 
 export type MigrationCollection = Collection<

@@ -4,9 +4,9 @@ import {Option} from 'clipanion';
 import {ArchitectCommand} from '../../command/architect';
 
 export class RunTargetCommand extends ArchitectCommand {
-	static paths = [['run', 'target'], ['run']];
+	static override readonly paths = [['run', 'target'], ['run']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Architect commands',
 		description: 'Run a target by specifier',
 		examples: [

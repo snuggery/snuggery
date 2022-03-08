@@ -2,9 +2,9 @@ import {ArchitectCommand} from '../../command/architect';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpTargetsCommand extends ArchitectCommand {
-	static paths = [['help', 'targets']];
+	static override readonly paths = [['help', 'targets']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about all available targets',
 	});

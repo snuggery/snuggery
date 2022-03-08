@@ -7,15 +7,15 @@ import {formatMarkdownish} from '../../utils/format';
 import {isSemVer} from '../../utils/typanion';
 
 export class HelpMigrationsCommand extends MigrationCommand {
-	static paths = [['help', 'migrations']];
+	static override readonly paths = [['help', 'migrations']];
 
-	static schema = [
+	static override readonly schema = [
 		t.hasKeyRelationship('to', t.KeyRelationship.Requires, ['from'], {
 			ignore: ['', undefined],
 		}),
 	];
 
-	static usage = MigrationCommand.Usage({
+	static override readonly usage = MigrationCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about migrations for a package',
 		examples: [
@@ -47,7 +47,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 	protected readonly force = false; // abstract in SchematicCommand, of no use here
 	protected readonly showFileChanges = false; // abstract in SchematicCommand, of no use here
 
-	protected get root(): string {
+	protected override get root(): string {
 		return this.workspace.basePath;
 	}
 

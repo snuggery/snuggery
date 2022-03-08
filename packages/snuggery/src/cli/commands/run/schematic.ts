@@ -3,9 +3,9 @@ import {Option} from 'clipanion';
 import {SchematicCommand} from '../../command/schematic';
 
 export class RunSchematicCommand extends SchematicCommand {
-	static paths = [['run', 'schematic']];
+	static override readonly paths = [['run', 'schematic']];
 
-	static usage = SchematicCommand.Usage({
+	static override readonly usage = SchematicCommand.Usage({
 		category: 'Schematic commands',
 		description: 'Run a schematic to generate and/or modify files',
 		details: `

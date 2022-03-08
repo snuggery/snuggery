@@ -4,9 +4,9 @@ import {SchematicCommand} from '../../command/schematic';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpSchematicsCommand extends SchematicCommand {
-	static paths = [['help', 'schematics']];
+	static override readonly paths = [['help', 'schematics']];
 
-	static usage = SchematicCommand.Usage({
+	static override readonly usage = SchematicCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about schematic collection',
 		examples: [

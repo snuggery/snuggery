@@ -4,9 +4,9 @@ import {join} from 'path';
 import {AbstractCommand} from '../command/abstract-command';
 
 export class ProjectCommand extends AbstractCommand {
-	static paths = [['project']];
+	static override readonly paths = [['project']];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Utility commands',
 		description: 'Run a command within a project',
 		details: `

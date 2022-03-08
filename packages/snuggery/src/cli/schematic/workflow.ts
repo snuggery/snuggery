@@ -36,11 +36,11 @@ export class SnuggeryWorkflow extends workflow.BaseWorkflow {
 		});
 	}
 
-	get engine(): FileSystemEngine {
+	override get engine(): FileSystemEngine {
 		return this._engine as FileSystemEngine;
 	}
 
-	get engineHost(): SnuggeryEngineHost {
+	override get engineHost(): SnuggeryEngineHost {
 		return this._engineHost as SnuggeryEngineHost;
 	}
 }

@@ -19,9 +19,9 @@ function getSet<K, T>(map: Map<K, Set<T>>, key: K): Set<T> {
 }
 
 export class VersionCommand extends AbstractCommand {
-	static paths = [['--version']];
+	static override readonly paths = [['--version']];
 
-	static usage = AbstractCommand.Usage({
+	static override readonly usage = AbstractCommand.Usage({
 		category: 'Workspace information commands',
 		description: `Print version information`,
 	});

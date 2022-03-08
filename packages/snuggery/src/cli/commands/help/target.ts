@@ -13,9 +13,9 @@ export const unsafeTargetNames: ReadonlySet<string> = new Set([
 ]);
 
 export class HelpTargetCommand extends ArchitectCommand {
-	static paths = [['help', 'target']];
+	static override readonly paths = [['help', 'target']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Workspace information commands',
 		description: 'Show information about a target',
 		examples: [

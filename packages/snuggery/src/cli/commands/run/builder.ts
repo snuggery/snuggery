@@ -3,9 +3,9 @@ import {Option} from 'clipanion';
 import {ArchitectCommand} from '../../command/architect';
 
 export class RunBuilderCommand extends ArchitectCommand {
-	static paths = [['run', 'builder']];
+	static override readonly paths = [['run', 'builder']];
 
-	static usage = ArchitectCommand.Usage({
+	static override readonly usage = ArchitectCommand.Usage({
 		category: 'Architect commands',
 		description: 'Run a builder by name',
 		examples: [

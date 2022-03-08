@@ -217,7 +217,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected _wrapValue(
+	protected override _wrapValue(
 		value: TargetDefinition,
 		raw: JsonObject,
 	): TargetDefinition {
@@ -419,7 +419,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected _wrapValue(
+	protected override _wrapValue(
 		value: ProjectDefinition,
 		raw: JsonObject,
 	): ProjectDefinition {
@@ -441,7 +441,7 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		}
 
 		let projects;
-		let projectsAndFiles: [JsonObject, FileHandle][] | undefined = file
+		const projectsAndFiles: [JsonObject, FileHandle][] | undefined = file
 			? [[raw, file]]
 			: undefined;
 

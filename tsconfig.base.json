@@ -18,6 +18,7 @@
 		"importsNotUsedAsValues": "error",
 		"forceConsistentCasingInFileNames": true,
 		"useUnknownInCatchVariables": true,
+		"noImplicitOverride": true,
 
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
