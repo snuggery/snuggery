@@ -1,0 +1,5 @@
+declined:
+  - "@snuggery/global"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn-plugin-snuggery"
+  - "@snuggery/yarn-plugin-snuggery-workspace"
