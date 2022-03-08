@@ -24,7 +24,7 @@
 		"@angular-devkit/core": "13.0.2",
 		"@angular-devkit/schematics": "13.0.2",
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"typescript": "4.4.4"
+		"typescript": "4.6.2"
 	},
 	"dependencies": {
 		"@snuggery/core": "0.3.1"
