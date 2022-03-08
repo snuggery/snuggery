@@ -18,6 +18,7 @@ import {
 	SchematicMissingFieldsException,
 } from '@angular-devkit/schematics/tools';
 import {
+	ColorFormat,
 	Command,
 	ErrorWithMeta,
 	Option as CommandOption,
@@ -26,7 +27,6 @@ import {
 import getPackageManager from 'which-pm-runs';
 
 import {Cached} from '../utils/decorator';
-import {Format, richFormat, textFormat} from '../utils/format';
 import {
 	ParsedArguments,
 	parseFreeFormArguments,
@@ -144,8 +144,8 @@ export abstract class AbstractCommand extends Command<Context> {
 	/**
 	 * Formatting utility
 	 */
-	protected get format(): Format {
-		return this.cli.enableColors ? richFormat : textFormat;
+	protected get format(): ColorFormat {
+		return this.cli.format();
 	}
 
 	/**

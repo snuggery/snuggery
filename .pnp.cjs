@@ -1023,7 +1023,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rxjs", "npm:6.6.7"],
             ["semver", "npm:7.3.5"],
             ["strip-ansi", "npm:6.0.1"],
-            ["supports-color", "npm:8.1.1"],
             ["typanion", "npm:3.7.1"],
             ["uvu", "npm:0.5.2"],
             ["which-pm-runs", "npm:1.0.0"]
@@ -6207,14 +6206,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/supports-color-npm-7.2.0-606bfcf7da-3dda818de0.zip/node_modules/supports-color/",
           "packageDependencies": [
             ["supports-color", "npm:7.2.0"],
-            ["has-flag", "npm:4.0.0"]
-          ],
-          "linkType": "HARD",
-        }],
-        ["npm:8.1.1", {
-          "packageLocation": "./.yarn/cache/supports-color-npm-8.1.1-289e937149-c052193a7e.zip/node_modules/supports-color/",
-          "packageDependencies": [
-            ["supports-color", "npm:8.1.1"],
             ["has-flag", "npm:4.0.0"]
           ],
           "linkType": "HARD",

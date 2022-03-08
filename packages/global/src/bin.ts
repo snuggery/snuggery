@@ -74,9 +74,6 @@ import('@snuggery/snuggery/cli')
 		run(process.argv.slice(2), {
 			startCwd,
 			workspace: await findWorkspace(startCwd),
-			stdin: process.stdin,
-			stdout: process.stdout,
-			stderr: process.stderr,
 			globalManifest: require.resolve('@snuggery/global/package.json'),
 		}),
 	)

@@ -30,7 +30,6 @@
 		"rxjs": "6.6.7",
 		"semver": "7.3.5",
 		"strip-ansi": "6.0.1",
-		"supports-color": "8.1.1",
 		"typanion": "3.7.1",
 		"which-pm-runs": "1.0.0"
 	},

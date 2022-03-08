@@ -14,10 +14,7 @@ import stripAnsi from 'strip-ansi';
 import type {WriteStream} from 'tty';
 
 export type ReportOptions = {
-	cli: {
-		error(err: unknown): string;
-		enableColors: boolean;
-	};
+	enableColors: boolean;
 	stdout: Writable;
 	json?: boolean;
 	verbose?: boolean;
@@ -30,15 +27,20 @@ export class Report {
 
 	private readonly isTty: boolean;
 
-	private readonly supportsColor: boolean;
+	private readonly enableColors: boolean;
 
 	private readonly isVerbose: boolean;
 
-	constructor({cli, stdout, json = false, verbose = false}: ReportOptions) {
+	constructor({
+		enableColors,
+		stdout,
+		json = false,
+		verbose = false,
+	}: ReportOptions) {
 		this.json = json;
 		this.stdout = stdout;
 		this.isTty = (stdout as WriteStream).isTTY ?? false;
-		this.supportsColor = cli.enableColors;
+		this.enableColors = enableColors;
 		this.isVerbose = verbose;
 	}
 
@@ -114,7 +116,7 @@ export class Report {
 			color = value => value,
 		}: {truncate?: boolean; color?: (text: string) => string} = {},
 	) {
-		const doColor = this.supportsColor ? color : stripAnsi;
+		const doColor = this.enableColors ? color : stripAnsi;
 
 		this.stdout.write(`${doColor(this.truncate(str, {truncate}))}\n`);
 	}

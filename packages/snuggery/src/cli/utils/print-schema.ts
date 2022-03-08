@@ -4,8 +4,9 @@ import {
 	JsonObject,
 	JsonValue,
 } from '@angular-devkit/core';
+import type {ColorFormat} from 'clipanion';
 
-import {Format, formatMarkdownish} from './format';
+import {formatMarkdownish} from './format';
 import {tryDereference} from './parse-schema';
 import type {Report} from './report';
 
@@ -15,14 +16,14 @@ export function printSchema(
 		supportPathFormat,
 		report,
 		format,
-	}: {supportPathFormat: boolean; report: Report; format: Format},
+	}: {supportPathFormat: boolean; report: Report; format: ColorFormat},
 ): void {
 	printObjectProperties(report, format, supportPathFormat, schema, schema, 0);
 }
 
 function printObjectProperties(
 	report: Report,
-	format: Format,
+	format: ColorFormat,
 	supportPathFormat: boolean,
 	object: JsonObject,
 	schema: JsonObject,

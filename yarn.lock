@@ -741,7 +741,6 @@ __metadata:
     rxjs: 6.6.7
     semver: 7.3.5
     strip-ansi: 6.0.1
-    supports-color: 8.1.1
     typanion: 3.7.1
     uvu: ^0.5.2
     which-pm-runs: 1.0.0
@@ -5007,15 +5006,6 @@ resolve@^1.20.0:
   version: 3.1.1
   resolution: "strip-json-comments@npm:3.1.1"
   checksum: 492f73e27268f9b1c122733f28ecb0e7e8d8a531a6662efbd08e22cccb3f9475e90a1b82cab06a392f6afae6d2de636f977e231296400d0ec5304ba70f166443
-  languageName: node
-  linkType: hard
-
-"supports-color@npm:8.1.1":
-  version: 8.1.1
-  resolution: "supports-color@npm:8.1.1"
-  dependencies:
-    has-flag: ^4.0.0
-  checksum: c052193a7e43c6cdc741eb7f378df605636e01ad434badf7324f17fb60c69a880d8d8fcdcb562cf94c2350e57b937d7425ab5b8326c67c2adc48f7c87c1db406
   languageName: node
   linkType: hard
 

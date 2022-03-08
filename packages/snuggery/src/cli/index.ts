@@ -1,6 +1,4 @@
-import {Cli, Command} from 'clipanion';
-// @ts-expect-error There are no good types for supports-color
-import {supportsColor} from 'supports-color';
+import {Cli, Command, RunContext} from 'clipanion';
 
 import type {AbstractCommand} from './command/abstract-command';
 import type {Context} from './command/context';
@@ -36,14 +34,13 @@ export {Cli, Context};
 
 export function run(
 	args: string[],
-	context: Omit<Context, 'report'>,
+	context: RunContext<Omit<Context, 'report'>>,
 ): Promise<number> {
 	const cli = new Cli<Context>({
 		binaryLabel: 'Snuggery',
 		binaryName: 'sn',
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		binaryVersion: require('@snuggery/snuggery/package.json').version,
-		enableColors: supportsColor(context.stdout).level > 0,
 	});
 
 	cli.register(HelpCommand);
@@ -75,11 +72,19 @@ export function run(
 	cli.register(RunMigrationCommand);
 	cli.register(RunMigrationsCommand);
 
-	const command = cli.process(args);
+	const stdout = context.stdout ?? Cli.defaultContext.stdout;
+
+	const command = cli.process(args, {
+		...context,
+		report: new Report({
+			enableColors: cli.enableColors ?? Cli.defaultContext.colorDepth > 1,
+			stdout,
+		}),
+	});
 
 	const report = new Report({
-		cli,
-		stdout: context.stdout,
+		enableColors: cli.enableColors ?? Cli.defaultContext.colorDepth > 1,
+		stdout,
 		verbose: (command as Command<Context> & Partial<AbstractCommand>).verbose,
 	});
 

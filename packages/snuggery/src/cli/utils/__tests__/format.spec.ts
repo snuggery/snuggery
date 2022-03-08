@@ -4,7 +4,7 @@ import {tags} from '@angular-devkit/core';
 import expect from 'expect';
 import {suite} from 'uvu';
 
-import {formatMarkdownish} from '../index';
+import {formatMarkdownish} from '../format';
 
 function stripIndent(strings: TemplateStringsArray, ...values: unknown[]) {
 	return tags
