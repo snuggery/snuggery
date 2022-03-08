@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import type {PnpApi} from '@yarnpkg/pnp';
 import {promises as fs} from 'fs';
 import {createRequire} from 'module';

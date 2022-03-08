@@ -33,6 +33,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 	async read(): Promise<JsonObject> {
 		const {updateReady} = this.#context;
 		if (updateReady != null) {
+			/* eslint-disable-next-line no-async-promise-executor */
 			return new Promise(async resolve => {
 				const source = await this.#context.source.read(this.#path);
 				const document = await this.parse(source);

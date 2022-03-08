@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import {isJsonObject, JsonObject} from '@angular-devkit/core';
 import {capitalize} from '@angular-devkit/core/src/utils/strings';
 import {createRequire} from 'module';
