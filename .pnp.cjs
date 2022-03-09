@@ -848,12 +848,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-            ["@types/fs-extra", "npm:9.0.11"],\
             ["@types/glob", "npm:7.1.3"],\
             ["@types/node", "npm:14.14.35"],\
             ["@types/semver", "npm:7.3.8"],\
             ["expect", "npm:27.3.1"],\
-            ["fs-extra", "npm:10.0.0"],\
             ["glob", "npm:7.2.0"],\
             ["rxjs", "npm:6.6.7"],\
             ["semver", "npm:7.3.5"],\

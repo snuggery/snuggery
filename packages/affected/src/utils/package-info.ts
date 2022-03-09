@@ -1,5 +1,5 @@
 import {createHash} from 'crypto';
-import {readFile} from 'fs-extra';
+import {promises as fs} from 'fs';
 import _glob from 'glob';
 import {dirname, posix, resolve} from 'path';
 import * as semver from 'semver';
@@ -38,7 +38,7 @@ export async function getPackageInformation(
 	let rootManifest: PackageManifest;
 	try {
 		rootManifest = JSON.parse(
-			await readFile(`${root}/package.json`, 'utf8'),
+			await fs.readFile(`${root}/package.json`, 'utf8'),
 		) as unknown as PackageManifest;
 	} catch (e) {
 		throw new Error(
@@ -88,7 +88,7 @@ export async function getPackageInformation(
 		let manifest: PackageManifest;
 		try {
 			manifest = JSON.parse(
-				await readFile(workspacePath, 'utf8'),
+				await fs.readFile(workspacePath, 'utf8'),
 			) as unknown as PackageManifest;
 		} catch (e) {
 			throw new Error(
