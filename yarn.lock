@@ -5,7 +5,7 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@angular-devkit/architect@npm:*, @angular-devkit/architect@npm:0.1300.2":
+"@angular-devkit/architect@npm:0.1300.2":
   version: 0.1300.2
   resolution: "@angular-devkit/architect@npm:0.1300.2"
   dependencies:
