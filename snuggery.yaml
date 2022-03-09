@@ -49,7 +49,8 @@ projects:
       build-affected:
         builder: '@snuggery/affected:run'
         options:
-          target: 'build'
+          target: build
+          unknownTarget: skip
         configurations:
           without-yarn-plugins:
             exclude: '@snuggery/yarn-plugin-*'

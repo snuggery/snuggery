@@ -1,0 +1,6 @@
+releases:
+  "@snuggery/affected": patch
+  "@snuggery/snuggery": patch
+
+declined:
+  - "@snuggery/global"

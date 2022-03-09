@@ -12,6 +12,13 @@
 		"sn": "bin.js"
 	},
 	"builders": "builders.json",
+	"publishConfig": {
+		"exports": {
+			"./builders": "./builders/index.js",
+			"./cli": "./cli/index.js",
+			"./package.json": "./package.json"
+		}
+	},
 	"scripts": {
 		"build": "sn build",
 		"test": "sn test"
