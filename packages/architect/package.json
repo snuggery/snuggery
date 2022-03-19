@@ -12,7 +12,13 @@
 	"peerDependencies": {
 		"@angular-devkit/architect": ">= 0.1200.0-rc.2 < 0.1400.0",
 		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0",
-		"rxjs": "^6.6.7"
+		"rxjs": "^6.6.7",
+		"typanion": "^3.7.1"
+	},
+	"peerDependenciesMeta": {
+		"typanion": {
+			"optional": true
+		}
 	},
 	"dependencies": {
 		"@snuggery/core": "0.3.1",
@@ -28,6 +34,7 @@
 		"@types/node": "^14.14.7",
 		"expect": "^27.3.1",
 		"rxjs": "6.6.7",
+		"typanion": "3.7.1",
 		"uvu": "^0.5.2"
 	}
 }

@@ -1,4 +1,9 @@
 export {AssetSpec, copyAssets} from './assets';
+export {
+	ExtraConfigurationDefinition,
+	ExtraConfigurationDefinitionWithType,
+	extractExtraConfiguration,
+} from './extract-extra-configuration';
 export {findProjects} from './projects';
 export {
 	getProjectPath,

@@ -18,7 +18,8 @@
 		"@snuggery/snuggery": "0.6.1",
 		"glob": "7.2.0",
 		"rxjs": "6.6.7",
-		"semver": "^7.3.5"
+		"semver": "^7.3.5",
+		"typanion": "^3.7.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

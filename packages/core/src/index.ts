@@ -1,3 +1,8 @@
+export {
+	ExtraConfigurationDefinition,
+	ExtraConfigurationDefinitionWithType,
+	extractExtraConfiguration,
+} from './extract-extra-configuration';
 export {filterByPatterns} from './pattern';
 export {
 	ConvertibleWorkspaceDefinition,
