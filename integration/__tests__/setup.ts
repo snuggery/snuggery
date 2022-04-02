@@ -6,8 +6,6 @@ import * as assert from 'uvu/assert';
 
 const fixtureRoot = path.resolve(__dirname, '../__fixtures__');
 
-process.env.FORCE_COLOR = 'false';
-
 export interface Fixture {
 	directory: string;
 	run(
@@ -95,6 +93,7 @@ function createRunner(dir: string): Fixture['run'] {
 			stderr,
 			startCwd,
 			workspace,
+			colorDepth: 1,
 		});
 
 		return {
