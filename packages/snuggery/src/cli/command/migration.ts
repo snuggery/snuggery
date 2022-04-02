@@ -1,11 +1,6 @@
 import {isJsonObject, JsonObject} from '@angular-devkit/core';
 import type {Collection} from '@angular-devkit/schematics';
-import type {
-	FileSystemCollectionDescription,
-	FileSystemSchematic,
-	FileSystemSchematicDescription,
-} from '@angular-devkit/schematics/tools';
-import {ErrorWithMeta, UsageError} from 'clipanion';
+import {UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
 import {
@@ -14,19 +9,20 @@ import {
 	compare as compareVersions,
 } from 'semver';
 
+import {AbstractError} from '../../utils/error';
+import type {
+	SnuggeryCollectionDescription,
+	SnuggerySchematic,
+	SnuggerySchematicDescription,
+} from '../schematic/engine-host';
+
 import {SchematicCommand} from './schematic';
 
-export class MigrationCollectionCannotBeResolvedError
-	extends Error
-	implements ErrorWithMeta
-{
-	readonly clipanion = {type: 'none'} as const;
-	override name = 'MigrationCollectionCannotBeResolvedError';
-}
+export class MigrationCollectionCannotBeResolvedError extends AbstractError {}
 
 export type MigrationCollection = Collection<
-	FileSystemCollectionDescription,
-	FileSystemSchematicDescription & {readonly version?: string}
+	SnuggeryCollectionDescription,
+	SnuggerySchematicDescription & {readonly version?: string}
 > & {readonly version?: string};
 
 export abstract class MigrationCommand extends SchematicCommand {
@@ -95,7 +91,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 		to: string,
 	): {
 		version: string;
-		schematic: FileSystemSchematic;
+		schematic: SnuggerySchematic;
 	}[] {
 		const range = new Range(`> ${from} <= ${to}`, {
 			includePrerelease: true,
