@@ -1,6 +1,7 @@
 import {Option} from 'clipanion';
 
 import {SchematicCommand} from '../../command/schematic';
+import type {SnuggeryCollection} from '../../schematic/engine-host';
 import {formatMarkdownish} from '../../utils/format';
 
 export class HelpSchematicsCommand extends SchematicCommand {
@@ -15,7 +16,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 				'$0 help schematics @schematics/angular',
 			],
 			[
-				"Print information about the default collection (if unconfigured, that's `@schematics/angular`)",
+				"Print information about the configured collection(s) (if unconfigured, that's `@schematics/angular` if installed)",
 				'$0 help schematics',
 			],
 		],
@@ -33,10 +34,59 @@ export class HelpSchematicsCommand extends SchematicCommand {
 
 	async execute(): Promise<void> {
 		const {report, format} = this;
+		if (this.collectionName) {
+			const collection = this.getCollection(this.collectionName);
 
-		const collectionName =
-			this.collectionName ?? this.getDefaultCollectionName();
-		const collection = this.getCollection(collectionName);
+			this.showCollection(collection);
+		} else {
+			const configuredCollections = this.getConfiguredCollections();
+			const defaultCollection = this.getDefaultCollection();
+			if (configuredCollections != null) {
+				const shownShorthands = new Map<string, string>();
+
+				for (const collection of configuredCollections) {
+					this.showCollection(collection, shownShorthands);
+				}
+			} else if (defaultCollection != null) {
+				this.showCollection(defaultCollection, new Map());
+
+				report.reportWarning(
+					'This project is using the deprecated `defaultCollection` configuration, consider switching to `schematicCollections` instead',
+				);
+				report.reportSeparator();
+			} else {
+				report.reportInfo('No schematic collections have been configured.');
+				report.reportInfo('Pass a collection name into this command');
+				report.reportInfo(`  $ sn help schematics <collection name>`);
+				report.reportInfo(
+					formatMarkdownish(
+						`or configure \`schematicCollections\` in the workspace or project`,
+						{format},
+					),
+				);
+				return;
+			}
+
+			report.reportInfo(
+				formatMarkdownish(
+					`For more information about a specific schematic, run`,
+					{format},
+				),
+			);
+			report.reportInfo(`  $ sn help schematic <schematic name>`);
+		}
+
+		report.reportSeparator();
+	}
+
+	private showCollection(
+		collection: SnuggeryCollection,
+		shownShorthands?: Map<string, string>,
+	): void {
+		const {report, format} = this;
+		const collectionName = collection.description.name;
+
+		const prefix = shownShorthands ? '' : `${collectionName}:`;
 
 		report.reportInfo(
 			formatMarkdownish(`Collection \`${collectionName}\`:`, {
@@ -46,15 +96,37 @@ export class HelpSchematicsCommand extends SchematicCommand {
 		);
 		report.reportSeparator();
 
-		const prefix = this.collectionName != null ? `${this.collectionName}:` : '';
-
 		for (const schematicName of collection.listSchematicNames()) {
-			report.reportInfo(
-				formatMarkdownish(`- \`${prefix}${schematicName}\``, {
-					format,
-					maxLineLength: Infinity,
-				}),
-			);
+			if (!shownShorthands?.has(schematicName)) {
+				report.reportInfo(
+					formatMarkdownish(`- \`${prefix}${schematicName}\``, {
+						format,
+						maxLineLength: Infinity,
+					}),
+				);
+
+				shownShorthands?.set(schematicName, collectionName);
+			} else {
+				report.reportInfo(
+					formatMarkdownish(`- \`${collectionName}:${schematicName}\``, {
+						format,
+						maxLineLength: Infinity,
+					}),
+				);
+
+				report.reportInfo(
+					formatMarkdownish(
+						`The collection name must be passed, as \`${schematicName}\` maps onto \`${shownShorthands.get(
+							schematicName,
+						)}:${schematicName}\``,
+						{
+							format,
+							maxLineLength: Infinity,
+							indentation: 2,
+						},
+					),
+				);
+			}
 
 			try {
 				const {description} = collection.createSchematic(
@@ -89,16 +161,5 @@ export class HelpSchematicsCommand extends SchematicCommand {
 
 			report.reportSeparator();
 		}
-
-		report.reportInfo(
-			formatMarkdownish(
-				`For more information about a specific schematic in \`${collectionName}\`, run`,
-				{format},
-			),
-		);
-		report.reportInfo(
-			`  $ sn help schematic ${collectionName}:<schematic name>`,
-		);
-		report.reportSeparator();
 	}
 }

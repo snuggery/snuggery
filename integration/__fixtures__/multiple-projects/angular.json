@@ -51,5 +51,8 @@
 			}
 		}
 	},
+	"cli": {
+		"schematicCollections": ["test-schematics", "test-other-schematics"]
+	},
 	"defaultProject": "root"
 }

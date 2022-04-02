@@ -1,9 +1,12 @@
 import {normalize, schema, virtualFs} from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
-import {workflow} from '@angular-devkit/schematics';
-import type {FileSystemEngine} from '@angular-devkit/schematics/tools';
+import {Engine, workflow} from '@angular-devkit/schematics';
 
-import type {SnuggeryEngineHost} from './engine-host';
+import type {
+	SnuggeryCollectionDescription,
+	SnuggeryEngineHost,
+	SnuggerySchematicDescription,
+} from './engine-host';
 
 /**
  * A workflow specifically for Node tools.
@@ -36,8 +39,14 @@ export class SnuggeryWorkflow extends workflow.BaseWorkflow {
 		});
 	}
 
-	override get engine(): FileSystemEngine {
-		return this._engine as FileSystemEngine;
+	override get engine(): Engine<
+		SnuggeryCollectionDescription,
+		SnuggerySchematicDescription
+	> {
+		return this._engine as Engine<
+			SnuggeryCollectionDescription,
+			SnuggerySchematicDescription
+		>;
 	}
 
 	override get engineHost(): SnuggeryEngineHost {

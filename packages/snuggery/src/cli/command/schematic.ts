@@ -1,20 +1,22 @@
-import {isJsonObject, JsonObject, schema} from '@angular-devkit/core';
+import {schema} from '@angular-devkit/core';
 import {
 	DryRunEvent,
 	formats,
 	UnsuccessfulWorkflowExecution,
 } from '@angular-devkit/schematics';
-import type {
-	FileSystemCollection,
-	FileSystemSchematic,
-	FileSystemSchematicDescription,
-} from '@angular-devkit/schematics/tools';
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {dirname, join, normalize, relative} from 'path';
 
 import {AbstractError} from '../../utils/error';
-import {SnuggeryEngineHost} from '../schematic/engine-host';
+import {UnableToResolveError} from '../../utils/json-resolver';
+import {
+	SnuggeryCollection,
+	SnuggeryEngineHost,
+	SnuggerySchematic,
+	SnuggerySchematicDescription,
+} from '../schematic/engine-host';
 import {SnuggeryWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
@@ -45,6 +47,8 @@ export const dryRunOption: Option = {
 export const defaultSchematicCollection = '@schematics/angular';
 
 export class SchematicFailedError extends AbstractError {}
+
+export class UnresolvableSchematicError extends AbstractError {}
 
 export abstract class SchematicCommand extends AbstractCommand {
 	/**
@@ -133,7 +137,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		});
 	}
 
-	protected getCollection(collectionName: string): FileSystemCollection {
+	protected getCollection(collectionName: string): SnuggeryCollection {
 		return this.workflow.engine.createCollection(collectionName);
 	}
 
@@ -141,7 +145,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		collectionName: string,
 		schematicName: string,
 		allowPrivate?: boolean,
-	): FileSystemSchematic {
+	): SnuggerySchematic {
 		return this.getCollection(collectionName).createSchematic(
 			schematicName,
 			allowPrivate,
@@ -162,7 +166,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		);
 	}
 
-	protected async getOptions(schematic: FileSystemSchematic): Promise<{
+	protected async getOptions(schematic: SnuggerySchematic): Promise<{
 		options: Option[];
 		allowExtraOptions: boolean;
 		description?: string | undefined;
@@ -175,7 +179,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 	}
 
 	protected getConfiguredOptions(
-		schematic: FileSystemSchematicDescription,
+		schematic: SnuggerySchematicDescription,
 	): JsonObject {
 		const {workspace} = this.context;
 
@@ -231,11 +235,93 @@ export abstract class SchematicCommand extends AbstractCommand {
 			];
 			return {collectionName, schematicName};
 		} else {
+			const configuredCollections = this.getConfiguredCollections();
+			let collection = configuredCollections?.find(({description}) =>
+				description.has(schematic),
+			);
+
+			if (collection == null) {
+				const defaultCollection = this.getDefaultCollection();
+
+				if (defaultCollection == null) {
+					if (configuredCollections) {
+						// configuredCollections is set, defaultCollection isn't
+						throw new UnresolvableSchematicError(
+							`Unable to find a schematic named ${JSON.stringify(
+								schematic,
+							)} in the configured ${
+								configuredCollections.length > 1 ? 'collections' : 'collection'
+							}: ${configuredCollections
+								.map(collection => JSON.stringify(collection.description.name))
+								.join(', ')}`,
+						);
+					} else {
+						// Neither configuredCollections nor defaultCollection is set
+						throw new UnresolvableSchematicError(
+							`No collections configured in the project or workspace, try passing the full schematic name (e.g. \`@schematics/angular:component\` instead of \`component\`)`,
+						);
+					}
+				}
+
+				if (!defaultCollection.description.has(schematic)) {
+					throw new UnresolvableSchematicError(
+						`Default collection ${JSON.stringify(
+							defaultCollection.description.name,
+						)} doesn't have a schematic named ${JSON.stringify(schematic)}`,
+					);
+				}
+
+				this.report.reportWarning(
+					'The `defaultCollection` configuration option is deprecated, consider switching to `schematicCollections` instead',
+				);
+
+				collection = defaultCollection;
+			}
+
 			return {
-				collectionName: this.getDefaultCollectionName(),
+				collectionName: collection.description.name,
 				schematicName: schematic,
 			};
 		}
+	}
+
+	protected getConfiguredCollections(): SnuggeryCollection[] | null {
+		const workspace = this.context.workspace;
+		let configuredCollections: JsonValue[] | null = null;
+
+		if (workspace != null) {
+			const projectName = this.currentProject;
+			const project =
+				projectName != null ? workspace.tryGetProjectByName(projectName) : null;
+
+			if (project != null) {
+				const projectCli = project.extensions.cli;
+				if (
+					isJsonObject(projectCli) &&
+					isJsonArray(projectCli.schematicCollections)
+				) {
+					configuredCollections = projectCli.schematicCollections;
+				}
+			}
+
+			if (configuredCollections == null) {
+				const workspaceCli = workspace.extensions.cli;
+				if (
+					isJsonObject(workspaceCli) &&
+					isJsonArray(workspaceCli.schematicCollections)
+				) {
+					configuredCollections = workspaceCli.schematicCollections;
+				}
+			}
+		}
+
+		if (configuredCollections == null) {
+			return null;
+		}
+
+		return configuredCollections
+			.filter((value): value is string => typeof value === 'string')
+			.map(collectionName => this.getCollection(collectionName));
 	}
 
 	/**
@@ -243,7 +329,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 	 *
 	 * This is either configured in the project or the workspace, or the fallback is used.
 	 */
-	protected getDefaultCollectionName(): string {
+	protected getDefaultCollection(): SnuggeryCollection | null {
 		const workspace = this.context.workspace;
 
 		if (workspace != null) {
@@ -254,25 +340,31 @@ export abstract class SchematicCommand extends AbstractCommand {
 			if (project != null) {
 				const projectCli = project.extensions.cli;
 				if (
-					projectCli != null &&
 					isJsonObject(projectCli) &&
 					typeof projectCli.defaultCollection === 'string'
 				) {
-					return projectCli.defaultCollection;
+					return this.getCollection(projectCli.defaultCollection);
 				}
 			}
 
 			const workspaceCli = workspace.extensions.cli;
 			if (
-				workspaceCli != null &&
 				isJsonObject(workspaceCli) &&
 				typeof workspaceCli.defaultCollection === 'string'
 			) {
-				return workspaceCli.defaultCollection;
+				return this.getCollection(workspaceCli.defaultCollection);
 			}
 		}
 
-		return defaultSchematicCollection;
+		try {
+			return this.getCollection(defaultSchematicCollection);
+		} catch (e) {
+			if (e instanceof UnableToResolveError) {
+				return null;
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	protected async runSchematic({
@@ -280,7 +372,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		options = {},
 		allowPrivateSchematics = false,
 	}: {
-		schematic: FileSystemSchematic;
+		schematic: SnuggerySchematic;
 		options?: JsonObject;
 		allowPrivateSchematics?: boolean;
 	}): Promise<number> {

@@ -16,7 +16,7 @@ export class HelpSchematicCommand extends SchematicCommand {
 				'$0 help schematic @schematics/angular:component',
 			],
 			[
-				'Print information about the `service` schematic of the default collection',
+				'Print information about the `service` schematic of a configured collection',
 				'$0 help schematic service',
 			],
 		],

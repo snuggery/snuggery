@@ -23,7 +23,7 @@ export class RunSchematicCommand extends SchematicCommand {
 				'$0 run schematic @schematics/angular:component',
 			],
 			[
-				"Dry-run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
+				'Dry-run the `application` schematic of a configured schematic package (if not configured, defaults to `@schematics/angular` if installed)',
 				'$0 run schematic --dry-run application',
 			],
 			[

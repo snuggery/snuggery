@@ -4112,6 +4112,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"multiple-projects-f84643@workspace:integration/__fixtures__/multiple-projects":
+  version: 0.0.0-use.local
+  resolution: "multiple-projects-f84643@workspace:integration/__fixtures__/multiple-projects"
+  dependencies:
+    test-builders: "workspace:*"
+    test-other-schematics: "workspace:*"
+    test-schematics: "workspace:*"
+  languageName: unknown
+  linkType: soft
+
 "nanoclone@npm:^0.2.1":
   version: 0.2.1
   resolution: "nanoclone@npm:0.2.1"
@@ -5066,6 +5076,22 @@ resolve@^1.20.0:
   resolution: "test-builders@workspace:integration/test-builders"
   dependencies:
     "@angular-devkit/architect": 0.1300.2
+  languageName: unknown
+  linkType: soft
+
+"test-other-schematics@workspace:*, test-other-schematics@workspace:integration/test-other-schematics":
+  version: 0.0.0-use.local
+  resolution: "test-other-schematics@workspace:integration/test-other-schematics"
+  dependencies:
+    "@angular-devkit/schematics": 13.0.2
+  languageName: unknown
+  linkType: soft
+
+"test-schematics@workspace:*, test-schematics@workspace:integration/test-schematics":
+  version: 0.0.0-use.local
+  resolution: "test-schematics@workspace:integration/test-schematics"
+  dependencies:
+    "@angular-devkit/schematics": 13.0.2
   languageName: unknown
   linkType: soft
 

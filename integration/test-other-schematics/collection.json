@@ -1,0 +1,19 @@
+{
+	"schematics": {
+		"dolor": {
+			"factory": "./schematic/index.js#dolor",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `dolor`"
+		},
+		"sit": {
+			"factory": "./schematic/index.js#sit",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `sit`"
+		},
+		"amet": {
+			"factory": "./schematic/index.js#amet",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `amet`"
+		}
+	}
+}

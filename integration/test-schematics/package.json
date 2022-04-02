@@ -1,0 +1,7 @@
+{
+	"name": "test-schematics",
+	"schematics": "./collection.json",
+	"dependencies": {
+		"@angular-devkit/schematics": "13.0.2"
+	}
+}

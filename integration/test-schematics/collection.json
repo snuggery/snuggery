@@ -1,0 +1,19 @@
+{
+	"schematics": {
+		"lorem": {
+			"factory": "./schematic/index.js#lorem",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `lorem`"
+		},
+		"ipsum": {
+			"factory": "./schematic/index.js#ipsum",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `ipsum`"
+		},
+		"dolor": {
+			"factory": "./schematic/index.js#dolor",
+			"schema": "./schematic/schema.json",
+			"description": "Create file called `dolor`"
+		}
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"dependencies": {
+		"test-builders": "workspace:*",
+		"test-other-schematics": "workspace:*",
+		"test-schematics": "workspace:*"
+	}
+}

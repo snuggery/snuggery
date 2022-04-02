@@ -9,11 +9,13 @@ import {
 } from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
 import {
+	Collection,
 	CollectionDescription,
 	EngineHost,
 	HostCreateTree,
 	MergeStrategy,
 	RuleFactory,
+	Schematic,
 	SchematicDescription,
 	Source,
 	TaskExecutor,
@@ -49,12 +51,24 @@ export interface SnuggeryCollectionDescription
 	readonly generators?: {
 		[name: string]: FileSystemSchematicDesc;
 	};
+
+	has(name: string): boolean;
 }
 
 export interface SnuggerySchematicDescription
 	extends FileSystemSchematicDescription {
 	readonly isNx: boolean | null;
 }
+
+export type SnuggeryCollection = Collection<
+	SnuggeryCollectionDescription,
+	SnuggerySchematicDescription
+>;
+
+export type SnuggerySchematic = Schematic<
+	SnuggeryCollectionDescription,
+	SnuggerySchematicDescription
+>;
 
 export type SnuggerySchematicContext = TypedSchematicContext<
 	SnuggeryCollectionDescription,
@@ -186,6 +200,9 @@ export class SnuggeryEngineHost
 				? [_rawExtends]
 				: (_rawExtends as string[] | undefined);
 
+		const schematicAliasMap = createAliasMap(schematics);
+		const generatorAliasMap = createAliasMap(generators);
+
 		const collectionDescription: CollectionDescription<SnuggeryCollectionDescription> =
 			{
 				name,
@@ -196,8 +213,9 @@ export class SnuggeryEngineHost
 					schematics as unknown as SnuggeryCollectionDescription['schematics'],
 				generators:
 					generators as unknown as SnuggeryCollectionDescription['generators'],
-				schematicAliasMap: createAliasMap(schematics),
-				generatorAliasMap: createAliasMap(generators),
+				schematicAliasMap,
+				generatorAliasMap,
+				has: name => schematicAliasMap.has(name) || generatorAliasMap.has(name),
 			};
 
 		return collectionDescription;

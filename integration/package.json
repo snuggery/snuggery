@@ -1,7 +1,8 @@
 {
 	"private": true,
 	"workspaces": [
-		"test-builders"
+		"test-*",
+		"__fixtures__/*"
 	],
 	"devDependencies": {
 		"@angular-devkit/architect": "0.1300.2",

@@ -69,8 +69,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:scripts"\
       },\
       {\
+        "name": "multiple-projects-f84643",\
+        "reference": "workspace:integration/__fixtures__/multiple-projects"\
+      },\
+      {\
         "name": "test-builders",\
         "reference": "workspace:integration/test-builders"\
+      },\
+      {\
+        "name": "test-other-schematics",\
+        "reference": "workspace:integration/test-other-schematics"\
+      },\
+      {\
+        "name": "test-schematics",\
+        "reference": "workspace:integration/test-schematics"\
       }\
     ],\
     "enableTopLevelFallback": true,\
@@ -88,8 +100,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],\
       ["@snuggery/yarn-plugin-snuggery-workspace", ["workspace:packages/yarn-plugin-snuggery-workspace"]],\
       ["integration-aa38c3", ["workspace:integration"]],\
+      ["multiple-projects-f84643", ["workspace:integration/__fixtures__/multiple-projects"]],\
       ["snuggery-workspace", ["workspace:."]],\
-      ["test-builders", ["workspace:integration/test-builders"]]\
+      ["test-builders", ["workspace:integration/test-builders"]],\
+      ["test-other-schematics", ["workspace:integration/test-other-schematics"]],\
+      ["test-schematics", ["workspace:integration/test-schematics"]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -5220,6 +5235,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["multiple-projects-f84643", [\
+        ["workspace:integration/__fixtures__/multiple-projects", {\
+          "packageLocation": "./integration/__fixtures__/multiple-projects/",\
+          "packageDependencies": [\
+            ["multiple-projects-f84643", "workspace:integration/__fixtures__/multiple-projects"],\
+            ["test-builders", "workspace:integration/test-builders"],\
+            ["test-other-schematics", "workspace:integration/test-other-schematics"],\
+            ["test-schematics", "workspace:integration/test-schematics"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["nanoclone", [\
         ["npm:0.2.1", {\
           "packageLocation": "./.yarn/cache/nanoclone-npm-0.2.1-972ee958a0-96b2954e22.zip/node_modules/nanoclone/",\
@@ -6294,6 +6321,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["test-builders", "workspace:integration/test-builders"],\
             ["@angular-devkit/architect", "npm:0.1300.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["test-other-schematics", [\
+        ["workspace:integration/test-other-schematics", {\
+          "packageLocation": "./integration/test-other-schematics/",\
+          "packageDependencies": [\
+            ["test-other-schematics", "workspace:integration/test-other-schematics"],\
+            ["@angular-devkit/schematics", "npm:13.0.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["test-schematics", [\
+        ["workspace:integration/test-schematics", {\
+          "packageLocation": "./integration/test-schematics/",\
+          "packageDependencies": [\
+            ["test-schematics", "workspace:integration/test-schematics"],\
+            ["@angular-devkit/schematics", "npm:13.0.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
