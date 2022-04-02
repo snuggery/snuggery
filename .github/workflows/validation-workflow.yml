@@ -43,6 +43,13 @@ jobs:
         with:
           node-version: 16.x
 
+      - name: Install
+        shell: bash
+        env:
+          YARN_ENABLE_NETWORK: 0
+        run: |
+          yarn install --immutable --immutable-cache
+
       - name: Type-Check
         shell: bash
         run: |
