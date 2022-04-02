@@ -1,4 +1,4 @@
-import {posix} from 'path';
+import {posix, basename, dirname, join} from 'path';
 
 import {Change, makeCombinedTracker} from '../proxy';
 import type {JsonObject} from '../types';
@@ -15,7 +15,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		this.#context = context;
 		this.#path = path;
 
-		this.filename = posix.basename(path);
+		this.filename = basename(path);
 	}
 
 	abstract parse(content: string): Document | Promise<Document>;
@@ -94,7 +94,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		supportedFilenames?: string[],
 	): Promise<FileHandle> {
 		return this.#context.createFileHandle(
-			posix.join(posix.dirname(this.#path), path),
+			join(dirname(this.#path), path),
 			supportedFilenames,
 		);
 	}
