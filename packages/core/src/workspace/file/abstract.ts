@@ -1,4 +1,4 @@
-import {posix, basename, dirname, join} from 'path';
+import {basename, dirname, join} from 'path';
 
 import {Change, makeCombinedTracker} from '../proxy';
 import type {JsonObject} from '../types';
