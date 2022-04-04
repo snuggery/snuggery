@@ -7,7 +7,7 @@ import {
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
-import {dirname, join, normalize, relative} from 'path';
+import path, {posix, dirname, join, normalize, relative} from 'path';
 
 import {AbstractError} from '../../utils/error';
 import {UnableToResolveError} from '../../utils/json-resolver';
@@ -157,9 +157,13 @@ export abstract class SchematicCommand extends AbstractCommand {
 			return {};
 		}
 
-		const relativeCwd = normalize(
+		let relativeCwd = normalize(
 			relative(this.context.workspace.basePath, this.context.startCwd),
 		);
+
+		if (path !== posix) {
+			relativeCwd = relativeCwd.replace(/\\/g, '/');
+		}
 
 		return Object.fromEntries(
 			options.filter(o => o.format === 'path').map(o => [o.name, relativeCwd]),

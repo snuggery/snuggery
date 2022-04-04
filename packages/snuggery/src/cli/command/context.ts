@@ -65,7 +65,7 @@ export class CliWorkspace implements WorkspaceDefinition {
 			relative(this.basePath, resolve(this.basePath, cwd)),
 		);
 
-		if (relativeCwd.startsWith('../')) {
+		if (relativeCwd.startsWith(`..${sep}`)) {
 			throw new UsageError(`Invalid project path ${relativeCwd}`);
 		}
 
