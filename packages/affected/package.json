@@ -15,7 +15,7 @@
 		"@angular-devkit/core": "13.0.2",
 		"@snuggery/architect": "0.3.2",
 		"@snuggery/core": "0.3.2",
-		"@snuggery/snuggery": "0.6.3",
+		"@snuggery/snuggery": "0.6.4",
 		"glob": "7.2.0",
 		"rxjs": "6.6.7",
 		"semver": "^7.3.5",
