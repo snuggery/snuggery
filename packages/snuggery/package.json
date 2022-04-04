@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/snuggery",
-	"version": "0.6.1",
+	"version": "0.6.2",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -28,8 +28,8 @@
 		"@angular-devkit/core": "13.0.2",
 		"@angular-devkit/schematics": "13.0.2",
 		"@arcanis/slice-ansi": "1.0.2",
-		"@snuggery/architect": "0.3.1",
-		"@snuggery/core": "0.3.1",
+		"@snuggery/architect": "0.3.2",
+		"@snuggery/core": "0.3.2",
 		"clipanion": "3.2.0-rc.10",
 		"json5": "2.2.0",
 		"kleur": "4.1.4",

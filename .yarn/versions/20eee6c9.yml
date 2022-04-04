@@ -1,7 +1,0 @@
-releases:
-  "@snuggery/node": patch
-
-declined:
-  - "@snuggery/schematics"
-  - "@snuggery/yarn-plugin-snuggery"
-  - "@snuggery/yarn-plugin-snuggery-workspace"
