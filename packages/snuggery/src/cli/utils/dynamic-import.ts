@@ -1,3 +1,5 @@
+import {pathToFileURL} from 'url';
+
 const realImport = eval('path => import(path)');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -9,7 +11,7 @@ export async function dynamicImport(path: string): Promise<any> {
 			e instanceof Error &&
 			(e as NodeJS.ErrnoException).code === 'ERR_REQUIRE_ESM'
 		) {
-			return await realImport(path);
+			return await realImport(pathToFileURL(path));
 		}
 
 		throw e;
