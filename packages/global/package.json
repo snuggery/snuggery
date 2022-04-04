@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/global",
-	"version": "0.6.2",
+	"version": "0.6.3",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -12,7 +12,7 @@
 		"sn": "bin.sh"
 	},
 	"dependencies": {
-		"@snuggery/snuggery": "0.6.2"
+		"@snuggery/snuggery": "0.6.3"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
