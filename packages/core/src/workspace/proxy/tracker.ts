@@ -24,41 +24,56 @@ const versions = new WeakMap<JsonObject | JsonValue[], Version>();
 /** isNaN accepts non-number values, but typescript doesn't seem to know that */
 declare function isNaN(value: unknown): boolean;
 
-function cloneValue<T extends JsonValue>(value: T): T {
+function cloneValue<T extends JsonValue>(value: T, version?: Version): T {
 	if (typeof value !== 'object' || value == null) {
 		return value;
-	} else if (Array.isArray(value)) {
-		return value.slice() as T;
-	} else {
-		return {...(value as JsonObject)} as T;
 	}
+
+	if (version != null && versions.get(value) === version) {
+		return value;
+	}
+
+	let clonedValue: T & (JsonValue[] | JsonObject);
+
+	if (Array.isArray(value)) {
+		clonedValue = value.slice() as T & JsonValue[];
+	} else {
+		clonedValue = {...(value as JsonObject)} as T & JsonObject;
+	}
+
+	if (version != null) {
+		versions.set(clonedValue, version);
+	}
+	return clonedValue;
 }
 
-function cloneValueChecked<T extends JsonValue>(value: T, version: Version): T {
+function cloneValueDeep<T extends JsonValue>(value: T, version?: Version): T {
 	if (typeof value !== 'object' || value == null) {
 		return value;
-	} else {
-		if (versions.get(value) === version) return value;
-
-		const clone = cloneValue(value as T & (JsonObject | JsonValue[]));
-		versions.set(clone, version);
-
-		return clone;
 	}
-}
 
-function cloneValueDeep<T extends JsonValue>(value: T): T {
-	if (typeof value !== 'object' || value == null) {
+	if (version != null && versions.get(value) === version) {
 		return value;
-	} else if (Array.isArray(value)) {
-		return value.map(subValue => {
-			return cloneValueDeep(subValue);
-		}) as T;
-	} else {
-		return Object.fromEntries(
-			Object.entries(value).map(([key, value]) => [key, cloneValueDeep(value)]),
-		) as T;
 	}
+
+	let clonedValue: T & (JsonValue[] | JsonObject);
+	if (Array.isArray(value)) {
+		clonedValue = value.map(subValue => {
+			return cloneValueDeep(subValue, version);
+		}) as T & JsonValue[];
+	} else {
+		clonedValue = Object.fromEntries(
+			Object.entries(value).map(([key, value]) => [
+				key,
+				cloneValueDeep(value, version),
+			]),
+		) as T & JsonObject;
+	}
+
+	if (version != null) {
+		versions.set(clonedValue, version);
+	}
+	return clonedValue;
 }
 
 function compareValuesDeep(a: JsonValue, b: JsonValue): boolean {
@@ -137,7 +152,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 
 					// @ts-expect-error typescript can't tell prop indexes source
 					const immutableValue = clonedParent[prop]!;
-					const clonedValue = cloneValueChecked(immutableValue, version);
+					const clonedValue = cloneValue(immutableValue, version);
 
 					// @ts-expect-error typescript can't tell prop indexes source
 					clonedParent[prop] = clonedValue;
@@ -189,7 +204,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			} else if (!Reflect.has(source, prop)) {
 				const clonedParent = ensureCloning();
 
-				const clonedValue = cloneValueDeep(value);
+				const clonedValue = cloneValueDeep(value, version);
 				// @ts-expect-error typescript can't tell prop indexes source
 				clonedParent[prop] = clonedValue;
 
@@ -202,7 +217,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 					// We ensure that our parent is cloned, then assign the new value into it
 					const clonedParent = ensureCloning();
 
-					const clonedValue = cloneValueDeep(value);
+					const clonedValue = cloneValueDeep(value, version);
 					// @ts-expect-error typescript can't tell prop indexes source
 					clonedParent[prop] = clonedValue;
 
@@ -288,7 +303,7 @@ export function makeTracker<T extends JsonObject | JsonValue[]>(
 					version,
 					createChangeTracker(changes, []),
 					() => {
-						value = cloneValueChecked(value, version);
+						value = cloneValue(value, version);
 						return value;
 					},
 				),

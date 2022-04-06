@@ -40,6 +40,10 @@ export class TestFileHandle implements FileHandle {
 
 		this.#value = clone(cloned);
 	}
+
+	readRelative(): Promise<FileHandle> {
+		throw new Error('readRelative not supported in tests');
+	}
 }
 
 export function itShouldHandleAngularConfiguration(
