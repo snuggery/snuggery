@@ -4,6 +4,7 @@ import {
 	applyEdits,
 	ParseError,
 	printParseErrorCode,
+	FormattingOptions,
 } from 'jsonc-parser';
 
 import {ChangeType, Change} from '../proxy';
@@ -59,6 +60,31 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 		_value: JsonObject,
 		changes: readonly Change[],
 	): string {
+		const indentations = new Set(
+			// prettier-ignore
+			source.match(
+				/*
+				   /                               /gm | find all matches & go line by line
+				    ^(?!\r?\n)                         | match from the start of a line where the line doesn't start with an EOL (i.e. an empty line)
+				              [\s]+?                   | find all whitespace, non-eagerly
+				                    (?=\r?\n|[^\s])    | until the end of a line a non-space character is reached
+				*/ /^(?!\r?\n)[\s]+?(?=\r?\n|[^\s])/gm
+			),
+		);
+
+		const shortestIndentation =
+			indentations.size > 0
+				? Array.from(indentations).reduce((a, b) =>
+						a.length < b.length ? a : b,
+				  )
+				: '  ';
+
+		const formattingOptions: FormattingOptions = {
+			insertSpaces: shortestIndentation[0] === ' ',
+			tabSize: shortestIndentation.length,
+			insertFinalNewline: true,
+		};
+
 		for (const change of changes) {
 			let edits;
 
@@ -66,13 +92,16 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 				case ChangeType.Add:
 					edits = modify(source, change.path, change.value, {
 						isArrayInsertion: true,
+						formattingOptions,
 					});
 					break;
 				case ChangeType.Modify:
-					edits = modify(source, change.path, change.value, {});
+					edits = modify(source, change.path, change.value, {
+						formattingOptions,
+					});
 					break;
 				case ChangeType.Delete:
-					edits = modify(source, change.path, undefined, {});
+					edits = modify(source, change.path, undefined, {formattingOptions});
 					break;
 			}
 
