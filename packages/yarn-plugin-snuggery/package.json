@@ -1,6 +1,5 @@
 {
 	"name": "@snuggery/yarn-plugin-snuggery",
-	"version": "0.1.0",
 	"main": "src/index.ts",
 	"peerDependencies": {
 		"@yarnpkg/cli": "^3.2.0",
