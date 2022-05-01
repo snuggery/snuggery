@@ -13,7 +13,7 @@ import {Filename, npath, ppath, xfs} from '@yarnpkg/fslib';
 import {packUtils} from '@yarnpkg/plugin-pack';
 import {Option} from 'clipanion';
 
-import {createPublishWorkspace} from '../utils';
+import {createPublishWorkspace} from '../../utils';
 
 export class PackCommand extends BaseCommand {
 	static paths = [['snuggery-workspace', 'pack']];

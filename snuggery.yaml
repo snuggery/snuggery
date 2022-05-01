@@ -192,9 +192,6 @@ projects:
   '@snuggery/yarn-plugin-snuggery':
     <<: *yarnPluginProject
     root: packages/yarn-plugin-snuggery
-  '@snuggery/yarn-plugin-snuggery-workspace':
-    <<: *yarnPluginProject
-    root: packages/yarn-plugin-snuggery-workspace
 
   integration:
     root: integration

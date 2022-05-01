@@ -7,7 +7,7 @@ import {loadYarn} from '../../utils/yarn';
 
 import type {Schema} from './schema';
 
-const snuggeryWorkspacePlugin = '@yarnpkg/plugin-snuggery-workspace';
+const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 
 export function executePack(
 	{directory, useWorkspacePlugin}: Schema,
@@ -18,13 +18,13 @@ export function executePack(
 			return yarn.listPlugins().pipe(
 				switchMap(plugins => {
 					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryWorkspacePlugin,
+						plugin => plugin.name === snuggeryPluginName,
 					);
 
 					if (useWorkspacePlugin && !hasPlugin) {
 						return of({
 							success: false,
-							error: `Couldn't find ${snuggeryWorkspacePlugin}`,
+							error: `Couldn't find ${snuggeryPluginName}`,
 						});
 					}
 
@@ -47,7 +47,7 @@ export function executePack(
 							} else {
 								if (directoryToPack !== cwd) {
 									throw new Error(
-										`Packing a folder other than the workspace requires the ${snuggeryWorkspacePlugin} yarn plugin to be installed`,
+										`Packing a folder other than the workspace requires the ${snuggeryPluginName} yarn plugin to be installed`,
 									);
 								}
 

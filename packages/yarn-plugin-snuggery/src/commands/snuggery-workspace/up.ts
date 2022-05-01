@@ -23,7 +23,7 @@ import {npmHttpUtils} from '@yarnpkg/plugin-npm';
 import {Option, UsageError} from 'clipanion';
 import * as semver from 'semver';
 
-import {applyModifier, getModifier} from '../utils';
+import {applyModifier, getModifier} from '../../utils';
 
 const migrationFilename = 'migrations.json' as Filename;
 

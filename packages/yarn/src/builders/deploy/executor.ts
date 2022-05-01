@@ -21,7 +21,7 @@ import {executeVersion} from '../version';
 
 import type {Schema} from './schema';
 
-const snuggeryWorkspacePlugin = '@yarnpkg/plugin-snuggery-workspace';
+const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 
 export function executeDeploy(
 	{buildTarget, distTag, useWorkspacePlugin, include = '**', exclude}: Schema,
@@ -58,13 +58,13 @@ export function executeDeploy(
 			]).pipe(
 				switchMap(([plugins, includedWorkingDirectories]) => {
 					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryWorkspacePlugin,
+						plugin => plugin.name === snuggeryPluginName,
 					);
 
 					if (useWorkspacePlugin && !hasPlugin) {
 						return of({
 							success: false,
-							error: `Couldn't find ${snuggeryWorkspacePlugin}`,
+							error: `Couldn't find ${snuggeryPluginName}`,
 						});
 					}
 

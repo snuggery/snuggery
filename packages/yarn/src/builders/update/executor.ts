@@ -6,7 +6,7 @@ import {loadYarn} from '../../utils/yarn';
 
 import type {Schema} from './schema';
 
-const snuggeryWorkspacePlugin = '@yarnpkg/plugin-snuggery-workspace';
+const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 
 export function executeUpdate(
 	{packages}: Schema,
@@ -17,13 +17,13 @@ export function executeUpdate(
 			return yarn.listPlugins().pipe(
 				switchMap(plugins => {
 					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryWorkspacePlugin,
+						plugin => plugin.name === snuggeryPluginName,
 					);
 
 					if (!hasPlugin) {
 						return of({
 							success: false,
-							error: `Couldn't find ${snuggeryWorkspacePlugin}`,
+							error: `Couldn't find ${snuggeryPluginName}`,
 						});
 					}
 

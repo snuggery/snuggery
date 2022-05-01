@@ -16,7 +16,7 @@ import {
 } from '@yarnpkg/plugin-npm';
 import {Option} from 'clipanion';
 
-import {createPublishWorkspace, getManifestFromTarball} from '../utils';
+import {createPublishWorkspace, getManifestFromTarball} from '../../utils';
 
 export class PublishCommand extends BaseCommand {
 	static paths = [['snuggery-workspace', 'publish']];

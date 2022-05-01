@@ -61,10 +61,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/yarn-plugin-snuggery"\
       },\
       {\
-        "name": "@snuggery/yarn-plugin-snuggery-workspace",\
-        "reference": "workspace:packages/yarn-plugin-snuggery-workspace"\
-      },\
-      {\
         "name": "@snuggery-workspace/scripts",\
         "reference": "workspace:scripts"\
       },\
@@ -98,7 +94,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],\
       ["@snuggery/yarn", ["workspace:packages/yarn"]],\
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],\
-      ["@snuggery/yarn-plugin-snuggery-workspace", ["workspace:packages/yarn-plugin-snuggery-workspace"]],\
       ["integration-aa38c3", ["workspace:integration"]],\
       ["multiple-projects-f84643", ["workspace:integration/__fixtures__/multiple-projects"]],\
       ["snuggery-workspace", ["workspace:."]],\
@@ -1079,20 +1074,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/yarn-plugin-snuggery/",\
           "packageDependencies": [\
             ["@snuggery/yarn-plugin-snuggery", "workspace:packages/yarn-plugin-snuggery"],\
-            ["@yarnpkg/builder", "npm:3.2.0"],\
-            ["@yarnpkg/cli", "virtual:eba9d4adf8581509681da63d65826b21b3b9a89a5de6d11c1cd9bad75758091420de0a284b3923b6d935b514f90f2491dca4f77a7cd326d80be2360e25fa1bb0#npm:3.2.0"],\
-            ["@yarnpkg/core", "npm:3.2.0"],\
-            ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.2.0-rc.10"],\
-            ["typescript", "patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"]\
-          ],\
-          "linkType": "SOFT"\
-        }]\
-      ]],\
-      ["@snuggery/yarn-plugin-snuggery-workspace", [\
-        ["workspace:packages/yarn-plugin-snuggery-workspace", {\
-          "packageLocation": "./packages/yarn-plugin-snuggery-workspace/",\
-          "packageDependencies": [\
-            ["@snuggery/yarn-plugin-snuggery-workspace", "workspace:packages/yarn-plugin-snuggery-workspace"],\
             ["@types/semver", "npm:7.3.8"],\
             ["@yarnpkg/builder", "npm:3.2.0"],\
             ["@yarnpkg/cli", "virtual:eba9d4adf8581509681da63d65826b21b3b9a89a5de6d11c1cd9bad75758091420de0a284b3923b6d935b514f90f2491dca4f77a7cd326d80be2360e25fa1bb0#npm:3.2.0"],\
