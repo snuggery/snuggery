@@ -1,9 +1,4 @@
-import {
-	isJsonArray,
-	isJsonObject,
-	JsonObject,
-	JsonValue,
-} from '@angular-devkit/core';
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import type {ColorFormat} from 'clipanion';
 
 import {formatMarkdownish} from './format';
@@ -279,7 +274,7 @@ function getTypesSimple(
 	property: JsonValue | undefined,
 	schema: JsonObject,
 ): string[] | null {
-	if (!isJsonObject(property!)) {
+	if (!isJsonObject(property)) {
 		return [];
 	}
 
@@ -310,23 +305,23 @@ function getTypesSimple(
 		return [property.type];
 	}
 
-	const alternatives = isJsonArray(property.oneOf!)
+	const alternatives = isJsonArray(property.oneOf)
 		? property.oneOf
-		: isJsonArray(property.anyOf!)
+		: isJsonArray(property.anyOf)
 		? property.anyOf
 		: null;
 
 	if (alternatives == null) {
-		return [];
+		return null;
 	}
 
-	const types = alternatives.map(alt => getTypesSimple(alt, schema));
+	const types = alternatives.flatMap(alt => getTypesSimple(alt, schema));
 
 	if (types.includes(null)) {
 		return null;
 	}
 
-	return types.flat() as string[];
+	return types as string[];
 }
 
 function printSimpleTypes(
@@ -363,24 +358,20 @@ function getTypesComplex(
 	}
 
 	if (property.type === 'array') {
-		const innerType = isJsonObject(property.items!)
+		const innerType = isJsonObject(property.items)
 			? getTypesComplex(tryDereference(property.items, schema), schema)
 			: null;
 
-		if (innerType == null) {
-			return null;
-		}
-
-		return {...innerType, isArray: true};
+		return innerType && {...innerType, isArray: true};
 	}
 
 	if (typeof property.type === 'string') {
 		return {isArray: false, rest: [property.type]};
 	}
 
-	const alternatives = isJsonArray(property.oneOf!)
+	const alternatives = isJsonArray(property.oneOf)
 		? property.oneOf
-		: isJsonArray(property.anyOf!)
+		: isJsonArray(property.anyOf)
 		? property.anyOf
 		: null;
 
