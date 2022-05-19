@@ -1,10 +1,5 @@
-import {
-	isJsonArray,
-	isJsonObject,
-	json,
-	JsonObject,
-	JsonValue,
-} from '@angular-devkit/core';
+import {json} from '@angular-devkit/core';
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 
 import {isNotNull} from './varia';
 
@@ -160,7 +155,7 @@ export function parseSchema({
 								const items = tryDereference(property.items, schema);
 								if (
 									items.type === 'string' ||
-									(isJsonArray(items.oneOf!) &&
+									(isJsonArray(items.oneOf) &&
 										items.oneOf.some(
 											item =>
 												isJsonObject(item) &&
@@ -189,15 +184,14 @@ export function parseSchema({
 
 				const hasDefault = property.default != null;
 
-				const aliases = isJsonArray(property.aliases!)
+				const aliases = isJsonArray(property.aliases)
 					? property.aliases.map(x => '' + x)
 					: property.alias
 					? ['' + property.alias]
 					: [];
 
 				const $defaultIndex =
-					json.isJsonObject(property.$default!) &&
-					property.$default.$source == 'argv'
+					isJsonObject(property.$default) && property.$default.$source == 'argv'
 						? property.$default.index
 						: undefined;
 				const positional: number | undefined =

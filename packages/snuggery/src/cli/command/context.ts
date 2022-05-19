@@ -1,6 +1,7 @@
 import type {Target} from '@angular-devkit/architect';
-import type {JsonObject, workspaces} from '@angular-devkit/core';
+import type {workspaces} from '@angular-devkit/core';
 import {
+	JsonObject,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
 	readWorkspace,

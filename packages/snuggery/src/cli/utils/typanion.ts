@@ -1,4 +1,4 @@
-import type {JsonObject} from '@angular-devkit/core';
+import type {JsonObject} from '@snuggery/core';
 import {parse as parseJson} from 'json5';
 import {SemVer, valid as isValidSemVer} from 'semver';
 import {

@@ -1,4 +1,4 @@
-import {isJsonObject} from '@angular-devkit/core';
+import {isJsonObject} from '@snuggery/core';
 import {Option} from 'clipanion';
 import {createRequire} from 'module';
 import {join, posix} from 'path';
@@ -61,7 +61,7 @@ export class HelpProjectCommand extends AbstractCommand {
 
 		let defaultCollection: string;
 		if (
-			isJsonObject(project.extensions.cli!) &&
+			isJsonObject(project.extensions.cli) &&
 			typeof project.extensions.cli.defaultCollection === 'string'
 		) {
 			({defaultCollection} = project.extensions.cli);

@@ -1,4 +1,4 @@
-import {isJsonObject, JsonObject, logging, schema} from '@angular-devkit/core';
+import {logging, schema} from '@angular-devkit/core';
 import {
 	CircularCollectionException,
 	UnknownCollectionException,
@@ -17,6 +17,7 @@ import {
 	SchematicNameCollisionException,
 	SchematicMissingFieldsException,
 } from '@angular-devkit/schematics/tools';
+import {isJsonObject, JsonObject} from '@snuggery/core';
 import {
 	ColorFormat,
 	Command,
@@ -157,7 +158,7 @@ export abstract class AbstractCommand extends Command<Context> {
 		const cliExtension = this.context.workspace?.extensions?.cli;
 
 		if (
-			isJsonObject(cliExtension!) &&
+			isJsonObject(cliExtension) &&
 			typeof cliExtension.packageManager === 'string'
 		) {
 			return cliExtension.packageManager;

@@ -4,12 +4,12 @@ import {
 	Target as ArchitectTarget,
 	targetStringFromTarget,
 } from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import {
 	TransientTarget,
 	resolveTargetString,
 	TargetSpecifier,
 } from '@snuggery/architect';
+import type {JsonObject} from '@snuggery/core';
 import {concat, merge, Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 

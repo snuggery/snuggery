@@ -1,8 +1,5 @@
 import {
 	getSystemPath,
-	isJsonObject,
-	JsonObject,
-	JsonValue,
 	normalize,
 	schema,
 	virtualFs,
@@ -34,6 +31,7 @@ import {
 	SchematicNameCollisionException,
 	validateOptionsWithSchema,
 } from '@angular-devkit/schematics/tools';
+import {isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import {createRequire} from 'module';
 import {dirname, join, resolve} from 'path';
 import {defer, isObservable, Observable} from 'rxjs';
@@ -86,7 +84,7 @@ export type ContextTransform = (
 ) => SnuggerySchematicContext;
 
 function createAliasMap(object?: JsonValue): Map<string, string> {
-	if (!isJsonObject(object!)) {
+	if (!isJsonObject(object)) {
 		return new Map();
 	}
 

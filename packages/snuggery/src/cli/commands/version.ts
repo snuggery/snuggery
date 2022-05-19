@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import {isJsonObject} from '@angular-devkit/core';
+import {isJsonObject} from '@snuggery/core';
 import {createRequire} from 'module';
 import {dirname, join} from 'path';
 
@@ -120,7 +120,7 @@ export class VersionCommand extends AbstractCommand {
 			),
 		]) {
 			if (
-				isJsonObject(extensions.cli!) &&
+				isJsonObject(extensions.cli) &&
 				typeof extensions.cli.defaultCollection === 'string'
 			) {
 				const {defaultCollection} = extensions.cli;
@@ -136,7 +136,7 @@ export class VersionCommand extends AbstractCommand {
 				}
 			}
 
-			if (isJsonObject(extensions.schematics!)) {
+			if (isJsonObject(extensions.schematics)) {
 				for (const schematic of Object.keys(extensions.schematics)) {
 					const packageName = schematic.split(':', 1)[0]!;
 

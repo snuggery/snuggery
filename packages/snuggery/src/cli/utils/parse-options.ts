@@ -1,5 +1,5 @@
-import type {JsonObject, JsonValue} from '@angular-devkit/core';
-import {camelize, dasherize} from '@angular-devkit/core/src/utils/strings';
+import {strings} from '@angular-devkit/core';
+import type {JsonObject, JsonValue} from '@snuggery/core';
 import {Cli, Command, Option as CommandOption} from 'clipanion';
 
 import type {AbstractCommand} from '../command/abstract-command';
@@ -85,7 +85,7 @@ export function parseFreeFormArguments({
 		);
 
 		if (hasDoubleDash) {
-			name = camelize(name);
+			name = strings.camelize(name);
 		}
 
 		if (!hasDoubleDash && name.length > 1) {
@@ -189,7 +189,7 @@ export function parseOptions({
 				}
 
 				const names = Array.from(new Set([option.name, ...option.aliases]))
-					.map(f => dasherize(f))
+					.map(f => strings.dasherize(f))
 					.map(f => (f.length > 1 ? `--${f}` : `-${f}`))
 					.filter(name => !claimedNames.has(name));
 

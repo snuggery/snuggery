@@ -1,5 +1,5 @@
-import {JsonObject} from '@angular-devkit/core';
 import {TargetSpecifier as SingleTarget} from '@snuggery/architect';
+import {JsonObject} from '@snuggery/core';
 
 import {SchedulerType, Type} from './types';
 

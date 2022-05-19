@@ -17,8 +17,13 @@ import {
 	Builder,
 	BuilderSymbol,
 } from '@angular-devkit/architect/src/internal';
-import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
-import type {ProjectDefinition, TargetDefinition} from '@snuggery/core';
+import {
+	isJsonObject,
+	type JsonObject,
+	type JsonValue,
+	type ProjectDefinition,
+	type TargetDefinition,
+} from '@snuggery/core';
 import {dirname, join} from 'path';
 
 import type {Context} from '../command/context';

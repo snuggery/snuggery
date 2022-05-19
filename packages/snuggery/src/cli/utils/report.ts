@@ -6,8 +6,8 @@
  * Licensed under the BSD 2-Clause License, https://github.com/yarnpkg/berry/blob/14027c/LICENSE.md
  */
 
-import type {JsonValue} from '@angular-devkit/core';
 import sliceAnsi from '@arcanis/slice-ansi';
+import type {JsonValue} from '@snuggery/core';
 import {gray, red, white, yellow} from 'kleur';
 import type {Writable} from 'stream';
 import stripAnsi from 'strip-ansi';

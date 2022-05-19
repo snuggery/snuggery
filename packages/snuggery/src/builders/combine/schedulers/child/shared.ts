@@ -1,5 +1,6 @@
 import type {BuilderOutput} from '@angular-devkit/architect';
-import type {JsonObject, logging} from '@angular-devkit/core';
+import type {logging} from '@angular-devkit/core';
+import type {JsonObject} from '@snuggery/core';
 import type {Observable} from 'rxjs';
 
 export enum MessageType {

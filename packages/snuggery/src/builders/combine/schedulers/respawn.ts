@@ -1,6 +1,6 @@
 import {BuilderOutput, targetStringFromTarget} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import {resolveTargetString, TargetSpecifier} from '@snuggery/architect';
+import type {JsonObject} from '@snuggery/core';
 import type {Observable} from 'rxjs';
 import {finalize} from 'rxjs/operators';
 

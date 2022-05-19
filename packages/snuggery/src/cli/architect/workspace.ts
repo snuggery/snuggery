@@ -1,7 +1,10 @@
 import type {createBuilder, Target} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import type {Executor} from '@nrwl/devkit';
-import type {ProjectDefinition, TargetDefinition} from '@snuggery/core';
+import type {
+	JsonObject,
+	ProjectDefinition,
+	TargetDefinition,
+} from '@snuggery/core';
 
 import type {CliWorkspace} from '../command/context';
 import {makeExecutorIntoBuilder} from '../utils/tao';

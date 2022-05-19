@@ -1,5 +1,5 @@
-import {isJsonObject, JsonObject} from '@angular-devkit/core';
 import type {Collection} from '@angular-devkit/schematics';
+import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
@@ -49,7 +49,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 		}
 
 		if (
-			!isJsonObject(pkgJson['ng-update']!) ||
+			!isJsonObject(pkgJson['ng-update']) ||
 			typeof pkgJson['ng-update'].migrations !== 'string'
 		) {
 			return null;

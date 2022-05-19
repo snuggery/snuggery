@@ -1,4 +1,4 @@
-import type {JsonObject, JsonValue} from '@angular-devkit/core';
+import type {JsonObject, JsonValue} from '@snuggery/core';
 import {createRequire} from 'module';
 import {basename, join} from 'path';
 

@@ -1,4 +1,4 @@
-import {JsonObject} from '@angular-devkit/core';
+import {JsonObject} from '@snuggery/core';
 
 import {ParallelOptions, SerialOptions} from '../combine';
 import {SchedulerType} from '../combine/types';

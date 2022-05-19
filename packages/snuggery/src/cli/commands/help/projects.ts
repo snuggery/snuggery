@@ -1,4 +1,4 @@
-import {isJsonObject} from '@angular-devkit/core';
+import {isJsonObject} from '@snuggery/core';
 
 import {AbstractCommand} from '../../command/abstract-command';
 
@@ -25,7 +25,7 @@ export class HelpProjectsCommand extends AbstractCommand {
 		const {currentProject, format} = this;
 
 		let defaultProject: string | null = null;
-		if (isJsonObject(cli!) && typeof cli.defaultProject === 'string') {
+		if (isJsonObject(cli) && typeof cli.defaultProject === 'string') {
 			({defaultProject} = cli);
 		}
 

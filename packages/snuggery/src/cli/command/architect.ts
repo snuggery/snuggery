@@ -4,7 +4,8 @@ import {
 	BuilderRun,
 	Target,
 } from '@angular-devkit/architect';
-import {isJsonArray, json, JsonObject} from '@angular-devkit/core';
+import {json} from '@angular-devkit/core';
+import {isJsonArray, JsonObject} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
@@ -94,7 +95,7 @@ export function addConfigurationsToTarget(
 			}
 		}
 		delete options.configuration;
-	} else if (isJsonArray(options.configuration!)) {
+	} else if (isJsonArray(options.configuration)) {
 		for (const value of options.configuration) {
 			if (typeof value === 'string') {
 				configurations.add(value.trim());

@@ -1,6 +1,6 @@
 import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import type {TargetSpecifier} from '@snuggery/architect';
+import type {JsonObject} from '@snuggery/core';
 import {
 	EMPTY,
 	MonoTypeOperatorFunction,

@@ -3,7 +3,8 @@ import {
 	BuilderOutput,
 	targetFromTargetString,
 } from '@angular-devkit/architect';
-import {JsonObject, logging, schema} from '@angular-devkit/core';
+import {logging, schema} from '@angular-devkit/core';
+import type {JsonObject} from '@snuggery/core';
 import {
 	createArchitectHost,
 	CliWorkspace,

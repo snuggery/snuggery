@@ -3,7 +3,6 @@ import {
 	BuilderHandlerFn,
 	createBuilder,
 } from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import type {
 	Rule,
 	RuleFactory,
@@ -24,6 +23,7 @@ import type {
 	Generator,
 	Workspace,
 } from '@nrwl/devkit';
+import type {JsonObject} from '@snuggery/core';
 
 import type {CliWorkspace} from '../command/context';
 
