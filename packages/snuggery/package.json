@@ -43,7 +43,7 @@
 	"devDependencies": {
 		"@nrwl/devkit": "^13.8.3",
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/node": "^14.14.17",
+		"@types/node": "^16.11.35",
 		"@types/prettier": "^2",
 		"@types/prompts": "^2",
 		"@types/semver": "^7",

@@ -114,7 +114,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@snuggery/yarn", "workspace:packages/yarn"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.14.0"],\
             ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.14.0"],\
             ["cspell-lib", "npm:5.12.6"],\
@@ -723,7 +723,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@jest/types", "npm:27.2.5"],\
             ["@types/istanbul-lib-coverage", "npm:2.0.3"],\
             ["@types/istanbul-reports", "npm:3.0.0"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/yargs", "npm:16.0.4"],\
             ["chalk", "npm:4.1.1"]\
           ],\
@@ -826,7 +826,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./scripts/",\
           "packageDependencies": [\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["esbuild", "npm:0.14.25"],\
             ["esbuild-register", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:3.3.2"],\
             ["typescript", "patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"]\
@@ -922,7 +922,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/core", "virtual:277f0f65dd85681b35d92d10e265316130942204d1df1648a8e11284ec6f374f09316ead5e87cd2ac492db855bd8dcb8f805fa067975dba7c52f9f57f671c3a5#patch:@angular-devkit/core@npm%3A13.0.2#.yarn/patches/@angular-devkit__core.patch::version=13.0.2&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/typanion", null],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
@@ -944,7 +944,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/core", "virtual:277f0f65dd85681b35d92d10e265316130942204d1df1648a8e11284ec6f374f09316ead5e87cd2ac492db855bd8dcb8f805fa067975dba7c52f9f57f671c3a5#patch:@angular-devkit/core@npm%3A13.0.2#.yarn/patches/@angular-devkit__core.patch::version=13.0.2&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
             ["micromatch", "npm:4.0.2"],\
@@ -962,7 +962,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/global", "workspace:packages/global"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@yarnpkg/pnp", "npm:3.2.0"]\
           ],\
           "linkType": "SOFT"\
@@ -978,7 +978,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/schematics", "npm:13.0.2"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/typescript", null],\
             ["rxjs", "npm:6.6.7"],\
             ["typescript", "patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"]\
@@ -998,7 +998,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/schematics", "npm:13.0.2"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["rxjs", "npm:6.6.7"],\
             ["typescript", "patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"]\
           ],\
@@ -1032,7 +1032,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/prettier", "npm:2.3.2"],\
             ["@types/prompts", "npm:2.4.0"],\
             ["@types/semver", "npm:7.3.8"],\
@@ -1062,7 +1062,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/schematics", "npm:13.0.2"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@yarnpkg/parsers", "npm:2.5.0"],\
             ["rxjs", "npm:6.6.7"]\
           ],\
@@ -1116,7 +1116,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/cacheable-request", "npm:6.0.1"],\
             ["@types/http-cache-semantics", "npm:4.0.0"],\
             ["@types/keyv", "npm:3.1.1"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/responselike", "npm:1.0.0"]\
           ],\
           "linkType": "HARD"\
@@ -1136,7 +1136,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-fs-extra-npm-9.0.11-22ca86822a-54619e5058.zip/node_modules/@types/fs-extra/",\
           "packageDependencies": [\
             ["@types/fs-extra", "npm:9.0.11"],\
-            ["@types/node", "npm:14.14.35"]\
+            ["@types/node", "npm:16.11.35"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1147,7 +1147,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/glob", "npm:7.1.3"],\
             ["@types/minimatch", "npm:3.0.4"],\
-            ["@types/node", "npm:14.14.35"]\
+            ["@types/node", "npm:16.11.35"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1213,7 +1213,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-keyv-npm-3.1.1-779a80f2c7-ee0d098693.zip/node_modules/@types/keyv/",\
           "packageDependencies": [\
             ["@types/keyv", "npm:3.1.1"],\
-            ["@types/node", "npm:14.14.35"]\
+            ["@types/node", "npm:16.11.35"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1260,6 +1260,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:16.11.35", {\
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.11.35-d7356bc420-c06e8716f5.zip/node_modules/@types/node/",\
+          "packageDependencies": [\
+            ["@types/node", "npm:16.11.35"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@types/parse-json", [\
@@ -1294,7 +1301,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-responselike-npm-1.0.0-85dd08af42-e99fc7cc62.zip/node_modules/@types/responselike/",\
           "packageDependencies": [\
             ["@types/responselike", "npm:1.0.0"],\
-            ["@types/node", "npm:14.14.35"]\
+            ["@types/node", "npm:16.11.35"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4443,7 +4450,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1300.2"],\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["expect", "npm:27.3.1"],\
             ["test-builders", "workspace:integration/test-builders"],\
             ["uvu", "npm:0.5.2"]\
@@ -6066,7 +6073,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@snuggery/yarn", "workspace:packages/yarn"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.14.0"],\
             ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:5.14.0"],\
             ["cspell-lib", "npm:5.12.6"],\

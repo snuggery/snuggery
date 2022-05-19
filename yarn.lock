@@ -595,7 +595,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     esbuild: ^0.14.25
     esbuild-register: ^3.3.2
     typescript: 4.6.2
@@ -659,7 +659,7 @@ __metadata:
     "@angular-devkit/core": 13.0.2
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": ^4
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     expect: ^27.3.1
     jsonc-parser: 3.0.0
     micromatch: 4.0.2
@@ -680,7 +680,7 @@ __metadata:
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/snuggery": 0.6.4
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     "@yarnpkg/pnp": 3.2.0
   bin:
     sn: bin.sh
@@ -696,7 +696,7 @@ __metadata:
     "@angular-devkit/schematics": 13.0.2
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": 0.3.3
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     rxjs: 6.6.7
     typescript: 4.6.2
   peerDependencies:
@@ -738,7 +738,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": 0.3.3
     "@snuggery/core": 0.3.3
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     "@types/prettier": ^2
     "@types/prompts": ^2
     "@types/semver": ^7
@@ -796,7 +796,7 @@ __metadata:
     "@angular-devkit/schematics": 13.0.2
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": 0.3.3
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     "@yarnpkg/parsers": ^2.4.1
     rxjs: 6.6.7
   languageName: unknown
@@ -934,10 +934,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^14.14.17, @types/node@npm:^14.14.7":
-  version: 14.14.35
-  resolution: "@types/node@npm:14.14.35"
-  checksum: 6d6e428b6c504ede62e63dddf83439d3f10b3b283132172f7c3b1ef49b4f499afcfd2e4601e3019074b2dd140ee109a9b63bbd6a18a089c89e45108fa8d5b1ee
+"@types/node@npm:*, @types/node@npm:^16.11.35":
+  version: 16.11.35
+  resolution: "@types/node@npm:16.11.35"
+  checksum: c06e8716f579ba41e65f27bfc8a90276f2b0c3324f33372dab75ca73a11971da12dbfb89fffd2289d890b3ec31136c55c2bf6afdf5ae06183d0f4590512ec3db
   languageName: node
   linkType: hard
 
@@ -945,6 +945,13 @@ __metadata:
   version: 13.13.38
   resolution: "@types/node@npm:13.13.38"
   checksum: 3e75caffc2b015d5e93e8a7cc9dfe73585ee1dd39e48bedadd7aedff0679fedba8ac3b4fa77b7863bee77a1bb400754de6ee32e6e4cbe6f7006db44d99da5249
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^14.14.7":
+  version: 14.14.35
+  resolution: "@types/node@npm:14.14.35"
+  checksum: 6d6e428b6c504ede62e63dddf83439d3f10b3b283132172f7c3b1ef49b4f499afcfd2e4601e3019074b2dd140ee109a9b63bbd6a18a089c89e45108fa8d5b1ee
   languageName: node
   linkType: hard
 
@@ -3406,7 +3413,7 @@ __metadata:
     "@angular-devkit/architect": 0.1300.2
     "@snuggery/core": "workspace:packages/core"
     "@snuggery/snuggery": "workspace:packages/snuggery"
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     expect: ^27.3.1
     test-builders: "workspace:*"
     uvu: ^0.5.2
@@ -4851,7 +4858,7 @@ resolve@^1.20.0:
     "@snuggery/node": "workspace:packages/node"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@snuggery/yarn": "workspace:packages/yarn"
-    "@types/node": ^14.14.17
+    "@types/node": ^16.11.35
     "@typescript-eslint/eslint-plugin": ^5.14.0
     "@typescript-eslint/parser": ^5.14.0
     cspell-lib: ^5.12.6
