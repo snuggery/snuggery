@@ -20,8 +20,6 @@ export interface Option {
 
 	required: boolean;
 
-	hasDefault: boolean;
-
 	positional?: number;
 
 	description?: string;
@@ -182,8 +180,6 @@ export function parseSchema({
 
 				const type = types.shift()!;
 
-				const hasDefault = property.default != null;
-
 				const aliases = isJsonArray(property.aliases)
 					? property.aliases.map(x => '' + x)
 					: property.alias
@@ -217,7 +213,6 @@ export function parseSchema({
 				return {
 					aliases,
 					extraTypes: types,
-					hasDefault,
 					hidden,
 					name,
 					required,

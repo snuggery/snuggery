@@ -111,7 +111,6 @@ test('parseFreeFormArguments without options', ({command}) => {
 test('parseFreeFormArguments with options', ({command}) => {
 	const option: Option = {
 		aliases: ['l', 'lor'],
-		hasDefault: false,
 		hidden: false,
 		name: 'lorem',
 		required: false,

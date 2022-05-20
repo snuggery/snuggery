@@ -87,7 +87,7 @@ function printObjectProperties(
 				report.reportInfo(formatHelper(description));
 			}
 
-			const $default = getDefault(dereferencedProp, supportPathFormat); // default is not a valid property name
+			const $default = getDefault(dereferencedProp, supportPathFormat); // default is not a valid identity name
 			if ($default != null) {
 				report.reportInfo(formatHelper(`Default value is ${$default}`, false));
 			}

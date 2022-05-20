@@ -28,7 +28,6 @@ import type {Context} from './context';
 export const configurationOption: Option = {
 	name: 'configuration',
 	aliases: ['c'],
-	hasDefault: false,
 	hidden: false,
 	required: false,
 	type: Type.StringArray,

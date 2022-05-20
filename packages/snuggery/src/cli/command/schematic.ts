@@ -27,7 +27,6 @@ import {AbstractCommand} from './abstract-command';
 export const forceOption: Option = {
 	name: 'force',
 	aliases: [],
-	hasDefault: true,
 	hidden: false,
 	required: false,
 	type: Type.Boolean,
@@ -37,7 +36,6 @@ export const forceOption: Option = {
 export const dryRunOption: Option = {
 	name: 'dryRun',
 	aliases: [],
-	hasDefault: true,
 	hidden: false,
 	required: false,
 	type: Type.Boolean,
