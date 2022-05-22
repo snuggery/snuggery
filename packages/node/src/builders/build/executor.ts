@@ -4,13 +4,13 @@ import {
 	copyAssets,
 	resolveProjectPath,
 	resolveWorkspacePath,
-	scheduleTarget,
+	runPackager,
 } from '@snuggery/architect';
 import {switchMapSuccessfulResult} from '@snuggery/architect/operators';
 import {promises as fs} from 'fs';
 import {join} from 'path';
 import {forkJoin, from, Observable, ObservableInput, of} from 'rxjs';
-import {switchMap, take, tap} from 'rxjs/operators';
+import {switchMap, tap} from 'rxjs/operators';
 
 import type {Schema} from './schema';
 import {tsc} from './typescript';
@@ -83,18 +83,7 @@ export function executeBuild(
 					}
 
 					context.logger.debug('Running packager');
-
-					const packageBuilder = packager.includes(':')
-						? packager
-						: `${packager}:pack`;
-
-					return scheduleTarget(
-						{
-							builder: packageBuilder,
-						},
-						{directory: outputFolder},
-						context,
-					).pipe(take(1));
+					return runPackager(context, {packager, directory: outputFolder});
 				}),
 
 				tap(() =>

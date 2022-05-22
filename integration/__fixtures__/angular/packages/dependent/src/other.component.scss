@@ -1,0 +1,6 @@
+@use '~@integration/standalone/variables';
+
+:host {
+	display: block;
+	color: variables.$color;
+}

@@ -297,7 +297,7 @@ export class SnuggeryArchitectHost
 			throw new InvalidBuilderError(
 				`Failed to load implementation for builder "${
 					info.builderName
-				}" in package "${info.packageName}": ${(e as Error)?.message ?? e}`,
+				}" in package "${info.packageName}": ${(e as Error)?.stack ?? e}`,
 			);
 		}
 

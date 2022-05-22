@@ -1,0 +1,146 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"title": "Build a node package",
+	"description": "Build a node package",
+	"type": "object",
+	"properties": {
+		"primaryEntryPoint": {
+			"$ref": "#/$definitions/entryPoint",
+			"description": "Primary entry point to build, defaults to the package in the project root"
+		},
+		"secondaryEntryPoints": {
+			"type": "array",
+			"items": {"$ref": "#/$definitions/entryPoint"},
+			"default": [],
+			"description": "Secondary entry points to build, defaults to not building any secondary entry points"
+		},
+		"tsconfig": {
+			"type": "string",
+			"description": "Path to the tsconfig.json file, defaults to `<projectFolder>/tsconfig.json`"
+		},
+		"keepScripts": {
+			"type": "boolean",
+			"description": "Whether to keep the scripts in package.json, defaults to false"
+		},
+		"keepDevDependencies": {
+			"type": "boolean",
+			"description": "Whether to keep the devDependencies in package.json, defaults to false"
+		},
+		"inlineStyleLanguage": {
+			"type": "string",
+			"description": "Language for inline styles in components, defaults to `css`"
+		},
+		"assets": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"include": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "array",
+								"items": {"type": "string"}
+							}
+						],
+						"description": "Globs to include in the asset, relative to `from`"
+					},
+					"exclude": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "array",
+								"items": {"type": "string"}
+							}
+						],
+						"description": "Globs to exclude, relative to `from`"
+					},
+					"from": {
+						"type": "string",
+						"description": "The path to include the assets from, defaults to the root of the active project"
+					},
+					"to": {
+						"type": "string",
+						"description": "The path to write the assets to, defaults to the folder the package is being built into"
+					}
+				},
+				"required": ["include"],
+				"additionalProperties": false
+			},
+			"description": "Assets to copy"
+		},
+		"packager": {
+			"type": "string",
+			"description": "Packager to run after building, e.g. `@snuggery/yarn:pack`. If the builder name is `pack` it can be left, out, e.g. `@snuggery/yarn` will run the same builder as `@snuggery/yarn:pack`."
+		},
+		"outputFolder": {
+			"type": "string",
+			"description": "The folder to build the package to, defaults to `<projectFolder>/dist`"
+		},
+		"plugins": {
+			"type": "array",
+			"items": {
+				"oneOf": [
+					{"type": "string"},
+					{
+						"type": "array",
+						"prefixItems": [{"type": "string"}, {"type": "object"}],
+						"items": false
+					}
+				]
+			},
+			"default": [],
+			"description": "List of plugins to use while building"
+		},
+		"flags": {
+			"type": "object",
+			"description": "Flags that change how the angular packages are built by this builder",
+			"properties": {
+				"usePrivateApiAsImportIssueWorkaround": {
+					"type": "boolean",
+					"description": "Choose which workaround to use to prevent angular from mistakenly outputting deep imports: a private API or a very specific find-and-replace. Defaults to `true`"
+				},
+				"enableApiExtractor": {
+					"type": "boolean",
+					"description": "Enable API flattening, as prescribed by the Angular Package Format. Enabling this flag can double the time it takes to build a package. Defaults to `false`"
+				},
+				"useCentralOutputFolder": {
+					"type": "boolean",
+					"description": "Whether the `outputFolder` defaults to a centralized folder or a folder per package, defaults to true unless Yarn PnP is detected"
+				}
+			},
+			"additionalProperties": false
+		}
+	},
+	"additionalProperties": false,
+	"$definitions": {
+		"entryPoint": {
+			"oneOf": [
+				{"type": "string"},
+				{
+					"type": "object",
+					"properties": {
+						"manifest": {
+							"type": "string",
+							"description": "Path to the `package.json` of this entry point"
+						},
+						"main": {
+							"type": "string",
+							"description": "The main file of this entry point, defaults to the `main` property of this entry point's manifest"
+						},
+						"tsconfig": {
+							"type": "string",
+							"description": "TypeScript configuration to use for this entry point instead of the `tsconfig` in the options"
+						}
+					},
+					"required": ["manifest"],
+					"additionalProperties": false
+				}
+			]
+		}
+	}
+}

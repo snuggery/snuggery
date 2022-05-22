@@ -4,6 +4,7 @@ export {
 	ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,
 } from './extract-extra-configuration';
+export {runPackager} from './pack';
 export {findProjects} from './projects';
 export {
 	getProjectPath,

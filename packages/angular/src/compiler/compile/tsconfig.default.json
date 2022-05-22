@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "es2020",
+		"module": "es2020",
+
+		"lib": ["ES2019", "DOM", "DOM.Iterable"]
+	},
+	"angularCompilerOptions": {
+		"compilationMode": "partial",
+
+		"enableResourceInlining": true
+	},
+	"files": ["_generated_"]
+}

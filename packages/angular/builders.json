@@ -1,0 +1,9 @@
+{
+	"builders": {
+		"build": {
+			"implementation": "./src/builders/build/index.js",
+			"schema": "./src/builders/build/schema.json",
+			"description": "Build an angular package"
+		}
+	}
+}

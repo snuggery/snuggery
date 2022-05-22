@@ -8,7 +8,7 @@ plugins:
   - 'import'
 reportUnusedDisableDirectives: true
 parserOptions:
-  ecmaVersion: 12
+  ecmaVersion: 2022
 
 rules:
   # Require packages to be listed in package.json
@@ -40,12 +40,19 @@ overrides:
     parserOptions:
       ecmaVersion: 2022
       sourceType: module
+  - files: ['packages/angular/src/**/*.js']
+    parserOptions:
+      ecmaVersion: 2022
+      sourceType: module
+  - files: ['integration/__fixtures__/angular/**/*.ts']
+    rules:
+      'import/no-extraneous-dependencies': 'off'
   - files: ['**/*.ts']
     plugins:
       - '@typescript-eslint'
     parser: '@typescript-eslint/parser'
     parserOptions:
-      ecmaVersion: 12
+      ecmaVersion: 2022
       sourceType: module
     extends:
       - 'plugin:@typescript-eslint/recommended'

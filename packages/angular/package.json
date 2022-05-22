@@ -1,0 +1,67 @@
+{
+	"name": "@snuggery/angular",
+	"version": "0.0.0",
+	"type": "module",
+	"private": true,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/snuggery/snuggery.git",
+		"directory": "packages/angular"
+	},
+	"exports": {
+		".": "./src/compiler.js",
+		"./plugins": "./src/plugins.js",
+		"./package.json": "./package.json"
+	},
+	"builders": "./builders.json",
+	"tsconfig": "./tsconfig.base.json",
+	"scripts": {
+		"build": "sn build",
+		"test": "sn test"
+	},
+	"peerDependencies": {
+		"@angular/compiler-cli": "^14.0.0-next",
+		"less": "^4.1.2",
+		"sass": "^1.51.0",
+		"typescript": ">=4.6.2 < 4.7.0"
+	},
+	"peerDependenciesMeta": {
+		"less": {
+			"optional": true
+		},
+		"sass": {
+			"optional": true
+		}
+	},
+	"dependencies": {
+		"@angular-devkit/architect": "0.1300.2",
+		"@angular-devkit/core": "13.0.2",
+		"@microsoft/api-extractor": "7.24.1",
+		"@snuggery/architect": "workspace:packages/architect",
+		"@snuggery/core": "workspace:packages/core",
+		"autoprefixer": "10.4.7",
+		"browserslist": "^4.20.3",
+		"esbuild": "^0.14.38",
+		"postcss": "8.4.14",
+		"resolve.exports": "1.1.0",
+		"typanion": "3.7.1"
+	},
+	"devDependencies": {
+		"@angular/compiler": "14.0.0-rc.0",
+		"@angular/compiler-cli": "14.0.0-rc.0",
+		"@snuggery-workspace/scripts": "workspace:scripts",
+		"@types/less": "^3.0.3",
+		"@types/node": "^16.11.35",
+		"less": "^4.1.2",
+		"sass": "^1.51.0",
+		"typescript": "4.6.4"
+	},
+	"publishConfig": {
+		"exports": {
+			".": "./compiler.js",
+			"./plugins": "./plugins.js",
+			"./package.json": "./package.json"
+		}
+	}
+}

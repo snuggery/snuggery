@@ -152,6 +152,19 @@ projects:
             - <<: *builderOrSchematicAsset
               from: packages/core/src
           packager: '@snuggery/yarn'
+  '@snuggery/angular':
+    root: packages/angular
+    architect:
+      build:
+        builder: '@snuggery/node:build'
+        options:
+          assets:
+            - *readmeAsset
+            - *licenseAsset
+            - include: 'tsconfig.base.json'
+            - include: '**/*'
+              from: packages/angular/src
+          packager: '@snuggery/yarn'
   '@snuggery/node':
     root: packages/node
     architect:

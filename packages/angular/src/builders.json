@@ -1,0 +1,9 @@
+{
+	"builders": {
+		"build": {
+			"implementation": "./builders/build/index.js",
+			"schema": "./builders/build/schema.json",
+			"description": "Build a package via typescript"
+		}
+	}
+}

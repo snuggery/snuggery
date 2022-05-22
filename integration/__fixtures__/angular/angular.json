@@ -1,0 +1,78 @@
+{
+	"version": 1,
+	"projects": {
+		"all": {
+			"root": "",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/snuggery:glob",
+					"options": {
+						"include": "@integration/*"
+					}
+				}
+			}
+		},
+		"@integration/standalone": {
+			"root": "packages/standalone",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/angular:build",
+					"options": {
+						"secondaryEntryPoints": ["packages/standalone/sub/package.json"]
+					},
+					"configurations": {
+						"enable-api-extractor": {
+							"flags": {
+								"enableApiExtractor": true
+							}
+						}
+					}
+				},
+				"build10": {
+					"builder": "@snuggery/snuggery:combine",
+					"options": {
+						"targets": [
+							"build",
+							"build",
+							"build",
+							"build",
+							"build",
+							"build",
+							"build",
+							"build",
+							"build",
+							"build"
+						]
+					}
+				}
+			}
+		},
+		"@integration/dependent": {
+			"root": "packages/dependent",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/angular:build"
+				}
+			}
+		},
+		"@integration/dependent-root": {
+			"root": "packages/dependent-root",
+			"architect": {
+				"build": {
+					"builder": "@snuggery/angular:build",
+					"options": {
+						"packager": "@snuggery/yarn"
+					}
+				}
+			}
+		}
+	},
+	"@snuggery/angular": {
+		"tsconfig": "tsconfig.json",
+		"inlineStyleLanguage": "scss",
+		"plugins": [
+			"@snuggery/angular/plugins#tslib",
+			"@snuggery/angular/plugins#validateDependencies"
+		]
+	}
+}

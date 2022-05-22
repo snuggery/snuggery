@@ -1,0 +1,17 @@
+{
+	"name": "@integration/dependent",
+	"main": "src/index.ts",
+	"dependencies": {
+		"tslib": "^2.4.0"
+	},
+	"peerDependencies": {
+		"@angular/core": "^14.0.0-rc.0",
+		"@integration/standalone": "*"
+	},
+	"devDependencies": {
+		"@angular/core": "14.0.0-rc.0",
+		"@integration/standalone": "workspace:integration/__fixtures__/angular/packages/standalone",
+		"rxjs": "6.6.7",
+		"zone.js": "0.11.5"
+	}
+}
