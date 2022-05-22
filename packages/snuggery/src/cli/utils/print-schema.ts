@@ -281,10 +281,32 @@ function getTypesSimple(
 	property = tryDereference(property, schema);
 
 	if (property.type === 'object') {
+		if (
+			!property.properties &&
+			(property.additionalProperties == null ||
+				property.additionalProperties === true)
+		) {
+			return ['object'];
+		}
 		return null;
 	}
 
 	if (property.type === 'array') {
+		if (Array.isArray(property.prefixItems)) {
+			if (property.items) {
+				return [`any[]`];
+			}
+
+			const items = property.prefixItems.flatMap(item =>
+				getTypesSimple(item, schema),
+			);
+			if (items.includes(null)) {
+				return null;
+			}
+
+			return [`[${items.join(', ')}]`];
+		}
+
 		const innerType = getTypesSimple(property.items, schema);
 
 		if (innerType == null) {
