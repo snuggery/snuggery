@@ -36,6 +36,10 @@ rules:
         order: asc
 
 overrides:
+  - files: ['**/*.mjs']
+    parserOptions:
+      ecmaVersion: 2022
+      sourceType: module
   - files: ['**/*.ts']
     plugins:
       - '@typescript-eslint'

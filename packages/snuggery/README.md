@@ -2,6 +2,8 @@
 
 An `ng`-like CLI to manage your workspace
 
+<!-- auto generate: yarn sn help -->
+
 ```
 Snuggery
 

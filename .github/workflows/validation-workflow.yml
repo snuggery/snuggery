@@ -33,6 +33,11 @@ jobs:
           yarn sn lint
         shell: bash
 
+      - name: 'Check whether the help sections in the READMEs are up to date (fix w/ "yarn update-help")'
+        run: |
+          yarn update-help validate
+        shell: bash
+
   build-unit:
     name: Build & Unit
     runs-on: ubuntu-latest

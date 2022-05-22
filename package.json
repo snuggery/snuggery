@@ -11,7 +11,8 @@
 		"postinstall": "is-ci || husky install",
 		"build": "sn build",
 		"lint": "sn lint",
-		"test": "sn test"
+		"test": "sn test",
+		"update-help": "node ./scripts/update-help.mjs"
 	},
 	"devDependencies": {
 		"@angular-eslint/builder": "13.0.1",
