@@ -11,6 +11,12 @@
 	"bin": {
 		"sn": "bin.sh"
 	},
+	"files": [
+		"*.js",
+		".pnp.loader.mjs",
+		"bin.sh",
+		"*.md"
+	],
 	"dependencies": {
 		"@snuggery/snuggery": "0.6.4"
 	},

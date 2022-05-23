@@ -21,4 +21,4 @@ fi
 
 dir=$(dirname -- "$rp")
 
-exec node --experimental-loader "$dir/.pnp.loader.mjs" "$dir/bin.js" "$@"
+exec node --require "$dir/silence.js" --experimental-loader "$dir/.pnp.loader.mjs" "$dir/bin.js" "$@"
