@@ -13,9 +13,9 @@
 	"dependencies": {
 		"@angular-devkit/architect": "0.1300.2",
 		"@angular-devkit/core": "13.0.2",
-		"@snuggery/architect": "0.3.3",
+		"@snuggery/architect": "0.3.4",
 		"@snuggery/core": "0.3.3",
-		"@snuggery/snuggery": "0.6.4",
+		"@snuggery/snuggery": "0.6.5",
 		"glob": "7.2.0",
 		"rxjs": "6.6.7",
 		"semver": "^7.3.5",
