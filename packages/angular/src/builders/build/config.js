@@ -34,6 +34,10 @@ export async function loadConfiguration(context) {
 		context,
 	);
 
+	if (!configs.length) {
+		return {};
+	}
+
 	return configs.reduce((a, b) => ({
 		...a,
 		...b,
