@@ -1,13 +1,39 @@
-/**
- * @typedef {object} Plugin
- * @property {string} [name]
- * @property {() => void} [finalize]
- * @property {import('./resource-processor.js').StyleProcessor | readonly import('./resource-processor.js').StyleProcessor[]} [styleProcessor]
- * @property {import('typescript').CustomTransformers} [typescriptTransformers]
- * @property {(manifest: import('@snuggery/core').JsonObject) => void} [processManifest]
- */
-
 import {BuildFailureError} from './error.js';
+
+/**
+ * A plugin for the `@snuggery/angular` library compiler
+ *
+ * Plugins can provide several extension points, all of which are optional.
+ * The timing in which these extension points are called or used is not defined, except for the `finalize` hook which is guaranteed to be called once at the end of the compilation.
+ *
+ * @typedef {object} Plugin
+ * @property {import('./resource-processor.js').StyleProcessor | readonly import('./resource-processor.js').StyleProcessor[]} [styleProcessor] Extra style processor(s)
+ *
+ * These style processors can
+ * - add extra languages, e.g. `stylus`
+ * - override the built-in compilers for SASS or LESS
+ * - add an extra processing step for all styles by registering a processor for the `css` language.
+ *
+ * The compiler has default processors for SASS (`'sass'`, with extensions `.sass` and `.scss`), LESS (`'less'` with extension `.less`) and CSS (`'css'` with file extension `.css`).
+ *
+ * The compiler first runs the processor for the input file, or configured inline style language for inline styles.
+ * Then the compiler runs the processor for the `'css'` language, if that's not the same processor it already ran.
+ * The result is then optimized and passed through `autoprefixer`.
+ *
+ * @property {import('typescript').CustomTransformers} [typescriptTransformers] `CustomTransformers` to be passed to the typescript compiler
+ *
+ * The `typescriptTransformers` of all plugins are combined in the order the plugins are configured in.
+ *
+ * @property {(manifest: import('@snuggery/core').JsonObject) => void} [processManifest] Function called with the manifest
+ *
+ * This function is called once for every `package.json` that is written in the output folder.
+ * The manifest will already be filled in by the compiler, with `scripts` and `devDependencies` removed if so configured.
+ *
+ * @property {() => void} [finalize] Function called when the compilation is complete
+ *
+ * This function is called exactly once when the compilation is complete.
+ * Use this for clean-up or to e.g. perform validations on information collected in the other hooks.
+ */
 
 /**
  * `Array.isArray` checks for arrays, we want to check for readonly arrays

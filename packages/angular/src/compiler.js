@@ -20,10 +20,22 @@ import {ensureUnixPath, getUnscopedName} from './compiler/utils.js';
 export {BuildFailureError, createCompileCache};
 
 /**
+ * Single entry point of the library to build.
+ *
+ * A library can have multiple entry points, one is always the "primary" entry point. This is the package itself, e.g. `lorem` or `@ipsum/dolor`.
+ * Packages can have secondary entry points, for example `lorem/sit` or `@ipsum/dolor/amet`.
+ *
  * @typedef {object} EntryPoint
- * @property {string} manifestFile
- * @property {string=} mainFile
- * @property {string=} tsConfigFile
+ *
+ * @property {string} manifestFile Path to the `package.json` file of this entry point, can be absolute or relative to the `rootFolder` passed of the input
+ *
+ * @property {string=} mainFile Main file of the entry point
+ *
+ * Defaults to the `main` of the `package.json` or `index.ts` if that isn't set
+ *
+ * @property {string=} tsConfigFile Path to the typescript configuration file for this entry point
+ *
+ * For secondary entry points this falls back to the `tsConfigFile` configured in the primary entry point
  */
 
 /**
@@ -31,10 +43,16 @@ export {BuildFailureError, createCompileCache};
  */
 
 /**
+ * Factory of plugin instances
+ *
+ * A plugin is loaded via its factory, which is passed into the compiler.
+ *
  * @template [I=unknown]
  * @typedef {object} CompilerPluginFactory
- * @property {string} name
- * @property {(compilerInput: Readonly<Required<Omit<CompilerInput, 'plugins'>>>, pluginInput?: I) => CompilerPlugin} create
+ * @property {string} name The name of the plugin
+ *
+ * This name is added to logged errors to help identify the cause
+ * @property {(compilerInput: Readonly<Required<Omit<CompilerInput, 'plugins'>>>, pluginInput?: I) => CompilerPlugin} create Function called to create the plugin instance, given the configuration passed to the compiler (with defaults filled in) and the input configured for the plugin, if any.
  */
 
 /**
@@ -42,24 +60,65 @@ export {BuildFailureError, createCompileCache};
  */
 
 /**
+ * Input for the compiler
+ *
  * @typedef {object} CompilerInput
- * @property {string} [rootFolder]
- * @property {Readonly<EntryPoint>} primaryEntryPoint
- * @property {readonly Readonly<EntryPoint>[]} [secondaryEntryPoints]
- * @property {string} [outputFolder]
- * @property {boolean} [cleanOutputFolder]
- * @property {import('./compiler/compile.js').CompileCache | boolean} [cache]
- * @property {import('./compiler/logger.js').Logger} [logger]
- * @property {readonly (CompilerPluginFactory<void> | readonly [CompilerPluginFactory<unknown>, unknown])[]} [plugins]
- * @property {boolean} [keepScripts]
- * @property {boolean} [keepDevDependencies]
- * @property {string} [inlineStyleLanguage]
- * @property {CompilerFlags} [flags]
+ *
+ * @property {string} [rootFolder] Folder to which all relative paths are resolved
+ *
+ * This property defaults to the current working directory.
+ *
+ * @property {Readonly<EntryPoint>} primaryEntryPoint Main entry point for the library
+ *
+ * This is the only required property on the input.
+ *
+ * @property {readonly Readonly<EntryPoint>[]} [secondaryEntryPoints] Secondary entry points for the library, if any
+ *
+ * @property {string} [outputFolder] The output folder
+ *
+ * This defaults to `<rootFolder>/dist`
+ *
+ * @property {boolean} [cleanOutputFolder] Whether to clean the output folder before building
+ *
+ * The default value is `true`
+ *
+ * @property {import('./compiler/compile.js').CompileCache | boolean} [cache] Config for the cache
+ *
+ * If `false` is passed, caching is disabled.
+ * If a cache is passed, that cache will be used.
+ * If `true` is passed (the default value), a global cache is used.
+ *
+ * @property {import('./compiler/logger.js').Logger} [logger] Logger used to output messages, warnings or errors
+ *
+ * Defaults to printing to the `console`.
+ *
+ * @property {readonly (CompilerPluginFactory<void> | readonly [CompilerPluginFactory<unknown>, unknown])[]} [plugins] Plugins to use while building
+ *
+ * Defaults to not using any plugins
+ *
+ * @property {boolean} [keepScripts] Whether to keep the `scripts` section in the `package.json` output
+ *
+ * Defaults to `false`.
+ *
+ * @property {boolean} [keepDevDependencies] Whether to keep the `devDependencies` section in the `package.json` output
+ *
+ * Defaults to `false`.
+ *
+ * @property {string} [inlineStyleLanguage] The language to use for inline styles
+ *
+ * The default value is `'css'`.
+ *
+ * @property {CompilerFlags} [flags] Compiler flags to set
+ *
+ * The default values for these flags can be found in the `CompilerFlags` documentation.
  */
 
 /**
+ * Output of the compiler
+ *
  * @typedef {object} CompilerOutput
- * @property {import('./compiler/compile.js').CompileCache} cache
+ *
+ * @property {import('./compiler/compile.js').CompileCache} cache The cache used while building
  */
 
 /**
@@ -132,14 +191,16 @@ async function expandEntryPoint(
 const globalCache = createCompileCache();
 
 /**
- * @param {CompilerInput} input
- * @returns {Promise<CompilerOutput>}
+ * Build an angular library
+ *
+ * @param {CompilerInput} input Configuration for the compiler
+ * @returns {Promise<CompilerOutput>} The output
  */
 export async function build({
 	primaryEntryPoint,
 	secondaryEntryPoints = [],
 	rootFolder = cwd(),
-	outputFolder = join(rootFolder, 'dist'),
+	outputFolder = 'dist',
 	cleanOutputFolder = true,
 	cache = true,
 	logger = defaultLogger,
@@ -152,6 +213,9 @@ export async function build({
 		enableApiExtractor = flags.enableApiExtractor,
 	} = {},
 }) {
+	rootFolder = resolve(rootFolder);
+	outputFolder = join(rootFolder, outputFolder);
+
 	performance.mark('start');
 	const primaryCompilationEntryPoint = await expandEntryPoint(
 		primaryEntryPoint,

@@ -10,6 +10,10 @@ import {parseConfiguration} from './compile/tsconfig.js';
  */
 
 /**
+ * Create a compilation cache
+ *
+ * Cache values can be passed as `cache` property when running the library compiler.
+ *
  * @returns {CompileCache}
  */
 export function createCompileCache() {
