@@ -10,7 +10,7 @@
 		"directory": "packages/angular"
 	},
 	"exports": {
-		".": "./src/compiler.js",
+		"./compiler": "./src/compiler.js",
 		"./plugins": "./src/plugins.js",
 		"./package.json": "./package.json"
 	},
@@ -58,9 +58,8 @@
 		"typescript": "4.6.4"
 	},
 	"publishConfig": {
-		"main": "./compiler.js",
 		"exports": {
-			".": "./compiler.js",
+			"./compiler": "./compiler.js",
 			"./plugins": "./plugins.js",
 			"./package.json": "./package.json"
 		}
