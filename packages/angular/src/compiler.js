@@ -214,7 +214,7 @@ export async function build({
 	} = {},
 }) {
 	rootFolder = resolve(rootFolder);
-	outputFolder = join(rootFolder, outputFolder);
+	outputFolder = resolve(rootFolder, outputFolder);
 
 	performance.mark('start');
 	const primaryCompilationEntryPoint = await expandEntryPoint(
