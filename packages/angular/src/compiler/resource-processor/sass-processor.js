@@ -67,11 +67,13 @@ const sassResolver = (url, prev) => {
 
 	const deepImport = url.slice(packageName.length);
 	return {
-		file:
+		file: join(
+			dirname(manifestFile),
 			resolve(manifest, `.${deepImport}`, {
 				conditions: ['sass', 'style'],
 				unsafe: true,
-			}) ?? join(dirname(manifestFile), deepImport),
+			}) ?? deepImport,
+		),
 	};
 };
 
