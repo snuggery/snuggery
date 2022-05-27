@@ -97,7 +97,7 @@ export async function writeManifest({
 	// Default sideEffects to false unless explicitly set to true or an array of files
 	if (!Array.isArray(manifest.sideEffects)) {
 		manifest.sideEffects =
-			(manifest.sideEffects ?? originalMainManifest.sideEffects) !== true;
+			(manifest.sideEffects ?? originalMainManifest.sideEffects) === true;
 	}
 
 	// Set the legacy properties that angular expects

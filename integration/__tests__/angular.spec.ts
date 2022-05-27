@@ -29,10 +29,33 @@ test(
 		await expectSuccessfulRun(run, ['build', '@integration/standalone']);
 
 		const outputFolder = join(directory, 'packages/standalone/dist');
+		const packageJson = JSON.parse(
+			await readFile(join(outputFolder, 'package.json'), 'utf8'),
+		);
 		const fesm = await readFile(
 			join(outputFolder, 'fesm2020/standalone.js'),
 			'utf8',
 		);
+
+		// Expect exports to be defined correctly
+		expect(packageJson.exports['.']).toMatchObject({
+			types: './index.d.ts',
+			esm2020: './esm2020/standalone.js',
+			es2020: './fesm2020/standalone.js',
+			es2015: './fesm2015/standalone.js',
+			node: './fesm2015/standalone.js',
+			default: './fesm2020/standalone.js',
+		});
+		expect(packageJson.exports['./sub']).toMatchObject({
+			types: './sub/index.d.ts',
+			esm2020: './sub/esm2020/sub.js',
+			es2020: './fesm2020/sub.js',
+			es2015: './fesm2015/sub.js',
+			node: './fesm2015/sub.js',
+			default: './fesm2020/sub.js',
+		});
+
+		expect(packageJson.sideEffects).toBe(false);
 
 		// expect the module and component to be defined
 		expect(fesm).toContain('MyComponent');
