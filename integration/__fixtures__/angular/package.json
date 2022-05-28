@@ -9,6 +9,6 @@
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",
 		"sass": "^1.51.0",
-		"typescript": "4.6.4"
+		"typescript": "4.7.2"
 	}
 }
