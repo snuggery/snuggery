@@ -1,6 +1,14 @@
 {
 	"name": "@integration/standalone",
-	"main": "src/index.ts",
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./sub": "./sub/src/index.ts",
+		"./variables": {
+			"sass": "./_variables.scss"
+		},
+		"./package.json": "./package.json"
+	},
 	"dependencies": {
 		"tslib": "^2.4.0"
 	},

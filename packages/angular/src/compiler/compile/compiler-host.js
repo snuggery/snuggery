@@ -7,12 +7,17 @@ import {ModuleCache} from '../cache/module.js';
 import {performance} from '../performance.js';
 import {ensureUnixPath} from '../utils.js';
 
+import {isUsingNodeResolution} from './tsconfig.js';
+import {disallowCjsWriteFileFactory} from './writer.js';
+
 /**
  * @typedef {object} CreateCompilerHostInput
  * @property {import('@angular/compiler-cli').CompilerOptions} compilerOptions
  * @property {import('typescript').ModuleResolutionCache} moduleResolutionCache
  * @property {import('../cache/file.js').FileCache} fileCache
  * @property {import('../resource-processor').ResourceProcessor} resourceProcessor
+ * @property {import('../manifest.js').Manifest} primaryManifest
+ * @property {string} outputFile
  */
 
 /**
@@ -50,6 +55,8 @@ export function createCompilerHost({
 	moduleResolutionCache,
 	fileCache,
 	resourceProcessor,
+	primaryManifest,
+	outputFile,
 }) {
 	const moduleCache = new ModuleCache();
 	const compilerHost = _createCompilerHost({
@@ -226,5 +233,13 @@ export function createCompilerHost({
 				? relativeImportPath
 				: `./${relativeImportPath}`;
 		},
+
+		// Disallow CJS in case the node-compliant typescript module resolution is used
+		// We should actually always disallow CJS, but in typescript's other module resolution
+		// settings that's ± impossible to validate
+
+		writeFile: isUsingNodeResolution(compilerOptions)
+			? disallowCjsWriteFileFactory({compilerHost, primaryManifest, outputFile})
+			: compilerHost.writeFile,
 	};
 }

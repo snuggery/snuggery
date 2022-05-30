@@ -19,11 +19,13 @@ import {combineTransformers} from './plugin.js';
 
 /**
  * @typedef {object} CompileInput
- * @property {import('@angular/compiler-cli').ParsedConfiguration} config
  * @property {Cache} cache
+ * @property {import('@angular/compiler-cli').ParsedConfiguration} config
  * @property {import('../logger.js').Logger} logger
- * @property {import('../resource-processor.js').ResourceProcessor} resourceProcessor
+ * @property {string} outputFile
  * @property {readonly import('../plugin.js').WrappedPlugin[]} plugins
+ * @property {import('../manifest.js').Manifest} primaryManifest
+ * @property {import('../resource-processor.js').ResourceProcessor} resourceProcessor
  * @property {boolean} usePrivateApiAsImportIssueWorkaround
  */
 
@@ -32,11 +34,13 @@ import {combineTransformers} from './plugin.js';
  * @returns {Promise<void>}
  */
 export async function compile({
-	config,
 	cache,
+	config,
 	logger,
-	resourceProcessor,
+	outputFile,
 	plugins,
+	primaryManifest,
+	resourceProcessor,
 	usePrivateApiAsImportIssueWorkaround,
 }) {
 	const {rootNames, options, errors: configErrors, emitFlags} = config;
@@ -52,6 +56,8 @@ export async function compile({
 			moduleResolutionCache: cache.moduleResolution,
 			fileCache: cache.files,
 			resourceProcessor,
+			primaryManifest,
+			outputFile,
 		});
 
 		const program = createProgram({

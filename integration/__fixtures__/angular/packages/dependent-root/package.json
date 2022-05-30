@@ -1,6 +1,7 @@
 {
 	"name": "@integration/dependent-root",
-	"main": "src/index.ts",
+	"type": "module",
+	"exports": "./src/index.ts",
 	"dependencies": {
 		"tslib": "^2.4.0"
 	},

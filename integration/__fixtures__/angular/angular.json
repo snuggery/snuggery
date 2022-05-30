@@ -17,9 +17,7 @@
 			"architect": {
 				"build": {
 					"builder": "@snuggery/angular:build",
-					"options": {
-						"secondaryEntryPoints": ["packages/standalone/sub/package.json"]
-					},
+					"options": {},
 					"configurations": {
 						"enable-api-extractor": {
 							"flags": {

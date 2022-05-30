@@ -1,3 +1,7 @@
 {
-	"extends": "@snuggery/angular"
+	"extends": "@snuggery/angular",
+	"compilerOptions": {
+		"module": "Node16",
+		"moduleResolution": "Node16"
+	}
 }

@@ -172,7 +172,11 @@ export async function executeBuild(
 				primaryEntryPoint ??
 					(await resolveProjectPath(context, manifestFilename)),
 			),
-			secondaryEntryPoints: secondaryEntryPoints?.map(resolveEntryPoint),
+			secondaryEntryPoints:
+				// The angular architect fills in empty arrays by default
+				secondaryEntryPoints?.length > 0
+					? secondaryEntryPoints.map(resolveEntryPoint)
+					: undefined,
 			keepDevDependencies,
 			keepScripts,
 			outputFolder,

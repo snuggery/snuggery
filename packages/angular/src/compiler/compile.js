@@ -114,20 +114,24 @@ export async function compile(
 	const safeCache = excludeSelfFromModuleCache(context.compileCache, context);
 
 	await performCompilation({
+		cache: safeCache,
 		config: parseConfiguration({
-			target,
-			outputFile,
+			closestManifest: context.getManifest(currentEntryPoint),
 			declarationOutputFile,
 			entryPoints: context.entryPoints,
-			rootFolder: context.rootFolder,
 			mainFile: currentEntryPoint.mainFile,
-			tsConfigFile: currentEntryPoint.tsConfigFile,
+			outputFile,
 			packageName: currentEntryPoint.packageName,
+			primaryManifest: context.primaryEntryPoint.manifest,
+			rootFolder: context.rootFolder,
+			target,
+			tsConfigFile: currentEntryPoint.tsConfigFile,
 			usePrivateApiAsImportIssueWorkaround,
 		}),
-		cache: safeCache,
 		logger: context.logger,
+		outputFile,
 		plugins: context.plugins,
+		primaryManifest: context.primaryEntryPoint.manifest,
 		resourceProcessor: context.resourceProcessor,
 		usePrivateApiAsImportIssueWorkaround,
 	});
