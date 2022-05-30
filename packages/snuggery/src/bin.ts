@@ -10,7 +10,7 @@ if (parseInt(major) < 12 || (major === '12' && parseInt(minor) < 2)) {
 	process.exit(1);
 }
 
-import('./cli')
+import('./cli/index.js')
 	.then(async ({findWorkspace, run}) => {
 		// Allow overriding the startCwd using an environment variable. This is
 		// useful when running a local clone of `sn`

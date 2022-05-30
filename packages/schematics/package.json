@@ -9,6 +9,10 @@
 		"directory": "packages/schematics"
 	},
 	"main": "index.js",
+	"exports": {
+		".": "./src/index.ts",
+		"./package.json": "./package.json"
+	},
 	"schematics": "./collection.json",
 	"peerDependencies": {
 		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0 || ^14.0.0-rc.0",
@@ -28,5 +32,11 @@
 	},
 	"dependencies": {
 		"@snuggery/core": "0.3.3"
+	},
+	"publishConfig": {
+		"exports": {
+			".": "./index.js",
+			"./package.json": "./package.json"
+		}
 	}
 }

@@ -8,8 +8,11 @@
 		"url": "https://github.com/snuggery/snuggery.git",
 		"directory": "packages/affected"
 	},
-	"main": "index.js",
 	"builders": "./builders.json",
+	"exports": {
+		"./strategies": "./src/strategies.js",
+		"./package.json": "./package.json"
+	},
 	"dependencies": {
 		"@angular-devkit/architect": "0.1300.2",
 		"@angular-devkit/core": "13.0.2",
@@ -29,5 +32,11 @@
 		"expect": "^27.3.1",
 		"rxjs": "6.6.7",
 		"uvu": "^0.5.2"
+	},
+	"publishConfig": {
+		"exports": {
+			"./strategies": "./strategies.js",
+			"./package.json": "./package.json"
+		}
 	}
 }

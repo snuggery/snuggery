@@ -11,6 +11,11 @@
 	"bin": {
 		"sn": "bin.js"
 	},
+	"exports": {
+		"./builders": "./src/builders/index.ts",
+		"./cli": "./src/cli/index.js",
+		"./package.json": "./package.json"
+	},
 	"builders": "builders.json",
 	"publishConfig": {
 		"exports": {

@@ -15,7 +15,7 @@ import {disallowCjsWriteFileFactory} from './writer.js';
  * @property {import('@angular/compiler-cli').CompilerOptions} compilerOptions
  * @property {import('typescript').ModuleResolutionCache} moduleResolutionCache
  * @property {import('../cache/file.js').FileCache} fileCache
- * @property {import('../resource-processor').ResourceProcessor} resourceProcessor
+ * @property {import('../resource-processor.js').ResourceProcessor} resourceProcessor
  * @property {import('../manifest.js').Manifest} primaryManifest
  * @property {string} outputFile
  */

@@ -113,6 +113,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular/compiler-cli@patch:@angular/compiler-cli@npm:14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 14.0.0-rc.0
+  resolution: "@angular/compiler-cli@patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    "@babel/core": ^7.17.2
+    chokidar: ^3.0.0
+    convert-source-map: ^1.5.1
+    dependency-graph: ^0.11.0
+    magic-string: ^0.26.0
+    reflect-metadata: ^0.1.2
+    semver: ^7.0.0
+    sourcemap-codec: ^1.4.8
+    tslib: ^2.3.0
+    yargs: ^17.2.1
+  peerDependencies:
+    "@angular/compiler": 14.0.0-rc.0
+    typescript: ">=4.6.2 <4.8"
+  bin:
+    ng-xi18n: bundles/src/bin/ng_xi18n.js
+    ngc: bundles/src/bin/ngc.js
+    ngcc: bundles/ngcc/main-ngcc.js
+  checksum: c539e5d7633c920a9de92f15f961e9c594b67fea6622ea19943a2e283f9e891ca99e5e09f5c1ba52027c14da139a06489499ae34a288978021c649fb7efa1043
+  languageName: node
+  linkType: hard
+
 "@angular/compiler@npm:14.0.0-rc.0":
   version: 14.0.0-rc.0
   resolution: "@angular/compiler@npm:14.0.0-rc.0"
@@ -6111,6 +6136,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve.exports@patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 1.1.0
+  resolution: "resolve.exports@patch:resolve.exports@npm%3A1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::version=1.1.0&hash=b661de&locator=snuggery-workspace%40workspace%3A."
+  checksum: b593060fef1af93ecbb92d6c65d583e7ca68614a6e1cd2fa347990232a686e9e05bdfd3ab832ef46143f8f51a6fbc524b9006f913418a2b7e93001ea49ad9c8a
+  languageName: node
+  linkType: hard
+
 resolve@^1.20.0:
   version: 1.20.0
   resolution: "resolve@npm:1.20.0"
@@ -6268,7 +6300,7 @@ resolve@^1.20.0:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.51.0":
+"sass@npm:1.51.0":
   version: 1.51.0
   resolution: "sass@npm:1.51.0"
   dependencies:
@@ -6278,6 +6310,19 @@ resolve@^1.20.0:
   bin:
     sass: sass.js
   checksum: d674fd87be863961d5e5233a148e381a72b06ca1749ffd95a08be2c3f4aa8fc77e3e21840347a84d7d4542cbf97cd6f9bfae19ecb1f5eefa6c207a3d8f923dbc
+  languageName: node
+  linkType: hard
+
+"sass@patch:sass@npm:1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 1.51.0
+  resolution: "sass@patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    chokidar: ">=3.0.0 <4.0.0"
+    immutable: ^4.0.0
+    source-map-js: ">=0.6.2 <2.0.0"
+  bin:
+    sass: sass.js
+  checksum: d4c2f1949c889b42cc4e84849b4dd9eb1ca48a77838e5cf85d6f8cdc6da4d61549b4baca5290e2c32645b5d40d78e92348b09f485c287b92f92d6dca538c5cc0
   languageName: node
   linkType: hard
 

@@ -1,6 +1,6 @@
 require('@snuggery-workspace/scripts/load-ts');
 
-module.exports = require('./src/index.ts');
+module.exports = require('./index.ts');
 
 0 &&
 	((exports.AssetSpec = void 0),

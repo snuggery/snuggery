@@ -272,17 +272,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular/compiler-cli", [\
-        ["npm:14.0.0-rc.0", {\
-          "packageLocation": "./.yarn/cache/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810-c0fc31f218.zip/node_modules/@angular/compiler-cli/",\
+        ["patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@angular-compiler-cli-patch-83a2d3c1eb-c539e5d763.zip/node_modules/@angular/compiler-cli/",\
           "packageDependencies": [\
-            ["@angular/compiler-cli", "npm:14.0.0-rc.0"]\
+            ["@angular/compiler-cli", "patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0", {\
-          "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-c1105c87cc/0/cache/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810-c0fc31f218.zip/node_modules/@angular/compiler-cli/",\
+        ["virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-ef38e05c33/0/cache/@angular-compiler-cli-patch-83a2d3c1eb-c539e5d763.zip/node_modules/@angular/compiler-cli/",\
           "packageDependencies": [\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
+            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."],\
             ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
             ["@babel/core", "npm:7.17.10"],\
             ["@types/angular__compiler", null],\
@@ -1444,7 +1444,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1300.2"],\
             ["@angular-devkit/core", "virtual:277f0f65dd85681b35d92d10e265316130942204d1df1648a8e11284ec6f374f09316ead5e87cd2ac492db855bd8dcb8f805fa067975dba7c52f9f57f671c3a5#patch:@angular-devkit/core@npm%3A13.0.2#.yarn/patches/@angular-devkit__core.patch::version=13.0.2&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],\
             ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
+            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."],\
             ["@microsoft/api-extractor", "npm:7.24.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
@@ -1459,8 +1459,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["esbuild", "npm:0.14.38"],\
             ["less", "npm:4.1.2"],\
             ["postcss", "npm:8.4.14"],\
-            ["resolve.exports", "npm:1.1.0"],\
-            ["sass", "npm:1.51.0"],\
+            ["resolve.exports", "patch:resolve.exports@npm%3A1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::version=1.1.0&hash=b661de&locator=snuggery-workspace%40workspace%3A."],\
+            ["sass", "patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A."],\
             ["typanion", "npm:3.7.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
           ],\
@@ -1481,7 +1481,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1300.2"],\
             ["@angular-devkit/core", "virtual:277f0f65dd85681b35d92d10e265316130942204d1df1648a8e11284ec6f374f09316ead5e87cd2ac492db855bd8dcb8f805fa067975dba7c52f9f57f671c3a5#patch:@angular-devkit/core@npm%3A13.0.2#.yarn/patches/@angular-devkit__core.patch::version=13.0.2&hash=5cce9c&locator=snuggery-workspace%40workspace%3A."],\
             ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
+            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."],\
             ["@microsoft/api-extractor", "npm:7.24.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
@@ -1493,8 +1493,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["esbuild", "npm:0.14.38"],\
             ["less", "npm:4.1.2"],\
             ["postcss", "npm:8.4.14"],\
-            ["resolve.exports", "npm:1.1.0"],\
-            ["sass", "npm:1.51.0"],\
+            ["resolve.exports", "patch:resolve.exports@npm%3A1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::version=1.1.0&hash=b661de&locator=snuggery-workspace%40workspace%3A."],\
+            ["sass", "patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A."],\
             ["typanion", "npm:3.7.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
           ],\
@@ -3116,11 +3116,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["angular-1e2ed1", "workspace:integration/__fixtures__/angular"],\
             ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:14.0.0-rc.0"],\
+            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A14.0.0-rc.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-rc.0-9235699810.patch::version=14.0.0-rc.0&hash=71c6e2&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery/angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@snuggery/yarn", "workspace:packages/yarn"],\
-            ["sass", "npm:1.51.0"],\
+            ["sass", "patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A."],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -7576,10 +7576,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["resolve.exports", [\
-        ["npm:1.1.0", {\
-          "packageLocation": "./.yarn/cache/resolve.exports-npm-1.1.0-81756e03ba-52865af8ed.zip/node_modules/resolve.exports/",\
+        ["patch:resolve.exports@npm%3A1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::version=1.1.0&hash=b661de&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/resolve.exports-patch-761dfab35f-b593060fef.zip/node_modules/resolve.exports/",\
           "packageDependencies": [\
-            ["resolve.exports", "npm:1.1.0"]\
+            ["resolve.exports", "patch:resolve.exports@npm%3A1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch::version=1.1.0&hash=b661de&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7710,10 +7710,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["sass", [\
-        ["npm:1.51.0", {\
-          "packageLocation": "./.yarn/cache/sass-npm-1.51.0-fa78a45677-d674fd87be.zip/node_modules/sass/",\
+        ["patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/sass-patch-f20b1d364b-d4c2f1949c.zip/node_modules/sass/",\
           "packageDependencies": [\
-            ["sass", "npm:1.51.0"],\
+            ["sass", "patch:sass@npm%3A1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch::version=1.51.0&hash=6e46bf&locator=snuggery-workspace%40workspace%3A."],\
             ["chokidar", "npm:3.5.3"],\
             ["immutable", "npm:4.0.0"],\
             ["source-map-js", "npm:1.0.2"]\
