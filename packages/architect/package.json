@@ -10,8 +10,8 @@
 	},
 	"main": "index.js",
 	"peerDependencies": {
-		"@angular-devkit/architect": ">= 0.1200.0-rc.2 < 0.1400.0",
-		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0",
+		"@angular-devkit/architect": ">= 0.1200.0-rc.2 < 0.1500.0",
+		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0 || ^14.0.0-rc.0",
 		"typanion": "^3.7.1"
 	},
 	"peerDependenciesMeta": {

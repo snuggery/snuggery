@@ -11,8 +11,8 @@
 	"main": "index.js",
 	"schematics": "./collection.json",
 	"peerDependencies": {
-		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0",
-		"@angular-devkit/schematics": "^12.0.0-rc.2 || ^13.0.0",
+		"@angular-devkit/core": "^12.0.0-rc.2 || ^13.0.0 || ^14.0.0-rc.0",
+		"@angular-devkit/schematics": "^12.0.0-rc.2 || ^13.0.0 || ^14.0.0-rc.0",
 		"typescript": ">= 4.0.0 < 4.8.0"
 	},
 	"peerDependenciesMeta": {
