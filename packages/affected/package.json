@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/affected",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -16,9 +16,9 @@
 	"dependencies": {
 		"@angular-devkit/architect": "0.1400.0",
 		"@angular-devkit/core": "14.0.0",
-		"@snuggery/architect": "0.3.4",
-		"@snuggery/core": "0.3.3",
-		"@snuggery/snuggery": "0.6.5",
+		"@snuggery/architect": "0.4.0",
+		"@snuggery/core": "0.3.4",
+		"@snuggery/snuggery": "0.6.6",
 		"glob": "7.2.0",
 		"rxjs": "6.6.7",
 		"semver": "^7.3.5",

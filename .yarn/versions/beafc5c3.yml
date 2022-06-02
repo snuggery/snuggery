@@ -1,7 +1,0 @@
-declined:
-  - "@snuggery/affected"
-  - "@snuggery/angular"
-  - "@snuggery/architect"
-  - "@snuggery/core"
-  - "@snuggery/schematics"
-  - "@snuggery/snuggery"
