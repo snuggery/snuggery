@@ -22,7 +22,7 @@
 		}
 	},
 	"dependencies": {
-		"@angular-devkit/core": "13.0.2",
+		"@angular-devkit/core": "14.0.0",
 		"jsonc-parser": "3.0.0",
 		"micromatch": "4.0.2",
 		"yaml": "2.0.0-9"

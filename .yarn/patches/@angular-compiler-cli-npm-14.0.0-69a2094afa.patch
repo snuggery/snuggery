@@ -1,0 +1,919 @@
+diff --git a/index.d.ts b/index.d.ts
+index e5995176b7b48454483783c5bcfccedd43d2b752..80a6e7c1dadfc1041ef97aeeda39fc959476873f 100755
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,14 +1,14 @@
+ /// <amd-module name="@angular/compiler-cli" />
+-export { VERSION } from './src/version';
+-export * from './src/transformers/api';
+-export * from './src/transformers/entry_points';
+-export * from './src/perform_compile';
+-export { CompilerOptions as AngularCompilerOptions } from './src/transformers/api';
+-export * from './private/tooling';
+-export * from './src/ngtsc/logging';
+-export * from './src/ngtsc/file_system';
+-export { NgTscPlugin } from './src/ngtsc/tsc_plugin';
+-export { NgtscProgram } from './src/ngtsc/program';
+-export { OptimizeFor } from './src/ngtsc/typecheck/api';
+-export { ConsoleLogger, Logger, LogLevel } from './src/ngtsc/logging';
+-export { NodeJSFileSystem } from './src/ngtsc/file_system';
++export { VERSION } from './src/version.js';
++export * from './src/transformers/api.js';
++export * from './src/transformers/entry_points.js';
++export * from './src/perform_compile.js';
++export { CompilerOptions as AngularCompilerOptions } from './src/transformers/api.js';
++export * from './private/tooling.js';
++export * from './src/ngtsc/logging/index.js';
++export * from './src/ngtsc/file_system/index.js';
++export { NgTscPlugin } from './src/ngtsc/tsc_plugin.js';
++export { NgtscProgram } from './src/ngtsc/program.js';
++export { OptimizeFor } from './src/ngtsc/typecheck/api/index.js';
++export { ConsoleLogger, Logger, LogLevel } from './src/ngtsc/logging/index.js';
++export { NodeJSFileSystem } from './src/ngtsc/file_system/index.js';
+diff --git a/src/ngtsc/core/api/index.d.ts b/src/ngtsc/core/api/index.d.ts
+index 11c0f7617421d4e864811fa0cd202946d0ed2425..0df744437ab43618aa36bb9b5b4fbf54d0353998 100755
+--- a/src/ngtsc/core/api/index.d.ts
++++ b/src/ngtsc/core/api/index.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core/api/index" />
+-export * from './src/adapter';
+-export * from './src/interfaces';
+-export * from './src/options';
+-export * from './src/public_options';
++export * from './src/adapter.js';
++export * from './src/interfaces.js';
++export * from './src/options.js';
++export * from './src/public_options.js';
+diff --git a/src/ngtsc/core/api/src/adapter.d.ts b/src/ngtsc/core/api/src/adapter.d.ts
+index 3038e0d1c1d43c503b084bbc969f727262faa68d..01941836e87dd15439a9d86f5695369a6337f22f 100755
+--- a/src/ngtsc/core/api/src/adapter.d.ts
++++ b/src/ngtsc/core/api/src/adapter.d.ts
+@@ -7,9 +7,9 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core/api/src/adapter" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../../file_system';
+-import { FactoryTracker } from '../../../shims/api';
+-import { ExtendedTsCompilerHost, UnifiedModulesHost } from './interfaces';
++import { AbsoluteFsPath } from '../../../file_system/index.js';
++import { FactoryTracker } from '../../../shims/api.js';
++import { ExtendedTsCompilerHost, UnifiedModulesHost } from './interfaces.js';
+ /**
+  * Names of methods from `ExtendedTsCompilerHost` that need to be provided by the
+  * `NgCompilerAdapter`.
+diff --git a/src/ngtsc/core/api/src/options.d.ts b/src/ngtsc/core/api/src/options.d.ts
+index d700864707eb42ccb3c174ff6dda3b5eff7ca1ee..0cd662bd93a691ea1da3968284c8ad0865ded5b3 100755
+--- a/src/ngtsc/core/api/src/options.d.ts
++++ b/src/ngtsc/core/api/src/options.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core/api/src/options" />
+ import ts from 'typescript';
+-import { BazelAndG3Options, DiagnosticOptions, I18nOptions, LegacyNgcOptions, MiscOptions, NgcCompatibilityOptions, StrictTemplateOptions, TargetOptions } from './public_options';
++import { BazelAndG3Options, DiagnosticOptions, I18nOptions, LegacyNgcOptions, MiscOptions, NgcCompatibilityOptions, StrictTemplateOptions, TargetOptions } from './public_options.js';
+ /**
+  * Non-public options which are useful during testing of the compiler.
+  */
+diff --git a/src/ngtsc/core/api/src/public_options.d.ts b/src/ngtsc/core/api/src/public_options.d.ts
+index 6bfee68a063d5589b56c740ebf33d9f5c1afbb92..2f42ab0fd2f4ffac429bf0b6bc164eb619b2ccca 100755
+--- a/src/ngtsc/core/api/src/public_options.d.ts
++++ b/src/ngtsc/core/api/src/public_options.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core/api/src/public_options" />
+-import { ExtendedTemplateDiagnosticName } from '../../../../ngtsc/diagnostics';
++import { ExtendedTemplateDiagnosticName } from '../../../../ngtsc/diagnostics/index.js';
+ /**
+  * Options supported by the legacy View Engine compiler, which are still consumed by the Angular Ivy
+  * compiler for backwards compatibility.
+diff --git a/src/ngtsc/core/index.d.ts b/src/ngtsc/core/index.d.ts
+index 66ba1663006079ecc64d72d66ec4e42628085e9b..22080b2658c0d3b1bbbe7329bfe81dc444d0dff7 100755
+--- a/src/ngtsc/core/index.d.ts
++++ b/src/ngtsc/core/index.d.ts
+@@ -7,4 +7,4 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core" />
+ export * from './src/compiler';
+-export { NgCompilerHost } from './src/host';
++export { NgCompilerHost } from './src/host.js';
+diff --git a/src/ngtsc/core/src/host.d.ts b/src/ngtsc/core/src/host.d.ts
+index da301064b7df0f0fe658a42149873af0af5b8ff4..c55bdefff06c14f4bc564447d48d489d6e2847e5 100755
+--- a/src/ngtsc/core/src/host.d.ts
++++ b/src/ngtsc/core/src/host.d.ts
+@@ -7,11 +7,11 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/core/src/host" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { ShimAdapter, ShimReferenceTagger } from '../../shims';
+-import { FactoryTracker } from '../../shims/api';
+-import { RequiredDelegations } from '../../util/src/typescript';
+-import { ExtendedTsCompilerHost, NgCompilerAdapter, NgCompilerOptions, UnifiedModulesHost } from '../api';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { ShimAdapter, ShimReferenceTagger } from '../../shims/index.js';
++import { FactoryTracker } from '../../shims/api.js';
++import { RequiredDelegations } from '../../util/src/typescript.js';
++import { ExtendedTsCompilerHost, NgCompilerAdapter, NgCompilerOptions, UnifiedModulesHost } from '../api/index.js';
+ /**
+  * Delegates all methods of `ExtendedTsCompilerHost` to a delegate, with the exception of
+  * `getSourceFile` and `fileExists` which are implemented in `NgCompilerHost`.
+diff --git a/src/ngtsc/diagnostics/index.d.ts b/src/ngtsc/diagnostics/index.d.ts
+index 9ed220d56843dc18e3c44686b8c5398b19870015..eb66847d490331fbdbdae537903bed0f3c82e7ff 100755
+--- a/src/ngtsc/diagnostics/index.d.ts
++++ b/src/ngtsc/diagnostics/index.d.ts
+@@ -6,9 +6,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/diagnostics" />
+-export { COMPILER_ERRORS_WITH_GUIDES } from './src/docs';
+-export { FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error';
+-export { ErrorCode } from './src/error_code';
+-export { ERROR_DETAILS_PAGE_BASE_URL } from './src/error_details_base_url';
+-export { ExtendedTemplateDiagnosticName } from './src/extended_template_diagnostic_name';
+-export { ngErrorCode, replaceTsWithNgInErrors } from './src/util';
++export { COMPILER_ERRORS_WITH_GUIDES } from './src/docs.js';
++export { FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error.js';
++export { ErrorCode } from './src/error_code.js';
++export { ERROR_DETAILS_PAGE_BASE_URL } from './src/error_details_base_url.js';
++export { ExtendedTemplateDiagnosticName } from './src/extended_template_diagnostic_name.js';
++export { ngErrorCode, replaceTsWithNgInErrors } from './src/util.js';
+diff --git a/src/ngtsc/diagnostics/src/docs.d.ts b/src/ngtsc/diagnostics/src/docs.d.ts
+index e0bb30874a2b52daa5059172578b38f862236c79..826d97c6581d7a1f35edbf37a0f3a78102a4ec25 100755
+--- a/src/ngtsc/diagnostics/src/docs.d.ts
++++ b/src/ngtsc/diagnostics/src/docs.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/diagnostics/src/docs" />
+-import { ErrorCode } from './error_code';
++import { ErrorCode } from './error_code.js';
+ /**
+  * Contains a set of error messages that have detailed guides at angular.io.
+  * Full list of available error guides can be found at https://angular.io/errors
+diff --git a/src/ngtsc/diagnostics/src/error.d.ts b/src/ngtsc/diagnostics/src/error.d.ts
+index 904b36296602f854c10505bfca6c2a36cf095316..fb4a83bd8e3bb1ed9973a14dfdf3091af98aed12 100755
+--- a/src/ngtsc/diagnostics/src/error.d.ts
++++ b/src/ngtsc/diagnostics/src/error.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/diagnostics/src/error" />
+ import ts from 'typescript';
+-import { ErrorCode } from './error_code';
++import { ErrorCode } from './error_code.js';
+ export declare class FatalDiagnosticError {
+     readonly code: ErrorCode;
+     readonly node: ts.Node;
+diff --git a/src/ngtsc/diagnostics/src/util.d.ts b/src/ngtsc/diagnostics/src/util.d.ts
+index 05e6125c599e1adda695baabd8bcc7281bc8a40a..af4c0460337c0c073a9d6dc2ccab4643da613624 100755
+--- a/src/ngtsc/diagnostics/src/util.d.ts
++++ b/src/ngtsc/diagnostics/src/util.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/diagnostics/src/util" />
+-import { ErrorCode } from './error_code';
++import { ErrorCode } from './error_code.js';
+ /**
+  * During formatting of `ts.Diagnostic`s, the numeric code of each diagnostic is prefixed with the
+  * hard-coded "TS" prefix. For Angular's own error codes, a prefix of "NG" is desirable. To achieve
+diff --git a/src/ngtsc/file_system/index.d.ts b/src/ngtsc/file_system/index.d.ts
+index 9c24c370734afb500f32f215dca38a06d1514dba..2cd834632cb51b9f73f075823d216a28b1a985a1 100755
+--- a/src/ngtsc/file_system/index.d.ts
++++ b/src/ngtsc/file_system/index.d.ts
+@@ -6,9 +6,9 @@
+  * Use of this source code is governed by an MIT-style license that can be
+  * found in the LICENSE file at https://angular.io/license
+  */
+-export { NgtscCompilerHost } from './src/compiler_host';
+-export { absoluteFrom, absoluteFromSourceFile, basename, dirname, getFileSystem, isLocalRelativePath, isRoot, isRooted, join, relative, relativeFrom, resolve, setFileSystem, toRelativeImport } from './src/helpers';
+-export { LogicalFileSystem, LogicalProjectPath } from './src/logical';
+-export { NodeJSFileSystem } from './src/node_js_file_system';
+-export { AbsoluteFsPath, FileStats, FileSystem, PathManipulation, PathSegment, PathString, ReadonlyFileSystem } from './src/types';
+-export { getSourceFileOrError } from './src/util';
++export { NgtscCompilerHost } from './src/compiler_host.js';
++export { absoluteFrom, absoluteFromSourceFile, basename, dirname, getFileSystem, isLocalRelativePath, isRoot, isRooted, join, relative, relativeFrom, resolve, setFileSystem, toRelativeImport } from './src/helpers.js';
++export { LogicalFileSystem, LogicalProjectPath } from './src/logical.js';
++export { NodeJSFileSystem } from './src/node_js_file_system.js';
++export { AbsoluteFsPath, FileStats, FileSystem, PathManipulation, PathSegment, PathString, ReadonlyFileSystem } from './src/types.js';
++export { getSourceFileOrError } from './src/util.js';
+diff --git a/src/ngtsc/file_system/src/compiler_host.d.ts b/src/ngtsc/file_system/src/compiler_host.d.ts
+index 394e0727cdebb491572508bb1bd77c9321ebdf6e..578af50be564f3b2fa441ffb1309c6de756e88d4 100755
+--- a/src/ngtsc/file_system/src/compiler_host.d.ts
++++ b/src/ngtsc/file_system/src/compiler_host.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/file_system/src/compiler_host" />
+ import ts from 'typescript';
+-import { FileSystem } from './types';
++import { FileSystem } from './types.js';
+ export declare class NgtscCompilerHost implements ts.CompilerHost {
+     protected fs: FileSystem;
+     protected options: ts.CompilerOptions;
+diff --git a/src/ngtsc/file_system/src/helpers.d.ts b/src/ngtsc/file_system/src/helpers.d.ts
+index 733a8397531d12b71b293552766406dba5be9b1d..319ff180e4c6d6e97bc18d6b88e5dcdfed539ff1 100755
+--- a/src/ngtsc/file_system/src/helpers.d.ts
++++ b/src/ngtsc/file_system/src/helpers.d.ts
+@@ -1,5 +1,5 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/file_system/src/helpers" />
+-import { AbsoluteFsPath, FileSystem, PathSegment, PathString } from './types';
++import { AbsoluteFsPath, FileSystem, PathSegment, PathString } from './types.js';
+ export declare function getFileSystem(): FileSystem;
+ export declare function setFileSystem(fileSystem: FileSystem): void;
+ /**
+diff --git a/src/ngtsc/file_system/src/logical.d.ts b/src/ngtsc/file_system/src/logical.d.ts
+index f8ea61a4dbd9b9f89a413ec83e277758cf528924..2e08c030632deec77b0852eed9e0d252435af041 100755
+--- a/src/ngtsc/file_system/src/logical.d.ts
++++ b/src/ngtsc/file_system/src/logical.d.ts
+@@ -7,7 +7,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { AbsoluteFsPath, BrandedPath, PathSegment } from './types';
++import { AbsoluteFsPath, BrandedPath, PathSegment } from './types.js';
+ /**
+  * A path that's relative to the logical root of a TypeScript project (one of the project's
+  * rootDirs).
+diff --git a/src/ngtsc/file_system/src/node_js_file_system.d.ts b/src/ngtsc/file_system/src/node_js_file_system.d.ts
+index 0439b92e32cf42ee8fe66847cc2a7fecc9f6367a..654ed2a3a64869978d2c75198ae00e9dce448c05 100755
+--- a/src/ngtsc/file_system/src/node_js_file_system.d.ts
++++ b/src/ngtsc/file_system/src/node_js_file_system.d.ts
+@@ -1,5 +1,5 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/file_system/src/node_js_file_system" />
+-import { AbsoluteFsPath, FileStats, FileSystem, PathManipulation, PathSegment, PathString, ReadonlyFileSystem } from './types';
++import { AbsoluteFsPath, FileStats, FileSystem, PathManipulation, PathSegment, PathString, ReadonlyFileSystem } from './types.js';
+ /**
+  * A wrapper around the Node.js file-system that supports path manipulation.
+  */
+diff --git a/src/ngtsc/file_system/src/util.d.ts b/src/ngtsc/file_system/src/util.d.ts
+index 0792d0621db1e33b5d26e8197bcb61f40a752664..292b3f9bf74aefc661ae8d7bc4ed855a873a97c7 100755
+--- a/src/ngtsc/file_system/src/util.d.ts
++++ b/src/ngtsc/file_system/src/util.d.ts
+@@ -7,7 +7,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { AbsoluteFsPath, PathString } from './types';
++import { AbsoluteFsPath, PathString } from './types.js';
+ /**
+  * Convert Windows-style separators to POSIX separators.
+  */
+diff --git a/src/ngtsc/imports/index.d.ts b/src/ngtsc/imports/index.d.ts
+index af353322a3b63438fde8ec332445645c868ec824..9fff6b75774dfb264db29ce6c59bbced72bb88e3 100755
+--- a/src/ngtsc/imports/index.d.ts
++++ b/src/ngtsc/imports/index.d.ts
+@@ -6,10 +6,10 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/imports" />
+-export { AliasingHost, AliasStrategy, PrivateExportAliasingHost, UnifiedModulesAliasingHost } from './src/alias';
+-export { ImportRewriter, NoopImportRewriter, R3SymbolsImportRewriter, validateAndRewriteCoreSymbol } from './src/core';
+-export { DefaultImportTracker } from './src/default';
+-export { AbsoluteModuleStrategy, assertSuccessfulReferenceEmit, EmittedReference, FailedEmitResult, ImportedFile, ImportFlags, LocalIdentifierStrategy, LogicalProjectStrategy, ReferenceEmitKind, ReferenceEmitResult, ReferenceEmitStrategy, ReferenceEmitter, RelativePathStrategy, UnifiedModulesStrategy } from './src/emitter';
+-export { Reexport } from './src/reexport';
+-export { OwningModule, Reference } from './src/references';
+-export { ModuleResolver } from './src/resolver';
++export { AliasingHost, AliasStrategy, PrivateExportAliasingHost, UnifiedModulesAliasingHost } from './src/alias.js';
++export { ImportRewriter, NoopImportRewriter, R3SymbolsImportRewriter, validateAndRewriteCoreSymbol } from './src/core.js';
++export { DefaultImportTracker } from './src/default.js';
++export { AbsoluteModuleStrategy, assertSuccessfulReferenceEmit, EmittedReference, FailedEmitResult, ImportedFile, ImportFlags, LocalIdentifierStrategy, LogicalProjectStrategy, ReferenceEmitKind, ReferenceEmitResult, ReferenceEmitStrategy, ReferenceEmitter, RelativePathStrategy, UnifiedModulesStrategy } from './src/emitter.js';
++export { Reexport } from './src/reexport.js';
++export { OwningModule, Reference } from './src/references.js';
++export { ModuleResolver } from './src/resolver.js';
+diff --git a/src/ngtsc/imports/src/alias.d.ts b/src/ngtsc/imports/src/alias.d.ts
+index efd8425bb1fe4f86732c0dfcbbe5ceacbc054e36..eb61e274b00045dadbc8817b761f6ee47f44e288 100755
+--- a/src/ngtsc/imports/src/alias.d.ts
++++ b/src/ngtsc/imports/src/alias.d.ts
+@@ -8,10 +8,10 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/imports/src/alias" />
+ import { Expression } from '@angular/compiler';
+ import ts from 'typescript';
+-import { UnifiedModulesHost } from '../../core/api';
+-import { ClassDeclaration, ReflectionHost } from '../../reflection';
+-import { EmittedReference, ImportFlags, ReferenceEmitStrategy } from './emitter';
+-import { Reference } from './references';
++import { UnifiedModulesHost } from '../../core/api/index.js';
++import { ClassDeclaration, ReflectionHost } from '../../reflection/index.js';
++import { EmittedReference, ImportFlags, ReferenceEmitStrategy } from './emitter.js';
++import { Reference } from './references.js';
+ /**
+  * A host for the aliasing system, which allows for alternative exports/imports of directives/pipes.
+  *
+diff --git a/src/ngtsc/imports/src/emitter.d.ts b/src/ngtsc/imports/src/emitter.d.ts
+index 6955e131ee09fc544e4b1566e550fd9ce97ac03c..23796b46be3da119b4b7d57c344cf1257e3f33ed 100755
+--- a/src/ngtsc/imports/src/emitter.d.ts
++++ b/src/ngtsc/imports/src/emitter.d.ts
+@@ -8,11 +8,11 @@
+  */
+ import { Expression } from '@angular/compiler';
+ import ts from 'typescript';
+-import { UnifiedModulesHost } from '../../core/api';
+-import { LogicalFileSystem } from '../../file_system';
+-import { DeclarationNode, ReflectionHost } from '../../reflection';
+-import { Reference } from './references';
+-import { ModuleResolver } from './resolver';
++import { UnifiedModulesHost } from '../../core/api/index.js';
++import { LogicalFileSystem } from '../../file_system/index.js';
++import { DeclarationNode, ReflectionHost } from '../../reflection/index.js';
++import { Reference } from './references.js';
++import { ModuleResolver } from './resolver.js';
+ /**
+  * Flags which alter the imports generated by the `ReferenceEmitter`.
+  */
+diff --git a/src/ngtsc/indexer/index.d.ts b/src/ngtsc/indexer/index.d.ts
+index 8c51cbeb93e96a7c80105f2147dafcaf8b550f71..b4e8ccded43a62d94271567be144d3001a232630 100755
+--- a/src/ngtsc/indexer/index.d.ts
++++ b/src/ngtsc/indexer/index.d.ts
+@@ -6,6 +6,6 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/indexer" />
+-export * from './src/api';
+-export { IndexingContext } from './src/context';
+-export { generateAnalysis } from './src/transform';
++export * from './src/api.js';
++export { IndexingContext } from './src/context.js';
++export { generateAnalysis } from './src/transform.js';
+diff --git a/src/ngtsc/indexer/src/api.d.ts b/src/ngtsc/indexer/src/api.d.ts
+index 32083cd93b9efc5e7329ec253c44fab3aaa7a5ac..38821db437e792fa61e3b413d4ee95e8796ccf95 100755
+--- a/src/ngtsc/indexer/src/api.d.ts
++++ b/src/ngtsc/indexer/src/api.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/indexer/src/api" />
+ import { ParseSourceFile } from '@angular/compiler';
+-import { ClassDeclaration, DeclarationNode } from '../../reflection';
++import { ClassDeclaration, DeclarationNode } from '../../reflection/index.js';
+ /**
+  * Describes the kind of identifier found in a template.
+  */
+diff --git a/src/ngtsc/indexer/src/context.d.ts b/src/ngtsc/indexer/src/context.d.ts
+index f947b13f36d6655730ae470d8f67bde524d5d390..6b738ac9dc768b20fe2eaa0422ea3b2b6254f6c1 100755
+--- a/src/ngtsc/indexer/src/context.d.ts
++++ b/src/ngtsc/indexer/src/context.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/indexer/src/context" />
+ import { BoundTarget, DirectiveMeta, ParseSourceFile } from '@angular/compiler';
+-import { Reference } from '../../imports';
+-import { ClassDeclaration } from '../../reflection';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
+ export interface ComponentMeta extends DirectiveMeta {
+     ref: Reference<ClassDeclaration>;
+     /**
+diff --git a/src/ngtsc/indexer/src/transform.d.ts b/src/ngtsc/indexer/src/transform.d.ts
+index c7b2ac91cdc0e69d3dac1e42d255c41be8b582e9..b76892462daa0143b07b58218ca551821873c95b 100755
+--- a/src/ngtsc/indexer/src/transform.d.ts
++++ b/src/ngtsc/indexer/src/transform.d.ts
+@@ -6,9 +6,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/indexer/src/transform" />
+-import { DeclarationNode } from '../../reflection';
+-import { IndexedComponent } from './api';
+-import { IndexingContext } from './context';
++import { DeclarationNode } from '../../reflection/index.js';
++import { IndexedComponent } from './api.js';
++import { IndexingContext } from './context.js';
+ /**
+  * Generates `IndexedComponent` entries from a `IndexingContext`, which has information
+  * about components discovered in the program registered in it.
+diff --git a/src/ngtsc/logging/index.d.ts b/src/ngtsc/logging/index.d.ts
+index 834ef905c64d5412777f4e37f23037a317abba34..4d813a9bed7a930b63e506e78c84f06f8f76182c 100755
+--- a/src/ngtsc/logging/index.d.ts
++++ b/src/ngtsc/logging/index.d.ts
+@@ -6,5 +6,5 @@
+  * Use of this source code is governed by an MIT-style license that can be
+  * found in the LICENSE file at https://angular.io/license
+  */
+-export { ConsoleLogger } from './src/console_logger';
+-export { Logger, LogLevel } from './src/logger';
++export { ConsoleLogger } from './src/console_logger.js';
++export { Logger, LogLevel } from './src/logger.js';
+diff --git a/src/ngtsc/logging/src/console_logger.d.ts b/src/ngtsc/logging/src/console_logger.d.ts
+index d47430d662486c60e73245eda7b32e0bff0732c8..6cf8db6bf3c78a8c6a8b5714636475690a9f49bb 100755
+--- a/src/ngtsc/logging/src/console_logger.d.ts
++++ b/src/ngtsc/logging/src/console_logger.d.ts
+@@ -6,7 +6,7 @@
+  * Use of this source code is governed by an MIT-style license that can be
+  * found in the LICENSE file at https://angular.io/license
+  */
+-import { Logger, LogLevel } from './logger';
++import { Logger, LogLevel } from './logger.js';
+ export declare const DEBUG: string;
+ export declare const WARN: string;
+ export declare const ERROR: string;
+diff --git a/src/ngtsc/metadata/index.d.ts b/src/ngtsc/metadata/index.d.ts
+index ff2eaf778795fe5c86d544ea31d093ed69db886d..55cd6df0aa856779df6791ff7503bfaa54aa44d4 100755
+--- a/src/ngtsc/metadata/index.d.ts
++++ b/src/ngtsc/metadata/index.d.ts
+@@ -6,10 +6,10 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata" />
+-export * from './src/api';
+-export { DtsMetadataReader } from './src/dts';
+-export { flattenInheritedDirectiveMetadata } from './src/inheritance';
+-export { CompoundMetadataRegistry, LocalMetadataRegistry, InjectableClassRegistry } from './src/registry';
+-export { ResourceRegistry, Resource, ComponentResources, isExternalResource, ExternalResource } from './src/resource_registry';
+-export { extractDirectiveTypeCheckMeta, CompoundMetadataReader } from './src/util';
+-export { BindingPropertyName, ClassPropertyMapping, ClassPropertyName, InputOrOutput } from './src/property_mapping';
++export * from './src/api.js';
++export { DtsMetadataReader } from './src/dts.js';
++export { flattenInheritedDirectiveMetadata } from './src/inheritance.js';
++export { CompoundMetadataRegistry, LocalMetadataRegistry, InjectableClassRegistry } from './src/registry.js';
++export { ResourceRegistry, Resource, ComponentResources, isExternalResource, ExternalResource } from './src/resource_registry.js';
++export { extractDirectiveTypeCheckMeta, CompoundMetadataReader } from './src/util.js';
++export { BindingPropertyName, ClassPropertyMapping, ClassPropertyName, InputOrOutput } from './src/property_mapping.js';
+diff --git a/src/ngtsc/metadata/src/api.d.ts b/src/ngtsc/metadata/src/api.d.ts
+index f4ed9ddbfffe3db7d182b47824715ef2d53bda3f..7e8284e4b26867ef108941a1aaa70579fc802c78 100755
+--- a/src/ngtsc/metadata/src/api.d.ts
++++ b/src/ngtsc/metadata/src/api.d.ts
+@@ -8,9 +8,9 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/api" />
+ import { DirectiveMeta as T2DirectiveMeta, SchemaMetadata } from '@angular/compiler';
+ import ts from 'typescript';
+-import { Reference } from '../../imports';
+-import { ClassDeclaration } from '../../reflection';
+-import { ClassPropertyMapping, ClassPropertyName } from './property_mapping';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
++import { ClassPropertyMapping, ClassPropertyName } from './property_mapping.js';
+ /**
+  * Metadata collected for an `NgModule`.
+  */
+diff --git a/src/ngtsc/metadata/src/dts.d.ts b/src/ngtsc/metadata/src/dts.d.ts
+index f3ab9a2f0ba37f8d260e560c9f2f409045c59d68..5b7200cbde8f71423135460d60cd29cc733276e0 100755
+--- a/src/ngtsc/metadata/src/dts.d.ts
++++ b/src/ngtsc/metadata/src/dts.d.ts
+@@ -7,9 +7,9 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/dts" />
+ import ts from 'typescript';
+-import { Reference } from '../../imports';
+-import { ClassDeclaration, ReflectionHost } from '../../reflection';
+-import { DirectiveMeta, MetadataReader, NgModuleMeta, PipeMeta } from './api';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration, ReflectionHost } from '../../reflection/index.js';
++import { DirectiveMeta, MetadataReader, NgModuleMeta, PipeMeta } from './api.js';
+ /**
+  * A `MetadataReader` that can read metadata from `.d.ts` files, which have static Ivy properties
+  * from an upstream compilation already.
+diff --git a/src/ngtsc/metadata/src/inheritance.d.ts b/src/ngtsc/metadata/src/inheritance.d.ts
+index 6b36a26cb2f863753ef28b5f92d00278d248cd58..df3a335664cf0467cf5563652ec67a0b85857616 100755
+--- a/src/ngtsc/metadata/src/inheritance.d.ts
++++ b/src/ngtsc/metadata/src/inheritance.d.ts
+@@ -6,9 +6,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/inheritance" />
+-import { Reference } from '../../imports';
+-import { ClassDeclaration } from '../../reflection';
+-import { DirectiveMeta, MetadataReader } from './api';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
++import { DirectiveMeta, MetadataReader } from './api.js';
+ /**
+  * Given a reference to a directive, return a flattened version of its `DirectiveMeta` metadata
+  * which includes metadata from its entire inheritance chain.
+diff --git a/src/ngtsc/metadata/src/registry.d.ts b/src/ngtsc/metadata/src/registry.d.ts
+index 6a2e5fa512c8a5be56605eb4afad17dfeee79e9a..6e8ed4850b8f3093800fa82df43aa08062c38bb0 100755
+--- a/src/ngtsc/metadata/src/registry.d.ts
++++ b/src/ngtsc/metadata/src/registry.d.ts
+@@ -6,9 +6,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/registry" />
+-import { Reference } from '../../imports';
+-import { ClassDeclaration, ReflectionHost } from '../../reflection';
+-import { DirectiveMeta, MetadataReader, MetadataRegistry, NgModuleMeta, PipeMeta } from './api';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration, ReflectionHost } from '../../reflection/index.js';
++import { DirectiveMeta, MetadataReader, MetadataRegistry, NgModuleMeta, PipeMeta } from './api.js';
+ /**
+  * A registry of directive, pipe, and module metadata for types defined in the current compilation
+  * unit, which supports both reading and registering.
+diff --git a/src/ngtsc/metadata/src/resource_registry.d.ts b/src/ngtsc/metadata/src/resource_registry.d.ts
+index 5d82f1a199a9f9d79a834a62f19f082f846f4108..f4868263e8ef13d32cb38fb61fce09f8a25709c8 100755
+--- a/src/ngtsc/metadata/src/resource_registry.d.ts
++++ b/src/ngtsc/metadata/src/resource_registry.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/resource_registry" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { ClassDeclaration } from '../../reflection';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
+ /**
+  * Represents an resource for a component and contains the `AbsoluteFsPath`
+  * to the file which was resolved by evaluating the `ts.Expression` (generally, a relative or
+diff --git a/src/ngtsc/metadata/src/util.d.ts b/src/ngtsc/metadata/src/util.d.ts
+index 1216fad8b4a56d050ee1bf77ef7cd14f03b5227e..328e18ad47298f55ff37d98ef6e3af5858c6cb12 100755
+--- a/src/ngtsc/metadata/src/util.d.ts
++++ b/src/ngtsc/metadata/src/util.d.ts
+@@ -7,10 +7,10 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/util" />
+ import ts from 'typescript';
+-import { OwningModule, Reference } from '../../imports';
+-import { ClassDeclaration, ReflectionHost } from '../../reflection';
+-import { DirectiveMeta, DirectiveTypeCheckMeta, MetadataReader, NgModuleMeta, PipeMeta } from './api';
+-import { ClassPropertyMapping } from './property_mapping';
++import { OwningModule, Reference } from '../../imports/index.js';
++import { ClassDeclaration, ReflectionHost } from '../../reflection/index.js';
++import { DirectiveMeta, DirectiveTypeCheckMeta, MetadataReader, NgModuleMeta, PipeMeta } from './api.js';
++import { ClassPropertyMapping } from './property_mapping.js';
+ export declare function extractReferencesFromType(checker: ts.TypeChecker, def: ts.TypeNode, bestGuessOwningModule: OwningModule | null): Reference<ClassDeclaration>[];
+ export declare function readBooleanType(type: ts.TypeNode): boolean | null;
+ export declare function readStringType(type: ts.TypeNode): string | null;
+diff --git a/src/ngtsc/program.d.ts b/src/ngtsc/program.d.ts
+index 471cb56014357836f0bc1ec2a2cbaf8b252c43d0..9eecb6ee6f16c24a2a75b084495e2b67643dc080 100755
+--- a/src/ngtsc/program.d.ts
++++ b/src/ngtsc/program.d.ts
+@@ -7,11 +7,11 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/program" />
+ import ts from 'typescript';
+-import * as api from '../transformers/api';
+-import { NgCompiler } from './core';
+-import { NgCompilerOptions } from './core/api';
+-import { IndexedComponent } from './indexer';
+-import { DeclarationNode } from './reflection';
++import * as api from '../transformers/api.js';
++import { NgCompiler } from './core/index.js';
++import { NgCompilerOptions } from './core/api/index.js';
++import { IndexedComponent } from './indexer/index.js';
++import { DeclarationNode } from './reflection/index.js';
+ /**
+  * Entrypoint to the Angular Compiler (Ivy+) which sits behind the `api.Program` interface, allowing
+  * it to be a drop-in replacement for the legacy View Engine compiler to tooling such as the
+diff --git a/src/ngtsc/reflection/index.d.ts b/src/ngtsc/reflection/index.d.ts
+index 4e89bf3f3f2fc1e3555cadfe342c455f2dceeb50..316597d718e3fe8a1a405d8f7462e687148db204 100755
+--- a/src/ngtsc/reflection/index.d.ts
++++ b/src/ngtsc/reflection/index.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/reflection" />
+-export * from './src/host';
+-export { typeNodeToValueExpr } from './src/type_to_value';
+-export { TypeScriptReflectionHost, filterToMembersWithDecorator, reflectIdentifierOfDeclaration, reflectNameOfDeclaration, reflectObjectLiteral, reflectTypeEntityToDeclaration } from './src/typescript';
+-export { isNamedClassDeclaration, isNamedFunctionDeclaration, isNamedVariableDeclaration } from './src/util';
++export * from './src/host.js';
++export { typeNodeToValueExpr } from './src/type_to_value.js';
++export { TypeScriptReflectionHost, filterToMembersWithDecorator, reflectIdentifierOfDeclaration, reflectNameOfDeclaration, reflectObjectLiteral, reflectTypeEntityToDeclaration } from './src/typescript.js';
++export { isNamedClassDeclaration, isNamedFunctionDeclaration, isNamedVariableDeclaration } from './src/util.js';
+diff --git a/src/ngtsc/reflection/src/type_to_value.d.ts b/src/ngtsc/reflection/src/type_to_value.d.ts
+index 397fad091395a2e235078c61310ad129a228813d..f5df443cb33f350324e638297a343f110ee99179 100755
+--- a/src/ngtsc/reflection/src/type_to_value.d.ts
++++ b/src/ngtsc/reflection/src/type_to_value.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/reflection/src/type_to_value" />
+ import ts from 'typescript';
+-import { TypeValueReference } from './host';
++import { TypeValueReference } from './host.js';
+ /**
+  * Potentially convert a `ts.TypeNode` to a `TypeValueReference`, which indicates how to use the
+  * type given in the `ts.TypeNode` in a value position.
+diff --git a/src/ngtsc/reflection/src/typescript.d.ts b/src/ngtsc/reflection/src/typescript.d.ts
+index e81a28056ed02e35d859ea8923d90541ef1ba39d..f4e5f60a275336b101735ca701cdea21f16a3b1f 100755
+--- a/src/ngtsc/reflection/src/typescript.d.ts
++++ b/src/ngtsc/reflection/src/typescript.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/reflection/src/typescript" />
+ import ts from 'typescript';
+-import { ClassDeclaration, ClassMember, CtorParameter, Declaration, DeclarationNode, Decorator, FunctionDefinition, Import, ReflectionHost } from './host';
++import { ClassDeclaration, ClassMember, CtorParameter, Declaration, DeclarationNode, Decorator, FunctionDefinition, Import, ReflectionHost } from './host.js';
+ /**
+  * reflector.ts implements static reflection of declarations using the TypeScript `ts.TypeChecker`.
+  */
+diff --git a/src/ngtsc/reflection/src/util.d.ts b/src/ngtsc/reflection/src/util.d.ts
+index e1b2a96fd83c5cb36d17a2cd176c7c0d55ecaac4..afda5ae59e49c136ae8fe79cd935e7934b65ad52 100755
+--- a/src/ngtsc/reflection/src/util.d.ts
++++ b/src/ngtsc/reflection/src/util.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/reflection/src/util" />
+ import ts from 'typescript';
+-import { ClassDeclaration } from './host';
++import { ClassDeclaration } from './host.js';
+ export declare function isNamedClassDeclaration(node: ts.Node): node is ClassDeclaration<ts.ClassDeclaration>;
+ export declare function isNamedFunctionDeclaration(node: ts.Node): node is ClassDeclaration<ts.FunctionDeclaration>;
+ export declare function isNamedVariableDeclaration(node: ts.Node): node is ClassDeclaration<ts.VariableDeclaration>;
+diff --git a/src/ngtsc/shims/api.d.ts b/src/ngtsc/shims/api.d.ts
+index 3877ef53a5b61fc334267869242d9be8c7da4bb7..9ce88bd8c900680848fb3ed9a2d6f5d9e764c56a 100755
+--- a/src/ngtsc/shims/api.d.ts
++++ b/src/ngtsc/shims/api.d.ts
+@@ -7,7 +7,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../file_system';
++import { AbsoluteFsPath } from '../file_system/index.js';
+ /**
+  * Generates a single shim file for the entire program.
+  */
+diff --git a/src/ngtsc/shims/index.d.ts b/src/ngtsc/shims/index.d.ts
+index 9df3a9d60209f2502408344e08aaa8a5c574b444..31e3ef21999903cc0bacc776d2fe3b14af8b7ebe 100755
+--- a/src/ngtsc/shims/index.d.ts
++++ b/src/ngtsc/shims/index.d.ts
+@@ -6,8 +6,8 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/shims" />
+-export { ShimAdapter } from './src/adapter';
+-export { copyFileShimData, isShim, retagAllTsFiles, retagTsFile, sfExtensionData, untagAllTsFiles, untagTsFile } from './src/expando';
+-export { FactoryGenerator, generatedFactoryTransform } from './src/factory_generator';
+-export { ShimReferenceTagger } from './src/reference_tagger';
+-export { SummaryGenerator } from './src/summary_generator';
++export { ShimAdapter } from './src/adapter.js';
++export { copyFileShimData, isShim, retagAllTsFiles, retagTsFile, sfExtensionData, untagAllTsFiles, untagTsFile } from './src/expando.js';
++export { FactoryGenerator, generatedFactoryTransform } from './src/factory_generator.js';
++export { ShimReferenceTagger } from './src/reference_tagger.js';
++export { SummaryGenerator } from './src/summary_generator.js';
+diff --git a/src/ngtsc/shims/src/adapter.d.ts b/src/ngtsc/shims/src/adapter.d.ts
+index 44d58310555245abd36c299fda8a78805ccb71e9..0969332947bb0d86522975c6f105b546aa176966 100755
+--- a/src/ngtsc/shims/src/adapter.d.ts
++++ b/src/ngtsc/shims/src/adapter.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/shims/src/adapter" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { PerFileShimGenerator, TopLevelShimGenerator } from '../api';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { PerFileShimGenerator, TopLevelShimGenerator } from '../api.js';
+ /**
+  * Generates and tracks shim files for each original `ts.SourceFile`.
+  *
+diff --git a/src/ngtsc/shims/src/expando.d.ts b/src/ngtsc/shims/src/expando.d.ts
+index 2d86836cc231a67baca6d5750bc5631b5be4c910..e6db15fd3fd9577f5fbd0b2aeed6c8a3c75f1c4c 100755
+--- a/src/ngtsc/shims/src/expando.d.ts
++++ b/src/ngtsc/shims/src/expando.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/shims/src/expando" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
++import { AbsoluteFsPath } from '../../file_system/index.js';
+ /**
+  * A `Symbol` which is used to patch extension data onto `ts.SourceFile`s.
+  */
+diff --git a/src/ngtsc/shims/src/factory_generator.d.ts b/src/ngtsc/shims/src/factory_generator.d.ts
+index 23b975a90a16611e463ae8ee8a33ef426f8d8883..5d545f99e746ae26466c50715e71c2076a585ff9 100755
+--- a/src/ngtsc/shims/src/factory_generator.d.ts
++++ b/src/ngtsc/shims/src/factory_generator.d.ts
+@@ -7,9 +7,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { ImportRewriter } from '../../imports';
+-import { FactoryInfo, FactoryTracker, ModuleInfo, PerFileShimGenerator } from '../api';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { ImportRewriter } from '../../imports/index.js';
++import { FactoryInfo, FactoryTracker, ModuleInfo, PerFileShimGenerator } from '../api.js';
+ /**
+  * Generates ts.SourceFiles which contain variable declarations for NgFactories for every exported
+  * class of an input ts.SourceFile.
+diff --git a/src/ngtsc/shims/src/summary_generator.d.ts b/src/ngtsc/shims/src/summary_generator.d.ts
+index 1a5682893caea25f899990a02e445f3be6421691..086136eb1f4b7ba7c39d8d2a06fed97430d73695 100755
+--- a/src/ngtsc/shims/src/summary_generator.d.ts
++++ b/src/ngtsc/shims/src/summary_generator.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/shims/src/summary_generator" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { PerFileShimGenerator } from '../api';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { PerFileShimGenerator } from '../api.js';
+ export declare class SummaryGenerator implements PerFileShimGenerator {
+     readonly shouldEmit = true;
+     readonly extensionPrefix = "ngsummary";
+diff --git a/src/ngtsc/tsc_plugin.d.ts b/src/ngtsc/tsc_plugin.d.ts
+index 45a8a4cdcbca186890536052d1b6854d834cb640..e1be644edb114df041af36515d1f86f9bc12c511 100755
+--- a/src/ngtsc/tsc_plugin.d.ts
++++ b/src/ngtsc/tsc_plugin.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/tsc_plugin" />
+ import ts from 'typescript';
+-import { NgCompiler } from './core';
+-import { UnifiedModulesHost } from './core/api';
++import { NgCompiler } from './core/index.js';
++import { UnifiedModulesHost } from './core/api/index.js';
+ /**
+  * A `ts.CompilerHost` which also returns a list of input files, out of which the `ts.Program`
+  * should be created.
+diff --git a/src/ngtsc/typecheck/api/api.d.ts b/src/ngtsc/typecheck/api/api.d.ts
+index 7a0504c30743609bdfe93bc6feca0f01bb207ca3..ed188db03ffb51752f543009827cebca3f13c5da 100755
+--- a/src/ngtsc/typecheck/api/api.d.ts
++++ b/src/ngtsc/typecheck/api/api.d.ts
+@@ -8,10 +8,10 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/api" />
+ import { AbsoluteSourceSpan, BoundTarget, DirectiveMeta, ParseSourceSpan, SchemaMetadata } from '@angular/compiler';
+ import ts from 'typescript';
+-import { ErrorCode } from '../../diagnostics';
+-import { Reference } from '../../imports';
+-import { ClassPropertyMapping, DirectiveTypeCheckMeta } from '../../metadata';
+-import { ClassDeclaration } from '../../reflection';
++import { ErrorCode } from '../../diagnostics/index.js';
++import { Reference } from '../../imports/index.js';
++import { ClassPropertyMapping, DirectiveTypeCheckMeta } from '../../metadata/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
+ /**
+  * Extension of `DirectiveMeta` that includes additional information required to type-check the
+  * usage of a particular directive.
+diff --git a/src/ngtsc/typecheck/api/checker.d.ts b/src/ngtsc/typecheck/api/checker.d.ts
+index 875dd35c9f1bcdd9fac7d3d03c63c531e419ff43..ce20414cde646b384e58ed4e8ef26682ba788b3c 100755
+--- a/src/ngtsc/typecheck/api/checker.d.ts
++++ b/src/ngtsc/typecheck/api/checker.d.ts
+@@ -8,12 +8,12 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/checker" />
+ import { AST, LiteralPrimitive, ParseSourceSpan, PropertyRead, SafePropertyRead, TmplAstElement, TmplAstNode, TmplAstTemplate, TmplAstTextAttribute } from '@angular/compiler';
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../../../src/ngtsc/file_system';
+-import { ErrorCode } from '../../diagnostics';
+-import { FullTemplateMapping, NgTemplateDiagnostic, TypeCheckableDirectiveMeta } from './api';
+-import { GlobalCompletion } from './completion';
+-import { DirectiveInScope, PipeInScope } from './scope';
+-import { ElementSymbol, Symbol, TcbLocation, TemplateSymbol } from './symbols';
++import { AbsoluteFsPath } from '../../../../src/ngtsc/file_system/index.js';
++import { ErrorCode } from '../../diagnostics/index.js';
++import { FullTemplateMapping, NgTemplateDiagnostic, TypeCheckableDirectiveMeta } from './api.js';
++import { GlobalCompletion } from './completion.js';
++import { DirectiveInScope, PipeInScope } from './scope.js';
++import { ElementSymbol, Symbol, TcbLocation, TemplateSymbol } from './symbols.js';
+ /**
+  * Interface to the Angular Template Type Checker to extract diagnostics and intelligence from the
+  * compiler's understanding of component templates.
+diff --git a/src/ngtsc/typecheck/api/completion.d.ts b/src/ngtsc/typecheck/api/completion.d.ts
+index 5e647e1f85d6788bc7eaef444cd89a26ffba452c..4ed67481acc417e3469fab7705c64a49a0f2ddec 100755
+--- a/src/ngtsc/typecheck/api/completion.d.ts
++++ b/src/ngtsc/typecheck/api/completion.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/completion" />
+ import { TmplAstReference, TmplAstVariable } from '@angular/compiler';
+-import { TcbLocation } from './symbols';
++import { TcbLocation } from './symbols.js';
+ /**
+  * An autocompletion source of any kind.
+  */
+diff --git a/src/ngtsc/typecheck/api/context.d.ts b/src/ngtsc/typecheck/api/context.d.ts
+index acdedcd2ad7ed1cb20327b97c639609c0e0a4213..eb5feccba9d000f8e9e2fd12e7c552969872f3a5 100755
+--- a/src/ngtsc/typecheck/api/context.d.ts
++++ b/src/ngtsc/typecheck/api/context.d.ts
+@@ -8,9 +8,9 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/context" />
+ import { ParseError, ParseSourceFile, R3TargetBinder, SchemaMetadata, TmplAstNode } from '@angular/compiler';
+ import ts from 'typescript';
+-import { Reference } from '../../imports';
+-import { ClassDeclaration } from '../../reflection';
+-import { TemplateSourceMapping, TypeCheckableDirectiveMeta } from './api';
++import { Reference } from '../../imports/index.js';
++import { ClassDeclaration } from '../../reflection/index.js';
++import { TemplateSourceMapping, TypeCheckableDirectiveMeta } from './api.js';
+ /**
+  * A currently pending type checking operation, into which templates for type-checking can be
+  * registered.
+diff --git a/src/ngtsc/typecheck/api/index.d.ts b/src/ngtsc/typecheck/api/index.d.ts
+index b649c4d9673d7fd5bb64716e577c448a04551658..f706db38708cb0861e8fe91ac46f27e42b07dd89 100755
+--- a/src/ngtsc/typecheck/api/index.d.ts
++++ b/src/ngtsc/typecheck/api/index.d.ts
+@@ -6,9 +6,9 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api" />
+-export * from './api';
+-export * from './checker';
+-export * from './completion';
+-export * from './context';
+-export * from './scope';
+-export * from './symbols';
++export * from './api.js';
++export * from './checker.js';
++export * from './completion.js';
++export * from './context.js';
++export * from './scope.js';
++export * from './symbols.js';
+diff --git a/src/ngtsc/typecheck/api/scope.d.ts b/src/ngtsc/typecheck/api/scope.d.ts
+index f49a4b4dc0581e2b49f232df87aa16c4d5878e0a..1c25bd8a986b0efc02fb1ba215d2640a20c124df 100755
+--- a/src/ngtsc/typecheck/api/scope.d.ts
++++ b/src/ngtsc/typecheck/api/scope.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/scope" />
+ import ts from 'typescript';
+-import { ClassDeclaration } from '../../reflection';
+-import { SymbolWithValueDeclaration } from '../../util/src/typescript';
++import { ClassDeclaration } from '../../reflection/index.js';
++import { SymbolWithValueDeclaration } from '../../util/src/typescript.js';
+ /**
+  * Metadata on a directive which is available in the scope of a template.
+  */
+diff --git a/src/ngtsc/typecheck/api/symbols.d.ts b/src/ngtsc/typecheck/api/symbols.d.ts
+index fd040fda40b3994e533f51d8ccb26655327f3fb8..3cd078987efe0e61bf1b55ddaa67c38b3b9e0d57 100755
+--- a/src/ngtsc/typecheck/api/symbols.d.ts
++++ b/src/ngtsc/typecheck/api/symbols.d.ts
+@@ -8,9 +8,9 @@
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/symbols" />
+ import { TmplAstElement, TmplAstReference, TmplAstTemplate, TmplAstVariable } from '@angular/compiler';
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { SymbolWithValueDeclaration } from '../../util/src/typescript';
+-import { DirectiveInScope } from './scope';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { SymbolWithValueDeclaration } from '../../util/src/typescript.js';
++import { DirectiveInScope } from './scope.js';
+ export declare enum SymbolKind {
+     Input = 0,
+     Output = 1,
+diff --git a/src/ngtsc/util/src/typescript.d.ts b/src/ngtsc/util/src/typescript.d.ts
+index d80425bffad746aa994bd24ed11b24d2eceab736..fdb3d10fdf43ec55532a4238a8d4b1b74f6292eb 100755
+--- a/src/ngtsc/util/src/typescript.d.ts
++++ b/src/ngtsc/util/src/typescript.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/ngtsc/util/src/typescript" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath } from '../../file_system';
+-import { DeclarationNode } from '../../reflection';
++import { AbsoluteFsPath } from '../../file_system/index.js';
++import { DeclarationNode } from '../../reflection/index.js';
+ /**
+  * Type describing a symbol that is guaranteed to have a value declaration.
+  */
+diff --git a/src/perform_compile.d.ts b/src/perform_compile.d.ts
+index ae1b75ee0b11b0a1014452edafca39db35dfe527..9290d509e88f460b89f5af466329277fc4c7ca69 100755
+--- a/src/perform_compile.d.ts
++++ b/src/perform_compile.d.ts
+@@ -7,8 +7,8 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/perform_compile" />
+ import ts from 'typescript';
+-import { AbsoluteFsPath, ReadonlyFileSystem } from '../src/ngtsc/file_system';
+-import * as api from './transformers/api';
++import { AbsoluteFsPath, ReadonlyFileSystem } from '../src/ngtsc/file_system/index.js';
++import * as api from './transformers/api.js';
+ export declare function formatDiagnostics(diags: ReadonlyArray<ts.Diagnostic>, host?: ts.FormatDiagnosticsHost): string;
+ /** Used to read configuration files. */
+ export declare type ConfigurationHost = Pick<ReadonlyFileSystem, 'readFile' | 'exists' | 'lstat' | 'resolve' | 'join' | 'dirname' | 'extname' | 'pwd'>;
+diff --git a/src/transformers/api.d.ts b/src/transformers/api.d.ts
+index e5ce30328157fdd724ab0174f23088b375afcf18..66fd033513ba3098f118f6a7bb48f4da8f6ce5a9 100755
+--- a/src/transformers/api.d.ts
++++ b/src/transformers/api.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/transformers/api" />
+ import ts from 'typescript';
+-import { ExtendedTsCompilerHost, NgCompilerOptions } from '../ngtsc/core/api';
++import { ExtendedTsCompilerHost, NgCompilerOptions } from '../ngtsc/core/api/index.js';
+ export declare const DEFAULT_ERROR_CODE = 100;
+ export declare const UNKNOWN_ERROR_CODE = 500;
+ export declare const SOURCE: "angular";
+diff --git a/src/transformers/compiler_host.d.ts b/src/transformers/compiler_host.d.ts
+index 9dcc597bea0f19c2260d4ee67224897d65e22830..bf7d4c74e853563db46f2afb17bc74f9611842a8 100755
+--- a/src/transformers/compiler_host.d.ts
++++ b/src/transformers/compiler_host.d.ts
+@@ -7,7 +7,7 @@
+  */
+ /// <amd-module name="@angular/compiler-cli/src/transformers/compiler_host" />
+ import ts from 'typescript';
+-import { CompilerHost, CompilerOptions } from './api';
++import { CompilerHost, CompilerOptions } from './api.js';
+ export declare function setWrapHostForTest(wrapFn: ((host: ts.CompilerHost) => ts.CompilerHost) | null): void;
+ export declare function createCompilerHost({ options, tsHost }: {
+     options: CompilerOptions;
+diff --git a/src/transformers/entry_points.d.ts b/src/transformers/entry_points.d.ts
+index 54032c4f553a042e82ae5a944e0c22f1dad6574a..a41e52d8dd82160318e006c294534400d92d6f68 100755
+--- a/src/transformers/entry_points.d.ts
++++ b/src/transformers/entry_points.d.ts
+@@ -6,5 +6,5 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/transformers/entry_points" />
+-export { createCompilerHost } from './compiler_host';
+-export { createProgram } from './program';
++export { createCompilerHost } from './compiler_host.js';
++export { createProgram } from './program.js';
+diff --git a/src/transformers/program.d.ts b/src/transformers/program.d.ts
+index 66ae7d5823d06f07d70f2e76c2d3602fb101275d..edc77528749d63ec8d899272c8be27019115ccc0 100755
+--- a/src/transformers/program.d.ts
++++ b/src/transformers/program.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ /// <amd-module name="@angular/compiler-cli/src/transformers/program" />
+-import { CompilerHost, CompilerOptions, Program } from './api';
++import { CompilerHost, CompilerOptions, Program } from './api.js';
+ export declare function createProgram({ rootNames, options, host, oldProgram }: {
+     rootNames: ReadonlyArray<string>;
+     options: CompilerOptions;
