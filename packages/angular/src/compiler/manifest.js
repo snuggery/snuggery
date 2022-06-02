@@ -1,5 +1,4 @@
 /* cspell:ignore fesm */
-/* global structuredClone */
 
 import {writeFile} from 'node:fs/promises';
 import {dirname, join, posix, relative as _relative} from 'node:path';
