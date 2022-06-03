@@ -2,6 +2,7 @@ import {Cli, Command, RunContext} from 'clipanion';
 
 import type {AbstractCommand} from './command/abstract-command';
 import type {Context} from './command/context';
+import {DoctorCommand} from './commands/doctor';
 import {EntryCommand} from './commands/entry';
 import {EntryWithProjectCommand} from './commands/entry-with-project';
 import {GenerateCommand} from './commands/generate';
@@ -57,6 +58,7 @@ export function run(
 	cli.register(HelpUpdateCommand);
 
 	cli.register(VersionCommand);
+	cli.register(DoctorCommand);
 
 	cli.register(EntryCommand);
 	cli.register(EntryWithProjectCommand);

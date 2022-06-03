@@ -20,7 +20,7 @@ export type ReportOptions = {
 	verbose?: boolean;
 };
 
-export class Report {
+class BaseReport {
 	private readonly json: boolean;
 
 	private readonly stdout: Writable;
@@ -130,5 +130,63 @@ export class Report {
 			str = sliceAnsi(str, 0, (this.stdout as WriteStream).columns - 1);
 
 		return str;
+	}
+}
+
+export class Report {
+	readonly #base: Report | BaseReport;
+
+	#numberOfWarnings = 0;
+
+	#numberOfErrors = 0;
+
+	constructor({enableColors, stdout, json, verbose}: ReportOptions);
+	constructor(base: Report | BaseReport);
+	constructor(optsOrBase: ReportOptions | Report | BaseReport) {
+		if ('reportWarning' in optsOrBase) {
+			this.#base = optsOrBase;
+		} else {
+			this.#base = new BaseReport(optsOrBase);
+		}
+	}
+
+	get numberOfWarnings(): number {
+		return this.#numberOfWarnings;
+	}
+
+	get numberOfErrors(): number {
+		return this.#numberOfErrors;
+	}
+
+	reportSeparator(): void {
+		this.#base.reportSeparator();
+	}
+
+	reportDebug(text: string): void {
+		this.#base.reportDebug(text);
+	}
+
+	reportInfo(text: string): void {
+		this.#base.reportInfo(text);
+	}
+
+	reportWarning(text: string): void {
+		this.#numberOfWarnings++;
+
+		this.#base.reportWarning(text);
+	}
+
+	reportError(text: string): void {
+		this.#numberOfErrors++;
+
+		this.#base.reportError(text);
+	}
+
+	reportJson(data: JsonValue): void {
+		this.#base.reportJson(data);
+	}
+
+	createSubReport(): Report {
+		return new Report(this);
 	}
 }

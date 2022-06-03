@@ -58,6 +58,9 @@ Utility commands
 
 Workspace information commands
 
+  sn --doctor
+    Diagnose configuration mistakes
+
   sn --version
     Print version information
 

@@ -1,22 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-
 import {isJsonObject} from '@snuggery/core';
 import {createRequire} from 'module';
 import {dirname, join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
 import {defaultSchematicCollection} from '../command/schematic';
-
-function getSet<K, T>(map: Map<K, Set<T>>, key: K): Set<T> {
-	let set = map.get(key);
-
-	if (set == null) {
-		set = new Set();
-		map.set(key, set);
-	}
-
-	return set;
-}
+import {SetMap} from '../utils/collections';
 
 export class VersionCommand extends AbstractCommand {
 	static override readonly paths = [['--version']];
@@ -69,7 +57,7 @@ export class VersionCommand extends AbstractCommand {
 
 		report.reportInfo(`${format.bold('Builders:')}\n`);
 
-		const builderVersions = new Map<string, Set<string>>();
+		const builderVersions = new SetMap<string, string>();
 
 		for (const project of workspace.projects.values()) {
 			for (const target of project.targets.values()) {
@@ -79,9 +67,9 @@ export class VersionCommand extends AbstractCommand {
 					continue;
 				}
 
-				getSet(builderVersions, packageName).add(
-					this.getVersion(packageName, project.root),
-				);
+				builderVersions
+					.get(packageName)
+					.add(this.getVersion(packageName, project.root));
 			}
 		}
 
@@ -110,7 +98,7 @@ export class VersionCommand extends AbstractCommand {
 
 		report.reportInfo(`${format.bold('Configured schematic packages:')}\n`);
 
-		const schematicVersions = new Map<string, Set<string>>();
+		const schematicVersions = new SetMap<string, string>();
 
 		for (const [extensions, root] of [
 			[workspace.extensions, null] as const,
@@ -124,15 +112,15 @@ export class VersionCommand extends AbstractCommand {
 				typeof extensions.cli.defaultCollection === 'string'
 			) {
 				const {defaultCollection} = extensions.cli;
-				getSet(schematicVersions, defaultCollection).add(
-					this.getVersion(defaultCollection, root),
-				);
+				schematicVersions
+					.get(defaultCollection)
+					.add(this.getVersion(defaultCollection, root));
 			} else if (root == null) {
 				// If the root doesn't have a default schematics package, use the global
 				// default IF it is installed.
 				const version = this.getVersion(defaultSchematicCollection, null);
 				if (version !== '<error>') {
-					getSet(schematicVersions, defaultSchematicCollection).add(version);
+					schematicVersions.get(defaultSchematicCollection).add(version);
 				}
 			}
 
@@ -140,9 +128,9 @@ export class VersionCommand extends AbstractCommand {
 				for (const schematic of Object.keys(extensions.schematics)) {
 					const packageName = schematic.split(':', 1)[0]!;
 
-					getSet(schematicVersions, packageName).add(
-						this.getVersion(packageName, root),
-					);
+					schematicVersions
+						.get(packageName)
+						.add(this.getVersion(packageName, root));
 				}
 			}
 		}
