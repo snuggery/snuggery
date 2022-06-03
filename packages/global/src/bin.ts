@@ -33,7 +33,7 @@ import('@snuggery/snuggery/cli')
 			const pnpFile = await findUp(['.pnp.js', '.pnp.cjs'], workspace.basePath);
 
 			if (pnpFile != null) {
-				const pnpapi = (await import(pnpFile)) as PnpApi & {setup?: () => void};
+				const pnpapi = require(pnpFile) as PnpApi & {setup?: () => void};
 
 				if (typeof pnpapi.setup === 'function') {
 					pnpapi.setup();
