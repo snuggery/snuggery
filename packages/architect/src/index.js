@@ -3,8 +3,7 @@ require('@snuggery-workspace/scripts/load-ts');
 module.exports = require('./index.ts');
 
 0 &&
-	((exports.AssetSpec = void 0),
-	(exports.copyAssets = void 0),
+	((exports.copyAssets = void 0),
 	(exports.extractExtraConfiguration = void 0),
 	(exports.runPackager = void 0),
 	(exports.findProjects = void 0),
