@@ -9,6 +9,7 @@ import {
 import {createRequire} from 'module';
 import {join} from 'path';
 import * as t from 'typanion';
+import {pathToFileURL} from 'url';
 
 import type {ChangeLocatorStrategy} from './strategies/interface';
 
@@ -114,21 +115,17 @@ async function createCombinedStrategy(
 		}
 
 		strategies.push(
-			(
-				Function(
-					'path',
-					'return import(path)',
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				)(require.resolve(path)) as Promise<any>
-			).then(mod => {
-				const strategy = exportName ? mod[exportName] : mod.default ?? mod;
+			(import(pathToFileURL(require.resolve(path)).href) as Promise<any>).then(
+				mod => {
+					const strategy = exportName ? mod[exportName] : mod.default ?? mod;
 
-				if (strategy == null) {
-					throw new Error(`Failed to load strategy ${name}`);
-				}
+					if (strategy == null) {
+						throw new Error(`Failed to load strategy ${name}`);
+					}
 
-				return [strategy, configs!];
-			}),
+					return [strategy, configs!];
+				},
+			),
 		);
 	}
 

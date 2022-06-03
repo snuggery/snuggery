@@ -96,7 +96,7 @@ export async function resolvePackageBin(
 		} as const;
 	}
 
-	const manifest = (await import(manifestPath)) as Manifest;
+	const manifest = require(manifestPath) as Manifest;
 
 	if (!manifest.bin) {
 		return {

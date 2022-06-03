@@ -1,6 +1,7 @@
 import type {JsonObject, JsonValue} from '@snuggery/core';
 import {createRequire} from 'module';
-import {basename, join} from 'path';
+import {basename, extname, join} from 'path';
+import {pathToFileURL} from 'url';
 
 import {loadJson} from '../../utils/json-resolver';
 import type {Context} from '../command/context';
@@ -94,9 +95,12 @@ export class Resolver implements ResolverFacade {
 
 			let schemaOrBuilder: JsonObject | Builder;
 			try {
-				schemaOrBuilder = await import(resolvedPath).then(
-					module => module.default ?? module,
-				);
+				schemaOrBuilder =
+					extname(resolvedPath) === '.json'
+						? require(resolvedPath)
+						: await import(pathToFileURL(resolvedPath).href).then(
+								module => module.default ?? module,
+						  );
 			} catch {
 				throw new InvalidBuilderError(
 					`Failed to load builder file "${resolvedPath}" for builder "${path}"`,
