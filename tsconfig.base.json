@@ -1,7 +1,21 @@
 {
 	"compilerOptions": {
-		"target": "ES2020",
+		// Node 14.6 and up support ± all of the syntax of ES2022
+		// Notable exceptions are
+		// - logical assignment operators ||=, &&= and ??=
+		// - static initializers
+		// - ergonomic brand checks for private fields
+		// so don't use those.
+		// Private class fields are included in ES2022 and it's
+		// incredibly silly to have TypeScript polyfill it even
+		// though all supported Node versions support it.
+		// If only typescript had support for specifying a Node.js
+		// version as target...
+		"target": "es2022",
+		// Node 14.6 and up support all of the ES2020 lib definitions
+		// and almost none of those of higher language levels.
 		"lib": ["es2020"],
+		// Thanks https://node.green/ & https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
 
 		"module": "Node16",
 
