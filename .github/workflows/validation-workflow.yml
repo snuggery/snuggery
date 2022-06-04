@@ -58,7 +58,7 @@ jobs:
       - name: Type-Check
         shell: bash
         run: |
-          yarn tsc --noEmit
+          yarn tsc -b
 
       - name: Build
         shell: bash

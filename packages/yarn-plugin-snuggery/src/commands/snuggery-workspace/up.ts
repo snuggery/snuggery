@@ -28,7 +28,7 @@ import {applyModifier, getModifier} from '../../utils';
 const migrationFilename = 'migrations.json' as Filename;
 
 export class UpCommand extends BaseCommand {
-	static paths = [['snuggery-workspace', `up`]];
+	static override paths = [['snuggery-workspace', `up`]];
 
 	patterns = Option.Rest();
 

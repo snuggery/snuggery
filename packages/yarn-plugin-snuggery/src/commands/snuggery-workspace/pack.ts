@@ -16,7 +16,7 @@ import {Option} from 'clipanion';
 import {createPublishWorkspace} from '../../utils';
 
 export class PackCommand extends BaseCommand {
-	static paths = [['snuggery-workspace', 'pack']];
+	static override paths = [['snuggery-workspace', 'pack']];
 
 	json = Option.Boolean('--json');
 

@@ -3,7 +3,7 @@ import {Configuration, Project, scriptUtils, structUtils} from '@yarnpkg/core';
 import {Option} from 'clipanion';
 
 export class SnCommand extends BaseCommand {
-	static paths = [['sn']];
+	static override paths = [['sn']];
 
 	args = Option.Proxy();
 
