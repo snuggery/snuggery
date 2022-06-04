@@ -36,15 +36,15 @@ export class HelpTargetCommand extends ArchitectCommand {
 
 	async execute(): Promise<number> {
 		if (this.project != null) {
-			await this.executeWithProject(this.project);
+			await this.#executeWithProject(this.project);
 		} else {
-			await this.executeWithoutProject();
+			await this.#executeWithoutProject();
 		}
 
 		return 0;
 	}
 
-	private async executeWithProject(projectName: string, projectLabel?: string) {
+	async #executeWithProject(projectName: string, projectLabel?: string) {
 		const target = this.workspace
 			.getProjectByName(projectName)
 			.targets.get(this.target);
@@ -100,20 +100,20 @@ export class HelpTargetCommand extends ArchitectCommand {
 			report.reportSeparator();
 		}
 
-		this.printProjectList();
+		this.#printProjectList();
 	}
 
-	private async executeWithoutProject() {
-		const project = this.tryToFindProject();
+	async #executeWithoutProject() {
+		const project = this.#tryToFindProject();
 
 		if (project != null) {
-			return this.executeWithProject(...project);
+			return this.#executeWithProject(...project);
 		}
 
-		this.printProjectList();
+		this.#printProjectList();
 	}
 
-	private tryToFindProject(): [project: string, label: string] | null {
+	#tryToFindProject(): [project: string, label: string] | null {
 		const {workspace, currentProject, report} = this;
 
 		if (currentProject != null) {
@@ -150,7 +150,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 		return null;
 	}
 
-	private printProjectList() {
+	#printProjectList() {
 		const projects = Array.from(this.workspace.projects)
 			.filter(([, {targets}]) => targets.has(this.target))
 			.map(([project]) => project);

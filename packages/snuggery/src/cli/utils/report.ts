@@ -21,15 +21,15 @@ export type ReportOptions = {
 };
 
 class BaseReport {
-	private readonly json: boolean;
+	readonly #json: boolean;
 
-	private readonly stdout: Writable;
+	readonly #stdout: Writable;
 
-	private readonly isTty: boolean;
+	readonly #isTty: boolean;
 
-	private readonly enableColors: boolean;
+	readonly #enableColors: boolean;
 
-	private readonly isVerbose: boolean;
+	readonly #isVerbose: boolean;
 
 	constructor({
 		enableColors,
@@ -37,24 +37,24 @@ class BaseReport {
 		json = false,
 		verbose = false,
 	}: ReportOptions) {
-		this.json = json;
-		this.stdout = stdout;
-		this.isTty = (stdout as WriteStream).isTTY ?? false;
-		this.enableColors = enableColors;
-		this.isVerbose = verbose;
+		this.#json = json;
+		this.#stdout = stdout;
+		this.#isTty = (stdout as WriteStream).isTTY ?? false;
+		this.#enableColors = enableColors;
+		this.#isVerbose = verbose;
 	}
 
 	reportSeparator(): void {
-		this.writeLine(``);
+		this.#writeLine(``);
 	}
 
 	reportDebug(text: string): void {
-		if (!this.isVerbose) {
+		if (!this.#isVerbose) {
 			return;
 		}
 
-		if (!this.json) {
-			this.writeLine(text, {color: gray});
+		if (!this.#json) {
+			this.#writeLine(text, {color: gray});
 		} else {
 			this.reportJson({
 				type: `debug`,
@@ -64,8 +64,8 @@ class BaseReport {
 	}
 
 	reportInfo(text: string): void {
-		if (!this.json) {
-			this.writeLine(text, {
+		if (!this.#json) {
+			this.#writeLine(text, {
 				color: white,
 			});
 		} else {
@@ -77,8 +77,8 @@ class BaseReport {
 	}
 
 	reportWarning(text: string): void {
-		if (!this.json) {
-			this.writeLine(text, {
+		if (!this.#json) {
+			this.#writeLine(text, {
 				color: yellow,
 			});
 		} else {
@@ -90,8 +90,8 @@ class BaseReport {
 	}
 
 	reportError(text: string): void {
-		if (!this.json) {
-			this.writeLine(text, {
+		if (!this.#json) {
+			this.#writeLine(text, {
 				truncate: false,
 				color: red,
 			});
@@ -104,30 +104,30 @@ class BaseReport {
 	}
 
 	reportJson(data: JsonValue): void {
-		if (this.json) {
-			this.writeLine(JSON.stringify(data));
+		if (this.#json) {
+			this.#writeLine(JSON.stringify(data));
 		}
 	}
 
-	private writeLine(
+	#writeLine(
 		str: string,
 		{
 			truncate,
 			color = value => value,
 		}: {truncate?: boolean; color?: (text: string) => string} = {},
 	) {
-		const doColor = this.enableColors ? color : stripAnsi;
+		const doColor = this.#enableColors ? color : stripAnsi;
 
-		this.stdout.write(`${doColor(this.truncate(str, {truncate}))}\n`);
+		this.#stdout.write(`${doColor(this.#truncate(str, {truncate}))}\n`);
 	}
 
-	private truncate(str: string, {truncate}: {truncate?: boolean} = {}) {
-		if (!this.isTty) truncate = false;
+	#truncate(str: string, {truncate}: {truncate?: boolean} = {}) {
+		if (!this.#isTty) truncate = false;
 
 		// The -1 is to account for terminals that would wrap after
 		// the last column rather before the first overwrite
 		if (truncate)
-			str = sliceAnsi(str, 0, (this.stdout as WriteStream).columns - 1);
+			str = sliceAnsi(str, 0, (this.#stdout as WriteStream).columns - 1);
 
 		return str;
 	}

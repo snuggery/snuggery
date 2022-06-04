@@ -37,7 +37,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 		if (this.collectionName) {
 			const collection = this.getCollection(this.collectionName);
 
-			this.showCollection(collection);
+			this.#showCollection(collection);
 		} else {
 			const configuredCollections = this.getConfiguredCollections();
 			const defaultCollection = this.getDefaultCollection();
@@ -45,10 +45,10 @@ export class HelpSchematicsCommand extends SchematicCommand {
 				const shownShorthands = new Map<string, string>();
 
 				for (const collection of configuredCollections) {
-					this.showCollection(collection, shownShorthands);
+					this.#showCollection(collection, shownShorthands);
 				}
 			} else if (defaultCollection != null) {
-				this.showCollection(defaultCollection, new Map());
+				this.#showCollection(defaultCollection, new Map());
 
 				report.reportWarning(
 					'This project is using the deprecated `defaultCollection` configuration, consider switching to `schematicCollections` instead',
@@ -79,7 +79,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 		report.reportSeparator();
 	}
 
-	private showCollection(
+	#showCollection(
 		collection: SnuggeryCollection,
 		shownShorthands?: Map<string, string>,
 	): void {

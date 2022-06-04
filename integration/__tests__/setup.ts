@@ -56,19 +56,19 @@ class EmptyReadable extends Readable {
 }
 
 class CollectingWritable extends Writable {
-	private readonly buffers: Buffer[] = [];
+	readonly #buffers: Buffer[] = [];
 
 	constructor() {
 		super({
 			write: (buff, _encoding, callback) => {
-				this.buffers.push(buff);
+				this.#buffers.push(buff);
 				callback();
 			},
 		});
 	}
 
 	getContent() {
-		return Buffer.concat(this.buffers);
+		return Buffer.concat(this.#buffers);
 	}
 }
 

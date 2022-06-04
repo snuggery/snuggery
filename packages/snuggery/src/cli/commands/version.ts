@@ -69,7 +69,7 @@ export class VersionCommand extends AbstractCommand {
 
 				builderVersions
 					.get(packageName)
-					.add(this.getVersion(packageName, project.root));
+					.add(this.#getVersion(packageName, project.root));
 			}
 		}
 
@@ -114,11 +114,11 @@ export class VersionCommand extends AbstractCommand {
 				const {defaultCollection} = extensions.cli;
 				schematicVersions
 					.get(defaultCollection)
-					.add(this.getVersion(defaultCollection, root));
+					.add(this.#getVersion(defaultCollection, root));
 			} else if (root == null) {
 				// If the root doesn't have a default schematics package, use the global
 				// default IF it is installed.
-				const version = this.getVersion(defaultSchematicCollection, null);
+				const version = this.#getVersion(defaultSchematicCollection, null);
 				if (version !== '<error>') {
 					schematicVersions.get(defaultSchematicCollection).add(version);
 				}
@@ -130,7 +130,7 @@ export class VersionCommand extends AbstractCommand {
 
 					schematicVersions
 						.get(packageName)
-						.add(this.getVersion(packageName, root));
+						.add(this.#getVersion(packageName, root));
 				}
 			}
 		}
@@ -159,7 +159,7 @@ export class VersionCommand extends AbstractCommand {
 		}
 	}
 
-	private getVersion(packageName: string, projectRoot: string | null): string {
+	#getVersion(packageName: string, projectRoot: string | null): string {
 		const {basePath} = this.workspace;
 
 		for (const path of projectRoot

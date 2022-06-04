@@ -13,14 +13,17 @@ import {UnknownConfigurationError, UnknownTargetError} from './errors';
 import type {WorkspaceFacade} from './host';
 
 export class CliWorkspaceFacade implements WorkspaceFacade {
-	constructor(private readonly workspace: CliWorkspace | null = null) {}
+	readonly #workspace: CliWorkspace | null;
+	constructor(workspace: CliWorkspace | null = null) {
+		this.#workspace = workspace;
+	}
 
 	public get basePath(): string | undefined {
-		return this.workspace?.basePath;
+		return this.#workspace?.basePath;
 	}
 
 	getProject(projectName: string): ProjectDefinition {
-		const project = this.workspace?.projects.get(projectName);
+		const project = this.#workspace?.projects.get(projectName);
 
 		if (project == null) {
 			throw new UnknownTargetError(`Unknown project: "${projectName}"`);
@@ -83,6 +86,6 @@ export class CliWorkspaceFacade implements WorkspaceFacade {
 	convertExecutorIntoBuilder(
 		executor: Executor,
 	): ReturnType<typeof createBuilder> {
-		return makeExecutorIntoBuilder(executor, this.workspace);
+		return makeExecutorIntoBuilder(executor, this.#workspace);
 	}
 }

@@ -77,7 +77,11 @@ export class GitRepository implements VersionControlSystem {
 		return new GitRepository(repositoryFolder);
 	}
 
-	private constructor(private readonly repositoryFolder: string) {}
+	readonly #repositoryFolder: string;
+
+	private constructor(repositoryFolder: string) {
+		this.#repositoryFolder = repositoryFolder;
+	}
 
 	async getChangedFiles({
 		from,
@@ -91,7 +95,7 @@ export class GitRepository implements VersionControlSystem {
 		const files = new Set<string>();
 
 		const addFilesFrom = async (...args: string[]) => {
-			for (const file of (await git(this.repositoryFolder, ...args)).split(
+			for (const file of (await git(this.#repositoryFolder, ...args)).split(
 				/(?:\r?\n)+/,
 			)) {
 				files.add(file);

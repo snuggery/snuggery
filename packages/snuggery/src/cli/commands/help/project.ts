@@ -69,7 +69,7 @@ export class HelpProjectCommand extends AbstractCommand {
 			defaultCollection = defaultSchematicCollection;
 		}
 
-		if (this.isInstalled(defaultCollection, project.root)) {
+		if (this.#isInstalled(defaultCollection, project.root)) {
 			report.reportInfo(
 				formatMarkdownish(
 					`The default schematic collection is \`${defaultCollection}\`.`,
@@ -88,7 +88,7 @@ export class HelpProjectCommand extends AbstractCommand {
 		report.reportSeparator();
 	}
 
-	private isInstalled(packageName: string, root: string) {
+	#isInstalled(packageName: string, root: string) {
 		for (const path of [
 			join(this.workspace.basePath, root),
 			this.workspace.basePath,

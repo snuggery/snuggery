@@ -61,41 +61,46 @@ function extractResult(
 }
 
 class MappedContext implements ExecutorContext {
+	readonly #snuggeryWorkspace: CliWorkspace | null;
+	readonly #ngContext: BuilderContext;
 	constructor(
-		private readonly snuggeryWorkspace: CliWorkspace | null,
-		private readonly ngContext: BuilderContext,
-	) {}
+		snuggeryWorkspace: CliWorkspace | null,
+		ngContext: BuilderContext,
+	) {
+		this.#snuggeryWorkspace = snuggeryWorkspace;
+		this.#ngContext = ngContext;
+	}
 
 	get root() {
-		return this.ngContext.workspaceRoot;
+		return this.#ngContext.workspaceRoot;
 	}
 
 	get projectName() {
-		return this.ngContext.target?.project;
+		return this.#ngContext.target?.project;
 	}
 
 	get targetName() {
-		return this.ngContext.target?.target;
+		return this.#ngContext.target?.target;
 	}
 
 	get configurationName() {
-		return this.ngContext.target?.configuration;
+		return this.#ngContext.target?.configuration;
 	}
 
 	@Cached()
 	get target(): TargetConfiguration {
-		if (this.ngContext.target == null) {
+		if (this.#ngContext.target == null) {
 			return {
-				executor: this.ngContext.builder.builderName,
+				executor: this.#ngContext.builder.builderName,
 			};
 		}
 
-		const target = this.snuggeryWorkspace?.projects
-			.get(this.ngContext.target.project)
-			?.targets.get(this.ngContext.target.target);
+		const target = this.#snuggeryWorkspace?.projects
+			.get(this.#ngContext.target.project)
+			?.targets.get(this.#ngContext.target.target);
 
 		return {
-			executor: this.ngContext.builder.builderName,
+			executor: this.#ngContext.builder.builderName,
 			options: target?.options,
 			configurations: target?.configurations,
 			defaultConfiguration: target?.defaultConfiguration,
@@ -109,7 +114,7 @@ class MappedContext implements ExecutorContext {
 			version: 2,
 			projects: Object.fromEntries(
 				Array.from(
-					this.snuggeryWorkspace?.projects ?? [],
+					this.#snuggeryWorkspace?.projects ?? [],
 					([projectName, project]): [string, ProjectConfiguration] => {
 						return [
 							projectName,
@@ -147,18 +152,18 @@ class MappedContext implements ExecutorContext {
 			),
 
 			defaultProject: this.workspace?.defaultProject ?? undefined,
-			cli: this.snuggeryWorkspace?.extensions.cli as any,
-			generators: this.snuggeryWorkspace?.extensions.schematics as any,
+			cli: this.#snuggeryWorkspace?.extensions.cli as any,
+			generators: this.#snuggeryWorkspace?.extensions.schematics as any,
 
 			// npmScope is required, but we only have it certain cases... pass null and hope for the best
-			npmScope: (this.snuggeryWorkspace?.extensions.npmScope ??
+			npmScope: (this.#snuggeryWorkspace?.extensions.npmScope ??
 				null!) as string,
 		};
 		/* eslint-enable @typescript-eslint/no-explicit-any */
 	}
 
 	get cwd(): string {
-		return this.ngContext.currentDirectory;
+		return this.#ngContext.currentDirectory;
 	}
 
 	get isVerbose(): boolean {
@@ -178,7 +183,11 @@ export function makeExecutorIntoBuilder(
 }
 
 class MappedTree implements NxTree {
-	constructor(private readonly tree: NgTree, readonly root: string) {}
+	readonly #tree: NgTree;
+
+	constructor(tree: NgTree, readonly root: string) {
+		this.#tree = tree;
+	}
 	changePermissions(): void {
 		throw new Error('Method not implemented.');
 	}
@@ -186,38 +195,38 @@ class MappedTree implements NxTree {
 	read(filePath: string): Buffer | null;
 	read(filePath: string, encoding: BufferEncoding): string | null;
 	read(filePath: string, encoding?: BufferEncoding): Buffer | string | null {
-		const buffer = this.tree.read(filePath);
+		const buffer = this.#tree.read(filePath);
 		return encoding != null && buffer != null
 			? buffer.toString(encoding)
 			: buffer;
 	}
 
 	write(filePath: string, content: string | Buffer): void {
-		if (this.tree.exists(filePath)) {
-			return this.tree.overwrite(filePath, content);
+		if (this.#tree.exists(filePath)) {
+			return this.#tree.overwrite(filePath, content);
 		} else {
-			return this.tree.create(filePath, content);
+			return this.#tree.create(filePath, content);
 		}
 	}
 
 	exists(filePath: string): boolean {
-		return this.tree.exists(filePath) || this.children(filePath).length > 0;
+		return this.#tree.exists(filePath) || this.children(filePath).length > 0;
 	}
 
 	delete(filePath: string): void {
-		return this.tree.delete(filePath);
+		return this.#tree.delete(filePath);
 	}
 
 	rename(from: string, to: string): void {
-		return this.tree.rename(from, to);
+		return this.#tree.rename(from, to);
 	}
 
 	isFile(filePath: string): boolean {
-		return this.tree.exists(filePath);
+		return this.#tree.exists(filePath);
 	}
 
 	children(dirPath: string): string[] {
-		const dirEntry = this.tree.getDir(dirPath);
+		const dirEntry = this.#tree.getDir(dirPath);
 		return [...dirEntry.subdirs, ...dirEntry.subfiles];
 	}
 
@@ -229,7 +238,7 @@ class MappedTree implements NxTree {
 			r: 'UPDATE',
 		} as const;
 
-		return this.tree.actions.flatMap(action => {
+		return this.#tree.actions.flatMap(action => {
 			if (action.kind === 'r') {
 				return [
 					{
@@ -261,12 +270,15 @@ interface ExecuteAfterSchematicOptions {
 class ExecuteAfterSchematicTask
 	implements TaskConfigurationGenerator<ExecuteAfterSchematicOptions>
 {
-	constructor(private readonly task: () => void | Promise<void>) {}
+	readonly #task: () => void | Promise<void>;
+	constructor(task: () => void | Promise<void>) {
+		this.#task = task;
+	}
 
 	toConfiguration(): TaskConfiguration<ExecuteAfterSchematicOptions> {
 		return {
 			name: 'executeNxTaskAfterSchematic',
-			options: {task: this.task},
+			options: {task: this.#task},
 		};
 	}
 }

@@ -110,7 +110,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 		return this.filenameOverride ?? defaultMigrationFilename;
 	}
 
-	private get filePath(): string {
+	get #filePath(): string {
 		return resolve(this.root, this.filename);
 	}
 
@@ -119,7 +119,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 		this.context.startCwd = this.root;
 
 		const migrationFile = JSON5.parse(
-			await fs.readFile(this.filePath, 'utf8'),
+			await fs.readFile(this.#filePath, 'utf8'),
 		) as unknown;
 
 		{
@@ -142,21 +142,21 @@ export class RunMigrationsCommand extends MigrationCommand {
 		}
 
 		if (this.prepare) {
-			return this.writeMigrationFile(
-				await this.prepareMigrations(migrationFile),
+			return this.#writeMigrationFile(
+				await this.#prepareMigrations(migrationFile),
 				true,
 			);
 		} else {
-			return this.executeMigrations(migrationFile);
+			return this.#executeMigrations(migrationFile);
 		}
 	}
 
-	private writeMigrationFile(migrationFile: Migration[], log = false) {
+	#writeMigrationFile(migrationFile: Migration[], log = false) {
 		if (migrationFile.length === 0) {
 			if (log) {
 				this.report.reportInfo(`No migrations are required`);
 			}
-			return fs.rm(this.filePath, {force: true});
+			return fs.rm(this.#filePath, {force: true});
 		}
 
 		if (log) {
@@ -165,7 +165,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 			);
 		}
 		return fs.writeFile(
-			this.filePath,
+			this.#filePath,
 			tags.stripIndent`
 				/**
 				 * This file contains migrations to execute via \`sn run migrations\`.
@@ -199,9 +199,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 		);
 	}
 
-	private async prepareMigrations(
-		migrationFile: Migration[],
-	): Promise<Migration[]> {
+	async #prepareMigrations(migrationFile: Migration[]): Promise<Migration[]> {
 		const newMigrationFile: Migration[] = [];
 
 		for (const migration of migrationFile) {
@@ -237,20 +235,20 @@ export class RunMigrationsCommand extends MigrationCommand {
 		return newMigrationFile;
 	}
 
-	private async executeMigrations(migrationFile: Migration[]): Promise<number> {
+	async #executeMigrations(migrationFile: Migration[]): Promise<number> {
 		if (!migrationFile.length) {
 			this.report.reportInfo(`The migration file is empty, nothing to do.`);
-			await this.writeMigrationFile(migrationFile);
+			await this.#writeMigrationFile(migrationFile);
 			return 0;
 		}
 
-		migrationFile = await this.prepareMigrations(migrationFile);
+		migrationFile = await this.#prepareMigrations(migrationFile);
 
 		if (!migrationFile.length) {
 			this.report.reportInfo(
 				`The migration file didn't contain any packages with actual migrations, nothing to do.`,
 			);
-			await this.writeMigrationFile(migrationFile);
+			await this.#writeMigrationFile(migrationFile);
 			return 0;
 		}
 
@@ -266,7 +264,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 					continue;
 				}
 
-				const migrationResult = await this.executeMigration(migration);
+				const migrationResult = await this.#executeMigration(migration);
 
 				if (migrationResult != null) {
 					hasExecutedSomething = true;
@@ -296,14 +294,14 @@ export class RunMigrationsCommand extends MigrationCommand {
 
 			return 0;
 		} finally {
-			await this.writeMigrationFile([
+			await this.#writeMigrationFile([
 				...newMigrationFile,
 				...migrationFile.slice(lastExecutedIndex),
 			]);
 		}
 	}
 
-	private async executeMigration(migration: Migration) {
+	async #executeMigration(migration: Migration) {
 		const collection = this.getMigrationCollection(migration.package);
 
 		if (collection == null) {

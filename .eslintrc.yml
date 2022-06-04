@@ -66,3 +66,10 @@ overrides:
       '@typescript-eslint/no-unused-vars':
         - error
         - ignoreRestSiblings: true
+
+      # Disallow the private keyword except on constructors
+      # @see https://github.com/typescript-eslint/typescript-eslint/issues/1391
+      no-restricted-syntax:
+        - error
+        - selector: ':matches(PropertyDefinition, MethodDefinition, TSParameterProperty):not([kind="constructor"])[accessibility="private"]'
+          message: 'Use #private instead'

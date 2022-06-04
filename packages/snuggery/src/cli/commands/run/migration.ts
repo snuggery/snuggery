@@ -119,9 +119,9 @@ export class RunMigrationCommand extends MigrationCommand {
 		if (this.name && this.from) {
 			throw new UsageError('Use only one of `--from` or `--name`');
 		} else if (this.name) {
-			return this.executeName(collection, this.name);
+			return this.#executeName(collection, this.name);
 		} else if (this.from) {
-			return this.executeFrom(collection, this.from);
+			return this.#executeFrom(collection, this.from);
 		} else {
 			throw new UsageError(
 				'Add one of `--name` or `--from` to run migrations, add `--help` for more information',
@@ -129,13 +129,13 @@ export class RunMigrationCommand extends MigrationCommand {
 		}
 	}
 
-	private async executeName(collection: MigrationCollection, name: string) {
+	async #executeName(collection: MigrationCollection, name: string) {
 		return this.runSchematic({
 			schematic: collection.createSchematic(name),
 		});
 	}
 
-	private async executeFrom(collection: MigrationCollection, from: SemVer) {
+	async #executeFrom(collection: MigrationCollection, from: SemVer) {
 		const toVersion =
 			this.to?.format() ?? collection.version ?? collection.description.version;
 

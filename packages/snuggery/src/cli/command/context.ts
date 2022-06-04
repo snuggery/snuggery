@@ -37,19 +37,22 @@ export interface Context extends BaseContext {
 }
 
 export class CliWorkspace implements WorkspaceDefinition {
-	private syntheticProject?: ProjectDefinition;
+	#syntheticProject?: ProjectDefinition;
+	readonly #workspace: WorkspaceDefinition;
 
 	constructor(
-		private readonly workspace: WorkspaceDefinition,
+		workspace: WorkspaceDefinition,
 		public readonly basePath: string,
-	) {}
+	) {
+		this.#workspace = workspace;
+	}
 
 	get extensions(): JsonObject {
-		return this.workspace.extensions;
+		return this.#workspace.extensions;
 	}
 
 	get projects(): ProjectDefinitionCollection {
-		return this.workspace.projects;
+		return this.#workspace.projects;
 	}
 
 	get defaultProject(): string | null {
@@ -132,8 +135,8 @@ export class CliWorkspace implements WorkspaceDefinition {
 		if (projectName == null) {
 			projectName = '@synthetic/project';
 			project =
-				this.syntheticProject ??
-				(this.syntheticProject = this.projects.add({
+				this.#syntheticProject ??
+				(this.#syntheticProject = this.projects.add({
 					name: projectName,
 					root: '',
 				}));

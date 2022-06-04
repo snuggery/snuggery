@@ -13,8 +13,8 @@ import type {
 } from '@angular-devkit/architect';
 // It would be great if we could have access to these without going through `/src/internal/`.
 import {
-	ArchitectHost,
-	Builder,
+	type ArchitectHost,
+	type Builder,
 	BuilderSymbol,
 } from '@angular-devkit/architect/src/internal';
 import {
@@ -160,21 +160,28 @@ export interface WorkspaceFacade {
 export class SnuggeryArchitectHost
 	implements ArchitectHost<SnuggeryBuilderInfo>
 {
+	readonly #context: Pick<Context, 'startCwd'>;
+	readonly #resolver: ResolverFacade;
+	readonly #workspace: WorkspaceFacade;
 	constructor(
-		private readonly context: Pick<Context, 'startCwd'>,
-		private readonly resolver: ResolverFacade,
-		private readonly workspace: WorkspaceFacade,
-	) {}
+		context: Pick<Context, 'startCwd'>,
+		resolver: ResolverFacade,
+		workspace: WorkspaceFacade,
+	) {
+		this.#context = context;
+		this.#resolver = resolver;
+		this.#workspace = workspace;
+	}
 
 	/** @override */
 	async getBuilderNameForTarget(target: Target): Promise<string> {
-		return this.workspace.getTarget(target).builder;
+		return this.#workspace.getTarget(target).builder;
 	}
 
 	async listBuilders(
 		packageName: string,
 	): Promise<{name: string; description?: string}[]> {
-		const [, builderJson, executorsJson] = await this.resolver.loadBuilders(
+		const [, builderJson, executorsJson] = await this.#resolver.loadBuilders(
 			packageName,
 		);
 
@@ -213,11 +220,11 @@ export class SnuggeryArchitectHost
 		let isNx: boolean | null = null;
 
 		if (packageName === '$direct') {
-			[builderPath, builderInfo] = await this.resolver.resolveDirectBuilder(
+			[builderPath, builderInfo] = await this.#resolver.resolveDirectBuilder(
 				builderName,
 			);
 		} else {
-			[builderPath, builderInfo, isNx] = await this.resolver.resolveBuilder(
+			[builderPath, builderInfo, isNx] = await this.#resolver.resolveBuilder(
 				packageName,
 				builderName,
 			);
@@ -313,7 +320,7 @@ export class SnuggeryArchitectHost
 				typeof info.optionSchema === 'object' &&
 				info.optionSchema.cli === 'nx')
 		) {
-			return this.workspace.convertExecutorIntoBuilder(implementation);
+			return this.#workspace.convertExecutorIntoBuilder(implementation);
 		}
 
 		if (!isBuilder(implementation)) {
@@ -327,24 +334,24 @@ export class SnuggeryArchitectHost
 
 	/** @override */
 	async getCurrentDirectory(): Promise<string> {
-		return this.context.startCwd;
+		return this.#context.startCwd;
 	}
 
 	/** @override */
 	async getWorkspaceRoot(): Promise<string> {
-		return this.workspace.basePath ?? this.context.startCwd;
+		return this.#workspace.basePath ?? this.#context.startCwd;
 	}
 
 	/** @override */
 	async getOptionsForTarget(target: Target): Promise<JsonObject | null> {
-		return this.workspace.getOptionsForTarget(target);
+		return this.#workspace.getOptionsForTarget(target);
 	}
 
 	/** @override */
 	async getProjectMetadata(
 		projectNameOrTarget: string | Target,
 	): Promise<JsonObject> {
-		return this.workspace.getProjectMetadata(
+		return this.#workspace.getProjectMetadata(
 			typeof projectNameOrTarget === 'string'
 				? projectNameOrTarget
 				: projectNameOrTarget.project,

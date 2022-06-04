@@ -52,7 +52,7 @@ class Yarn {
 		this.#context = context;
 	}
 
-	private exec(
+	#exec(
 		args: string[],
 		opts: {
 			captureNdjson: true;
@@ -61,7 +61,7 @@ class Yarn {
 			env?: NodeJS.ProcessEnv;
 		},
 	): Observable<JsonObject[]>;
-	private exec(
+	#exec(
 		args: string[],
 		opts: {
 			captureNdjson?: false;
@@ -70,7 +70,7 @@ class Yarn {
 			env?: NodeJS.ProcessEnv;
 		},
 	): Observable<void>;
-	private exec(
+	#exec(
 		args: string[],
 		opts: {
 			captureNdjson?: boolean;
@@ -79,7 +79,7 @@ class Yarn {
 			env?: NodeJS.ProcessEnv;
 		},
 	): Observable<JsonObject[] | void>;
-	private exec(
+	#exec(
 		args: string[],
 		{
 			captureNdjson: capture,
@@ -172,13 +172,13 @@ class Yarn {
 	}
 
 	listPlugins(): Observable<YarnPlugin[]> {
-		return this.exec(['plugin', 'runtime', '--json'], {
+		return this.#exec(['plugin', 'runtime', '--json'], {
 			captureNdjson: true,
 		}).pipe(map(output => output.filter(isYarnPlugin)));
 	}
 
 	applyVersion(): Observable<AppliedVersion[]> {
-		return this.exec(['version', 'apply', '--all', '--json'], {
+		return this.#exec(['version', 'apply', '--all', '--json'], {
 			captureNdjson: true,
 		}).pipe(
 			map(output => {
@@ -200,7 +200,7 @@ class Yarn {
 		cwd: string;
 		directoryToPack: string;
 	}): Observable<void> {
-		return this.exec(
+		return this.#exec(
 			['snuggery-workspace', 'pack', directoryToPack, '--json'],
 			{
 				cwd: resolve(this.#context.workspaceRoot, cwd),
@@ -210,7 +210,7 @@ class Yarn {
 	}
 
 	npmPack({cwd}: {cwd: string}): Observable<void> {
-		return this.exec(['pack'], {
+		return this.#exec(['pack'], {
 			cwd: resolve(this.#context.workspaceRoot, cwd),
 		});
 	}
@@ -222,7 +222,7 @@ class Yarn {
 		tag?: string;
 		cwd: string;
 	}): Observable<void> {
-		return this.exec(
+		return this.#exec(
 			[
 				'snuggery-workspace',
 				'publish',
@@ -234,14 +234,14 @@ class Yarn {
 	}
 
 	npmPublish({tag, cwd}: {tag?: string; cwd: string}): Observable<void> {
-		return this.exec(
+		return this.#exec(
 			['npm', 'publish', ...(typeof tag === 'string' ? ['--tag', tag] : [])],
 			{cwd: resolve(this.#context.workspaceRoot, cwd)},
 		);
 	}
 
 	snuggeryWorkspaceUp(packages: string[]): Observable<void> {
-		return this.exec(['snuggery-workspace', 'up', ...packages], {
+		return this.#exec(['snuggery-workspace', 'up', ...packages], {
 			cwd: this.#context.workspaceRoot,
 		}).pipe(mapTo(undefined));
 	}

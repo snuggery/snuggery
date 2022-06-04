@@ -51,18 +51,18 @@ function messagesToObservable(
 }
 
 export class WorkerChild extends Child {
-	private readonly thread: Worker;
+	readonly #thread: Worker;
 
 	public constructor(workspaceRoot: string, logger: logging.Logger) {
 		super(workspaceRoot, logger);
 
-		this.thread = new Worker(require.resolve('./worked.js'), {
+		this.#thread = new Worker(require.resolve('./worked.js'), {
 			workerData: {workspaceRoot},
 		});
 	}
 
 	public destroy(): void {
-		void this.thread.terminate();
+		void this.#thread.terminate();
 	}
 
 	public executeTarget(
@@ -72,7 +72,7 @@ export class WorkerChild extends Child {
 		return messagesToObservable(this.logger, () => {
 			const {port1, port2} = new MessageChannel();
 
-			this.thread.postMessage(
+			this.#thread.postMessage(
 				{
 					type: MessageType.ScheduleTarget,
 					target,
@@ -95,7 +95,7 @@ export class WorkerChild extends Child {
 		return messagesToObservable(this.logger, () => {
 			const {port1, port2} = new MessageChannel();
 
-			this.thread.postMessage(
+			this.#thread.postMessage(
 				{
 					type: MessageType.ScheduleBuilder,
 					project,

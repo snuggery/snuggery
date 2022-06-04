@@ -14,18 +14,18 @@ import {forkJoin, from, Observable} from 'rxjs';
 import {finalize, map, mergeMap, switchMap} from 'rxjs/operators';
 
 export class ChildArchitect {
-	private readonly architect: Promise<Architect>;
+	readonly #architect: Promise<Architect>;
 
-	private readonly workspace: Promise<CliWorkspace>;
+	readonly #workspace: Promise<CliWorkspace>;
 
 	public constructor(workspaceRoot: string) {
 		const registry = new schema.CoreSchemaRegistry();
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 
 		const workspace = findWorkspace(workspaceRoot) as Promise<CliWorkspace>;
-		this.workspace = workspace;
+		this.#workspace = workspace;
 
-		this.architect = workspace.then(
+		this.#architect = workspace.then(
 			workspace =>
 				new Architect(
 					createArchitectHost({startCwd: process.cwd()}, workspace),
@@ -39,7 +39,7 @@ export class ChildArchitect {
 		extraOptions: JsonObject | undefined,
 		logger: logging.Logger,
 	): Observable<BuilderOutput> {
-		return from(this.architect).pipe(
+		return from(this.#architect).pipe(
 			mergeMap(architect =>
 				architect.scheduleTarget(targetFromTargetString(target), extraOptions, {
 					logger,
@@ -56,8 +56,8 @@ export class ChildArchitect {
 		logger: logging.Logger,
 	): Observable<BuilderOutput> {
 		return forkJoin([
-			this.architect,
-			from(this.workspace).pipe(
+			this.#architect,
+			from(this.#workspace).pipe(
 				map(workspace => workspace.makeSyntheticTarget(project, builder)),
 			),
 		]).pipe(

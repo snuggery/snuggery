@@ -12,10 +12,13 @@ import {Builder, isBuilder, ResolverFacade, WorkspaceFacade} from './host';
 const {hasOwnProperty} = Object.prototype;
 
 export class Resolver implements ResolverFacade {
-	constructor(
-		private readonly context: Pick<Context, 'startCwd'>,
-		private readonly workspace: WorkspaceFacade,
-	) {}
+	readonly #context: Pick<Context, 'startCwd'>;
+	readonly #workspace: WorkspaceFacade;
+
+	constructor(context: Pick<Context, 'startCwd'>, workspace: WorkspaceFacade) {
+		this.#context = context;
+		this.#workspace = workspace;
+	}
 
 	async loadBuilders(
 		packageName: string,
@@ -27,7 +30,7 @@ export class Resolver implements ResolverFacade {
 		]
 	> {
 		const [json, path] = loadJson(
-			this.workspace.basePath ?? this.context.startCwd,
+			this.#workspace.basePath ?? this.#context.startCwd,
 			packageName,
 			'builders',
 			'executors',
@@ -80,9 +83,9 @@ export class Resolver implements ResolverFacade {
 		path: string,
 	): Promise<[path: string, info: JsonObject]> {
 		for (const basePath of new Set(
-			this.workspace.basePath != null
-				? [this.context.startCwd, this.workspace.basePath]
-				: [this.context.startCwd],
+			this.#workspace.basePath != null
+				? [this.#context.startCwd, this.#workspace.basePath]
+				: [this.#context.startCwd],
 		)) {
 			const require = createRequire(join(basePath, '<synthetic>'));
 
