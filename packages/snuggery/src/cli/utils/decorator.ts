@@ -5,36 +5,73 @@ export function Cached(): MethodDecorator {
 		key: string | symbol,
 		descriptor: TypedPropertyDescriptor<T>,
 	) => {
-		const {get, set} = descriptor;
+		const {get, set, value} = descriptor;
+		const values = new WeakMap<object, {value: unknown} | {error: unknown}>();
 
-		if (get == null || set != null) {
-			throw new Error(
-				`Can't decorate ${target.constructor.name}#${String(
-					key,
-				)}, @Cached() requires a getter only`,
-			);
-		}
+		if (value !== undefined) {
+			if (typeof value !== 'function') {
+				throw new Error(
+					`Can't decorate ${target.constructor.name}#${String(
+						key,
+					)}, @Cached() requires a getter-only property or a method`,
+				);
+			}
 
-		const values = new WeakMap<object, {value: T} | {error: unknown}>();
+			if (value.length !== 0) {
+				throw new Error(
+					`Can't decorate ${target.constructor.name}#${String(
+						key,
+					)}, @Cached() doesn't support parameters`,
+				);
+			}
 
-		descriptor.get = function (this: object) {
-			let cached = values.get(this);
+			descriptor.value = function (this: object) {
+				let cached = values.get(this);
 
-			if (cached == null) {
-				try {
-					cached = {value: get.call(this)};
-				} catch (e) {
-					cached = {error: e};
+				if (cached == null) {
+					try {
+						cached = {value: value.call(this)};
+					} catch (e) {
+						cached = {error: e};
+					}
+
+					values.set(this, cached);
 				}
 
-				values.set(this, cached);
+				if ('value' in cached) {
+					return cached.value;
+				} else {
+					throw cached.error;
+				}
+			} as unknown as T;
+		} else {
+			if (get == null || set != null) {
+				throw new Error(
+					`Can't decorate ${target.constructor.name}#${String(
+						key,
+					)}, @Cached() requires a getter-only property or a method`,
+				);
 			}
 
-			if ('value' in cached) {
-				return cached.value;
-			} else {
-				throw cached.error;
-			}
-		};
+			descriptor.get = function (this: object) {
+				let cached = values.get(this);
+
+				if (cached == null) {
+					try {
+						cached = {value: get!.call(this)};
+					} catch (e) {
+						cached = {error: e};
+					}
+
+					values.set(this, cached);
+				}
+
+				if ('value' in cached) {
+					return cached.value as T;
+				} else {
+					throw cached.error;
+				}
+			};
+		}
 	};
 }

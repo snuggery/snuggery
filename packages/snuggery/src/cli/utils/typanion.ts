@@ -1,22 +1,22 @@
 import type {JsonObject} from '@snuggery/core';
-import {parse as parseJson} from 'json5';
-import {SemVer, valid as isValidSemVer} from 'semver';
+import type SemVer from 'semver/classes/semver.js';
 import {
 	getPrintable,
 	makeValidator,
 	pushError,
-	StrictValidator,
+	type StrictValidator,
 } from 'typanion';
 
 export {isNumber, StrictValidator} from 'typanion';
 
-export const isJSON5 = (): StrictValidator<unknown, JsonObject> =>
-	makeValidator({
+export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
+	const JSON5: typeof import('json5') = require('json5');
+	return makeValidator({
 		test: (value, state): value is JsonObject => {
 			let data;
 
 			try {
-				data = parseJson(value as string);
+				data = JSON5.parse(value as string);
 
 				if (state?.coercions != null && state.coercion != null) {
 					state.coercions.push([
@@ -34,6 +34,7 @@ export const isJSON5 = (): StrictValidator<unknown, JsonObject> =>
 			}
 		},
 	});
+};
 
 export const isEnum = <T extends (number | string | boolean | null)[]>(
 	allowedValuesArr: T,
@@ -57,10 +58,14 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 	});
 };
 
-export const isSemVer = (): StrictValidator<unknown, SemVer> =>
-	makeValidator({
+export const isSemVer = (): StrictValidator<unknown, SemVer> => {
+	const valid =
+		require('semver/functions/valid.js') as typeof import('semver/functions/valid.js');
+	const SemVer =
+		require('semver/classes/semver.js') as typeof import('semver/classes/semver.js');
+	return makeValidator({
 		test(value, state): value is SemVer {
-			if (typeof value === 'string' && isValidSemVer(value)) {
+			if (typeof value === 'string' && valid(value)) {
 				if (state?.coercions != null && state.coercion != null) {
 					state.coercions.push([
 						state.p ?? '.',
@@ -79,3 +84,4 @@ export const isSemVer = (): StrictValidator<unknown, SemVer> =>
 			);
 		},
 	});
+};

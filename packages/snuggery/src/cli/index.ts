@@ -28,10 +28,15 @@ import {RunUpdateCommand} from './commands/run/update';
 import {VersionCommand} from './commands/version';
 import {Report} from './utils/report';
 
-export {SnuggeryArchitectHost, createArchitectHost} from './architect';
+export type {SnuggeryArchitectHost} from './architect';
 export {CliWorkspace, findWorkspace} from './command/context';
 
 export {Cli, Context};
+
+export const createArchitectHost: typeof import('./architect').createArchitectHost =
+	(...args) => {
+		return require('./architect').createArchitectHost(...args);
+	};
 
 export function run(
 	args: string[],

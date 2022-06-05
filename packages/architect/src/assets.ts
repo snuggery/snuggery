@@ -1,12 +1,10 @@
 import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {copy} from 'fs-extra';
-import {glob as _glob, IOptions} from 'glob';
 import {join} from 'path';
 import {promisify} from 'util';
 
 import {getProjectPath, resolveWorkspacePath} from './resolve';
 
-const glob = promisify(_glob);
+const cache: import('glob').IOptions['cache'] = {};
 
 export interface AssetSpec {
 	/**
@@ -35,6 +33,9 @@ export async function copyAssets(
 	outputFolder: string,
 	assets: AssetSpec[],
 ): Promise<BuilderOutput> {
+	const {copy} = await import('fs-extra');
+	const glob = promisify((await import('glob')).default);
+
 	for (const [i, asset] of assets.entries()) {
 		const from = asset.from
 			? resolveWorkspacePath(context, asset.from)
@@ -73,31 +74,29 @@ export async function copyAssets(
 	return {
 		success: true,
 	};
-}
 
-const cache: IOptions['cache'] = {};
+	async function resolveGlobs(
+		context: BuilderContext,
+		cwd: string,
+		asset: AssetSpec,
+	): Promise<Set<string>> {
+		const include = Array.isArray(asset.include)
+			? asset.include
+			: [asset.include];
 
-async function resolveGlobs(
-	context: BuilderContext,
-	cwd: string,
-	asset: AssetSpec,
-): Promise<Set<string>> {
-	const include = Array.isArray(asset.include)
-		? asset.include
-		: [asset.include];
-
-	return new Set(
-		(
-			await Promise.all(
-				include.map(pattern =>
-					glob(pattern, {
-						cache,
-						cwd,
-						ignore: asset.exclude,
-						root: context.workspaceRoot,
-					}),
-				),
-			)
-		).flat(),
-	);
+		return new Set(
+			(
+				await Promise.all(
+					include.map(pattern =>
+						glob(pattern, {
+							cache,
+							cwd,
+							ignore: asset.exclude,
+							root: context.workspaceRoot,
+						}),
+					),
+				)
+			).flat(),
+		);
+	}
 }

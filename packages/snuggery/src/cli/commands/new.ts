@@ -34,7 +34,8 @@ export class NewCommand extends SchematicCommand {
 	protected override readonly resolveSelf = true;
 
 	async execute(): Promise<number | void> {
-		const schematic = this.getSchematic(this.collection, 'ng-new', true);
+		const schematic = await this.getSchematic(this.collection, 'ng-new', true);
+		const workflow = await this.getWorkflow();
 
 		const {
 			options: definedOptions,
@@ -42,16 +43,14 @@ export class NewCommand extends SchematicCommand {
 			description,
 		} = await this.getOptions(schematic);
 
-		/* eslint-disable @typescript-eslint/no-var-requires */
-		this.workflow.registry.addSmartDefaultProvider(
+		workflow.registry.addSmartDefaultProvider(
 			'ng-cli-version',
 			() => require('@angular-devkit/core/package.json').version,
 		);
-		this.workflow.registry.addSmartDefaultProvider(
+		workflow.registry.addSmartDefaultProvider(
 			'snuggery-version',
 			() => require('@snuggery/snuggery/package.json').version,
 		);
-		/* eslint-enable @typescript-eslint/no-var-requires */
 
 		return this.withOptionValues(
 			{

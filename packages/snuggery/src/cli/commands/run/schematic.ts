@@ -54,11 +54,15 @@ export class RunSchematicCommand extends SchematicCommand {
 	}
 
 	async execute(): Promise<number | void> {
-		const {collectionName, schematicName} = this.resolveSchematic(
+		const {collectionName, schematicName} = await this.resolveSchematic(
 			this.schematic,
 		);
 
-		const schematic = this.getSchematic(collectionName, schematicName, false);
+		const schematic = await this.getSchematic(
+			collectionName,
+			schematicName,
+			false,
+		);
 
 		const {
 			options: definedOptions,

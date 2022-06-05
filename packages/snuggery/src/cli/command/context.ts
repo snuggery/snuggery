@@ -1,14 +1,14 @@
 import type {Target} from '@angular-devkit/architect';
 import type {workspaces} from '@angular-devkit/core';
 import {
-	JsonObject,
-	ProjectDefinition,
-	ProjectDefinitionCollection,
+	type JsonObject,
+	type ProjectDefinition,
+	type ProjectDefinitionCollection,
 	readWorkspace,
-	WorkspaceDefinition,
+	type WorkspaceDefinition,
 	workspaceFilenames,
 } from '@snuggery/core';
-import {BaseContext, UsageError} from 'clipanion';
+import {type BaseContext, UsageError} from 'clipanion';
 import {dirname, normalize, relative, resolve, sep} from 'path';
 
 import {findUp} from '../utils/find-up';

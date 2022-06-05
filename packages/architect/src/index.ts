@@ -13,5 +13,9 @@ export {
 	resolveWorkspacePath,
 } from './resolve';
 export {TransientTarget, scheduleTarget, TargetSpecifier} from './run';
-export {resolveTargetString} from './target';
+export {
+	resolveTargetString,
+	targetFromTargetString,
+	targetStringFromTarget,
+} from './target';
 export {findWorkspace} from './workspace';

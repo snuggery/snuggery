@@ -7017,7 +7017,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uvu@npm:^0.5.2":
+"uvu@npm:0.5.2":
   version: 0.5.2
   resolution: "uvu@npm:0.5.2"
   dependencies:
@@ -7029,6 +7029,21 @@ __metadata:
   bin:
     uvu: bin.js
   checksum: 369135a16dc454121681a83fbfe0a5d7733d3758403e921f4911eab8355235a1a5aeb59046f842046fbd4695d5267c463ca2b0ceb6787d6772d67e2f377bcf1f
+  languageName: node
+  linkType: hard
+
+"uvu@patch:uvu@npm:0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 0.5.2
+  resolution: "uvu@patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    dequal: ^2.0.0
+    diff: ^5.0.0
+    kleur: ^4.0.3
+    sade: ^1.7.3
+    totalist: ^2.0.0
+  bin:
+    uvu: bin.js
+  checksum: e6887452ffd843b9379404646c0d0be6e8d5332dbd2b1bc60285736274b9fe19a450d6d2ab0c19113095b24fd5df4af043dbf339f66242ce55419901c507cdea
   languageName: node
   linkType: hard
 

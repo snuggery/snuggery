@@ -1,44 +1,44 @@
-import {
-	parse,
-	modify,
-	applyEdits,
-	ParseError,
-	printParseErrorCode,
-	FormattingOptions,
-} from 'jsonc-parser';
+import type {ParseError, FormattingOptions} from 'jsonc-parser';
 
 import {ChangeType, Change} from '../proxy';
 import {InvalidConfigurationError, isJsonObject, JsonObject} from '../types';
 
 import {AbstractFileHandle} from './abstract';
 
-function processParseErrors(errors: readonly ParseError[]) {
-	if (errors.length === 1) {
-		const [error] = errors as [ParseError];
-		throw new InvalidConfigurationError(
-			`Error while parsing JSON file: ${printParseErrorCode(error.error)} at ${
-				error.offset
-			}`,
-		);
-	} else if (errors.length > 0) {
-		throw new InvalidConfigurationError(
-			`Errors while parsing JSON file:\n- ${errors
-				.map(error => `${printParseErrorCode(error.error)} at ${error.offset}`)
-				.join('\n- ')}`,
-		);
-	}
-}
-
 export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
+	#jsonc: typeof import('jsonc-parser') = require('jsonc-parser');
+
+	#processParseErrors(errors: readonly ParseError[]) {
+		if (errors.length === 1) {
+			const [error] = errors as [ParseError];
+			throw new InvalidConfigurationError(
+				`Error while parsing JSON file: ${this.#jsonc.printParseErrorCode(
+					error.error,
+				)} at ${error.offset}`,
+			);
+		} else if (errors.length > 0) {
+			throw new InvalidConfigurationError(
+				`Errors while parsing JSON file:\n- ${errors
+					.map(
+						error =>
+							`${this.#jsonc.printParseErrorCode(error.error)} at ${
+								error.offset
+							}`,
+					)
+					.join('\n- ')}`,
+			);
+		}
+	}
+
 	parse(source: string): JsonObject {
 		const errors: ParseError[] = [];
-		const value = parse(source, errors, {
+		const value = this.#jsonc.parse(source, errors, {
 			allowEmptyContent: true,
 			allowTrailingComma: true,
 			disallowComments: false,
 		});
 
-		processParseErrors(errors);
+		this.#processParseErrors(errors);
 
 		if (!isJsonObject(value)) {
 			throw new InvalidConfigurationError('Configuration must be an object');
@@ -90,22 +90,24 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 
 			switch (change.type) {
 				case ChangeType.Add:
-					edits = modify(source, change.path, change.value, {
+					edits = this.#jsonc.modify(source, change.path, change.value, {
 						isArrayInsertion: true,
 						formattingOptions,
 					});
 					break;
 				case ChangeType.Modify:
-					edits = modify(source, change.path, change.value, {
+					edits = this.#jsonc.modify(source, change.path, change.value, {
 						formattingOptions,
 					});
 					break;
 				case ChangeType.Delete:
-					edits = modify(source, change.path, undefined, {formattingOptions});
+					edits = this.#jsonc.modify(source, change.path, undefined, {
+						formattingOptions,
+					});
 					break;
 			}
 
-			source = applyEdits(source, edits);
+			source = this.#jsonc.applyEdits(source, edits);
 		}
 
 		return source;

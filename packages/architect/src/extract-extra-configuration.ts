@@ -1,16 +1,19 @@
 import type {BuilderContext} from '@angular-devkit/architect';
 import type {workspaces} from '@angular-devkit/core';
 import {
-	ExtraConfigurationDefinition,
-	ExtraConfigurationDefinitionWithType,
-	JsonValue,
+	type ExtraConfigurationDefinition,
+	type ExtraConfigurationDefinitionWithType,
+	type JsonValue,
 	extractExtraConfiguration as _extractExtraConfiguration,
-	WorkspaceDefinition,
+	type WorkspaceDefinition,
 } from '@snuggery/core';
 
 import {findWorkspace} from './workspace';
 
-export {ExtraConfigurationDefinition, ExtraConfigurationDefinitionWithType};
+export type {
+	ExtraConfigurationDefinition,
+	ExtraConfigurationDefinitionWithType,
+};
 
 /**
  * Extract non-standard configuration from the workspace definition

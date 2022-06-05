@@ -46,7 +46,8 @@
 		"@nrwl/devkit@13.1.3": "npm:13.8.3",
 		"@angular/compiler-cli@14.0.0": "patch:@angular/compiler-cli@npm:14.0.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-69a2094afa.patch",
 		"sass@^1.51.0": "patch:sass@npm:1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch",
-		"resolve.exports@1.1.0": "patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch"
+		"resolve.exports@1.1.0": "patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch",
+		"uvu@^0.5.2": "patch:uvu@npm:0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch"
 	},
 	"packageManager": "yarn@3.2.1"
 }

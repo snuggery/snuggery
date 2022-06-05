@@ -1,6 +1,5 @@
 import {Option, UsageError} from 'clipanion';
 
-import {UnknownTargetError} from '../../architect';
 import {ArchitectCommand} from '../../command/architect';
 import {formatMarkdownish} from '../../utils/format';
 
@@ -50,6 +49,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 			.targets.get(this.target);
 
 		if (target == null) {
+			const {UnknownTargetError} = await import('../../architect/index.js');
 			throw new UnknownTargetError(
 				`Project ${JSON.stringify(
 					projectName,

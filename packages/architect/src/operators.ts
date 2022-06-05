@@ -1,5 +1,5 @@
 import type {JsonObject} from '@snuggery/core';
-import {ObservableInput, of, OperatorFunction} from 'rxjs';
+import {type ObservableInput, of, type OperatorFunction} from 'rxjs';
 import {concatMap, exhaustMap, map, mergeMap, switchMap} from 'rxjs/operators';
 
 type Successful<T extends {success: boolean}> = T & {success: true};

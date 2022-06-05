@@ -56,7 +56,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 	args = Option.Proxy();
 
 	async execute(): Promise<number> {
-		const target = this.resolveTarget(this.target, this.project);
+		const target = await this.resolveTarget(this.target, this.project);
 
 		return this.withOptionValues(
 			{

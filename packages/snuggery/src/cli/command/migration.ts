@@ -3,11 +3,6 @@ import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {UsageError} from 'clipanion';
 import {createRequire} from 'module';
 import {join} from 'path';
-import {
-	Range,
-	valid as validateSemVer,
-	compare as compareVersions,
-} from 'semver';
 
 import {AbstractError} from '../../utils/error';
 import type {
@@ -30,9 +25,9 @@ export abstract class MigrationCommand extends SchematicCommand {
 		return this.workspace.basePath;
 	}
 
-	protected getMigrationCollection(
+	protected async getMigrationCollection(
 		pkgName: string,
-	): MigrationCollection | null {
+	): Promise<MigrationCollection | null> {
 		let pkgJsonPath: string;
 		let pkgJson: JsonObject;
 		const {root} = this; // explicitly do this outside of the try-catch in case it throws
@@ -76,7 +71,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 			}
 		}
 
-		const collection = this.getCollection(migrationJsonPath);
+		const collection = await this.getCollection(migrationJsonPath);
 
 		if (typeof pkgJson.version === 'string') {
 			return Object.assign(collection, {version: pkgJson.version});
@@ -85,26 +80,34 @@ export abstract class MigrationCommand extends SchematicCommand {
 		return collection;
 	}
 
-	protected getMigrationsInRange(
+	protected async getMigrationsInRange(
 		collection: MigrationCollection,
 		from: string,
 		to: string,
-	): {
-		version: string;
-		schematic: SnuggerySchematic;
-	}[] {
+	): Promise<
+		{
+			version: string;
+			schematic: SnuggerySchematic;
+		}[]
+	> {
+		const [{default: Range}, {default: valid}, {default: compare}] =
+			await Promise.all([
+				import('semver/classes/range.js'),
+				import('semver/functions/valid.js'),
+				import('semver/functions/compare.js'),
+			]);
 		const range = new Range(`> ${from} <= ${to}`, {
 			includePrerelease: true,
 		});
-		const includedSchematics: ReturnType<
-			MigrationCommand['getMigrationsInRange']
+		const includedSchematics: Awaited<
+			ReturnType<MigrationCommand['getMigrationsInRange']>
 		> = [];
 
 		for (const schematicName of collection.listSchematicNames()) {
 			const schematic = collection.createSchematic(schematicName);
 			const version =
 				schematic.description.version != null
-					? validateSemVer(schematic.description.version)
+					? valid(schematic.description.version)
 					: null;
 
 			if (version == null || !range.test(version)) {
@@ -117,7 +120,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 		includedSchematics.sort(
 			(a, b) =>
 				// Run versions in order
-				compareVersions(a.version, b.version) ||
+				compare(a.version, b.version) ||
 				// If multiple migration schematics are listed for a single version,
 				// run these alphabetically
 				a.schematic.description.name.localeCompare(

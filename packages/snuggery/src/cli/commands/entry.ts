@@ -57,7 +57,7 @@ export class EntryCommand extends ArchitectCommand {
 	args = Option.Proxy();
 
 	async execute(): Promise<number> {
-		const target = this.resolveTarget(this.target, null);
+		const target = await this.resolveTarget(this.target, null);
 
 		return this.withOptionValues(
 			{

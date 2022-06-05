@@ -1,5 +1,6 @@
 import type {JsonObject} from '@snuggery/core';
 import * as snuggery from '@snuggery/snuggery/cli';
+import expect from 'expect';
 import path from 'path';
 import {Readable, Writable} from 'stream';
 import * as assert from 'uvu/assert';
@@ -12,6 +13,8 @@ export interface Fixture {
 		args: string[],
 		options?: {cwd?: string},
 	): Promise<{stdout: string; stderr: string; exitCode: number}>;
+
+	expectSuccessfulRun(args: string[], options?: {cwd?: string}): Promise<void>;
 	runJson(args: string[], options?: {cwd?: string}): Promise<JsonObject>;
 }
 
@@ -39,6 +42,18 @@ export function inFixture(
 					return JSON.parse(stdout);
 				} catch {
 					assert.unreachable(`Invalid JSON: ${JSON.stringify(stdout)}`);
+				}
+			},
+
+			expectSuccessfulRun: async (args, options) => {
+				const result = await run(args, options);
+
+				if (result.exitCode === 0) {
+					expect(result).toMatchObject({exitCode: 0});
+				} else {
+					// Use toEqual when the result is expected to fail, to ensure
+					// stderr and stdout are printed by expect
+					expect(result).toEqual({exitCode: 0});
 				}
 			},
 		});

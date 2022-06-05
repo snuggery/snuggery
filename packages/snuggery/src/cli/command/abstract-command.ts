@@ -1,22 +1,4 @@
-import {logging, schema} from '@angular-devkit/core';
-import {
-	CircularCollectionException,
-	UnknownCollectionException,
-	UnknownSchematicException,
-	PrivateSchematicException,
-} from '@angular-devkit/schematics';
-import {
-	CollectionCannotBeResolvedException,
-	InvalidCollectionJsonException,
-	CollectionMissingSchematicsMapException,
-	CollectionMissingFieldsException,
-	NodePackageDoesNotSupportSchematics,
-	SchematicMissingFactoryException,
-	FactoryCannotBeResolvedException,
-	SchematicMissingDescriptionException,
-	SchematicNameCollisionException,
-	SchematicMissingFieldsException,
-} from '@angular-devkit/schematics/tools';
+import type {schema} from '@angular-devkit/core';
 import {isJsonObject, JsonObject} from '@snuggery/core';
 import {
 	ColorFormat,
@@ -53,21 +35,21 @@ class PrettiedError extends Error implements ErrorWithMeta {
 /** Errors the Angular APIs throw that shouldn't show a stacktrace */
 const angularUserErrors = new Set([
 	// Schematics
-	CollectionCannotBeResolvedException,
-	InvalidCollectionJsonException,
-	CollectionMissingSchematicsMapException,
-	CollectionMissingFieldsException,
-	CircularCollectionException,
-	UnknownCollectionException,
-	NodePackageDoesNotSupportSchematics,
-	SchematicMissingFactoryException,
-	FactoryCannotBeResolvedException,
-	CollectionMissingFieldsException,
-	SchematicMissingDescriptionException,
-	SchematicNameCollisionException,
-	UnknownSchematicException,
-	PrivateSchematicException,
-	SchematicMissingFieldsException,
+	'CollectionCannotBeResolvedException',
+	'InvalidCollectionJsonException',
+	'CollectionMissingSchematicsMapException',
+	'CollectionMissingFieldsException',
+	'CircularCollectionException',
+	'UnknownCollectionException',
+	'NodePackageDoesNotSupportSchematics',
+	'SchematicMissingFactoryException',
+	'FactoryCannotBeResolvedException',
+	'CollectionMissingFieldsException',
+	'SchematicMissingDescriptionException',
+	'SchematicNameCollisionException',
+	'UnknownSchematicException',
+	'PrivateSchematicException',
+	'SchematicMissingFieldsException',
 ]);
 
 /**
@@ -116,23 +98,39 @@ export abstract class AbstractCommand extends Command<Context> {
 	 * A logger for angular APIs that logs onto the Report of the CLI's context
 	 */
 	@Cached()
-	protected get logger(): logging.Logger {
-		const logger = new logging.Logger('');
+	protected get logger(): Promise<
+		import('@angular-devkit/core').logging.Logger
+	> {
+		return import('@angular-devkit/core').then(({logging}) => {
+			const logger = new logging.Logger('');
 
-		const {report} = this.context;
-		const method = {
-			debug: report.reportDebug,
-			info: report.reportInfo,
-			warn: report.reportWarning,
-			error: report.reportError,
-			fatal: report.reportError,
-		} as const;
+			const {report} = this.context;
+			const method = {
+				debug: report.reportDebug,
+				info: report.reportInfo,
+				warn: report.reportWarning,
+				error: report.reportError,
+				fatal: report.reportError,
+			} as const;
 
-		logger.subscribe(entry => {
-			(method[entry.level] ?? method.info).call(report, entry.message);
+			logger.subscribe(entry => {
+				(method[entry.level] ?? method.info).call(report, entry.message);
+			});
+
+			return logger;
 		});
+	}
 
-		return logger;
+	protected async createSchemaRegistry(
+		formats?: import('@angular-devkit/core').schema.SchemaFormat[],
+	): Promise<import('@angular-devkit/core').schema.CoreSchemaRegistry> {
+		const {schema} = await import('@angular-devkit/core');
+
+		const registry = new schema.CoreSchemaRegistry(formats);
+		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
+		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
+
+		return registry;
 	}
 
 	/**
@@ -247,7 +245,7 @@ export abstract class AbstractCommand extends Command<Context> {
 	 * @override
 	 */
 	override async catch(e: unknown): Promise<void> {
-		return super.catch(e instanceof Error ? this.prettifyError(e) : e);
+		return super.catch(e instanceof Error ? await this.prettifyError(e) : e);
 	}
 
 	protected prettifyError(error: Error): Error {
@@ -260,8 +258,8 @@ export abstract class AbstractCommand extends Command<Context> {
 			}
 		}
 
-		if (error instanceof schema.SchemaValidationException) {
-			const errors = error.errors
+		if (error.name === 'SchemaValidationException') {
+			const errors = (error as schema.SchemaValidationException).errors
 				.filter(error => error.message)
 				.map(error =>
 					error.instancePath
@@ -277,11 +275,8 @@ export abstract class AbstractCommand extends Command<Context> {
 			);
 		}
 
-		for (const Err of angularUserErrors) {
-			if (error instanceof Err) {
-				error = new PrettiedError(error.name, error.message);
-				break;
-			}
+		if (angularUserErrors.has(error.name)) {
+			error = new PrettiedError(error.name, error.message);
 		}
 
 		if (/^[A-Z].*[A-Z].*(?:Error|Exception)$/.test(error.name)) {

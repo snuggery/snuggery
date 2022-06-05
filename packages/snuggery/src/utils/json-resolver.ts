@@ -1,4 +1,3 @@
-import {strings} from '@angular-devkit/core';
 import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {createRequire} from 'module';
 import {join} from 'path';
@@ -29,7 +28,9 @@ export class InvalidDefinitionError extends AbstractError {
 	constructor(angularKey: string, originalRequest: string) {
 		super(`Invalid definition found for ${angularKey} in ${originalRequest}`);
 
-		this.name = `Invalid${strings.capitalize(angularKey)}Error`;
+		this.name = `Invalid${angularKey.charAt(0).toUpperCase()}${angularKey.slice(
+			1,
+		)}Error`;
 	}
 }
 

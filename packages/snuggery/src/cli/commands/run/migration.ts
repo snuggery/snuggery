@@ -1,5 +1,5 @@
 import {Option, UsageError} from 'clipanion';
-import type {SemVer} from 'semver';
+import type SemVer from 'semver/classes/semver.js';
 
 import {MigrationCollection, MigrationCommand} from '../../command/migration';
 import {formatMarkdownish} from '../../utils/format';
@@ -91,7 +91,7 @@ export class RunMigrationCommand extends MigrationCommand {
 	package = Option.String();
 
 	async execute(): Promise<number | void> {
-		const collection = this.getMigrationCollection(this.package);
+		const collection = await this.getMigrationCollection(this.package);
 
 		if (collection == null) {
 			if (this.ignoreMissingMigrations) {
@@ -147,7 +147,7 @@ export class RunMigrationCommand extends MigrationCommand {
 			);
 		}
 
-		const includedSchematics = this.getMigrationsInRange(
+		const includedSchematics = await this.getMigrationsInRange(
 			collection,
 			from.format(),
 			toVersion,

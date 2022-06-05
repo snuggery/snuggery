@@ -1,4 +1,4 @@
-import {Target, targetFromTargetString} from '@angular-devkit/architect';
+import type {Target} from '@angular-devkit/architect';
 import {Option} from 'clipanion';
 
 import {ArchitectCommand} from '../../command/architect';
@@ -29,9 +29,10 @@ export class RunTargetCommand extends ArchitectCommand {
 	async execute(): Promise<number> {
 		let target: Target;
 		if (this.specifier.includes(':')) {
+			const {targetFromTargetString} = await import('@snuggery/architect');
 			target = targetFromTargetString(this.specifier);
 		} else {
-			target = this.resolveTarget(this.specifier, null);
+			target = await this.resolveTarget(this.specifier, null);
 		}
 
 		return this.withOptionValues(

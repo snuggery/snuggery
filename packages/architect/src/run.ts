@@ -1,15 +1,13 @@
-import {
+import type {
 	BuilderContext,
 	BuilderOutput,
-	scheduleTargetAndForget,
 	Target as ArchitectTarget,
-	targetFromTargetString,
 } from '@angular-devkit/architect';
 import type {JsonObject} from '@angular-devkit/core';
 import {Observable, defer, of, from} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
-import {resolveTargetString} from './target';
+import {resolveTargetString, targetFromTargetString} from './target';
 
 /**
  * A specifier for a transient target, i.e. a combination of builder and configuration that together
@@ -76,7 +74,11 @@ export function scheduleTarget(
 				});
 			}
 
-			return scheduleTargetAndForget(context, target, options, {target});
+			return from(import('@angular-devkit/architect')).pipe(
+				switchMap(({scheduleTargetAndForget}) =>
+					scheduleTargetAndForget(context, target, options, {target}),
+				),
+			);
 		} else {
 			const currentTarget = context.target;
 

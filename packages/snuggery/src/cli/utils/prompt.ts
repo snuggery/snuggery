@@ -1,5 +1,5 @@
 import type {json} from '@angular-devkit/core';
-import prompts from 'prompts';
+import type prompts from 'prompts';
 
 function extractChoices({
 	items,
@@ -14,7 +14,9 @@ function extractChoices({
 	});
 }
 
-export function createPromptProvider(): json.schema.PromptProvider {
+export async function createPromptProvider(): Promise<json.schema.PromptProvider> {
+	const {default: prompts} = await import('prompts');
+
 	return definitions => {
 		return prompts(
 			definitions.map(definition => {

@@ -5,28 +5,14 @@ import {readFile, stat} from 'fs/promises';
 import {join} from 'path';
 import {suite} from 'uvu';
 
-import {type Fixture, inFixture} from './setup';
+import {inFixture} from './setup';
 
 const test = suite('angular');
 
-async function expectSuccessfulRun(
-	run: Fixture['run'],
-	...args: Parameters<Fixture['run']>
-) {
-	const result = await run(...args);
-	if (result.exitCode === 0) {
-		expect(result).toMatchObject({exitCode: 0});
-	} else {
-		// Use toEqual when the result is expected to fail, to ensure
-		// stderr and stdout are printed by expect
-		expect(result).toEqual({exitCode: 0});
-	}
-}
-
 test(
 	'the standalone project',
-	inFixture('angular', async ({run, directory}) => {
-		await expectSuccessfulRun(run, ['build', '@integration/standalone']);
+	inFixture('angular', async ({expectSuccessfulRun, directory}) => {
+		await expectSuccessfulRun(['build', '@integration/standalone']);
 
 		const outputFolder = join(directory, 'packages/standalone/dist');
 		const packageJson = JSON.parse(
@@ -79,7 +65,7 @@ test(
 		expect(subDts).toContain("export * from './types/sub.js';");
 		expect(stat(join(outputFolder, 'sub', 'types'))).resolves.toBeTruthy();
 
-		await expectSuccessfulRun(run, [
+		await expectSuccessfulRun([
 			'build',
 			'@integration/standalone',
 			'--configuration',
@@ -98,8 +84,8 @@ test(
 
 test(
 	'the dependent project',
-	inFixture('angular', async ({run, directory}) => {
-		await expectSuccessfulRun(run, ['build', '@integration/dependent']);
+	inFixture('angular', async ({expectSuccessfulRun, directory}) => {
+		await expectSuccessfulRun(['build', '@integration/dependent']);
 
 		const outputFolder = join(directory, 'packages/dependent/dist');
 		const [component, fesm] = await Promise.all([

@@ -1,5 +1,8 @@
 import type {BuilderContext} from '@angular-devkit/architect';
-import {ConvertibleWorkspaceDefinition, readWorkspace} from '@snuggery/core';
+import {
+	type ConvertibleWorkspaceDefinition,
+	readWorkspace,
+} from '@snuggery/core';
 
 export async function findWorkspace(
 	context: BuilderContext,

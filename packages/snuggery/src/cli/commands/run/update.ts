@@ -49,7 +49,7 @@ export class RunUpdateCommand extends ArchitectCommand {
 		const builderSpec = `${pmPackage}:update`;
 
 		try {
-			await this.architectHost.resolveBuilder(builderSpec);
+			await (await this.architectHost).resolveBuilder(builderSpec);
 		} catch {
 			throw new UsageError(
 				`Failed to find ${pmPackage} to perform the actual update`,

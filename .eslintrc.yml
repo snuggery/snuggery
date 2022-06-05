@@ -19,7 +19,6 @@ rules:
 
   # Disallow other module systems
   'import/no-amd': error
-  # 'import/no-commonjs': error # already covered via @typescript-eslint/no-var-requires
 
   # Code style
   'import/first': error
@@ -66,6 +65,9 @@ overrides:
       '@typescript-eslint/no-unused-vars':
         - error
         - ignoreRestSiblings: true
+
+      # This rule blocks lazy loading code, which is counterproductive
+      '@typescript-eslint/no-var-requires': off
 
       # Disallow the private keyword except on constructors
       # @see https://github.com/typescript-eslint/typescript-eslint/issues/1391

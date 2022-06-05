@@ -2,7 +2,7 @@ import {createHash} from 'crypto';
 import {promises as fs} from 'fs';
 import _glob from 'glob';
 import {dirname, posix, resolve} from 'path';
-import * as semver from 'semver';
+import satisfiesRange from 'semver/functions/satisfies.js';
 import {promisify} from 'util';
 
 const glob = promisify(_glob);
@@ -158,7 +158,7 @@ export async function getPackageInformation(
 				workspaceInfo[packageName]!.workspaceDependencies.add(dependencyName);
 			} else if (
 				dependencyInfo.manifest.version &&
-				semver.satisfies(
+				satisfiesRange(
 					dependencyInfo.manifest.version,
 					locator.replace(/^npm:/, ''),
 				)

@@ -35,13 +35,13 @@ export class HelpSchematicCommand extends SchematicCommand {
 	async execute(): Promise<void> {
 		const {report, format} = this;
 
-		const {collectionName, schematicName} = this.resolveSchematic(
+		const {collectionName, schematicName} = await this.resolveSchematic(
 			this.schematic,
 		);
 
 		const {
 			description: {description, schemaJson},
-		} = this.getSchematic(collectionName, schematicName, false);
+		} = await this.getSchematic(collectionName, schematicName, false);
 
 		report.reportInfo(
 			formatMarkdownish(

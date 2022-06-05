@@ -1,9 +1,5 @@
-import {schema} from '@angular-devkit/core';
-import {
-	DryRunEvent,
-	formats,
-	UnsuccessfulWorkflowExecution,
-} from '@angular-devkit/schematics';
+import type {schema} from '@angular-devkit/core';
+import type {DryRunEvent} from '@angular-devkit/schematics';
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
@@ -11,13 +7,13 @@ import path, {posix, dirname, join, normalize, relative} from 'path';
 
 import {AbstractError} from '../../utils/error';
 import {UnableToResolveError} from '../../utils/json-resolver';
-import {
+import type {
 	SnuggeryCollection,
 	SnuggeryEngineHost,
 	SnuggerySchematic,
 	SnuggerySchematicDescription,
 } from '../schematic/engine-host';
-import {SnuggeryWorkflow} from '../schematic/workflow';
+import type {SnuggeryWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
 import {createPromptProvider} from '../utils/prompt';
@@ -88,22 +84,22 @@ export abstract class SchematicCommand extends AbstractCommand {
 	 * user for missing options.
 	 */
 	@Cached()
-	protected get registry(): schema.CoreSchemaRegistry {
-		const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
-
-		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
-		registry.addSmartDefaultProvider('projectName', () => this.currentProject);
-		registry.useXDeprecatedProvider(msg =>
-			this.context.report.reportWarning(msg),
+	protected async getRegistry(): Promise<schema.CoreSchemaRegistry> {
+		const registry = await this.createSchemaRegistry(
+			(
+				await import('@angular-devkit/schematics')
+			).formats.standardFormats,
 		);
 
-		registry.usePromptProvider(createPromptProvider());
+		registry.addSmartDefaultProvider('projectName', () => this.currentProject);
+		registry.usePromptProvider(await createPromptProvider());
 
 		return registry;
 	}
 
 	@Cached()
-	protected get engineHost(): SnuggeryEngineHost {
+	protected async getEngineHost(): Promise<SnuggeryEngineHost> {
+		const {SnuggeryEngineHost} = await import('../schematic/engine-host.js');
 		return new SnuggeryEngineHost(this.root, {
 			context: this.context,
 			optionTransforms: [
@@ -114,7 +110,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 				}),
 			],
 			packageManager: this.packageManager,
-			registry: this.registry,
+			registry: await this.getRegistry(),
 			resolvePaths: [
 				this.root,
 				...(this.resolveSelf
@@ -126,25 +122,28 @@ export abstract class SchematicCommand extends AbstractCommand {
 	}
 
 	@Cached()
-	protected get workflow(): SnuggeryWorkflow {
+	protected async getWorkflow(): Promise<SnuggeryWorkflow> {
+		const {SnuggeryWorkflow} = await import('../schematic/workflow.js');
 		return new SnuggeryWorkflow(this.root, {
-			engineHost: this.engineHost,
+			engineHost: await this.getEngineHost(),
 			force: this.force,
 			dryRun: this.dryRun,
-			registry: this.registry,
+			registry: await this.getRegistry(),
 		});
 	}
 
-	protected getCollection(collectionName: string): SnuggeryCollection {
-		return this.workflow.engine.createCollection(collectionName);
+	protected async getCollection(
+		collectionName: string,
+	): Promise<SnuggeryCollection> {
+		return (await this.getWorkflow()).engine.createCollection(collectionName);
 	}
 
-	protected getSchematic(
+	protected async getSchematic(
 		collectionName: string,
 		schematicName: string,
 		allowPrivate?: boolean,
-	): SnuggerySchematic {
-		return this.getCollection(collectionName).createSchematic(
+	): Promise<SnuggerySchematic> {
+		return (await this.getCollection(collectionName)).createSchematic(
 			schematicName,
 			allowPrivate,
 		);
@@ -226,10 +225,10 @@ export abstract class SchematicCommand extends AbstractCommand {
 		return options;
 	}
 
-	protected resolveSchematic(schematic: string): {
+	protected async resolveSchematic(schematic: string): Promise<{
 		collectionName: string;
 		schematicName: string;
-	} {
+	}> {
 		if (schematic.includes(':')) {
 			const [collectionName, schematicName] = schematic.split(':', 2) as [
 				string,
@@ -237,13 +236,13 @@ export abstract class SchematicCommand extends AbstractCommand {
 			];
 			return {collectionName, schematicName};
 		} else {
-			const configuredCollections = this.getConfiguredCollections();
+			const configuredCollections = await this.getConfiguredCollections();
 			let collection = configuredCollections?.find(({description}) =>
 				description.has(schematic),
 			);
 
 			if (collection == null) {
-				const defaultCollection = this.getDefaultCollection();
+				const defaultCollection = await this.getDefaultCollection();
 
 				if (defaultCollection == null) {
 					if (configuredCollections) {
@@ -287,7 +286,9 @@ export abstract class SchematicCommand extends AbstractCommand {
 		}
 	}
 
-	protected getConfiguredCollections(): SnuggeryCollection[] | null {
+	protected async getConfiguredCollections(): Promise<
+		SnuggeryCollection[] | null
+	> {
 		const workspace = this.context.workspace;
 		let configuredCollections: JsonValue[] | null = null;
 
@@ -321,9 +322,11 @@ export abstract class SchematicCommand extends AbstractCommand {
 			return null;
 		}
 
-		return configuredCollections
-			.filter((value): value is string => typeof value === 'string')
-			.map(collectionName => this.getCollection(collectionName));
+		return await Promise.all(
+			configuredCollections
+				.filter((value): value is string => typeof value === 'string')
+				.map(collectionName => this.getCollection(collectionName)),
+		);
 	}
 
 	/**
@@ -331,7 +334,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 	 *
 	 * This is either configured in the project or the workspace, or the fallback is used.
 	 */
-	protected getDefaultCollection(): SnuggeryCollection | null {
+	protected async getDefaultCollection(): Promise<SnuggeryCollection | null> {
 		const workspace = this.context.workspace;
 
 		if (workspace != null) {
@@ -345,7 +348,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 					isJsonObject(projectCli) &&
 					typeof projectCli.defaultCollection === 'string'
 				) {
-					return this.getCollection(projectCli.defaultCollection);
+					return await this.getCollection(projectCli.defaultCollection);
 				}
 			}
 
@@ -354,12 +357,12 @@ export abstract class SchematicCommand extends AbstractCommand {
 				isJsonObject(workspaceCli) &&
 				typeof workspaceCli.defaultCollection === 'string'
 			) {
-				return this.getCollection(workspaceCli.defaultCollection);
+				return await this.getCollection(workspaceCli.defaultCollection);
 			}
 		}
 
 		try {
-			return this.getCollection(defaultSchematicCollection);
+			return await this.getCollection(defaultSchematicCollection);
 		} catch (e) {
 			if (e instanceof UnableToResolveError) {
 				return null;
@@ -384,7 +387,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		let madeAChange = false;
 		let hasError = false;
 
-		const {workflow} = this;
+		const workflow = await this.getWorkflow();
 
 		const subscription = workflow.reporter.subscribe((event: DryRunEvent) => {
 			madeAChange = true;
@@ -445,11 +448,14 @@ export abstract class SchematicCommand extends AbstractCommand {
 					collection: schematic.description.collection.name,
 					schematic: schematic.description.name,
 					options,
-					logger: this.logger,
+					logger: await this.logger,
 					allowPrivate: allowPrivateSchematics,
 				})
 				.toPromise();
 		} catch (e) {
+			const {UnsuccessfulWorkflowExecution} = await import(
+				'@angular-devkit/schematics'
+			);
 			if (e instanceof UnsuccessfulWorkflowExecution) {
 				this.context.report.reportError(
 					'The schematic workflow failed. See above.',

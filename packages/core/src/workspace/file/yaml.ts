@@ -1,4 +1,4 @@
-import * as YAML from 'yaml';
+import type * as YAML from 'yaml';
 
 import {Change, ChangeType} from '../proxy';
 import {
@@ -43,8 +43,10 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 export class YamlFileHandle extends AbstractFileHandle<
 	YAML.Document.Parsed<YAML.ParsedNode>
 > {
+	#YAML: typeof YAML = require('yaml');
+
 	async parse(source: string): Promise<YAML.Document.Parsed<YAML.ParsedNode>> {
-		const document = YAML.parseDocument(source, yamlOptions);
+		const document = this.#YAML.parseDocument(source, yamlOptions);
 
 		processParseErrors(document.errors);
 
@@ -62,7 +64,7 @@ export class YamlFileHandle extends AbstractFileHandle<
 	}
 
 	stringify(value: JsonObject): string {
-		return YAML.stringify(value, yamlOptions);
+		return this.#YAML.stringify(value, yamlOptions);
 	}
 
 	applyChanges(
@@ -70,6 +72,7 @@ export class YamlFileHandle extends AbstractFileHandle<
 		document: YAML.Document.Parsed<YAML.ParsedNode>,
 		changes: readonly Change[],
 	): string {
+		const YAML = this.#YAML;
 		function assertIsCollection(
 			node: YAML.ParsedNode | YAML.Node | null | undefined,
 			path: JsonPropertyPath,

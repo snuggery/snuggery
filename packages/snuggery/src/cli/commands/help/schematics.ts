@@ -35,12 +35,12 @@ export class HelpSchematicsCommand extends SchematicCommand {
 	async execute(): Promise<void> {
 		const {report, format} = this;
 		if (this.collectionName) {
-			const collection = this.getCollection(this.collectionName);
+			const collection = await this.getCollection(this.collectionName);
 
 			this.#showCollection(collection);
 		} else {
-			const configuredCollections = this.getConfiguredCollections();
-			const defaultCollection = this.getDefaultCollection();
+			const configuredCollections = await this.getConfiguredCollections();
+			const defaultCollection = await this.getDefaultCollection();
 			if (configuredCollections != null) {
 				const shownShorthands = new Map<string, string>();
 

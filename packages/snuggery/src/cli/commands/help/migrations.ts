@@ -1,5 +1,4 @@
 import {Option, UsageError} from 'clipanion';
-import * as semver from 'semver';
 import * as t from 'typanion';
 
 import {MigrationCommand} from '../../command/migration';
@@ -54,7 +53,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 	async execute(): Promise<void> {
 		const {report, format} = this;
 
-		const collection = this.getMigrationCollection(this.package);
+		const collection = await this.getMigrationCollection(this.package);
 
 		if (collection == null) {
 			report.reportInfo(
@@ -80,13 +79,20 @@ export class HelpMigrationsCommand extends MigrationCommand {
 				);
 			}
 
-			if (currentVersion != null && semver.gt(toVersion, currentVersion)) {
-				throw new UsageError(
-					`Limit ${toVersion} is higher than the installed version ${currentVersion}`,
-				);
+			const {default: gt} = await import('semver/functions/gt.js');
+			if (currentVersion != null && gt(toVersion, currentVersion)) {
+				// Angular has the tendency to declare migrations on the stable version even if
+				// the migrations should run on pre-releases as well, so running migrations on
+				// pre-release versions
+				const {default: diff} = await import('semver/functions/diff.js');
+				if (!diff(toVersion, currentVersion)?.startsWith('pre')) {
+					throw new UsageError(
+						`Limit ${toVersion} is higher than the installed version ${currentVersion}`,
+					);
+				}
 			}
 
-			schematics = this.getMigrationsInRange(
+			schematics = await this.getMigrationsInRange(
 				collection,
 				this.from.format(),
 				toVersion,

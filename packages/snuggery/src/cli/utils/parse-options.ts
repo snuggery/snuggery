@@ -1,10 +1,10 @@
-import {strings} from '@angular-devkit/core';
 import type {JsonObject, JsonValue} from '@snuggery/core';
 import {Cli, Command, Option as CommandOption} from 'clipanion';
 
 import type {AbstractCommand} from '../command/abstract-command';
 
 import {Option, Type} from './parse-schema';
+import * as strings from './strings';
 import * as t from './typanion';
 
 export type ParsedArguments =

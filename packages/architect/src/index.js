@@ -13,4 +13,6 @@ module.exports = require('./index.ts');
 	(exports.resolveWorkspacePath = void 0),
 	(exports.scheduleTarget = void 0),
 	(exports.resolveTargetString = void 0),
+	(exports.targetStringFromTarget = void 0),
+	(exports.targetFromTargetString = void 0),
 	(exports.findWorkspace = void 0));

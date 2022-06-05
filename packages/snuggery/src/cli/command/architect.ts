@@ -1,21 +1,16 @@
-import {
+import type {
 	Architect,
 	BuilderOutput,
 	BuilderRun,
 	Target,
 } from '@angular-devkit/architect';
-import {json} from '@angular-devkit/core';
 import {isJsonArray, JsonObject} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
 
 import {AbstractError} from '../../utils/error';
-import {
-	createArchitectHost,
-	SnuggeryArchitectHost,
-	UnknownTargetError,
-} from '../architect';
+import type {SnuggeryArchitectHost} from '../architect';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 
@@ -115,17 +110,19 @@ export function addConfigurationsToTarget(
 
 export abstract class ArchitectCommand extends AbstractCommand {
 	@Cached()
-	protected get architectHost(): SnuggeryArchitectHost {
-		return createArchitectHost(this.context, this.context.workspace);
+	protected get architectHost(): Promise<SnuggeryArchitectHost> {
+		return import('../architect/index.js').then(({createArchitectHost}) =>
+			createArchitectHost(this.context, this.context.workspace),
+		);
 	}
 
 	@Cached()
-	protected get architect(): Architect {
-		const registry = new json.schema.CoreSchemaRegistry();
-		registry.addPostTransform(json.schema.transforms.addUndefinedDefaults);
-		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
-
-		return new Architect(this.architectHost, registry);
+	get architect(): Promise<Architect> {
+		return Promise.all([
+			this.architectHost,
+			this.createSchemaRegistry(),
+			import('@angular-devkit/architect'),
+		]).then(([host, registry, {Architect}]) => new Architect(host, registry));
 	}
 
 	/**
@@ -189,7 +186,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 		description?: string | undefined;
 	}> {
 		return this.getOptionsForBuilder(
-			await this.architectHost.getBuilderNameForTarget(target),
+			await (await this.architectHost).getBuilderNameForTarget(target),
 		);
 	}
 
@@ -201,9 +198,9 @@ export abstract class ArchitectCommand extends AbstractCommand {
 		allowExtraOptions: boolean;
 		description?: string | undefined;
 	}> {
-		const {description, optionSchema} = await this.architectHost.resolveBuilder(
-			builderConf,
-		);
+		const {description, optionSchema} = await (
+			await this.architectHost
+		).resolveBuilder(builderConf);
 
 		return parseSchema({
 			description,
@@ -219,8 +216,10 @@ export abstract class ArchitectCommand extends AbstractCommand {
 		options?: JsonObject;
 	}): Promise<number> {
 		return handleBuilderRun(
-			await this.architect.scheduleTarget(target, options, {
-				logger: this.logger,
+			await (
+				await this.architect
+			).scheduleTarget(target, options, {
+				logger: await this.logger,
 			}),
 			this.context,
 		);
@@ -234,14 +233,19 @@ export abstract class ArchitectCommand extends AbstractCommand {
 		options?: JsonObject;
 	}): Promise<number> {
 		return handleBuilderRun(
-			await this.architect.scheduleBuilder(builder, options, {
-				logger: this.logger,
+			await (
+				await this.architect
+			).scheduleBuilder(builder, options, {
+				logger: await this.logger,
 			}),
 			this.context,
 		);
 	}
 
-	protected resolveTarget(target: string, projectName: string | null): Target {
+	protected async resolveTarget(
+		target: string,
+		projectName: string | null,
+	): Promise<Target> {
 		if (projectName != null) {
 			return {project: projectName, target};
 		}
@@ -277,6 +281,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 			return {project: uniqueTargets.get(target)!, target};
 		}
 
+		const {UnknownTargetError} = await import('../architect/index.js');
 		throw new UnknownTargetError(
 			`Failed to resolve target ${JSON.stringify(
 				target,

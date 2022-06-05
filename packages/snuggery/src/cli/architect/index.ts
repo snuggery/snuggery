@@ -4,7 +4,13 @@ import {SnuggeryArchitectHost} from './host';
 import {Resolver} from './resolution';
 import {CliWorkspaceFacade} from './workspace';
 
-export * from './errors';
+export {
+	InvalidBuilderError,
+	InvalidBuilderSpecifiedError,
+	UnknownBuilderError,
+	UnknownConfigurationError,
+	UnknownTargetError,
+} from './errors';
 export {
 	SnuggeryArchitectHost,
 	ResolverFacade,

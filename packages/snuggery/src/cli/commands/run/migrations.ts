@@ -1,9 +1,7 @@
-import {tags} from '@angular-devkit/core';
 import {Option, UsageError} from 'clipanion';
 import {promises as fs} from 'fs';
-import JSON5 from 'json5';
 import {resolve} from 'path';
-import {SemVer} from 'semver';
+import type SemVer from 'semver/classes/semver.js';
 import * as t from 'typanion';
 
 import {MigrationCommand} from '../../command/migration';
@@ -117,6 +115,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 	async execute(): Promise<number | void> {
 		// Always make this command run as if it was executed in the workspace root
 		this.context.startCwd = this.root;
+		const JSON5 = await import('json5');
 
 		const migrationFile = JSON5.parse(
 			await fs.readFile(this.#filePath, 'utf8'),
@@ -151,12 +150,13 @@ export class RunMigrationsCommand extends MigrationCommand {
 		}
 	}
 
-	#writeMigrationFile(migrationFile: Migration[], log = false) {
+	async #writeMigrationFile(migrationFile: Migration[], log = false) {
 		if (migrationFile.length === 0) {
 			if (log) {
 				this.report.reportInfo(`No migrations are required`);
 			}
-			return fs.rm(this.#filePath, {force: true});
+			await fs.rm(this.#filePath, {force: true});
+			return;
 		}
 
 		if (log) {
@@ -164,7 +164,13 @@ export class RunMigrationsCommand extends MigrationCommand {
 				`Take a look at ${this.filename} to see what migrations are ready to be executed`,
 			);
 		}
-		return fs.writeFile(
+
+		const [{tags}, {default: SemVer}] = await Promise.all([
+			import('@angular-devkit/core'),
+			import('semver/classes/semver.js'),
+		]);
+
+		await fs.writeFile(
 			this.#filePath,
 			tags.stripIndent`
 				/**
@@ -203,13 +209,13 @@ export class RunMigrationsCommand extends MigrationCommand {
 		const newMigrationFile: Migration[] = [];
 
 		for (const migration of migrationFile) {
-			const collection = this.getMigrationCollection(migration.package);
+			const collection = await this.getMigrationCollection(migration.package);
 
 			if (collection == null) {
 				continue;
 			}
 
-			const includedSchematics = this.getMigrationsInRange(
+			const includedSchematics = await this.getMigrationsInRange(
 				collection,
 				migration.from.format(),
 				migration.to.format(),
@@ -302,7 +308,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 	}
 
 	async #executeMigration(migration: Migration) {
-		const collection = this.getMigrationCollection(migration.package);
+		const collection = await this.getMigrationCollection(migration.package);
 
 		if (collection == null) {
 			this.report.reportError(
@@ -312,7 +318,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 			return 1;
 		}
 
-		const migrationsInRange = this.getMigrationsInRange(
+		const migrationsInRange = await this.getMigrationsInRange(
 			collection,
 			migration.from.format(),
 			migration.to.format(),
