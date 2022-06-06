@@ -8,12 +8,12 @@ import type {
 
 export {
 	ConvertibleWorkspaceDefinition,
-	ProjectDefinition,
+	type ProjectDefinition,
 	ProjectDefinitionCollection,
-	TargetDefinition,
+	type TargetDefinition,
 	TargetDefinitionCollection,
-	WorkspaceDefinition,
-	WorkspaceHandle,
+	type WorkspaceDefinition,
+	type WorkspaceHandle,
 } from './workspace-handle/types';
 
 const knownTypes = new Map<string, WorkspaceHandleFactory>([

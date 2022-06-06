@@ -1,17 +1,17 @@
 export {
-	ExtraConfigurationDefinition,
-	ExtraConfigurationDefinitionWithType,
+	type ExtraConfigurationDefinition,
+	type ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,
 } from './extract-extra-configuration';
 export {filterByPatterns} from './pattern';
 export {
 	ConvertibleWorkspaceDefinition,
-	ProjectDefinition,
+	type ProjectDefinition,
 	ProjectDefinitionCollection,
-	TargetDefinition,
+	type TargetDefinition,
 	TargetDefinitionCollection,
-	WorkspaceDefinition,
-	WorkspaceHost,
+	type WorkspaceDefinition,
+	type WorkspaceHost,
 	workspaceFilenames,
 	isJsonArray,
 	isJsonObject,
@@ -19,8 +19,8 @@ export {
 	readWorkspace,
 	writeWorkspace,
 	updateWorkspace,
-	JsonObject,
-	JsonPropertyName,
-	JsonPropertyPath,
-	JsonValue,
+	type JsonObject,
+	type JsonPropertyName,
+	type JsonPropertyPath,
+	type JsonValue,
 } from './workspace';

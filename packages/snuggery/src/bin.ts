@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import process from 'node:process';
 
 const [major, minor] = process.version.replace(/^v/, '').split('.') as [
 	string,

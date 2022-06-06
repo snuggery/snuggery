@@ -7,7 +7,7 @@ import {
 	type StrictValidator,
 } from 'typanion';
 
-export {isNumber, StrictValidator} from 'typanion';
+export {isNumber, type StrictValidator} from 'typanion';
 
 export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
 	const JSON5: typeof import('json5') = require('json5');

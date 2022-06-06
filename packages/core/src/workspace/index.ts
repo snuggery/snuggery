@@ -10,21 +10,21 @@ import {
 
 export type {WorkspaceHost} from './file';
 export {
-	JsonObject,
-	JsonPropertyName,
-	JsonPropertyPath,
-	JsonValue,
+	type JsonObject,
+	type JsonPropertyName,
+	type JsonPropertyPath,
+	type JsonValue,
 	isJsonArray,
 	isJsonObject,
 	getPrintableType,
 } from './types';
 export {
 	ConvertibleWorkspaceDefinition,
-	ProjectDefinition,
+	type ProjectDefinition,
 	ProjectDefinitionCollection,
-	TargetDefinition,
+	type TargetDefinition,
 	TargetDefinitionCollection,
-	WorkspaceDefinition,
+	type WorkspaceDefinition,
 	workspaceFilenames,
 } from './workspace-handle';
 

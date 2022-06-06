@@ -1,13 +1,13 @@
 export {
-	ParallelOptions,
-	ParallelTarget,
+	type ParallelOptions,
+	type ParallelTarget,
 	SchedulerType,
-	Schema as CombineSchema,
-	SerialOptions,
-	SerialTarget,
-	Target,
+	type Schema as CombineSchema,
+	type SerialOptions,
+	type SerialTarget,
+	type Target,
 	Type,
 	execute as combine,
 } from './combine/index';
-export {Schema as ExecuteSchema, execute} from './execute/index';
-export {Schema as GlobSchema, execute as glob} from './glob/index';
+export {type Schema as ExecuteSchema, execute} from './execute/index';
+export {type Schema as GlobSchema, execute as glob} from './glob/index';

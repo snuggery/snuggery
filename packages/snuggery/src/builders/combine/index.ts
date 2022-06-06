@@ -7,7 +7,7 @@ import type {Schema} from './schema';
 export default createBuilder<JsonObject & Schema>(execute);
 
 export {execute} from './builder';
-export {
+export type {
 	ParallelOptions,
 	ParallelTarget,
 	Schema,

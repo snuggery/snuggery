@@ -45,7 +45,6 @@ export function run(
 	const cli = new Cli<Context>({
 		binaryLabel: 'Snuggery',
 		binaryName: 'sn',
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		binaryVersion: require('@snuggery/snuggery/package.json').version,
 		enableColors: context.colorDepth ? context.colorDepth > 1 : undefined,
 	});

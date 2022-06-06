@@ -13,9 +13,9 @@ export {
 } from './errors';
 export {
 	SnuggeryArchitectHost,
-	ResolverFacade,
-	WorkspaceFacade,
-	SnuggeryBuilderInfo,
+	type ResolverFacade,
+	type WorkspaceFacade,
+	type SnuggeryBuilderInfo,
 } from './host';
 
 export function createArchitectHost(

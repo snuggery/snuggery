@@ -1,3 +1,5 @@
+import process from 'node:process';
+
 // When using the ESM loader Node.js prints either of the following warnings
 //
 // - ExperimentalWarning: --experimental-loader is an experimental feature. This feature could change at any time

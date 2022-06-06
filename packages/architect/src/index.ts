@@ -1,7 +1,7 @@
-export {AssetSpec, copyAssets} from './assets';
+export {type AssetSpec, copyAssets} from './assets';
 export {
-	ExtraConfigurationDefinition,
-	ExtraConfigurationDefinitionWithType,
+	type ExtraConfigurationDefinition,
+	type ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,
 } from './extract-extra-configuration';
 export {runPackager} from './pack';
@@ -12,7 +12,11 @@ export {
 	resolveProjectPath,
 	resolveWorkspacePath,
 } from './resolve';
-export {TransientTarget, scheduleTarget, TargetSpecifier} from './run';
+export {
+	type TransientTarget,
+	scheduleTarget,
+	type TargetSpecifier,
+} from './run';
 export {
 	resolveTargetString,
 	targetFromTargetString,

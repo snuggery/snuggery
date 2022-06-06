@@ -18,6 +18,8 @@
 		// Thanks https://node.green/ & https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
 
 		"module": "Node16",
+		"isolatedModules": true,
+		"preserveConstEnums": true,
 
 		"composite": true,
 		"incremental": true,

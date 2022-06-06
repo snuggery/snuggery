@@ -4,7 +4,7 @@ import {mapSuccessfulResult} from '@snuggery/architect/operators';
 
 import {executeVersion} from './executor';
 
-export {VersionBuilderOutput} from './yarn';
+export type {VersionBuilderOutput} from './yarn';
 export {executeVersion};
 
 export default createBuilder((options: JsonObject, context: BuilderContext) =>
