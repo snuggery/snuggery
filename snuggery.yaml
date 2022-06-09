@@ -79,6 +79,11 @@ projects:
           lintFilePatterns:
             - packages/*/src/**/*.[tj]s
             - integration
+        configurations:
+          ci:
+            silent: true
+            # cspell:ignore sarif
+            format: '@microsoft/eslint-formatter-sarif'
       lint-affected:
         builder: '@snuggery/affected:with-files'
         options:

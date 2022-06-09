@@ -1,0 +1,74 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+name: 'Validation'
+jobs:
+  code-style:
+    name: 'Code Style'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: 'Check for formatting errors (fix w/ "yarn prettier --write path/to/file")'
+        run: |
+          yarn prettier --check .
+        shell: bash
+
+  dependencies:
+    name: 'Dependencies'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Validate dependency cache
+        shell: bash
+        run: |
+          yarn install --immutable --immutable-cache --check-cache
+
+      - if: ${{ github.event_name == 'pull_request' }}
+        name: Review Dependencies
+        uses: actions/dependency-review-action@v1
+
+  lint:
+    name: 'Lint'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Install
+        shell: bash
+        env:
+          YARN_ENABLE_NETWORK: 0
+        run: |
+          yarn install --immutable --immutable-cache
+
+      - name: 'Check for linting errors (fix w/ "yarn lint -c fix")'
+        run: |
+          yarn sn lint --configuration ci > eslint-results.sarif
+        shell: bash
+
+      - name: Upload analysis results to GitHub
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true

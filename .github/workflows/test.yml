@@ -3,48 +3,21 @@ on:
     branches:
       - main
   pull_request:
+    branches:
+      - main
 
-name: 'Validation'
+permissions:
+  contents: read
+
+name: 'Test'
 jobs:
-  code-style:
-    name: 'Code Style'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 16.x
-
-      - name: Install
-        shell: bash
-        env:
-          YARN_ENABLE_NETWORK: 0
-        run: |
-          yarn install --immutable --immutable-cache
-
-      - name: 'Check for formatting errors (fix w/ "yarn prettier --write path/to/file")'
-        run: |
-          yarn prettier --check .
-        shell: bash
-
-      - name: 'Check for linting errors (fix w/ "yarn lint -c fix")'
-        run: |
-          yarn sn lint
-        shell: bash
-
-      - name: 'Check whether the help sections in the READMEs are up to date (fix w/ "yarn update-help")'
-        run: |
-          yarn update-help validate
-        shell: bash
-
   build-unit:
     name: Build & Unit
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
 
@@ -70,6 +43,11 @@ jobs:
         run: |
           yarn sn test
 
+      - name: 'Validate help statements (fix w/ "yarn update-help")'
+        shell: bash
+        run: |
+          yarn update-help validate
+
       - name: 'Validate CLI dependencies'
         shell: bash
         run: |
@@ -92,9 +70,9 @@ jobs:
           - 18.x
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: 'Use Node.js ${{matrix.node}}'
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{matrix.node}}
 
