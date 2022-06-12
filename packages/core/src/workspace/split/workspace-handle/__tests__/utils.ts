@@ -2,8 +2,8 @@ import {workspaces} from '@angular-devkit/core';
 import expect from 'expect';
 import type {Test} from 'uvu';
 
-import type {FileHandle} from '../../file';
-import type {JsonObject} from '../../types';
+import type {FileHandle} from '../../../file';
+import type {JsonObject} from '../../../types';
 import type {WorkspaceHandleFactory} from '../types';
 
 function clone(value: JsonObject): JsonObject {

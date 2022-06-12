@@ -1,7 +1,7 @@
 import type {ParseError, FormattingOptions} from 'jsonc-parser';
 
-import {ChangeType, Change} from '../proxy';
-import {InvalidConfigurationError, isJsonObject, JsonObject} from '../types';
+import {ChangeType, Change} from '../../proxy';
+import {InvalidConfigurationError, isJsonObject, JsonObject} from '../../types';
 
 import {AbstractFileHandle} from './abstract';
 

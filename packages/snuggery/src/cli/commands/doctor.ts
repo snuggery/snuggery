@@ -51,6 +51,7 @@ export class DoctorCommand extends AbstractCommand {
 		]);
 
 		const registry = new schema.CoreSchemaRegistry();
+		this.workspace.applyWorkspaceTransforms(registry);
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
 
@@ -69,9 +70,10 @@ export class DoctorCommand extends AbstractCommand {
 			]);
 
 		const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
+		this.workspace.applyWorkspaceTransforms(registry);
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
-		registry.addSmartDefaultProvider('projectName', () => 'test-project');
+		registry.addSmartDefaultProvider('projectName', () => 'doctor-project');
 
 		const engineHost = new SnuggeryEngineHost(this.workspace.basePath, {
 			context: this.context,

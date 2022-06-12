@@ -1,7 +1,6 @@
 import type {workspaces} from '@angular-devkit/core';
 
-import type {FileHandle} from '../file';
-import type {JsonObject} from '../types';
+import type {JsonObject} from './json';
 
 /**
  * The definition of a single target
@@ -122,25 +121,19 @@ export abstract class ConvertibleWorkspaceDefinition
 
 abstract class DefinitionCollection<T, N> implements ReadonlyMap<string, T> {
 	readonly #map: Map<string, T>;
-	readonly #raw: JsonObject;
 
 	/**
-	 * Create a new, empty, collection
-	 */
-	constructor();
-	/**
-	 * Create a collection based on existing data
+	 * Create a collection, based on existing data if passed
 	 *
-	 * @param raw The raw serializable data reflecting the collection
-	 * @param initial The data of the collection
+	 * @param initial The initial data of the collection, if any
 	 */
-	constructor(raw: JsonObject, initial: Record<string, T>);
-	constructor(raw?: JsonObject, initial?: Record<string, T>) {
-		this.#raw = raw ?? {};
+	constructor(initial?: Record<string, T>) {
 		this.#map = new Map(Object.entries(initial ?? {}));
 	}
 
-	protected abstract _wrapValue(value: T | N, raw: JsonObject): T;
+	protected abstract _wrapValue(key: string, value: T | N): T;
+
+	protected abstract _unwrapValue(key: string): void;
 
 	/**
 	 * Stores the given value under the given name in the collection, overriding any pre-existing value
@@ -157,9 +150,7 @@ abstract class DefinitionCollection<T, N> implements ReadonlyMap<string, T> {
 	 * ```
 	 */
 	set(key: string, value: T | N): this {
-		this.#raw[key] = {};
-		const raw = this.#raw[key] as JsonObject;
-		const wrapped = this._wrapValue(value, raw);
+		const wrapped = this._wrapValue(key, value);
 		this.#map.set(key, wrapped);
 		return this;
 	}
@@ -168,7 +159,7 @@ abstract class DefinitionCollection<T, N> implements ReadonlyMap<string, T> {
 	 * Remove the entry with the given key from this collection, if present
 	 */
 	delete(key: string): boolean {
-		delete this.#raw[key];
+		this._unwrapValue(key);
 		return this.#map.delete(key);
 	}
 
@@ -221,9 +212,8 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 	workspaces.ProjectDefinition
 > {
 	protected _wrapValue(
+		_key: string,
 		value: ProjectDefinition | workspaces.ProjectDefinition,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		_raw: JsonObject,
 	): ProjectDefinition {
 		const clonedValue: ProjectDefinition = {
 			...(value as ProjectDefinition),
@@ -235,6 +225,11 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 		}
 
 		return clonedValue;
+	}
+
+	protected _unwrapValue(key: string): void;
+	protected _unwrapValue(): void {
+		// Implemented in subclasses
 	}
 
 	/**
@@ -324,12 +319,16 @@ export class TargetDefinitionCollection extends DefinitionCollection<
 	workspaces.TargetDefinition
 > {
 	protected _wrapValue(
+		_key: string,
 		value: TargetDefinition | workspaces.TargetDefinition,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		_raw: JsonObject,
 	): TargetDefinition {
 		// @ts-expect-error There's no cast that makes typescript happy here
 		return {extensions: {}, ...value};
+	}
+
+	protected _unwrapValue(key: string): void;
+	protected _unwrapValue(): void {
+		// Implemented in subclasses
 	}
 
 	/**
@@ -382,8 +381,4 @@ export interface WorkspaceHandle {
 	update(
 		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void>;
-}
-
-export interface WorkspaceHandleFactory {
-	new (file: FileHandle): WorkspaceHandle;
 }

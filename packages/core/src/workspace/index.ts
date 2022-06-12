@@ -1,12 +1,19 @@
 import type {workspaces} from '@angular-devkit/core';
 
+import {
+	createCombinedWorkspaceHandle,
+	workspaceFilenames as combinedWorkspaceFilenames,
+} from './combined';
 import type {WorkspaceHost} from './file';
 import {nodeFsHost} from './node';
 import {
-	createWorkspaceHandle,
+	createSplitWorkspaceHandle,
+	workspaceFilenames as splitWorkspaceFilenames,
+} from './split/workspace-handle';
+import type {
 	ConvertibleWorkspaceDefinition,
 	WorkspaceDefinition,
-} from './workspace-handle';
+} from './types';
 
 export type {WorkspaceHost} from './file';
 export {
@@ -17,16 +24,18 @@ export {
 	isJsonArray,
 	isJsonObject,
 	getPrintableType,
-} from './types';
-export {
 	ConvertibleWorkspaceDefinition,
 	type ProjectDefinition,
 	ProjectDefinitionCollection,
 	type TargetDefinition,
 	TargetDefinitionCollection,
 	type WorkspaceDefinition,
-	workspaceFilenames,
-} from './workspace-handle';
+} from './types';
+
+export const workspaceFilenames = [
+	...combinedWorkspaceFilenames,
+	...splitWorkspaceFilenames,
+];
 
 /**
  * Read the workspace configuration at the given path
@@ -37,7 +46,10 @@ export async function readWorkspace(
 	path: string,
 	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
 ): Promise<ConvertibleWorkspaceDefinition> {
-	return await (await createWorkspaceHandle(host, path)).read();
+	return await (
+		(await createCombinedWorkspaceHandle(host, path)) ??
+		(await createSplitWorkspaceHandle(host, path))
+	).read();
 }
 
 /**
@@ -52,7 +64,10 @@ export async function writeWorkspace(
 	workspace: WorkspaceDefinition | workspaces.WorkspaceDefinition,
 	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
 ): Promise<void> {
-	await (await createWorkspaceHandle(host, path)).write(workspace);
+	await (
+		(await createCombinedWorkspaceHandle(host, path)) ??
+		(await createSplitWorkspaceHandle(host, path))
+	).write(workspace);
 }
 
 /**
@@ -69,5 +84,8 @@ export async function updateWorkspace(
 	updater: (workspace: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
 ): Promise<void> {
-	await (await createWorkspaceHandle(host, path)).update(updater);
+	await (
+		(await createCombinedWorkspaceHandle(host, path)) ??
+		(await createSplitWorkspaceHandle(host, path))
+	).update(updater);
 }

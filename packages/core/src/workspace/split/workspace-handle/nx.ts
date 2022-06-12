@@ -5,17 +5,12 @@
 
 import type {workspaces} from '@angular-devkit/core';
 
-import type {FileHandle} from '../file';
-import {proxyObject} from '../proxy';
+import {proxyObject} from '../../proxy';
 import {
 	InvalidConfigurationError,
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
-} from '../types';
-
-import {AngularWorkspaceDefinition} from './angular';
-import {
 	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
@@ -23,7 +18,10 @@ import {
 	TargetDefinitionCollection,
 	WorkspaceDefinition,
 	WorkspaceHandle,
-} from './types';
+} from '../../types';
+import type {FileHandle} from '../file';
+
+import {AngularWorkspaceDefinition} from './angular';
 
 type NxTargetDefinitionData = JsonObject & {
 	executor: string;
@@ -217,11 +215,26 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected override _wrapValue(
-		value: TargetDefinition,
+	readonly #raw: JsonObject;
+
+	private constructor(
 		raw: JsonObject,
+		initial: Record<string, TargetDefinition>,
+	) {
+		super(initial);
+		this.#raw = raw;
+	}
+
+	protected override _wrapValue(
+		key: string,
+		value: TargetDefinition,
 	): TargetDefinition {
-		return NxTargetDefinition.fromValue(value, raw);
+		this.#raw[key] = {};
+		return NxTargetDefinition.fromValue(value, this.#raw[key] as JsonObject);
+	}
+
+	protected override _unwrapValue(key: string): void {
+		delete this.#raw[key];
 	}
 }
 
@@ -419,11 +432,26 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected override _wrapValue(
-		value: ProjectDefinition,
+	readonly #raw: JsonObject;
+
+	private constructor(
 		raw: JsonObject,
+		initial: Record<string, ProjectDefinition>,
+	) {
+		super(initial);
+		this.#raw = raw;
+	}
+
+	protected override _wrapValue(
+		key: string,
+		value: ProjectDefinition,
 	): ProjectDefinition {
-		return NxProjectDefinition.fromValue(value, raw);
+		this.#raw[key] = {};
+		return NxProjectDefinition.fromValue(value, this.#raw[key] as JsonObject);
+	}
+
+	protected override _unwrapValue(key: string): void {
+		delete this.#raw[key];
 	}
 }
 

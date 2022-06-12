@@ -408,10 +408,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chevrotain/cst-dts-gen@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "@chevrotain/cst-dts-gen@npm:10.1.2"
+  dependencies:
+    "@chevrotain/gast": ^10.1.2
+    "@chevrotain/types": ^10.1.2
+    lodash: 4.17.21
+  checksum: 47bcab11b4b8165115c13bb5ef9561f49a77454698b51932711584e3a3062a26af4609fa6e0c0c1d48619366bdf89bbd614e06b2d7d6757ce8e1679fdcaabd64
+  languageName: node
+  linkType: hard
+
+"@chevrotain/gast@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "@chevrotain/gast@npm:10.1.2"
+  dependencies:
+    "@chevrotain/types": ^10.1.2
+    lodash: 4.17.21
+  checksum: dbb8c80903cf30398b1b0c0ae24dddb0a05a5c95130fdb362f6627030dea0b560c6cdc6bcbbf91f4d85914636cec24dc2bd6403b83b802dfba2d6fabf4dc0487
+  languageName: node
+  linkType: hard
+
+"@chevrotain/types@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "@chevrotain/types@npm:10.1.2"
+  checksum: cc3779e49370b5ce86a8b849c7ae7026ac934f255e027275fbfca33ee319b84c730cad95db038dd020cb31bd1e777866a45517a4d69de6afec9bbf9a6315844c
+  languageName: node
+  linkType: hard
+
 "@chevrotain/types@npm:^9.1.0":
   version: 9.1.0
   resolution: "@chevrotain/types@npm:9.1.0"
   checksum: 5f26ff26aa345bc823b39ebe48f038db0998c80d13fa4b937961d68523a259ac86ec693bc1ad3f3cfa9ef83e5ffb6d94337960c3a1ee7cb82e3014adb4f5bf30
+  languageName: node
+  linkType: hard
+
+"@chevrotain/utils@npm:^10.1.2":
+  version: 10.1.2
+  resolution: "@chevrotain/utils@npm:10.1.2"
+  checksum: 05301feae7cb029418890d12961336d7db340a075c17e3815d107f30d968b9fcca23162addb99772cca41fae242f53dea6146fbd295c928ad26092c27ac71050
   languageName: node
   linkType: hard
 
@@ -1187,6 +1222,7 @@ __metadata:
     "@types/node": ^16.11.35
     expect: ^27.3.1
     jsonc-parser: 3.0.0
+    kdljs: 0.1.4
     micromatch: 4.0.2
     typanion: 3.7.1
     uvu: ^0.5.2
@@ -2653,6 +2689,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chevrotain@npm:10.1.2":
+  version: 10.1.2
+  resolution: "chevrotain@npm:10.1.2"
+  dependencies:
+    "@chevrotain/cst-dts-gen": ^10.1.2
+    "@chevrotain/gast": ^10.1.2
+    "@chevrotain/types": ^10.1.2
+    "@chevrotain/utils": ^10.1.2
+    lodash: 4.17.21
+    regexp-to-ast: 0.5.0
+  checksum: aa9e4cd79c8fb372de652ab37af2f6d77b83a93acd271118eafea87015a5176acf447f6e873cca407582bf47cb337cd8daa2a18780ee0e396afa8af0be03d292
+  languageName: node
+  linkType: hard
+
 "chevrotain@npm:^9.1.0":
   version: 9.1.0
   resolution: "chevrotain@npm:9.1.0"
@@ -2661,6 +2711,20 @@ __metadata:
     "@chevrotain/utils": ^9.1.0
     regexp-to-ast: 0.5.0
   checksum: 632d0d7c69081e3cc3a08c071cb738c46499a05f1a513b7f9101f7a9b5570d6ee62cac5ba506659a85bf9e71e1029c462dbb7bd9fe1bfe019b6c1879ca29c525
+  languageName: node
+  linkType: hard
+
+"chevrotain@patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 10.1.2
+  resolution: "chevrotain@patch:chevrotain@npm%3A10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::version=10.1.2&hash=5d00c6&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    "@chevrotain/cst-dts-gen": ^10.1.2
+    "@chevrotain/gast": ^10.1.2
+    "@chevrotain/types": ^10.1.2
+    "@chevrotain/utils": ^10.1.2
+    lodash: 4.17.21
+    regexp-to-ast: 0.5.0
+  checksum: 1bba1a9f7c1b20d9d38d8e1705892aad5face1c87926e855b53df96d85e6aa22e009deeaae2f2ec66dae79f0f1fb6eee09f38f93d3d80861a1eabe05d7bec0d3
   languageName: node
   linkType: hard
 
@@ -4969,6 +5033,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"kdljs@npm:0.1.4":
+  version: 0.1.4
+  resolution: "kdljs@npm:0.1.4"
+  dependencies:
+    chevrotain: ^10.1.2
+  checksum: 3cabae1e4632d0edbc01a0b527541e3787fd702b2e806d369ad3d18829e1f2d3352411b47c3f0cda87dd3f19f4c3efa170525d016ec58ad166b46b3ab99f4150
+  languageName: node
+  linkType: hard
+
+"kdljs@patch:kdljs@npm:0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 0.1.4
+  resolution: "kdljs@patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    chevrotain: ^10.1.2
+  checksum: 25b6736bd13b0eed2c67e78b4f1864cbb5386ae2fec15e41df79854e38f8675282702f71b76bcf912877e9a45840461dea8c1339d158804a5dc0b070797a8612
+  languageName: node
+  linkType: hard
+
 "keyv@npm:^4.0.0":
   version: 4.0.3
   resolution: "keyv@npm:4.0.3"
@@ -5091,7 +5173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:~4.17.15":
+"lodash@npm:4.17.21, lodash@npm:^4.17.14, lodash@npm:^4.17.15, lodash@npm:^4.17.20, lodash@npm:~4.17.15":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7

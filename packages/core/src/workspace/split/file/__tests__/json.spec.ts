@@ -2,8 +2,8 @@
 import expect from 'expect';
 import {suite} from 'uvu';
 
+import type {JsonObject} from '../../../types';
 import {createFileHandle} from '../../file';
-import type {JsonObject} from '../../types';
 
 import {TestSingleFileWorkspaceHost} from './utils';
 

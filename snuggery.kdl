@@ -1,0 +1,209 @@
+version 0
+
+cli {
+	packageManager "yarn"
+}
+
+project "all" root="" {
+	target "build" builder="@snuggery/snuggery:glob" {
+		options {
+			include "@snuggery/*"
+		}
+		configuration "without-yarn-plugins" {
+			exclude "@snuggery/yarn-plugin-*"
+		}
+	}
+
+	target "build-affected" builder="@snuggery/affected:run" {
+		options {
+			target "build"
+			unknownTarget "skip"
+		}
+
+		configuration "without-yarn-plugins" {
+			exclude "@snuggery/yarn-plugin-*"
+		}
+	}
+
+	target "test" builder="@snuggery/snuggery:execute" {
+		options {
+			package "uvu"
+      arguments \
+        "--require" \
+        "@snuggery-workspace/scripts/load-ts" \
+        "--ignore" \
+        "integration"
+		}
+	}
+
+	targ "deploy" builder="@snuggery/yarn:deploy" {
+		options {
+			useWorkspacePlugin true
+			buildTarget ":build:without-yarn-plugins"
+			exclude "@snuggery/yarn-plugin-*"
+			exclude "integration"
+			exclude "all"
+		}
+		configuration "next" {
+			distTag "next"
+		}
+	}
+
+	target "lint" builder="@angular-eslint/builder:lint" {
+		options {
+			eslintConfig ".eslintrc.yml"
+			ignorePath ".eslintignore"
+			lintFilePatterns \
+				"packages/*/src/**/*.[tj]s" \
+				"integration"
+		}
+		configuration "ci" {
+			silent true
+			// cspell:ignore sarif
+			format "@microsoft/eslint-formatter-sarif"
+		}
+	}
+
+	target "lint-affected" builder="@snuggery/affected:with-files" {
+		options {
+			target "lint"
+			optionName "lintFilePatterns"
+			include "**/*.{,m,c}ts"
+			include "**/*.{,m,c}js"
+		}
+	}
+}
+
+project "@snuggery/snuggery" root="packages/snuggery" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/snuggery/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/global" root="packages/global" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md" "NOTICE.md" "bin.sh"
+			asset from="." "LICENSE.md" ".pnp.loader.mjs"
+		}
+	}
+}
+
+project "@snuggery/affected" root="packages/affected" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/affected/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/architect" root="packages/architect" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/architect/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/core" root="packages/core" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/core/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/angular" root="packages/angular" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset "**/*" from="packages/angular/src"
+		}
+	}
+}
+
+project "@snuggery/node" root="packages/node" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/node/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/schematics" root="packages/schematics" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/schematics/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/yarn" root="packages/yarn" {
+	target "build" builder="@snuggery/node:build" {
+		options {
+			asset "README.md"
+			asset "LICENSE.md" from="."
+			asset from="packages/yarn/src" {
+				include "**/*.d.ts" 
+				include "**/*.json" 
+			}
+		}
+	}
+}
+
+project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
+	target "build" builder="@snuggery/snuggery:execute" {
+		options {
+			package "@yarnpkg/builder"
+			arguments "build" "plugin"
+		}
+
+		configuration "dev" {
+			arguments "build" "plugin" "--no-minify"
+		}
+	}
+}
+
+project "integration" root="integration" {
+	target "test" builder="@snuggery/snuggery:execute" {
+		options {
+			package "uvu"
+      arguments \
+        "--require" \
+        "@snuggery-workspace/scripts/load-ts"
+		}
+	}
+}

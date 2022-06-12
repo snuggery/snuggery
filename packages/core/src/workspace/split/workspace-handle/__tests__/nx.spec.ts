@@ -2,7 +2,7 @@ import {workspaces} from '@angular-devkit/core';
 import expect from 'expect';
 import {suite} from 'uvu';
 
-import type {JsonObject} from '../../types';
+import type {JsonObject} from '../../../types';
 import {NxWorkspaceHandle} from '../nx';
 
 import {itShouldHandleAngularConfiguration, TestFileHandle} from './utils';

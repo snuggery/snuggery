@@ -127,6 +127,8 @@ export abstract class AbstractCommand extends Command<Context> {
 		const {schema} = await import('@angular-devkit/core');
 
 		const registry = new schema.CoreSchemaRegistry(formats);
+		this.context.workspace?.applyWorkspaceTransforms(registry);
+
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
 

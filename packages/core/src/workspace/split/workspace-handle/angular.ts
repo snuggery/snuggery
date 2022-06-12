@@ -5,16 +5,12 @@
 
 import type {workspaces} from '@angular-devkit/core';
 
-import type {FileHandle} from '../file';
-import {proxyObject} from '../proxy';
+import {proxyObject} from '../../proxy';
 import {
 	InvalidConfigurationError,
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
-} from '../types';
-
-import {
 	ConvertibleWorkspaceDefinition,
 	ProjectDefinition,
 	ProjectDefinitionCollection,
@@ -22,7 +18,8 @@ import {
 	TargetDefinitionCollection,
 	WorkspaceDefinition,
 	WorkspaceHandle,
-} from './types';
+} from '../../types';
+import type {FileHandle} from '../file';
 
 type AngularTargetDefinitionData = JsonObject & {
 	builder: string;
@@ -217,11 +214,30 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected override _wrapValue(
-		value: TargetDefinition | workspaces.TargetDefinition,
+	readonly #raw: JsonObject;
+
+	private constructor(
 		raw: JsonObject,
+		initialValue: Record<string, TargetDefinition>,
+	) {
+		super(initialValue);
+
+		this.#raw = raw;
+	}
+
+	protected override _wrapValue(
+		key: string,
+		value: TargetDefinition | workspaces.TargetDefinition,
 	): TargetDefinition {
-		return AngularTargetDefinition.fromValue(value, raw);
+		this.#raw[key] = {};
+		return AngularTargetDefinition.fromValue(
+			value,
+			this.#raw[key] as JsonObject,
+		);
+	}
+
+	protected override _unwrapValue(key: string): void {
+		delete this.#raw[key];
 	}
 }
 
@@ -413,11 +429,29 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	protected override _wrapValue(
-		value: ProjectDefinition,
+	readonly #raw: JsonObject;
+
+	private constructor(
 		raw: JsonObject,
+		initial: Record<string, ProjectDefinition>,
+	) {
+		super(initial);
+		this.#raw = raw;
+	}
+
+	protected override _wrapValue(
+		key: string,
+		value: ProjectDefinition,
 	): ProjectDefinition {
-		return AngularProjectDefinition.fromValue(value, raw);
+		this.#raw[key] = {};
+		return AngularProjectDefinition.fromValue(
+			value,
+			this.#raw[key] as JsonObject,
+		);
+	}
+
+	protected override _unwrapValue(key: string): void {
+		delete this.#raw[key];
 	}
 }
 

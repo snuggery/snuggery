@@ -1,20 +1,10 @@
-import {createFileHandle, WorkspaceHost} from './file';
+import type {WorkspaceHost} from '../file';
+import type {WorkspaceHandle} from '../types';
+
+import {createFileHandle} from './file';
 import {AngularWorkspaceHandle} from './workspace-handle/angular';
 import {NxWorkspaceHandle} from './workspace-handle/nx';
-import type {
-	WorkspaceHandle,
-	WorkspaceHandleFactory,
-} from './workspace-handle/types';
-
-export {
-	ConvertibleWorkspaceDefinition,
-	type ProjectDefinition,
-	ProjectDefinitionCollection,
-	type TargetDefinition,
-	TargetDefinitionCollection,
-	type WorkspaceDefinition,
-	type WorkspaceHandle,
-} from './workspace-handle/types';
+import type {WorkspaceHandleFactory} from './workspace-handle/types';
 
 const knownTypes = new Map<string, WorkspaceHandleFactory>([
 	// Extend with own configuration when useful
@@ -32,7 +22,7 @@ const knownTypes = new Map<string, WorkspaceHandleFactory>([
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
 
-export async function createWorkspaceHandle(
+export async function createSplitWorkspaceHandle(
 	source: WorkspaceHost,
 	path: string,
 ): Promise<WorkspaceHandle> {

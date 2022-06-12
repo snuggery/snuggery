@@ -31,12 +31,19 @@ export interface AssetSpec {
 export async function copyAssets(
 	context: BuilderContext,
 	outputFolder: string,
-	assets: AssetSpec[],
+	assets: string | string[] | AssetSpec[],
 ): Promise<BuilderOutput> {
 	const {copy} = await import('fs-extra');
 	const glob = promisify((await import('glob')).default);
 
-	for (const [i, asset] of assets.entries()) {
+	if (typeof assets === 'string') {
+		assets = [assets];
+	}
+
+	for (const [i, rawAsset] of assets.entries()) {
+		const asset: AssetSpec =
+			typeof rawAsset === 'string' ? {include: rawAsset} : rawAsset;
+
 		const from = asset.from
 			? resolveWorkspacePath(context, asset.from)
 			: await getProjectPath(context);

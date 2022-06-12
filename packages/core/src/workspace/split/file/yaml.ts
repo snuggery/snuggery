@@ -1,13 +1,13 @@
 import type * as YAML from 'yaml';
 
-import {Change, ChangeType} from '../proxy';
+import {Change, ChangeType} from '../../proxy';
 import {
 	InvalidConfigurationError,
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
 	stringifyPath,
-} from '../types';
+} from '../../types';
 
 import {AbstractFileHandle} from './abstract';
 
@@ -27,13 +27,13 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 	if (errors.length === 1) {
 		const [error] = errors as [YAML.YAMLError];
 		throw new InvalidConfigurationError(
-			`Error while parsing JSON file: ${error.message} at ${error.pos.join(
+			`Error while parsing YAML file: ${error.message} at ${error.pos.join(
 				':',
 			)}`,
 		);
 	} else if (errors.length > 0) {
 		throw new InvalidConfigurationError(
-			`Errors while parsing JSON file:\n- ${errors
+			`Errors while parsing YAML file:\n- ${errors
 				.map(error => `${error.message} at ${error.pos.join(':')}`)
 				.join('\n- ')}`,
 		);

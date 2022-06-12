@@ -5,8 +5,8 @@ import expect from 'expect';
 import {suite} from 'uvu';
 import * as YAML from 'yaml';
 
+import type {JsonObject} from '../../../types';
 import {createFileHandle} from '../../file';
-import type {JsonObject} from '../../types';
 
 import {TestSingleFileWorkspaceHost} from './utils';
 

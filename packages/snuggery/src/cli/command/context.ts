@@ -1,5 +1,5 @@
 import type {Target} from '@angular-devkit/architect';
-import type {workspaces} from '@angular-devkit/core';
+import type {schema, workspaces} from '@angular-devkit/core';
 import {
 	type JsonObject,
 	type ProjectDefinition,
@@ -9,10 +9,11 @@ import {
 	workspaceFilenames,
 } from '@snuggery/core';
 import {type BaseContext, UsageError} from 'clipanion';
-import {dirname, normalize, relative, resolve, sep} from 'path';
+import {dirname, extname, normalize, relative, resolve, sep} from 'path';
 
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
+import {applyAliases, autoArray, autoObject} from '../utils/schema';
 
 export interface Context extends BaseContext {
 	/**
@@ -39,12 +40,14 @@ export interface Context extends BaseContext {
 export class CliWorkspace implements WorkspaceDefinition {
 	#syntheticProject?: ProjectDefinition;
 	readonly #workspace: WorkspaceDefinition;
+	readonly #workspacePath: string;
+	public readonly basePath: string;
 
-	constructor(
-		workspace: WorkspaceDefinition,
-		public readonly basePath: string,
-	) {
+	constructor(workspace: WorkspaceDefinition, workspacePath: string) {
 		this.#workspace = workspace;
+
+		this.#workspacePath = workspacePath;
+		this.basePath = dirname(workspacePath);
 	}
 
 	get extensions(): JsonObject {
@@ -160,6 +163,21 @@ export class CliWorkspace implements WorkspaceDefinition {
 			target: targetName,
 		};
 	}
+
+	// TODO this should move to core
+	applyWorkspaceTransforms(registry: schema.CoreSchemaRegistry) {
+		if (extname(this.#workspacePath) !== '.kdl') {
+			return;
+		}
+
+		registry.addPreTransform((value, pointer, schema) =>
+			applyAliases(
+				autoArray(autoObject(value, pointer, schema), pointer, schema),
+				pointer,
+				schema,
+			),
+		);
+	}
 }
 
 export async function findWorkspace(
@@ -171,8 +189,5 @@ export async function findWorkspace(
 		return null;
 	}
 
-	return new CliWorkspace(
-		await readWorkspace(workspacePath),
-		dirname(workspacePath),
-	);
+	return new CliWorkspace(await readWorkspace(workspacePath), workspacePath);
 }

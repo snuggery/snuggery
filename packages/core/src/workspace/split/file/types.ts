@@ -1,16 +1,5 @@
-import type {JsonObject} from '../types';
-
-export interface WorkspaceHost {
-	isFile(path: string): Promise<boolean>;
-
-	isDirectory(path: string): Promise<boolean>;
-
-	readdir(path: string): Promise<string[]>;
-
-	read(path: string): Promise<string>;
-
-	write(path: string, value: string): Promise<void>;
-}
+import type {TextFileHandle} from '../../file';
+import type {JsonObject} from '../../types';
 
 export interface FileHandle {
 	readonly filename: string;
@@ -28,7 +17,7 @@ export interface FileHandle {
 }
 
 export interface FileHandleContext {
-	readonly source: WorkspaceHost;
+	readonly source: TextFileHandle;
 
 	updateReady?: Promise<unknown>;
 
@@ -39,5 +28,5 @@ export interface FileHandleContext {
 }
 
 export interface FileHandleFactory {
-	new (context: FileHandleContext, path: string): FileHandle;
+	new (context: FileHandleContext): FileHandle;
 }

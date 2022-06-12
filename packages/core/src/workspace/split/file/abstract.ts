@@ -1,21 +1,17 @@
-import {basename, dirname, join} from 'path';
-
-import {Change, makeCombinedTracker} from '../proxy';
-import type {JsonObject} from '../types';
+import {Change, makeCombinedTracker} from '../../proxy';
+import type {JsonObject} from '../../types';
 
 import type {FileHandle, FileHandleContext} from './types';
 
 export abstract class AbstractFileHandle<Document> implements FileHandle {
 	#context: FileHandleContext;
-	#path: string;
 
 	readonly filename: string;
 
-	constructor(context: FileHandleContext, path: string) {
+	constructor(context: FileHandleContext) {
 		this.#context = context;
-		this.#path = path;
 
-		this.filename = basename(path);
+		this.filename = context.source.basename;
 	}
 
 	abstract parse(content: string): Document | Promise<Document>;
@@ -35,7 +31,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		if (updateReady != null) {
 			/* eslint-disable-next-line no-async-promise-executor */
 			return new Promise(async resolve => {
-				const source = await this.#context.source.read(this.#path);
+				const source = await this.#context.source.read();
 				const document = await this.parse(source);
 
 				const changes = await makeCombinedTracker(
@@ -46,19 +42,16 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 				});
 
 				await this.#context.source.write(
-					this.#path,
 					await this.applyChanges(source, document, changes),
 				);
 			});
 		}
 
-		return this.getValue(
-			await this.parse(await this.#context.source.read(this.#path)),
-		);
+		return this.getValue(await this.parse(await this.#context.source.read()));
 	}
 
 	async write(value: JsonObject): Promise<void> {
-		await this.#context.source.write(this.#path, await this.stringify(value));
+		await this.#context.source.write(await this.stringify(value));
 	}
 
 	async update(
@@ -69,7 +62,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		}
 
 		const updatePromise = (async () => {
-			const source = await this.#context.source.read(this.#path);
+			const source = await this.#context.source.read();
 			const document = await this.parse(source);
 
 			const changes = await makeCombinedTracker(
@@ -77,7 +70,6 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 			).open(updater);
 
 			await this.#context.source.write(
-				this.#path,
 				await this.applyChanges(source, document, changes),
 			);
 		})();
@@ -93,9 +85,6 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle> {
-		return this.#context.createFileHandle(
-			join(dirname(this.#path), path),
-			supportedFilenames,
-		);
+		return this.#context.createFileHandle(path, supportedFilenames);
 	}
 }
