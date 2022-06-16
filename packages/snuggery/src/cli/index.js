@@ -8,22 +8,27 @@ if (!traceCli) {
 	module.exports = require('./index.ts');
 } else {
 	const start = Date.now();
-	const loadedFiles = new Set(Object.keys(require.cache));
+	const alreadyLoadedFiles = new Set(Object.keys(require.cache));
 
 	module.exports = require('./index.ts');
 
 	console.log('time:', Date.now() - start);
 
-	const dependencies = new Set();
+	const allDependencies = new Set();
+	const newDependencies = new Set();
 	for (const file of Object.keys(require.cache)) {
-		if (!loadedFiles.has(file)) {
-			dependencies.add(
-				/(?<=node_modules[/\\])(?:@[^/\\]+[/\\])?[^/\\]+/.exec(file)?.[0],
-			);
+		const dependency = /(?<=node_modules[/\\])(?:@[^/\\]+[/\\])?[^/\\]+/.exec(
+			file,
+		)?.[0];
+		allDependencies.add(dependency);
+		if (!alreadyLoadedFiles.has(file)) {
+			newDependencies.add(dependency);
 		}
 	}
 
-	dependencies.delete(undefined);
+	allDependencies.delete(undefined);
+	newDependencies.delete(undefined);
+
 	const disallowedDependencies = new Set([
 		'@angular-devkit/architect',
 		'@angular-devkit/core',
@@ -32,13 +37,43 @@ if (!traceCli) {
 		'rxjs',
 	]);
 
-	console.log('Loaded dependencies:');
-	for (const dependency of dependencies) {
-		if (disallowedDependencies.has(dependency)) {
+	for (const dependency of disallowedDependencies) {
+		if (allDependencies.has(dependency)) {
+			if (!process.exitCode) {
+				console.log('Dependencies loaded program:');
+			}
 			console.log(`❌ ${dependency}`);
 			process.exitCode = 1;
-		} else {
+		}
+	}
+
+	const allowedNewDependencies = new Set([
+		// Clipanion, otherwise there is no CLI
+		'clipanion',
+
+		// Typanion is needed to validate options, we add semver support to it
+		'typanion',
+		'semver',
+
+		// Utilities used in the Report
+		'@arcanis/slice-ansi',
+		'kleur',
+		'strip-ansi',
+		// transitive dependencies
+		'ansi-regex',
+		'grapheme-splitter',
+
+		// TODO lazy load this (small) dependency
+		'which-pm-runs',
+	]);
+
+	console.log('Dependencies loaded in CLI:');
+	for (const dependency of newDependencies) {
+		if (allowedNewDependencies.has(dependency)) {
 			console.log(`✅ ${dependency}`);
+		} else {
+			console.log(`❌ ${dependency}`);
+			process.exitCode = 1;
 		}
 	}
 
