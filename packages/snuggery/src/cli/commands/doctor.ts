@@ -63,12 +63,12 @@ export class DoctorCommand extends AbstractCommand {
 		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
 
 		const engineHost = await this.createEngineHost(
-			this.workspace.workspaceDir,
+			this.workspace.workspaceFolder,
 			false,
 		);
 		const workflow = await this.createWorkflow(
 			engineHost,
-			this.workspace.workspaceDir,
+			this.workspace.workspaceFolder,
 			false,
 			false,
 		);

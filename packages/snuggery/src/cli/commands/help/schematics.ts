@@ -29,7 +29,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 	protected readonly showFileChanges = false; // abstract in SchematicCommand, of no use here
 
 	protected get root(): string {
-		return this.workspace.workspaceDir;
+		return this.workspace.workspaceFolder;
 	}
 
 	async execute(): Promise<void> {

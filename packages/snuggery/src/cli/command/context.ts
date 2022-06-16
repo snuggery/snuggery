@@ -50,13 +50,18 @@ export class CliWorkspace implements WorkspaceDefinition {
 	#syntheticProject?: ProjectDefinition;
 	readonly #workspace: WorkspaceDefinition;
 	readonly workspaceFilename: string;
-	readonly workspaceDir: string;
+	readonly workspaceFolder: string;
 
 	constructor(workspace: WorkspaceDefinition, workspacePath: string) {
 		this.#workspace = workspace;
 
 		this.workspaceFilename = basename(workspacePath);
-		this.workspaceDir = dirname(workspacePath);
+		this.workspaceFolder = dirname(workspacePath);
+	}
+
+	/** @deprecated Remove before 1.0.0, kept temporarily to not break @snuggery/global */
+	get basePath() {
+		return this.workspaceFolder;
 	}
 
 	get extensions(): JsonObject {
@@ -78,7 +83,7 @@ export class CliWorkspace implements WorkspaceDefinition {
 		warn: (message: string) => void,
 	): string | null {
 		const relativeCwd = normalize(
-			relative(this.workspaceDir, resolve(this.workspaceDir, cwd)),
+			relative(this.workspaceFolder, resolve(this.workspaceFolder, cwd)),
 		);
 
 		if (relativeCwd.startsWith(`..${sep}`)) {

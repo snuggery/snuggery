@@ -18,8 +18,8 @@ export class CliWorkspaceFacade implements WorkspaceFacade {
 		this.#workspace = workspace;
 	}
 
-	public get basePath(): string | undefined {
-		return this.#workspace?.workspaceDir;
+	public get workspaceFolder(): string | undefined {
+		return this.#workspace?.workspaceFolder;
 	}
 
 	getProject(projectName: string): ProjectDefinition {

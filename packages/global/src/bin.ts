@@ -32,7 +32,9 @@ import('@snuggery/snuggery/cli')
 		if (process.versions.pnp == null) {
 			const pnpFile = await findUp(
 				['.pnp.js', '.pnp.cjs'],
-				workspace.workspaceDir,
+				// Fallback to old property name to prevent breaking
+				// combination of old global + new local or vice versa
+				workspace.workspaceFolder ?? workspace.basePath,
 			);
 
 			if (pnpFile != null) {
@@ -53,7 +55,9 @@ import('@snuggery/snuggery/cli')
 
 		try {
 			const require = createRequire(
-				join(workspace.workspaceDir, '<workspace>'),
+				// Fallback to old property name to prevent breaking
+				// combination of old global + new local or vice versa
+				join(workspace.workspaceFolder ?? workspace.basePath, '<workspace>'),
 			);
 			const localCli =
 				require('@snuggery/snuggery/cli') as typeof import('@snuggery/snuggery/cli');

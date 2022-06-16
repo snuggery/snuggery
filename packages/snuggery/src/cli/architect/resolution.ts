@@ -30,7 +30,7 @@ export class Resolver implements ResolverFacade {
 		]
 	> {
 		const [json, path] = loadJson(
-			this.#workspace.basePath ?? this.#context.startCwd,
+			this.#workspace.workspaceFolder ?? this.#context.startCwd,
 			packageName,
 			'builders',
 			'executors',
@@ -82,12 +82,12 @@ export class Resolver implements ResolverFacade {
 	async resolveDirectBuilder(
 		path: string,
 	): Promise<[path: string, info: JsonObject]> {
-		for (const basePath of new Set(
-			this.#workspace.basePath != null
-				? [this.#context.startCwd, this.#workspace.basePath]
+		for (const folder of new Set(
+			this.#workspace.workspaceFolder != null
+				? [this.#context.startCwd, this.#workspace.workspaceFolder]
 				: [this.#context.startCwd],
 		)) {
-			const require = createRequire(join(basePath, '<synthetic>'));
+			const require = createRequire(join(folder, '<synthetic>'));
 
 			let resolvedPath;
 			try {

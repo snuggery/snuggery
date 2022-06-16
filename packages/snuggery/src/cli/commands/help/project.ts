@@ -90,8 +90,8 @@ export class HelpProjectCommand extends AbstractCommand {
 
 	#isInstalled(packageName: string, root: string) {
 		for (const path of [
-			join(this.workspace.workspaceDir, root),
-			this.workspace.workspaceDir,
+			join(this.workspace.workspaceFolder, root),
+			this.workspace.workspaceFolder,
 		]) {
 			const require = createRequire(join(path, '<synthetic>'));
 

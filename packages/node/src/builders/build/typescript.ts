@@ -188,9 +188,9 @@ function processResult(
 function getFormatDiagnosticsHost(
 	options?: CompilerOptions,
 ): FormatDiagnosticsHost {
-	const basePath = options ? options.baseUrl : undefined;
+	const baseUrl = options ? options.baseUrl : undefined;
 	return {
-		getCurrentDirectory: () => basePath || sys.getCurrentDirectory(),
+		getCurrentDirectory: () => baseUrl || sys.getCurrentDirectory(),
 		// We need to normalize the path separators here because by default, TypeScript
 		// compiler hosts use posix canonical paths. In order to print consistent diagnostics,
 		// we also normalize the paths.

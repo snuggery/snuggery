@@ -155,7 +155,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 			}
 		}
 
-		await writeWorkspace(join(workspace.workspaceDir, this.output), clone);
+		await writeWorkspace(join(workspace.workspaceFolder, this.output), clone);
 
 		if (report.numberOfErrors > 0) {
 			report.reportWarning(
@@ -244,12 +244,12 @@ export class SyncConfigToCommand extends AbstractCommand {
 	async #updateSchematics(clone: WorkspaceDefinition) {
 		const registry = await this.schematicsSchemaRegistry;
 		const engineHost = await this.createEngineHost(
-			this.workspace.workspaceDir,
+			this.workspace.workspaceFolder,
 			false,
 		);
 		const workflow = await this.createWorkflow(
 			engineHost,
-			this.workspace.workspaceDir,
+			this.workspace.workspaceFolder,
 			false,
 			false,
 		);
@@ -340,7 +340,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 	async #isValid(clone: WorkspaceDefinition): Promise<boolean> {
 		const workspace = await readWorkspace(
-			join(this.workspace.workspaceDir, this.output),
+			join(this.workspace.workspaceFolder, this.output),
 		);
 
 		if (

@@ -110,7 +110,7 @@ export interface WorkspaceFacade {
 	/**
 	 * Directory the workspace is in
 	 */
-	readonly basePath?: string;
+	readonly workspaceFolder?: string;
 
 	/**
 	 * Returns the project for the given name
@@ -339,7 +339,7 @@ export class SnuggeryArchitectHost
 
 	/** @override */
 	async getWorkspaceRoot(): Promise<string> {
-		return this.#workspace.basePath ?? this.#context.startCwd;
+		return this.#workspace.workspaceFolder ?? this.#context.startCwd;
 	}
 
 	/** @override */

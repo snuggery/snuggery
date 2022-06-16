@@ -50,7 +50,7 @@ export class RunSchematicCommand extends SchematicCommand {
 	args = Option.Proxy();
 
 	protected get root(): string {
-		return this.workspace.workspaceDir;
+		return this.workspace.workspaceFolder;
 	}
 
 	async execute(): Promise<number | void> {

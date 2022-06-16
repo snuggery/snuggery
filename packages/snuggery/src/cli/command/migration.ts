@@ -22,7 +22,7 @@ export type MigrationCollection = Collection<
 
 export abstract class MigrationCommand extends SchematicCommand {
 	protected get root(): string {
-		return this.workspace.workspaceDir;
+		return this.workspace.workspaceFolder;
 	}
 
 	protected async getMigrationCollection(

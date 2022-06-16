@@ -119,7 +119,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		}
 
 		let relativeCwd = normalize(
-			relative(this.context.workspace.workspaceDir, this.context.startCwd),
+			relative(this.context.workspace.workspaceFolder, this.context.startCwd),
 		);
 
 		if (path !== posix) {
