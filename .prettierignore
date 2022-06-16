@@ -3,6 +3,8 @@
 
 /dist
 /packages/*/dist
+/integration/__fixtures__/angular/packages/*/dist
 
 /packages/yarn-plugin-*/bin
 /packages/yarn-plugin-*/bundles
+/packages/yarn-plugin-*/out-tsc
