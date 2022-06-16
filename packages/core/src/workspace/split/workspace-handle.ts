@@ -2,22 +2,32 @@ import type {WorkspaceHost} from '../file';
 import type {WorkspaceHandle} from '../types';
 
 import {createFileHandle} from './file';
-import {AngularWorkspaceHandle} from './workspace-handle/angular';
-import {NxWorkspaceHandle} from './workspace-handle/nx';
 import type {WorkspaceHandleFactory} from './workspace-handle/types';
 
-const knownTypes = new Map<string, WorkspaceHandleFactory>([
+function loadAngularFactory() {
+	return (
+		require('./workspace-handle/angular') as typeof import('./workspace-handle/angular')
+	).AngularWorkspaceHandle;
+}
+
+function loadNxFactory() {
+	return (
+		require('./workspace-handle/nx') as typeof import('./workspace-handle/nx')
+	).NxWorkspaceHandle;
+}
+
+const knownTypes = new Map<string, () => WorkspaceHandleFactory>([
 	// Extend with own configuration when useful
-	['snuggery.json', AngularWorkspaceHandle],
-	['.snuggery.json', AngularWorkspaceHandle],
-	['snuggery.yaml', AngularWorkspaceHandle],
-	['.snuggery.yaml', AngularWorkspaceHandle],
+	['snuggery.json', loadAngularFactory],
+	['.snuggery.json', loadAngularFactory],
+	['snuggery.yaml', loadAngularFactory],
+	['.snuggery.yaml', loadAngularFactory],
 
-	['angular.json', AngularWorkspaceHandle],
-	['.angular.json', AngularWorkspaceHandle],
+	['angular.json', loadAngularFactory],
+	['.angular.json', loadAngularFactory],
 
-	['workspace.json', NxWorkspaceHandle],
-	['.workspace.json', NxWorkspaceHandle],
+	['workspace.json', loadNxFactory],
+	['.workspace.json', loadNxFactory],
 ]);
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
@@ -27,13 +37,14 @@ export async function createSplitWorkspaceHandle(
 	path: string,
 ): Promise<WorkspaceHandle> {
 	const fileType = await createFileHandle(source, path, workspaceFilenames);
-	const Factory = knownTypes.get(fileType.filename);
 
-	if (Factory == null) {
+	const loadFactory = knownTypes.get(fileType.filename);
+	if (loadFactory == null) {
 		throw new Error(
 			`Unexpected filename for configuration: ${fileType.filename}`,
 		);
 	}
 
+	const Factory = loadFactory();
 	return new Factory(fileType);
 }

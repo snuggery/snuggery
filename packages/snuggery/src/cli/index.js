@@ -62,9 +62,6 @@ if (!traceCli) {
 		// transitive dependencies
 		'ansi-regex',
 		'grapheme-splitter',
-
-		// TODO lazy load this (small) dependency
-		'which-pm-runs',
 	]);
 
 	console.log('Dependencies loaded in CLI:');

@@ -9,7 +9,6 @@ import {
 	UsageError,
 } from 'clipanion';
 import {dirname} from 'path';
-import getPackageManager from 'which-pm-runs';
 
 import type {SnuggeryArchitectHost} from '../architect/index';
 import {Cached} from '../utils/decorator';
@@ -170,7 +169,7 @@ export abstract class AbstractCommand extends Command<Context> {
 			return cliExtension.packageManager;
 		}
 
-		return getPackageManager()?.name;
+		return (require('which-pm-runs') as typeof import('which-pm-runs'))()?.name;
 	}
 
 	// Basic setup for Architects, can be used in non-architect commands like --doctor or --sync-config-to
