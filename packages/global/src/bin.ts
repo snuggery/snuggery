@@ -30,7 +30,10 @@ import('@snuggery/snuggery/cli')
 		}
 
 		if (process.versions.pnp == null) {
-			const pnpFile = await findUp(['.pnp.js', '.pnp.cjs'], workspace.basePath);
+			const pnpFile = await findUp(
+				['.pnp.js', '.pnp.cjs'],
+				workspace.workspaceDir,
+			);
 
 			if (pnpFile != null) {
 				const pnpapi = require(pnpFile) as PnpApi & {setup?: () => void};
@@ -49,7 +52,9 @@ import('@snuggery/snuggery/cli')
 		}
 
 		try {
-			const require = createRequire(join(workspace.basePath, '<workspace>'));
+			const require = createRequire(
+				join(workspace.workspaceDir, '<workspace>'),
+			);
 			const localCli =
 				require('@snuggery/snuggery/cli') as typeof import('@snuggery/snuggery/cli');
 

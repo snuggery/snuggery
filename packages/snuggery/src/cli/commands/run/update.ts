@@ -43,7 +43,7 @@ export class RunUpdateCommand extends ArchitectCommand {
 
 	async execute(): Promise<number> {
 		// Always make this command run as if it was executed in the workspace root
-		this.context.startCwd = this.workspace.basePath;
+		this.context.startCwd = this.workspace.workspaceDir;
 
 		const pmPackage = `@snuggery/${this.packageManager}`;
 		const builderSpec = `${pmPackage}:update`;

@@ -36,7 +36,7 @@ project "all" root="" {
 		}
 	}
 
-	targ "deploy" builder="@snuggery/yarn:deploy" {
+	target "deploy" builder="@snuggery/yarn:deploy" {
 		options {
 			useWorkspacePlugin true
 			buildTarget ":build:without-yarn-plugins"

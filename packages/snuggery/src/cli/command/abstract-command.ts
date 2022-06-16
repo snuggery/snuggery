@@ -1,3 +1,4 @@
+import type {Architect} from '@angular-devkit/architect';
 import type {schema} from '@angular-devkit/core';
 import {isJsonObject, JsonObject} from '@snuggery/core';
 import {
@@ -7,8 +8,10 @@ import {
 	Option as CommandOption,
 	UsageError,
 } from 'clipanion';
+import {dirname} from 'path';
 import getPackageManager from 'which-pm-runs';
 
+import type {SnuggeryArchitectHost} from '../architect/index';
 import {Cached} from '../utils/decorator';
 import {
 	ParsedArguments,
@@ -121,12 +124,15 @@ export abstract class AbstractCommand extends Command<Context> {
 		});
 	}
 
-	protected async createSchemaRegistry(
+	async #createSchemaRegistry(
 		formats?: import('@angular-devkit/core').schema.SchemaFormat[],
-	): Promise<import('@angular-devkit/core').schema.CoreSchemaRegistry> {
-		const {schema} = await import('@angular-devkit/core');
+	): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
+		const [{SchemaRegistry}, {schema}] = await Promise.all([
+			import('../utils/schema-registry.js'),
+			import('@angular-devkit/core'),
+		]);
 
-		const registry = new schema.CoreSchemaRegistry(formats);
+		const registry = new SchemaRegistry(formats);
 		this.context.workspace?.applyWorkspaceTransforms(registry);
 
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
@@ -166,6 +172,94 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		return getPackageManager()?.name;
 	}
+
+	// Basic setup for Architects, can be used in non-architect commands like --doctor or --sync-config-to
+
+	@Cached()
+	protected get architectSchemaRegistry() {
+		return this.#createSchemaRegistry();
+	}
+
+	@Cached()
+	protected get architectHost(): Promise<SnuggeryArchitectHost> {
+		return import('../architect/index.js').then(({createArchitectHost}) =>
+			createArchitectHost(this.context, this.context.workspace),
+		);
+	}
+
+	@Cached()
+	get architect(): Promise<Architect> {
+		return Promise.all([
+			this.architectHost,
+			this.architectSchemaRegistry,
+			import('@angular-devkit/architect'),
+		]).then(([host, registry, {Architect}]) => new Architect(host, registry));
+	}
+
+	// Basic setup for Schematics, can be used in non-architect commands like --doctor or --sync-config-to
+
+	/**
+	 * JSONSchema registry
+	 *
+	 * Unlike the registry in the architect family of commands, this registry supports prompting the
+	 * user for missing options.
+	 */
+	@Cached()
+	protected get schematicsSchemaRegistry() {
+		return import('@angular-devkit/schematics').then(async ({formats}) => {
+			const registry = await this.#createSchemaRegistry(
+				formats.standardFormats,
+			);
+
+			registry.addSmartDefaultProvider(
+				'projectName',
+				() => this.currentProject,
+			);
+			registry.usePromptProvider(
+				await (await import('../utils/prompt.js')).createPromptProvider(),
+			);
+
+			return registry;
+		});
+	}
+
+	protected async createEngineHost(
+		root: string,
+		resolveSelf: boolean,
+		optionTransforms?: import('../schematic/engine-host.js').OptionTransform[],
+	): Promise<import('../schematic/engine-host.js').SnuggeryEngineHost> {
+		const {SnuggeryEngineHost} = await import('../schematic/engine-host.js');
+		return new SnuggeryEngineHost(root, {
+			context: this.context,
+			optionTransforms,
+			packageManager: this.packageManager,
+			registry: await this.schematicsSchemaRegistry,
+			resolvePaths: [
+				root,
+				...(resolveSelf
+					? [dirname(require.resolve('@snuggery/snuggery/package.json'))]
+					: []),
+			],
+			schemaValidation: true,
+		});
+	}
+
+	protected async createWorkflow(
+		engineHost: import('../schematic/engine-host.js').SnuggeryEngineHost,
+		root: string,
+		force: boolean,
+		dryRun: boolean,
+	): Promise<import('../schematic/workflow.js').SnuggeryWorkflow> {
+		const {SnuggeryWorkflow} = await import('../schematic/workflow.js');
+		return new SnuggeryWorkflow(root, {
+			engineHost,
+			force,
+			dryRun,
+			registry: await this.schematicsSchemaRegistry,
+		});
+	}
+
+	// Generic helper functions
 
 	/**
 	 * Execute the given function `fn` with the parsed options
@@ -240,6 +334,8 @@ export abstract class AbstractCommand extends Command<Context> {
 		});
 	}
 
+	// Beautify errors
+
 	/**
 	 * Override of the `catch` hook to prettify errors before they're printed by clipanion
 	 *
@@ -247,7 +343,7 @@ export abstract class AbstractCommand extends Command<Context> {
 	 * @override
 	 */
 	override async catch(e: unknown): Promise<void> {
-		return super.catch(e instanceof Error ? await this.prettifyError(e) : e);
+		return await super.catch(e instanceof Error ? this.prettifyError(e) : e);
 	}
 
 	protected prettifyError(error: Error): Error {

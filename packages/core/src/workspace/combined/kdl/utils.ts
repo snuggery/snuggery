@@ -496,7 +496,7 @@ function proxyJsonArray(node: Node, name: string): JsonValue[] {
 					if (typeof value === 'object' && !Array.isArray(value)) {
 						Object.assign(proxyJsonObject(newNode), value);
 					} else {
-						newNode.values = value;
+						newNode.values = Array.isArray(value) ? value : [value];
 					}
 
 					value = newNode;
@@ -522,7 +522,7 @@ function emptyNode(name: string): Node {
 		name,
 		properties: {},
 		tags: {
-			name: '',
+			name: undefined,
 			properties: {},
 			values: [],
 		},

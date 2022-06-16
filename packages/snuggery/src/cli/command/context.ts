@@ -1,5 +1,5 @@
 import type {Target} from '@angular-devkit/architect';
-import type {schema, workspaces} from '@angular-devkit/core';
+import type {workspaces} from '@angular-devkit/core';
 import {
 	type JsonObject,
 	type ProjectDefinition,
@@ -9,11 +9,20 @@ import {
 	workspaceFilenames,
 } from '@snuggery/core';
 import {type BaseContext, UsageError} from 'clipanion';
-import {dirname, extname, normalize, relative, resolve, sep} from 'path';
+import {
+	basename,
+	dirname,
+	extname,
+	normalize,
+	relative,
+	resolve,
+	sep,
+} from 'path';
 
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
 import {applyAliases, autoArray, autoObject} from '../utils/schema';
+import type {SchemaRegistry} from '../utils/schema-registry';
 
 export interface Context extends BaseContext {
 	/**
@@ -40,14 +49,14 @@ export interface Context extends BaseContext {
 export class CliWorkspace implements WorkspaceDefinition {
 	#syntheticProject?: ProjectDefinition;
 	readonly #workspace: WorkspaceDefinition;
-	readonly #workspacePath: string;
-	public readonly basePath: string;
+	readonly workspaceFilename: string;
+	readonly workspaceDir: string;
 
 	constructor(workspace: WorkspaceDefinition, workspacePath: string) {
 		this.#workspace = workspace;
 
-		this.#workspacePath = workspacePath;
-		this.basePath = dirname(workspacePath);
+		this.workspaceFilename = basename(workspacePath);
+		this.workspaceDir = dirname(workspacePath);
 	}
 
 	get extensions(): JsonObject {
@@ -69,7 +78,7 @@ export class CliWorkspace implements WorkspaceDefinition {
 		warn: (message: string) => void,
 	): string | null {
 		const relativeCwd = normalize(
-			relative(this.basePath, resolve(this.basePath, cwd)),
+			relative(this.workspaceDir, resolve(this.workspaceDir, cwd)),
 		);
 
 		if (relativeCwd.startsWith(`..${sep}`)) {
@@ -165,8 +174,8 @@ export class CliWorkspace implements WorkspaceDefinition {
 	}
 
 	// TODO this should move to core
-	applyWorkspaceTransforms(registry: schema.CoreSchemaRegistry) {
-		if (extname(this.#workspacePath) !== '.kdl') {
+	applyWorkspaceTransforms(registry: SchemaRegistry) {
+		if (extname(this.workspaceFilename) !== '.kdl') {
 			return;
 		}
 

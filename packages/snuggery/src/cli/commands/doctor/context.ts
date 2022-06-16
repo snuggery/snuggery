@@ -1,9 +1,10 @@
-import type {schema} from '@angular-devkit/core';
 import type {WorkspaceDefinition} from '@snuggery/core';
 
 import type {SnuggeryArchitectHost} from '../../architect/index';
+import type {SnuggeryEngineHost} from '../../schematic/engine-host';
 import type {SnuggeryWorkflow} from '../../schematic/workflow';
 import type {Report} from '../../utils/report';
+import type {SchemaRegistry} from '../../utils/schema-registry';
 
 export interface DoctorContext {
 	readonly workspace: WorkspaceDefinition;
@@ -12,8 +13,12 @@ export interface DoctorContext {
 
 	readonly architect: {
 		readonly host: SnuggeryArchitectHost;
-		readonly registry: schema.CoreSchemaRegistry;
+		readonly registry: SchemaRegistry;
 	};
 
-	readonly schematics: SnuggeryWorkflow;
+	readonly schematics: {
+		readonly workflow: SnuggeryWorkflow;
+		readonly engineHost: SnuggeryEngineHost;
+		readonly registry: SchemaRegistry;
+	};
 }

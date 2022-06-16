@@ -1,9 +1,8 @@
-import type {schema} from '@angular-devkit/core';
 import type {DryRunEvent} from '@angular-devkit/schematics';
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
-import path, {posix, dirname, join, normalize, relative} from 'path';
+import path, {posix, join, normalize, relative} from 'path';
 
 import {AbstractError} from '../../utils/error';
 import {UnableToResolveError} from '../../utils/json-resolver';
@@ -16,7 +15,6 @@ import type {
 import type {SnuggeryWorkflow} from '../schematic/workflow';
 import {Cached} from '../utils/decorator';
 import {parseSchema, Option, Type} from '../utils/parse-schema';
-import {createPromptProvider} from '../utils/prompt';
 
 import {AbstractCommand} from './abstract-command';
 
@@ -77,59 +75,25 @@ export abstract class SchematicCommand extends AbstractCommand {
 	 */
 	protected readonly resolveSelf: boolean = false;
 
-	/**
-	 * JSONSchema registry
-	 *
-	 * Unlike the registry in the architect family of commands, this registry supports prompting the
-	 * user for missing options.
-	 */
-	@Cached()
-	protected async getRegistry(): Promise<schema.CoreSchemaRegistry> {
-		const registry = await this.createSchemaRegistry(
-			(
-				await import('@angular-devkit/schematics')
-			).formats.standardFormats,
-		);
-
-		registry.addSmartDefaultProvider('projectName', () => this.currentProject);
-		registry.usePromptProvider(await createPromptProvider());
-
-		return registry;
-	}
-
 	@Cached()
 	protected async getEngineHost(): Promise<SnuggeryEngineHost> {
-		const {SnuggeryEngineHost} = await import('../schematic/engine-host.js');
-		return new SnuggeryEngineHost(this.root, {
-			context: this.context,
-			optionTransforms: [
-				// Add any option values from the configuration file
-				(schematic, current) => ({
-					...this.getConfiguredOptions(schematic),
-					...current,
-				}),
-			],
-			packageManager: this.packageManager,
-			registry: await this.getRegistry(),
-			resolvePaths: [
-				this.root,
-				...(this.resolveSelf
-					? [dirname(require.resolve('@snuggery/snuggery/package.json'))]
-					: []),
-			],
-			schemaValidation: true,
-		});
+		return this.createEngineHost(this.root, this.resolveSelf, [
+			// Add any option values from the configuration file
+			(schematic, current) => ({
+				...this.getConfiguredOptions(schematic),
+				...current,
+			}),
+		]);
 	}
 
 	@Cached()
 	protected async getWorkflow(): Promise<SnuggeryWorkflow> {
-		const {SnuggeryWorkflow} = await import('../schematic/workflow.js');
-		return new SnuggeryWorkflow(this.root, {
-			engineHost: await this.getEngineHost(),
-			force: this.force,
-			dryRun: this.dryRun,
-			registry: await this.getRegistry(),
-		});
+		return this.createWorkflow(
+			await this.getEngineHost(),
+			this.root,
+			this.force,
+			this.dryRun,
+		);
 	}
 
 	protected async getCollection(
@@ -155,7 +119,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		}
 
 		let relativeCwd = normalize(
-			relative(this.context.workspace.basePath, this.context.startCwd),
+			relative(this.context.workspace.workspaceDir, this.context.startCwd),
 		);
 
 		if (path !== posix) {

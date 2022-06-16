@@ -143,7 +143,7 @@ export class SnuggeryEngineHost
 	) {
 		this.#context = context;
 		this.#resolvePaths = resolvePaths ?? [
-			context.workspace?.basePath ?? context.startCwd,
+			context.workspace?.workspaceDir ?? context.startCwd,
 		];
 
 		const rootDirectory = getSystemPath(normalize(_root));
@@ -344,7 +344,7 @@ export class SnuggeryEngineHost
 		) {
 			return makeGeneratorIntoSchematic(
 				schematic.factoryFn as unknown as Generator,
-				this.#context.workspace?.basePath ?? this.#context.startCwd,
+				this.#context.workspace?.workspaceDir ?? this.#context.startCwd,
 				this,
 			) as RuleFactory<OptionT>;
 		}

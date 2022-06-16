@@ -25,6 +25,7 @@ import {RunMigrationsCommand} from './commands/run/migrations';
 import {RunSchematicCommand} from './commands/run/schematic';
 import {RunTargetCommand} from './commands/run/target';
 import {RunUpdateCommand} from './commands/run/update';
+import {SyncConfigToCommand} from './commands/sync-config-to';
 import {VersionCommand} from './commands/version';
 import {Report} from './utils/report';
 
@@ -63,6 +64,7 @@ export function run(
 
 	cli.register(VersionCommand);
 	cli.register(DoctorCommand);
+	cli.register(SyncConfigToCommand);
 
 	cli.register(EntryCommand);
 	cli.register(EntryWithProjectCommand);

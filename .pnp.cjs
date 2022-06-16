@@ -208,10 +208,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular-devkit/schematics", [\
-        ["npm:14.0.0", {\
-          "packageLocation": "./.yarn/cache/@angular-devkit-schematics-npm-14.0.0-eaba80662a-1f1e0f7cce.zip/node_modules/@angular-devkit/schematics/",\
+        ["patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@angular-devkit-schematics-patch-4a31a8d3e2-fbe7d060c5.zip/node_modules/@angular-devkit/schematics/",\
           "packageDependencies": [\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
             ["jsonc-parser", "npm:3.0.0"],\
             ["magic-string", "npm:0.26.1"],\
@@ -1616,7 +1616,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/typanion", null],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A."],\
+            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
             ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
@@ -1638,7 +1638,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A."],\
+            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
             ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
@@ -1667,7 +1667,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
             ["@angular-devkit/architect", "npm:0.1400.0"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
             ["@types/node", "npm:16.11.35"],\
@@ -1687,7 +1687,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/node", "workspace:packages/node"],\
             ["@angular-devkit/architect", "npm:0.1400.0"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
             ["@types/node", "npm:16.11.35"],\
@@ -1703,7 +1703,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/schematics", "workspace:packages/schematics"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"]\
@@ -1718,7 +1718,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@angular-devkit/architect", "npm:0.1400.0"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@arcanis/slice-ansi", "npm:1.0.2"],\
             ["@nrwl/devkit", "npm:13.8.3"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
@@ -1729,6 +1729,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prompts", "npm:2.4.0"],\
             ["@types/semver", "npm:7.3.8"],\
             ["@types/which-pm-runs", "npm:1.0.0"],\
+            ["ajv", "npm:8.11.0"],\
+            ["ajv-formats", "virtual:a07f363173d397161d708fc9e1810672792e63cba85aaf95e6b864f1a53bd6c6711b5ee66614e70ca5a448fdb78c5bc77f806e077ff4794a8c8308df06116e21#npm:2.1.1"],\
             ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.2.0-rc.10"],\
             ["expect", "npm:27.3.1"],\
             ["json5", "npm:2.2.0"],\
@@ -1751,7 +1753,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/yarn", "workspace:packages/yarn"],\
             ["@angular-devkit/architect", "npm:0.1400.0"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "npm:14.0.0"],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/architect"],\
             ["@types/node", "npm:16.11.35"],\
@@ -6307,10 +6309,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["kdljs", [\
-        ["patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/kdljs-patch-65ccc8a177-25b6736bd1.zip/node_modules/kdljs/",\
+        ["patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/kdljs-patch-f8730cbbb6-2fe05568c7.zip/node_modules/kdljs/",\
           "packageDependencies": [\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A."],\
+            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
             ["chevrotain", "patch:chevrotain@npm%3A10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::version=10.1.2&hash=5d00c6&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "HARD"\
@@ -8269,7 +8271,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/test-other-schematics/",\
           "packageDependencies": [\
             ["test-other-schematics", "workspace:integration/test-other-schematics"],\
-            ["@angular-devkit/schematics", "npm:14.0.0"]\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8279,7 +8281,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/test-schematics/",\
           "packageDependencies": [\
             ["test-schematics", "workspace:integration/test-schematics"],\
-            ["@angular-devkit/schematics", "npm:14.0.0"]\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }]\

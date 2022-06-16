@@ -6,7 +6,7 @@ export class DoctorCommand extends AbstractCommand {
 
 	static override readonly usage = AbstractCommand.Usage({
 		category: 'Workspace information commands',
-		description: `Diagnose configuration mistakes`,
+		description: 'Diagnose configuration mistakes',
 	});
 
 	async execute(): Promise<number> {
@@ -45,48 +45,34 @@ export class DoctorCommand extends AbstractCommand {
 	}
 
 	async #setupArchitect(report: Report) {
-		const [{schema}, {createArchitectHost}] = await Promise.all([
-			import('@angular-devkit/core'),
-			import('../architect/index.js'),
+		const [registry, host] = await Promise.all([
+			this.architectSchemaRegistry,
+			this.architectHost,
 		]);
 
-		const registry = new schema.CoreSchemaRegistry();
-		this.workspace.applyWorkspaceTransforms(registry);
-		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
+		// Override X-Deprecated warning provide to end up in the doctor sub report so it counts as warning
 		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
-
-		const host = createArchitectHost(this.context, this.workspace);
 
 		return {host, registry};
 	}
 
 	async #setupSchematics(report: Report) {
-		const [{schema}, {formats}, {SnuggeryEngineHost}, {SnuggeryWorkflow}] =
-			await Promise.all([
-				import('@angular-devkit/core'),
-				import('@angular-devkit/schematics'),
-				import('../schematic/engine-host.js'),
-				import('../schematic/workflow.js'),
-			]);
+		const registry = await this.schematicsSchemaRegistry;
 
-		const registry = new schema.CoreSchemaRegistry(formats.standardFormats);
-		this.workspace.applyWorkspaceTransforms(registry);
-		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
+		// Override X-Deprecated warning provide to end up in the doctor sub report so it counts as warning
 		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
-		registry.addSmartDefaultProvider('projectName', () => 'doctor-project');
 
-		const engineHost = new SnuggeryEngineHost(this.workspace.basePath, {
-			context: this.context,
-			registry,
-			resolvePaths: [this.workspace.basePath],
-			schemaValidation: true,
-		});
-
-		return new SnuggeryWorkflow(this.workspace.basePath, {
+		const engineHost = await this.createEngineHost(
+			this.workspace.workspaceDir,
+			false,
+		);
+		const workflow = await this.createWorkflow(
 			engineHost,
-			force: false,
-			dryRun: true,
-			registry,
-		});
+			this.workspace.workspaceDir,
+			false,
+			false,
+		);
+
+		return {workflow, engineHost, registry};
 	}
 }

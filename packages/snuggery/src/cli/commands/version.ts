@@ -160,7 +160,7 @@ export class VersionCommand extends AbstractCommand {
 	}
 
 	#getVersion(packageName: string, projectRoot: string | null): string {
-		const {basePath} = this.workspace;
+		const {workspaceDir: basePath} = this.workspace;
 
 		for (const path of projectRoot
 			? [join(basePath, projectRoot), basePath]

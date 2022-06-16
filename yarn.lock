@@ -74,6 +74,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@angular-devkit/schematics@patch:@angular-devkit/schematics@npm:14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 14.0.0
+  resolution: "@angular-devkit/schematics@patch:@angular-devkit/schematics@npm%3A14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=14.0.0&hash=5b7703&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    "@angular-devkit/core": 14.0.0
+    jsonc-parser: 3.0.0
+    magic-string: 0.26.1
+    ora: 5.4.1
+    rxjs: 6.6.7
+  checksum: fbe7d060c574a3e207af5aa8bb32ff8c5ed8db553819fb81aa7e05b2afdce46c6c6ae50dade3ff19080c22bca38a3541e6aab1b50ae4bc5952c84881b117860c
+  languageName: node
+  linkType: hard
+
 "@angular-eslint/builder@npm:13.0.1":
   version: 13.0.1
   resolution: "@angular-eslint/builder@npm:13.0.1"
@@ -1304,6 +1317,8 @@ __metadata:
     "@types/prompts": ^2
     "@types/semver": ^7
     "@types/which-pm-runs": ^1.0.0
+    ajv: 8.11.0
+    ajv-formats: 2.1.1
     clipanion: 3.2.0-rc.10
     expect: ^27.3.1
     json5: 2.2.0
@@ -5044,10 +5059,10 @@ __metadata:
 
 "kdljs@patch:kdljs@npm:0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::locator=snuggery-workspace%40workspace%3A.":
   version: 0.1.4
-  resolution: "kdljs@patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=bbc2b2&locator=snuggery-workspace%40workspace%3A."
+  resolution: "kdljs@patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."
   dependencies:
     chevrotain: ^10.1.2
-  checksum: 25b6736bd13b0eed2c67e78b4f1864cbb5386ae2fec15e41df79854e38f8675282702f71b76bcf912877e9a45840461dea8c1339d158804a5dc0b070797a8612
+  checksum: 2fe05568c7054c1e91bf9a8427982a797ec4613eea1be11bfa6b231c447926c00bcf2ffe67fef993024be6dada7b4708813572ad4b7739f670a8464b7f01ced8
   languageName: node
   linkType: hard
 

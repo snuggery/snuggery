@@ -50,7 +50,8 @@
 		"resolve.exports@1.1.0": "patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch",
 		"uvu@^0.5.2": "patch:uvu@npm:0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch",
 		"kdljs@0.1.4": "patch:kdljs@npm:0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch",
-		"chevrotain@^10.1.2": "patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch"
+		"chevrotain@^10.1.2": "patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch",
+		"@angular-devkit/schematics@14.0.0": "patch:@angular-devkit/schematics@npm:14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch"
 	},
 	"packageManager": "yarn@3.2.1"
 }

@@ -50,6 +50,9 @@ Update commands
 
 Utility commands
 
+  sn --sync-config-to [--validate] <output>
+    Sync config from one format to another
+
   sn help
     List all available commands
 

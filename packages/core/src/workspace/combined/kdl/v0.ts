@@ -164,10 +164,17 @@ class SnuggeryTargetDefinition implements TargetDefinition {
 						`Object.defineProperty is not supported in KDL workspace configurations`,
 					);
 				},
-				getOwnPropertyDescriptor() {
-					throw new UnsupportedOperationError(
-						`Object.getOwnPropertyDescriptor is not supported in KDL workspace configurations`,
-					);
+				getOwnPropertyDescriptor(_, p) {
+					if (this.has!(_, p)) {
+						return {
+							configurable: true,
+							enumerable: true,
+							writable: true,
+							value: this.get!(_, p, undefined),
+						};
+					} else {
+						return undefined;
+					}
 				},
 				preventExtensions() {
 					throw new UnsupportedOperationError(
@@ -515,7 +522,7 @@ export class SnuggeryWorkspaceDefinition extends ConvertibleWorkspaceDefinition 
 
 		const document: Document = [];
 
-		document.push(addOrReplaceChild(document, 'version', 0));
+		addOrReplaceChild(document, 'version', 0);
 
 		const instance = new this(
 			SnuggeryProjectDefinitionCollection.fromValue(value.projects, document),
@@ -541,7 +548,7 @@ export class SnuggeryWorkspaceDefinition extends ConvertibleWorkspaceDefinition 
 		this.projects = projects;
 
 		this.extensions = proxyJsonObject(document, {
-			remove: new Set(['projects', 'version', '$schema']),
+			remove: new Set(['project', 'version', '$schema']),
 		});
 
 		this.document = document;

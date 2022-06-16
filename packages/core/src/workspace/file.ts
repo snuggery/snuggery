@@ -1,5 +1,7 @@
 import {basename, dirname, join} from 'path';
 
+import {InvalidConfigurationError} from './types';
+
 export interface WorkspaceHost {
 	isFile(path: string): Promise<boolean>;
 
@@ -31,16 +33,11 @@ export async function createTextFileHandle(
 	path: string,
 	supportedFilenames?: readonly string[],
 ): Promise<TextFileHandle | null> {
-	if (await source.isFile(path)) {
-		return {
-			basename: basename(path),
-			dirname: dirname(path),
-			read: () => source.read(path),
-			write: value => source.write(path, value),
-			readRelative: (p, sf) =>
-				createTextFileHandle(source, join(dirname(path), p), sf),
-		};
-	} else if (supportedFilenames != null && (await source.isDirectory(path))) {
+	if (await source.isDirectory(path)) {
+		if (supportedFilenames == null) {
+			return null;
+		}
+
 		const allFiles = new Set(await source.readdir(path));
 		const filename = supportedFilenames.find(name => allFiles.has(name));
 
@@ -53,5 +50,20 @@ export async function createTextFileHandle(
 		}
 	}
 
-	return null;
+	const read = (await source.isFile(path))
+		? () => source.read(path)
+		: async () => {
+				throw new InvalidConfigurationError(
+					`Cannot find configuration at ${path}`,
+				);
+		  };
+
+	return {
+		basename: basename(path),
+		dirname: dirname(path),
+		read,
+		write: value => source.write(path, value),
+		readRelative: (p, sf) =>
+			createTextFileHandle(source, join(dirname(path), p), sf),
+	};
 }

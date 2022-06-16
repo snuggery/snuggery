@@ -1,5 +1,4 @@
 import type {
-	Architect,
 	BuilderOutput,
 	BuilderRun,
 	Target,
@@ -10,7 +9,6 @@ import {tmpdir} from 'os';
 import {join} from 'path';
 
 import {AbstractError} from '../../utils/error';
-import type {SnuggeryArchitectHost} from '../architect';
 import {Cached} from '../utils/decorator';
 import {Option, parseSchema, Type} from '../utils/parse-schema';
 
@@ -109,22 +107,6 @@ export function addConfigurationsToTarget(
 }
 
 export abstract class ArchitectCommand extends AbstractCommand {
-	@Cached()
-	protected get architectHost(): Promise<SnuggeryArchitectHost> {
-		return import('../architect/index.js').then(({createArchitectHost}) =>
-			createArchitectHost(this.context, this.context.workspace),
-		);
-	}
-
-	@Cached()
-	get architect(): Promise<Architect> {
-		return Promise.all([
-			this.architectHost,
-			this.createSchemaRegistry(),
-			import('@angular-devkit/architect'),
-		]).then(([host, registry, {Architect}]) => new Architect(host, registry));
-	}
-
 	/**
 	 * The default project, if any
 	 */

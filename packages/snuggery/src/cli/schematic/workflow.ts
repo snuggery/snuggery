@@ -1,6 +1,8 @@
-import {normalize, schema, virtualFs} from '@angular-devkit/core';
+import {normalize, virtualFs} from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
 import {Engine, workflow} from '@angular-devkit/schematics';
+
+import type {SchemaRegistry} from '../utils/schema-registry';
 
 import type {
 	SnuggeryCollectionDescription,
@@ -22,7 +24,7 @@ export class SnuggeryWorkflow extends workflow.BaseWorkflow {
 		}: {
 			force: boolean;
 			dryRun: boolean;
-			registry: schema.CoreSchemaRegistry;
+			registry: SchemaRegistry;
 			engineHost: SnuggeryEngineHost;
 		},
 	) {

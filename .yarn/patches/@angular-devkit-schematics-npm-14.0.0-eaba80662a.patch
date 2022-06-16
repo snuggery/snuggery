@@ -1,0 +1,22 @@
+diff --git a/src/workflow/base.d.ts b/src/workflow/base.d.ts
+index 532f88e6076dd7d60dec4ddd72bb035997e75a93..87d35407e261db7d0145dafec3e0890d551898f7 100644
+--- a/src/workflow/base.d.ts
++++ b/src/workflow/base.d.ts
+@@ -14,7 +14,7 @@ import { LifeCycleEvent, RequiredWorkflowExecutionContext, Workflow, WorkflowExe
+ export interface BaseWorkflowOptions {
+     host: virtualFs.Host;
+     engineHost: EngineHost<{}, {}>;
+-    registry?: schema.CoreSchemaRegistry;
++    registry?: schema.SchemaRegistry;
+     force?: boolean;
+     dryRun?: boolean;
+ }
+@@ -32,7 +32,7 @@ export interface BaseWorkflowOptions {
+ export declare abstract class BaseWorkflow implements Workflow {
+     protected _engine: Engine<{}, {}>;
+     protected _engineHost: EngineHost<{}, {}>;
+-    protected _registry: schema.CoreSchemaRegistry;
++    protected _registry: schema.SchemaRegistry;
+     protected _host: virtualFs.Host;
+     protected _reporter: Subject<DryRunEvent>;
+     protected _lifeCycle: Subject<LifeCycleEvent>;

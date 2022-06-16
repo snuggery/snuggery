@@ -33,7 +33,7 @@ export class ProjectCommand extends AbstractCommand {
 
 	execute(): Promise<number> {
 		const project = this.workspace.getProjectByName(this.projectName);
-		const cwd = join(this.workspace.basePath, project.root);
+		const cwd = join(this.workspace.workspaceDir, project.root);
 
 		return this.cli.run([this.command, ...this.args], {startCwd: cwd});
 	}

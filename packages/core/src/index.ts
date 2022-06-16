@@ -5,7 +5,7 @@ export {
 } from './extract-extra-configuration';
 export {filterByPatterns} from './pattern';
 export {
-	ConvertibleWorkspaceDefinition,
+	type ConvertibleWorkspaceDefinition,
 	type ProjectDefinition,
 	ProjectDefinitionCollection,
 	type TargetDefinition,

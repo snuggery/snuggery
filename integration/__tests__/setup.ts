@@ -94,9 +94,9 @@ function createRunner(dir: string): Fixture['run'] {
 		const workspace = await snuggery.findWorkspace(startCwd);
 
 		assert.equal(
-			workspace?.basePath,
+			workspace?.workspaceDir,
 			dir,
-			`found workspace at ${workspace?.basePath} instead of ${dir}`,
+			`found workspace at ${workspace?.workspaceDir} instead of ${dir}`,
 		);
 
 		const stdout = new CollectingWritable();
