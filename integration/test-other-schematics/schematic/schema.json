@@ -3,7 +3,10 @@
 	"properties": {
 		"path": {
 			"type": "string",
-			"format": "path"
+			"format": "path",
+			"$default": {
+				"$source": "workingDirectory"
+			}
 		}
 	},
 	"additionalProperties": true

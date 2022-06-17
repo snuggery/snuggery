@@ -113,9 +113,36 @@ export abstract class SchematicCommand extends AbstractCommand {
 		);
 	}
 
-	protected createPathPartialOptions(options: Option[]): JsonObject {
+	/** @deprecated throw out sometime before 1.0.0 */
+	protected createPathPartialOptions(schematic: SnuggerySchematic): JsonObject {
 		if (this.context.workspace == null) {
 			return {};
+		}
+
+		const schema = schematic.description.schemaJson;
+		if (
+			!isJsonObject(schema) ||
+			!isJsonObject(schema.properties) ||
+			!isJsonObject(schema.properties.path) ||
+			schema.properties.path.type !== 'string' ||
+			schema.properties.path.format !== 'path' ||
+			isJsonObject(schema.properties.path.$default)
+		) {
+			return {};
+		}
+
+		const schematicName = schematic.collection.description.name;
+		if (
+			schematicName.startsWith('@angular/') ||
+			schematicName.startsWith('@schematics/')
+		) {
+			this.report.reportWarning(
+				`Schematic ${schematicName} is using the deprecated path format, update the package to at least version 14.1.0`,
+			);
+		} else {
+			this.report.reportWarning(
+				`Schematic ${schematicName} is using the deprecated path format, update it to use the workingDirectory smart default instead`,
+			);
 		}
 
 		let relativeCwd = normalize(
@@ -126,9 +153,11 @@ export abstract class SchematicCommand extends AbstractCommand {
 			relativeCwd = relativeCwd.replace(/\\/g, '/');
 		}
 
-		return Object.fromEntries(
-			options.filter(o => o.format === 'path').map(o => [o.name, relativeCwd]),
-		);
+		return relativeCwd
+			? {
+					path: relativeCwd,
+			  }
+			: {};
 	}
 
 	protected async getOptions(schematic: SnuggerySchematic): Promise<{

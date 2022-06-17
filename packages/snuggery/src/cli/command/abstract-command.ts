@@ -8,10 +8,11 @@ import {
 	Option as CommandOption,
 	UsageError,
 } from 'clipanion';
-import {dirname} from 'path';
+import path, {dirname, normalize, posix, relative} from 'path';
 
 import type {SnuggeryArchitectHost} from '../architect/index';
 import {Cached} from '../utils/decorator';
+import {memoize} from '../utils/memoize';
 import {
 	ParsedArguments,
 	parseFreeFormArguments,
@@ -213,6 +214,27 @@ export abstract class AbstractCommand extends Command<Context> {
 			registry.addSmartDefaultProvider(
 				'projectName',
 				() => this.currentProject,
+			);
+			registry.addSmartDefaultProvider(
+				'workingDirectory',
+				memoize(() => {
+					const {workspace, startCwd} = this.context;
+
+					if (workspace == null) {
+						return undefined;
+					}
+
+					let relativeCwd = normalize(
+						relative(workspace.workspaceFolder, startCwd),
+					);
+
+					if (path !== posix) {
+						relativeCwd = relativeCwd.replace(/\\/g, '/');
+					}
+
+					// Angular maps empty string to undefined, mimic that behavior
+					return relativeCwd || undefined;
+				}),
 			);
 			registry.usePromptProvider(
 				await (await import('../utils/prompt.js')).createPromptProvider(),

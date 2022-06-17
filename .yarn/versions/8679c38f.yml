@@ -1,0 +1,6 @@
+releases:
+  "@snuggery/global": minor
+  "@snuggery/snuggery": minor
+
+declined:
+  - "@snuggery/affected"

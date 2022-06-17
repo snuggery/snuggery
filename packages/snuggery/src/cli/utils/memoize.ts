@@ -12,8 +12,14 @@ export function getOrCreate<K, V>(
 	return value;
 }
 
+export function memoize<V>(fn: () => V): () => V;
+export function memoize<K, V>(fn: (key: K) => V): (key: K) => V;
 export function memoize<K, V>(fn: (key: K) => V): (key: K) => V {
 	const cache = new Map<K, V>();
+
+	if (fn.length === 0) {
+		return () => getOrCreate(cache, undefined!, fn);
+	}
 
 	return key => getOrCreate(cache, key, fn);
 }

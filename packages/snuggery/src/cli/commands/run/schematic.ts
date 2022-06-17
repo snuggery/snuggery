@@ -83,7 +83,7 @@ export class RunSchematicCommand extends SchematicCommand {
 				this.runSchematic({
 					schematic,
 					options: {
-						...this.createPathPartialOptions(definedOptions),
+						...this.createPathPartialOptions(schematic),
 						...options,
 					},
 				}),
