@@ -1,17 +1,18 @@
 /**
  * @license
- * Copyright Google LLC All Rights Reserved.
+ * This file started as a copy of code by the Angular team.
+ * https://github.com/angular/angular-cli/blob/9fafb2e1251f6790392a1f9c84854086c85d2191/packages/angular_devkit/core/src/json/schema/registry.ts#L92
  *
- * Use of this source code is governed by an MIT-style license that can be
- * found in the LICENSE file at https://angular.io/license
+ * Copyright (c) 2017 Google, Inc.
+ * Licensed under the MIT License, https://github.com/angular/angular-cli/blob/9fafb2e1251f6790392a1f9c84854086c85d2191/LICENSE
  */
 
 import {PartiallyOrderedSet, schema} from '@angular-devkit/core';
 import type {JsonObject, JsonValue} from '@snuggery/core';
 import Ajv, {SchemaObjCxt, ValidateFunction} from 'ajv';
 import ajvAddFormats from 'ajv-formats';
-import * as http from 'http';
-import * as https from 'https';
+import http from 'node:http';
+import https from 'node:https';
 import {resolve as resolveUrl} from 'node:url';
 import {Observable, from, isObservable, throwError, defer, of} from 'rxjs';
 
@@ -30,6 +31,9 @@ export interface CompiledSchema extends schema.SchemaValidator {
 	applyPreTransforms(data: JsonValue): Promise<JsonValue>;
 }
 
+/**
+ * A modified copy of angular's CoreSchemaRegistry that supports running only the pre-transforms
+ */
 export class SchemaRegistry implements schema.SchemaRegistry {
 	readonly #ajv: Ajv;
 	readonly #uriCache = new Map<string, Promise<JsonObject>>();
@@ -353,36 +357,38 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		const isSetup = this.#sourceMap.size > 0;
 		this.#sourceMap.set(source, provider);
 
-		if (!isSetup) {
-			this.#ajv.addKeyword({
-				keyword: '$default',
-				errors: false,
-				valid: true,
-				compile: (schema, _parentSchema, it) => {
-					const compilationSchemaInfo = this.#currentCompilationSchemaInfo;
-					if (compilationSchemaInfo === undefined) {
-						return () => true;
-					}
-
-					// We cheat, heavily.
-					const pathArray = this.#normalizeDataPathArr(it);
-					compilationSchemaInfo.smartDefaultRecord.set(
-						JSON.stringify(pathArray),
-						schema,
-					);
-
-					return () => true;
-				},
-				metaSchema: {
-					type: 'object',
-					properties: {
-						$source: {type: 'string'},
-					},
-					additionalProperties: true,
-					required: ['$source'],
-				},
-			});
+		if (isSetup) {
+			return;
 		}
+
+		this.#ajv.addKeyword({
+			keyword: '$default',
+			errors: false,
+			valid: true,
+			compile: (schema, _parentSchema, it) => {
+				const compilationSchemaInfo = this.#currentCompilationSchemaInfo;
+				if (compilationSchemaInfo === undefined) {
+					return () => true;
+				}
+
+				// We cheat, heavily.
+				const pathArray = normalizeDataPathArr(it);
+				compilationSchemaInfo.smartDefaultRecord.set(
+					JSON.stringify(pathArray),
+					schema,
+				);
+
+				return () => true;
+			},
+			metaSchema: {
+				type: 'object',
+				properties: {
+					$source: {type: 'string'},
+				},
+				additionalProperties: true,
+				required: ['$source'],
+			},
+		});
 	}
 
 	registerUriHandler(handler: UriHandler) {
@@ -407,7 +413,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 					return () => true;
 				}
 
-				const path = '/' + this.#normalizeDataPathArr(it).join('/');
+				const path = '/' + normalizeDataPathArr(it).join('/');
 
 				let type: string | undefined;
 				let items:
@@ -658,10 +664,10 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 			errors: false,
 		});
 	}
+}
 
-	#normalizeDataPathArr(it: SchemaObjCxt): (number | string)[] {
-		return it.dataPathArr
-			.slice(1, it.dataLevel + 1)
-			.map(p => (typeof p === 'number' ? p : p.str.replace(/"/g, '')));
-	}
+function normalizeDataPathArr(it: SchemaObjCxt): (number | string)[] {
+	return it.dataPathArr
+		.slice(1, it.dataLevel + 1)
+		.map(p => (typeof p === 'number' ? p : p.str.replace(/"/g, '')));
 }

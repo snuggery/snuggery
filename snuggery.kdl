@@ -77,7 +77,7 @@ project "all" root="" {
 project "@snuggery/snuggery" root="packages/snuggery" {
 	target "build" builder="@snuggery/node:build" {
 		options {
-			asset "README.md"
+			asset "README.md" "NOTICE.md"
 			asset "LICENSE.md" from="."
 			asset from="packages/snuggery/src" {
 				include "**/*.d.ts" 
