@@ -36,7 +36,7 @@ export function executeDeploy(
 
 		switchMapSuccessfulResult(({appliedVersions, yarn}) => {
 			return forkJoin([
-				yarn.listPlugins(),
+				yarn.hasPlugin(),
 				findWorkspace(context).then(async workspace => {
 					const projects = await findProjects(context, {
 						workspace,
@@ -56,11 +56,7 @@ export function executeDeploy(
 					);
 				}),
 			]).pipe(
-				switchMap(([plugins, includedWorkingDirectories]) => {
-					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryPluginName,
-					);
-
+				switchMap(([hasPlugin, includedWorkingDirectories]) => {
 					if (useWorkspacePlugin && !hasPlugin) {
 						return of({
 							success: false,

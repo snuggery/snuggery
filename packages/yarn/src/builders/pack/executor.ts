@@ -3,11 +3,9 @@ import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
 import {defer, from, Observable, of} from 'rxjs';
 import {catchError, mapTo, switchMap} from 'rxjs/operators';
 
-import {loadYarn} from '../../utils/yarn';
+import {loadYarn, snuggeryPluginName} from '../../utils/yarn';
 
 import type {Schema} from './schema';
-
-const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 
 export function executePack(
 	{directory, useWorkspacePlugin}: Schema,
@@ -15,12 +13,8 @@ export function executePack(
 ): Observable<BuilderOutput> {
 	return defer(() => loadYarn(context)).pipe(
 		switchMap(yarn => {
-			return yarn.listPlugins().pipe(
-				switchMap(plugins => {
-					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryPluginName,
-					);
-
+			return yarn.hasPlugin().pipe(
+				switchMap(hasPlugin => {
 					if (useWorkspacePlugin && !hasPlugin) {
 						return of({
 							success: false,

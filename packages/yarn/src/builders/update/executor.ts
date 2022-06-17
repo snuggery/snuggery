@@ -14,12 +14,8 @@ export function executeUpdate(
 ): Observable<BuilderOutput> {
 	return defer(() => loadYarn(context)).pipe(
 		switchMap(yarn => {
-			return yarn.listPlugins().pipe(
-				switchMap(plugins => {
-					const hasPlugin = plugins.some(
-						plugin => plugin.name === snuggeryPluginName,
-					);
-
+			return yarn.hasPlugin().pipe(
+				switchMap(hasPlugin => {
 					if (!hasPlugin) {
 						return of({
 							success: false,

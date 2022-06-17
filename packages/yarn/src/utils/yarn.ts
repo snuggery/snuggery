@@ -16,6 +16,20 @@ function isYarnPlugin(value: JsonObject): value is JsonObject & YarnPlugin {
 	return typeof value.name === 'string' && typeof value.builtin === 'boolean';
 }
 
+export const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
+const oldSnuggeryPluginName = '@yarnpkg/plugin-snuggery-workspace';
+
+class OutdatedYarnPluginError extends Error {
+	readonly clipanion = {type: 'none'};
+
+	constructor() {
+		super(
+			`Yarn plugin ${oldSnuggeryPluginName} is no longer supported, switch to an updated version of ${snuggeryPluginName} instead`,
+		);
+		this.name = new.target.name;
+	}
+}
+
 export interface AppliedVersion {
 	cwd: string;
 	ident: string;
@@ -169,6 +183,21 @@ class Yarn {
 				}
 			};
 		});
+	}
+
+	hasPlugin(): Observable<boolean> {
+		return this.#exec(['plugin', 'runtime', '--json'], {
+			captureNdjson: true,
+		}).pipe(
+			map(output => output.filter(isYarnPlugin)),
+			map(plugins => {
+				if (plugins.some(plugin => plugin.name === oldSnuggeryPluginName)) {
+					throw new OutdatedYarnPluginError();
+				}
+
+				return plugins.some(plugin => plugin.name === snuggeryPluginName);
+			}),
+		);
 	}
 
 	listPlugins(): Observable<YarnPlugin[]> {
