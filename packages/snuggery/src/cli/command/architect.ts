@@ -4,6 +4,7 @@ import type {
 	Target,
 } from '@angular-devkit/architect';
 import {isJsonArray, JsonObject} from '@snuggery/core';
+import type {ErrorWithMeta} from 'clipanion';
 import {promises as fs} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
@@ -29,6 +30,10 @@ export const configurationOption: Option = {
 
 export class BuilderFailedError extends AbstractError {}
 
+function hasMeta(error: Error): error is ErrorWithMeta {
+	return 'clipanion' in error;
+}
+
 async function handleBuilderRun(run: BuilderRun, context: Context) {
 	let result: BuilderOutput;
 	try {
@@ -44,17 +49,24 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
 
 		let message = `Build failed with underlying ${e.name}: ${e.message}`;
 
-		if (e.stack) {
-			const file = join(
-				await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
-				'error.log',
-			);
-			await fs.writeFile(file, e.stack);
+		if (hasMeta(e) && e.clipanion.type === 'none') {
+			result = {
+				success: false,
+				error: e.message,
+			};
+		} else {
+			if (e.stack) {
+				const file = join(
+					await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
+					'error.log',
+				);
+				await fs.writeFile(file, e.stack);
 
-			message += `\nSee ${file} for more information on the error`;
+				message += `\nSee ${file} for more information on the error`;
+			}
+
+			throw new BuilderFailedError(message);
 		}
-
-		throw new BuilderFailedError(message);
 	}
 
 	if (result == null) {
