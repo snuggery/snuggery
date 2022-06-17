@@ -1,5 +1,4 @@
 import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
 import {
 	copyAssets,
 	resolveProjectPath,
@@ -7,6 +6,7 @@ import {
 	runPackager,
 } from '@snuggery/architect';
 import {switchMapSuccessfulResult} from '@snuggery/architect/operators';
+import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {join} from 'path';
 import {forkJoin, from, Observable, ObservableInput, of} from 'rxjs';
@@ -104,6 +104,18 @@ async function writeManifest(
 	}
 	delete manifest.devDependencies;
 	delete manifest.private;
+
+	if (isJsonObject(manifest.publishConfig)) {
+		if (manifest.publishConfig.main !== undefined) {
+			manifest.main = manifest.publishConfig.main;
+			delete manifest.publishConfig.main;
+		}
+
+		if (manifest.publishConfig.exports !== undefined) {
+			manifest.exports = manifest.publishConfig.exports;
+			delete manifest.publishConfig.exports;
+		}
+	}
 
 	await fs.writeFile(
 		join(outputFolder, manifestFilename),

@@ -28,6 +28,7 @@
 		"@angular-devkit/core": "14.0.0",
 		"@angular-devkit/schematics": "14.0.0",
 		"@snuggery/architect": "0.4.0",
+		"@snuggery/core": "0.3.4",
 		"rxjs": "6.6.7"
 	},
 	"devDependencies": {
