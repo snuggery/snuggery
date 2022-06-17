@@ -6,7 +6,10 @@ export interface FileHandle {
 
 	read(): Promise<JsonObject>;
 
-	write(value: JsonObject): Promise<void>;
+	write(
+		value: JsonObject,
+		options: {header?: string | string[]},
+	): Promise<void>;
 
 	update(updater: (value: JsonObject) => void | Promise<void>): Promise<void>;
 

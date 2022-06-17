@@ -376,6 +376,7 @@ export interface WorkspaceHandle {
 
 	write(
 		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		options: {header?: string | string[]},
 	): Promise<void>;
 
 	update(

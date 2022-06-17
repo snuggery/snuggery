@@ -451,7 +451,7 @@ async function write(content: JsonObject) {
 
 	await (
 		await createFileHandle(host, 'test.yaml', ['test.yaml'])
-	).write(content);
+	).write(content, {});
 
 	return YAML.parse(host.currentContent);
 }

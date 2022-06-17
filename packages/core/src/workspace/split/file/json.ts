@@ -55,6 +55,10 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 		return JSON.stringify(value, null, 2);
 	}
 
+	createHeader(header: string | string[]): string {
+		return `// ${[header].flat().join('\n// ')}\n`;
+	}
+
 	applyChanges(
 		source: string,
 		_value: JsonObject,

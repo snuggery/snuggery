@@ -555,7 +555,7 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		}
 
 		await Promise.all(
-			Array.from(this.#files, ([data, file]) => file.write(data)),
+			Array.from(this.#files, ([data, file]) => file.write(data, {})),
 		);
 
 		return true;
@@ -581,15 +581,19 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 
 	async write(
 		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		options: {header?: string | string[]},
 	): Promise<void> {
 		if (value instanceof NxWorkspaceDefinition) {
 			if (!(await value.tryWrite())) {
-				await this.#file.write(value.data);
+				await this.#file.write(value.data, options);
 			}
 		} else if (value instanceof AngularWorkspaceDefinition) {
-			await this.#file.write(value.data);
+			await this.#file.write(value.data, options);
 		} else {
-			await this.#file.write(NxWorkspaceDefinition.fromValue(value).data);
+			await this.#file.write(
+				NxWorkspaceDefinition.fromValue(value).data,
+				options,
+			);
 		}
 	}
 

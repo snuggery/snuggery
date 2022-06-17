@@ -74,6 +74,7 @@ export class SnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 
 	async write(
 		value: workspaces.WorkspaceDefinition | WorkspaceDefinition,
+		{header}: {header?: string | string[]},
 	): Promise<void> {
 		const [{SnuggeryWorkspaceDefinition}, {format}] = await Promise.all([
 			import('./kdl/v0.js'),
@@ -82,11 +83,17 @@ export class SnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 
 		const {document} = SnuggeryWorkspaceDefinition.fromValue(value);
 
+		let prefix = '';
+		if (header) {
+			prefix = `// ${[header].flat().join('\n// ')}\n`;
+		}
+
 		await this.#fileHandle.write(
-			format(document, {
-				printEmptyChildren: false,
-				printNullProps: false,
-			}),
+			prefix +
+				format(document, {
+					printEmptyChildren: false,
+					printNullProps: false,
+				}),
 		);
 	}
 

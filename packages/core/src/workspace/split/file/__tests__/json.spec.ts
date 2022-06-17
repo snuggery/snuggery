@@ -159,7 +159,7 @@ async function write(content: JsonObject) {
 
 	await (
 		await createFileHandle(host, 'test.json', ['test.json'])
-	).write(content);
+	).write(content, {});
 
 	return JSON.parse(host.currentContent);
 }

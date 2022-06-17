@@ -67,6 +67,10 @@ export class YamlFileHandle extends AbstractFileHandle<
 		return this.#YAML.stringify(value, yamlOptions);
 	}
 
+	createHeader(header: string | string[]): string {
+		return `# ${[header].flat().join('\n# ')}\n`;
+	}
+
 	applyChanges(
 		_source: string,
 		document: YAML.Document.Parsed<YAML.ParsedNode>,

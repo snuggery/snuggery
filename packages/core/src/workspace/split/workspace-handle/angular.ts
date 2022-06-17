@@ -550,8 +550,12 @@ export class AngularWorkspaceHandle implements WorkspaceHandle {
 
 	async write(
 		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		options: {header?: string | string[]},
 	): Promise<void> {
-		await this.#file.write(AngularWorkspaceDefinition.fromValue(value).data);
+		await this.#file.write(
+			AngularWorkspaceDefinition.fromValue(value).data,
+			options,
+		);
 	}
 
 	async update(

@@ -20,6 +20,8 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 
 	abstract stringify(value: JsonObject): string | Promise<string>;
 
+	abstract createHeader(header: string | string[]): string;
+
 	abstract applyChanges(
 		source: string,
 		document: Document,
@@ -50,8 +52,13 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		return this.getValue(await this.parse(await this.#context.source.read()));
 	}
 
-	async write(value: JsonObject): Promise<void> {
-		await this.#context.source.write(await this.stringify(value));
+	async write(
+		value: JsonObject,
+		{header}: {header?: string | string[]},
+	): Promise<void> {
+		await this.#context.source.write(
+			(header ? this.createHeader(header) : '') + (await this.stringify(value)),
+		);
 	}
 
 	async update(

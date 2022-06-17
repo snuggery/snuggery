@@ -62,12 +62,15 @@ export async function readWorkspace(
 export async function writeWorkspace(
 	path: string,
 	workspace: WorkspaceDefinition | workspaces.WorkspaceDefinition,
-	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
+	{
+		host = nodeFsHost,
+		header,
+	}: {host?: WorkspaceHost; header?: string | string[]} = {},
 ): Promise<void> {
 	await (
 		(await createCombinedWorkspaceHandle(host, path)) ??
 		(await createSplitWorkspaceHandle(host, path))
-	).write(workspace);
+	).write(workspace, {header});
 }
 
 /**

@@ -155,7 +155,13 @@ export class SyncConfigToCommand extends AbstractCommand {
 			}
 		}
 
-		await writeWorkspace(join(workspace.workspaceFolder, this.output), clone);
+		await writeWorkspace(join(workspace.workspaceFolder, this.output), clone, {
+			header: [
+				`This file was generated from ${workspace.workspaceFilename} using \`sn --sync-config-to ${this.output}\``,
+				'Make changes to the original configuration file and re-run the command to regenerate this file,',
+				'otherwise your changes might get lost the next time the configuration is synced.',
+			],
+		});
 
 		if (report.numberOfErrors > 0) {
 			report.reportWarning(
