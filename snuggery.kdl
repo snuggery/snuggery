@@ -1,3 +1,4 @@
+// cspell:ignore predeploy
 version 0
 
 cli {
@@ -9,8 +10,11 @@ project "all" root="" {
 		options {
 			include "@snuggery/*"
 		}
-		configuration "without-yarn-plugins" {
+		configuration "predeploy" {
 			exclude "@snuggery/yarn-plugin-*"
+			options {
+				packager "@snuggery/yarn"
+			}
 		}
 	}
 
@@ -39,7 +43,7 @@ project "all" root="" {
 	target "deploy" builder="@snuggery/yarn:deploy" {
 		options {
 			useWorkspacePlugin true
-			buildTarget ":build:without-yarn-plugins"
+			buildTarget ":build:predeploy"
 			exclude "@snuggery/yarn-plugin-*"
 			exclude "integration"
 			exclude "all"
