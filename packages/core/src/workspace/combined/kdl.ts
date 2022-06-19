@@ -6,7 +6,6 @@ import type {ParseResult} from 'kdljs';
 import type {TextFileHandle} from '../file';
 import {
 	InvalidConfigurationError,
-	UnsupportedOperationError,
 	type WorkspaceHandle,
 	type ConvertibleWorkspaceDefinition,
 	type WorkspaceDefinition,
@@ -97,9 +96,12 @@ export class SnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 		);
 	}
 
-	async update(): Promise<never> {
-		throw new UnsupportedOperationError(
-			`Updating KDL workspace configuration files is not supported yet`,
-		);
+	async update(
+		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
+	): Promise<void> {
+		// TODO find a CST parser that would allow us to keep comments and formatting
+		const workspace = await this.read();
+		await updater(workspace);
+		await this.write(workspace, {});
 	}
 }
