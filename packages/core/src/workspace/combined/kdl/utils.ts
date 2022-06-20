@@ -509,6 +509,13 @@ function proxyJsonArray(node: Node, name: string): JsonValue[] {
 }
 
 function proxyJsonValue(node: Node): JsonValue | undefined {
+	if (
+		node.children.length &&
+		node.children.every(child => child.name === '-')
+	) {
+		return proxyJsonArray(node, '-');
+	}
+
 	if (node.children.length || Reflect.ownKeys(node.properties).length) {
 		return proxyJsonObject(node);
 	}

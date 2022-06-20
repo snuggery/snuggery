@@ -32,11 +32,12 @@ project "all" root="" {
 	target "test" builder="@snuggery/snuggery:execute" {
 		options {
 			package "uvu"
-      arguments \
-        "--require" \
-        "@snuggery-workspace/scripts/load-ts" \
-        "--ignore" \
-        "integration"
+			arguments {
+				- "--require"
+				- "@snuggery-workspace/scripts/load-ts"
+				- "--ignore"
+				- "integration"
+			}
 		}
 	}
 

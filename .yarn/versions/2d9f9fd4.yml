@@ -1,0 +1,11 @@
+releases:
+  "@snuggery/architect": patch
+  "@snuggery/core": patch
+  "@snuggery/global": patch
+  "@snuggery/schematics": patch
+  "@snuggery/snuggery": patch
+
+declined:
+  - "@snuggery/affected"
+  - "@snuggery/angular"
+  - "@snuggery/node"
