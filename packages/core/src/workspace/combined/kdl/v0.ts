@@ -1,556 +1,709 @@
+// cspell:ignore unparse
+
 /**
  * @fileoverview Implements two-way conversion between the workspace configuration types and
  * the experimental KDL format supported by snuggery (snuggery.kdl, version 0)
  */
 
-import type {workspaces} from '@angular-devkit/core';
-import type {Document, Node} from 'kdljs';
+import type {JsonValue} from '@angular-devkit/core';
+import {
+	Document,
+	Entry,
+	format,
+	Identifier,
+	InvalidKdlError,
+	Node,
+	parse,
+	Value,
+} from '@bgotink/kdl';
 
+import type {TextFileHandle} from '../../file';
+import {Change, ChangeType} from '../../proxy';
+import {AbstractFileHandle} from '../../split/file/abstract';
+import {AngularWorkspaceHandle} from '../../split/workspace-handle/angular';
 import {
 	InvalidConfigurationError,
-	JsonObject,
-	UnsupportedOperationError,
-	ConvertibleWorkspaceDefinition,
-	ProjectDefinition,
-	ProjectDefinitionCollection,
-	TargetDefinition,
-	TargetDefinitionCollection,
-	WorkspaceDefinition,
+	JsonPropertyName,
+	JsonPropertyPath,
+	stringifyPath,
+	type JsonObject,
 } from '../../types';
 
 import {
-	addOrReplaceChild,
-	findString,
-	implicitKeyForValue,
-	proxyJsonObject,
-	removeChild,
-	WrappedOptionalString,
-	WrappedString,
-} from './utils';
+	addEntry,
+	addValue,
+	arrayItemKey,
+	deleteEntry,
+	deleteValue,
+	findArrayItems,
+	fromJsonObject,
+	fromJsonValue,
+	modifyEntry,
+	modifyValue,
+	toJsonObject,
+	toJsonValue,
+} from './kdl-json';
+import {getDocument, replaceNodeInPlace} from './kdl-utils';
 
-class SnuggeryTargetDefinition implements TargetDefinition {
-	static fromConfiguration(
-		projectName: string,
-		targetName: string,
-		node: Node,
-	) {
-		return new this(projectName, targetName, node);
+function getSingleValue(node: Node, location: string): Value['value'] {
+	const values = node.entries.filter(entry => entry.name == null);
+
+	if (values.length !== 1) {
+		throw new InvalidConfigurationError(`Expected a single value ${location}`);
 	}
 
-	static fromValue(
-		{
-			builder,
-			configurations,
-			defaultConfiguration,
-			options,
-			extensions = {},
-		}:
-			| TargetDefinition
-			| (workspaces.TargetDefinition & {extensions?: undefined}),
-		projectName: string,
-		targetName: string,
-		node: Node,
-	) {
-		const instance = new this(projectName, targetName, node);
+	return values[0]!.value.value;
+}
 
-		instance.builder = builder;
+function getSingleStringValue(node: Node, location: string): string {
+	const value = getSingleValue(node, location);
 
-		if (defaultConfiguration != null) {
-			instance.defaultConfiguration = defaultConfiguration;
-		}
-
-		if (options != null) {
-			instance.options = options as JsonObject;
-		}
-
-		if (configurations != null) {
-			instance.configurations = configurations as Record<string, JsonObject>;
-		}
-
-		Object.assign(instance.extensions, extensions);
-
-		return instance;
+	if (typeof value !== 'string') {
+		throw new InvalidConfigurationError(
+			`Expected a string but got ${
+				value == null ? 'null' : typeof value
+			} ${location}`,
+		);
 	}
 
-	readonly #node: Node;
-	readonly #location: string;
-	readonly #builder: WrappedString;
-	readonly #defaultConfiguration: WrappedOptionalString;
+	return value;
+}
 
-	readonly extensions: JsonObject;
-
-	private constructor(projectName: string, targetName: string, node: Node) {
-		this.#node = node;
-
-		const location = (this.#location = `target ${JSON.stringify(
-			targetName,
-		)} in project ${JSON.stringify(projectName)}`);
-		this.#builder = findString(location, node, 'builder', true);
-		this.#defaultConfiguration = findString(
-			location,
+function parseConfiguration(
+	projectName: string,
+	targetName: string,
+	node: Node,
+): [string, JsonObject] {
+	return [
+		getSingleStringValue(
 			node,
-			'defaultConfiguration',
+			`in configuration for target ${targetName} in project ${projectName}`,
+		),
+		toJsonObject(node, {
+			allowArray: false,
+			ignoreValues: true,
+		}),
+	];
+}
+
+function unparseConfiguration(name: string, configuration: JsonObject): Node {
+	const children = Object.entries(configuration).flatMap(
+		([optionName, value]) => {
+			const nodeOrDocument = fromJsonValue(value, optionName, {
+				allowDocument: true,
+			});
+
+			return nodeOrDocument instanceof Document
+				? nodeOrDocument.nodes
+				: nodeOrDocument;
+		},
+	);
+
+	return new Node(
+		new Identifier('configuration'),
+		[new Entry(new Value(name), null)],
+		children.length > 0 ? new Document(children) : null,
+	);
+}
+
+function parseTarget(projectName: string, node: Node): [string, JsonObject] {
+	const name = getSingleStringValue(
+		node,
+		`in target for project ${projectName}`,
+	);
+	const target = toJsonObject(node, {
+		allowArray: false,
+		ignoreValues: true,
+		ignoreChildren: new Set('configuration'),
+	});
+
+	if (node.children != null) {
+		target.configurations = Object.fromEntries(
+			node.children.nodes
+				.filter(node => node.name.name === 'configuration')
+				.map(node => parseConfiguration(projectName, name, node)),
 		);
-
-		this.extensions = proxyJsonObject(node, {
-			remove: new Set([
-				implicitKeyForValue,
-				'builder',
-				'defaultConfiguration',
-				'options',
-				'configurations',
-			]),
-		});
 	}
 
-	get builder(): string {
-		return this.#builder.get();
+	return [name, target];
+}
+
+function unparseTarget(name: string, target: JsonObject): Node {
+	const node = new Node(new Identifier(name), [
+		new Entry(new Value(target.builder as string), new Identifier('builder')),
+	]);
+
+	if (target.defaultConfiguration != null) {
+		node.entries.push(
+			new Entry(
+				new Value(target.defaultConfiguration as string),
+				new Identifier('defaultConfiguration'),
+			),
+		);
 	}
 
-	set builder(builder: string) {
-		this.#builder.set(builder);
-	}
-
-	get defaultConfiguration(): string | undefined {
-		return this.#defaultConfiguration.get() ?? undefined;
-	}
-
-	set defaultConfiguration(defaultConfiguration: string | undefined) {
-		this.#defaultConfiguration.set(defaultConfiguration);
-	}
-
-	get options(): JsonObject | undefined {
-		const nodes = this.#node.children.filter(child => child.name === 'options');
-
-		switch (nodes.length) {
-			case 0:
-				return undefined;
-			case 1:
-				return proxyJsonObject(nodes[0]!);
-			default:
-				throw new InvalidConfigurationError(
-					`More than one \`options\` found in ${this.#location}`,
+	const children = Object.entries(target).flatMap(([propertyName, value]) => {
+		switch (propertyName) {
+			case 'builder':
+			case 'defaultConfiguration':
+				return [];
+			case 'configurations':
+				return Object.entries(value as JsonObject).map(
+					([configurationName, configuration]) =>
+						unparseConfiguration(
+							configurationName,
+							configuration as JsonObject,
+						),
 				);
+			default:
+				return fromJsonValue(value, propertyName);
 		}
+	});
+
+	if (children.length > 0) {
+		node.children = new Document(children);
 	}
 
-	set options(options: JsonObject | undefined) {
-		if (options != null) {
-			const node = addOrReplaceChild(this.#node, 'options');
+	return node;
+}
 
-			Object.assign(proxyJsonObject(node), options);
-		} else {
-			removeChild(this.#node, 'options');
-		}
-	}
+function parseProject(node: Node): [string, JsonObject] {
+	const name = getSingleStringValue(node, `for project`);
+	const project = toJsonObject(node, {
+		allowArray: false,
+		ignoreValues: true,
+		ignoreChildren: new Set('target'),
+	});
 
-	get configurations(): Record<string, JsonObject> | undefined {
-		const node = this.#node;
-		const proxyOptions = {remove: new Set([implicitKeyForValue])};
-
-		if (
-			!node.children.some(
-				child => child.name === 'configuration' && child.values.length === 1,
-			)
-		) {
-			return undefined;
-		}
-
-		return new Proxy<Record<string, JsonObject>>(
-			{},
-			{
-				defineProperty() {
-					throw new UnsupportedOperationError(
-						`Object.defineProperty is not supported in KDL workspace configurations`,
-					);
-				},
-				getOwnPropertyDescriptor(_, p) {
-					if (this.has!(_, p)) {
-						return {
-							configurable: true,
-							enumerable: true,
-							writable: true,
-							value: this.get!(_, p, undefined),
-						};
-					} else {
-						return undefined;
-					}
-				},
-				preventExtensions() {
-					throw new UnsupportedOperationError(
-						`Object.preventExtensions is not supported in KDL workspace configurations`,
-					);
-				},
-
-				ownKeys() {
-					return node.children
-						.filter(
-							child =>
-								child.name === 'configuration' && child.values.length === 1,
-						)
-						.map(child => String(child.values[0]));
-				},
-
-				has(_, name) {
-					return node.children.some(
-						child =>
-							child.name === 'configuration' &&
-							child.values.length === 1 &&
-							child.values[0] === name,
-					);
-				},
-
-				get(_, name) {
-					const configurationNode = node.children.find(
-						child =>
-							child.name === 'configuration' &&
-							child.values.length === 1 &&
-							child.values[0] === name,
-					);
-
-					return (
-						configurationNode &&
-						proxyJsonObject(configurationNode, proxyOptions)
-					);
-				},
-
-				set(_, name, value) {
-					if (typeof name !== 'string') {
-						return false;
-					}
-
-					const configurationNode = addOrReplaceChild(
-						node,
-						'configuration',
-						name,
-					);
-					Object.assign(
-						proxyJsonObject(configurationNode, proxyOptions),
-						value,
-					);
-
-					return true;
-				},
-			},
+	if (node.children != null) {
+		project.targets = Object.fromEntries(
+			node.children.nodes
+				.filter(node => node.name.name === 'target')
+				.map(node => parseTarget(name, node)),
 		);
 	}
 
-	set configurations(configurations: Record<string, JsonObject> | undefined) {
-		if (configurations == null) {
-			for (let i = this.#node.children.length - 1; i >= 0; i--) {
-				if (this.#node.children[i]!.name === 'configuration') {
-					this.#node.children.splice(i, 1);
-				}
-			}
+	return [name, project];
+}
 
-			return;
+function unparseProject(name: string, project: JsonObject): Node {
+	const node = new Node(new Identifier(name), [
+		new Entry(new Value(project.root as string), new Identifier('root')),
+	]);
+
+	for (const key of ['projectType', 'sourceRoot', 'prefix']) {
+		if (project[key] != null) {
+			node.entries.push(
+				new Entry(new Value(project[key] as string), new Identifier(key)),
+			);
+		}
+	}
+
+	const children = Object.entries(project).flatMap(([propertyName, value]) => {
+		switch (propertyName) {
+			case 'root':
+			case 'projectType':
+			case 'sourceRoot':
+			case 'prefix':
+				return [];
+			case 'architect':
+			case 'targets':
+				return Object.entries(value as JsonObject).map(([targetName, target]) =>
+					unparseTarget(targetName, target as JsonObject),
+				);
+			default:
+				return fromJsonValue(value, propertyName);
+		}
+	});
+
+	if (children.length > 0) {
+		node.children = new Document(children);
+	}
+
+	return node;
+}
+
+function findChildrenArray(
+	nodeOrDocument: Node | Document,
+	name: string,
+	change: Change,
+): Node[] {
+	const items = findArrayItems(nodeOrDocument, name);
+
+	if (items === null || !('nodes' in items)) {
+		throw new Error(`Failed to find ${stringifyPath(change.path)} to modify`);
+	}
+
+	return items.nodes;
+}
+
+function findNamedChild(
+	nodeOrDocument: Node | Document,
+	name: string,
+	parameter: Value['value'] | undefined,
+	change: Change,
+): Node {
+	const document =
+		nodeOrDocument instanceof Document
+			? nodeOrDocument
+			: nodeOrDocument.children;
+	const children = document?.nodes.filter(node => {
+		if (node.name.name !== name) {
+			return false;
 		}
 
-		const proxyOptions = {remove: new Set([implicitKeyForValue])};
-		const newNodes = new Set<Node>();
+		return (
+			parameter === undefined || node.entries[0]?.value.value === parameter
+		);
+	});
 
-		for (const [name, configuration] of Object.entries(configurations)) {
-			const node = addOrReplaceChild(this.#node, 'configuration', name);
-			Object.assign(proxyJsonObject(node, proxyOptions), configuration);
+	if (!children?.length) {
+		throw new Error(`Failed to find ${stringifyPath(change.path)} to modify`);
+	}
 
-			newNodes.add(node);
-		}
+	if (children.length > 1) {
+		throw new Error(
+			`Failed to find single ${stringifyPath(change.path)} to modify`,
+		);
+	}
 
-		for (let i = this.#node.children.length - 1; i >= 0; i--) {
-			const child = this.#node.children[i]!;
-			if (child.name === 'configuration' && !newNodes.has(child)) {
-				this.#node.children.splice(i, 1);
-			}
+	return children[0]!;
+}
+
+function applyChangeToJsonArray(
+	nodeOrDocument: Node | Document,
+	name: string,
+	path: [number, ...JsonPropertyPath],
+	change: Change,
+): void {
+	const [index, ...restPath] = path as [
+		number,
+		...([string, ...JsonPropertyPath] | [number, ...JsonPropertyPath] | [])
+	];
+
+	if (isEmpty(restPath)) {
+		switch (change.type) {
+			case ChangeType.Add:
+				addEntry(change.path, nodeOrDocument, name, change.value);
+				break;
+			case ChangeType.Delete:
+				deleteEntry(change.path, nodeOrDocument, name, index);
+				break;
+			case ChangeType.Modify:
+				modifyEntry(change.path, nodeOrDocument, index, name, change.value);
+				break;
 		}
 
 		return;
 	}
-}
 
-class SnuggeryTargetDefinitionCollection extends TargetDefinitionCollection {
-	static fromConfiguration(projectName: string, node: Node) {
-		return new this(
-			Object.fromEntries(
-				node.children
-					.filter(
-						child =>
-							child.name === 'target' &&
-							child.values.length === 1 &&
-							typeof child.values[0] === 'string',
-					)
-					.map(child => {
-						const targetName = child.values[0] as string;
-
-						return [
-							targetName,
-							SnuggeryTargetDefinition.fromConfiguration(
-								projectName,
-								targetName,
-								child,
-							),
-						];
-					}),
-			),
-			projectName,
-			node,
-		);
+	const item = findChildrenArray(nodeOrDocument, name, change)[index];
+	if (item == null) {
+		throw new Error(`Failed to find ${stringifyPath(change.path)} to modify`);
 	}
 
-	static fromValue(
-		projectName: string,
-		value: workspaces.TargetDefinitionCollection,
-		node: Node,
-	) {
-		const initial = Object.fromEntries(
-			Array.from(value, ([targetName, originalDefinition]) => {
-				const definition = SnuggeryTargetDefinition.fromValue(
-					originalDefinition,
-					projectName,
-					targetName,
-					addOrReplaceChild(node, 'target', targetName),
-				);
-
-				return [targetName, definition];
-			}),
-		);
-
-		return new this(initial, projectName, node);
+	if (startsWithIndex(restPath)) {
+		return applyChangeToJsonArray(item, arrayItemKey, restPath, change);
+	} else {
+		return applyChangeToJsonObject(item, restPath, change);
 	}
 
-	readonly #projectName: string;
-	readonly #node: Node;
-
-	private constructor(
-		initial: Record<string, TargetDefinition>,
-		projectName: string,
-		node: Node,
-	) {
-		super(initial);
-		this.#projectName = projectName;
-		this.#node = node;
+	function isEmpty(value: unknown[]): value is [] {
+		return value.length === 0;
 	}
 
-	protected override _wrapValue(
-		key: string,
-		value: TargetDefinition | workspaces.TargetDefinition,
-	): TargetDefinition {
-		const node = addOrReplaceChild(this.#node, 'target', key);
-		return SnuggeryTargetDefinition.fromValue(
-			value,
-			this.#projectName,
-			key,
-			node,
-		);
-	}
-
-	protected override _unwrapValue(key: string): void {
-		removeChild(this.#node, 'target', key);
+	function startsWithIndex(
+		value: [JsonPropertyName, ...unknown[]],
+	): value is [number, ...unknown[]] {
+		return typeof value[0] === 'number';
 	}
 }
 
-class SnuggeryProjectDefinition implements ProjectDefinition {
-	static fromConfiguration(projectName: string, node: Node) {
-		return new this(
-			SnuggeryTargetDefinitionCollection.fromConfiguration(projectName, node),
-			projectName,
-			node,
-		);
-	}
+function applyChangeToJsonObject(
+	nodeOrDocument: Node | Document,
+	path: [string, ...JsonPropertyPath],
+	change: Change,
+): void {
+	const [property, ...restPath] = path as [
+		string,
+		...([string, ...JsonPropertyPath] | [number, ...JsonPropertyPath] | [])
+	];
 
-	static fromValue(
-		projectName: string,
-		value: ProjectDefinition | workspaces.ProjectDefinition,
-		node: Node,
-	) {
-		const instance = new this(
-			SnuggeryTargetDefinitionCollection.fromValue(
-				projectName,
-				value.targets,
-				node,
-			),
-			projectName,
-			node,
-		);
-
-		instance.root = value.root;
-		instance.sourceRoot = value.sourceRoot;
-		instance.prefix = value.prefix;
-
-		Object.assign(instance.extensions, value.extensions);
-
-		return instance;
-	}
-
-	readonly #root: WrappedString;
-	readonly #prefix: WrappedOptionalString;
-	readonly #sourceRoot: WrappedOptionalString;
-
-	readonly extensions: JsonObject;
-	readonly targets: SnuggeryTargetDefinitionCollection;
-
-	constructor(
-		targets: SnuggeryTargetDefinitionCollection,
-		projectName: string,
-		node: Node,
-	) {
-		this.targets = targets;
-
-		this.extensions = proxyJsonObject(node, {
-			remove: new Set([
-				'root',
-				'prefix',
-				'sourceRoot',
-				'target',
-				implicitKeyForValue,
-			]),
-		});
-
-		const location = `project ${JSON.stringify(projectName)}`;
-		this.#root = findString(location, node, 'root', true);
-		this.#prefix = findString(location, node, 'prefix');
-		this.#sourceRoot = findString(location, node, 'sourceRoot');
-	}
-
-	get root(): string {
-		return this.#root.get();
-	}
-
-	set root(root: string) {
-		this.#root.set(root);
-	}
-
-	get prefix(): string | undefined {
-		return this.#prefix.get() ?? undefined;
-	}
-
-	set prefix(prefix: string | undefined) {
-		this.#prefix.set(prefix);
-	}
-
-	get sourceRoot(): string | undefined {
-		return this.#sourceRoot.get() ?? undefined;
-	}
-
-	set sourceRoot(sourceRoot: string | undefined) {
-		this.#sourceRoot.set(sourceRoot);
-	}
-}
-
-class SnuggeryProjectDefinitionCollection extends ProjectDefinitionCollection {
-	static fromConfiguration(document: Document) {
-		return new this(
-			document,
-			Object.fromEntries(
-				document
-					.filter(
-						child =>
-							child.name === 'project' &&
-							child.values.length === 1 &&
-							typeof child.values[0] === 'string',
-					)
-					.map(child => {
-						const projectName = child.values[0] as string;
-
-						return [
-							projectName,
-							SnuggeryProjectDefinition.fromConfiguration(projectName, child),
-						];
-					}),
-			),
-		);
-	}
-
-	static fromValue(
-		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
-		document: Document,
-	) {
-		return new this(
-			document,
-			Object.fromEntries(
-				Array.from(value, ([projectName, originalDefinition]) => [
-					projectName,
-					SnuggeryProjectDefinition.fromValue(
-						projectName,
-						originalDefinition,
-						addOrReplaceChild(document, 'project', projectName),
-					),
-				]),
-			),
-		);
-	}
-
-	readonly #document: Document;
-
-	private constructor(
-		document: Document,
-		initial: Record<string, ProjectDefinition>,
-	) {
-		super(initial);
-		this.#document = document;
-	}
-
-	protected override _wrapValue(
-		key: string,
-		value: ProjectDefinition,
-	): ProjectDefinition {
-		return SnuggeryProjectDefinition.fromValue(
-			key,
-			value,
-			addOrReplaceChild(this.#document, 'project', key),
-		);
-	}
-
-	protected override _unwrapValue(key: string): void {
-		removeChild(this.#document, 'project', key);
-	}
-}
-
-export class SnuggeryWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
-	static fromConfiguration(document: Document) {
-		return new this(
-			SnuggeryProjectDefinitionCollection.fromConfiguration(document),
-			document,
-		);
-	}
-
-	static fromValue(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
-	) {
-		if (value instanceof SnuggeryWorkspaceDefinition) {
-			return value;
+	if (isEmpty(restPath)) {
+		switch (change.type) {
+			case ChangeType.Add:
+				addValue(change.path, nodeOrDocument, property, change.value);
+				break;
+			case ChangeType.Delete:
+				deleteValue(nodeOrDocument, property);
+				break;
+			case ChangeType.Modify:
+				modifyValue(change.path, nodeOrDocument, property, change.value);
+				break;
 		}
 
-		const document: Document = [];
-
-		addOrReplaceChild(document, 'version', 0);
-
-		const instance = new this(
-			SnuggeryProjectDefinitionCollection.fromValue(value.projects, document),
-			document,
-		);
-
-		// Assign to the proxyObject to ensure renames and removes are applied
-		Object.assign(instance.extensions, value.extensions);
-
-		return instance;
+		return;
 	}
 
-	readonly extensions: JsonObject;
-	readonly projects: SnuggeryProjectDefinitionCollection;
+	if (startsWithProperty(restPath)) {
+		return applyChangeToJsonObject(
+			findNamedChild(nodeOrDocument, property, undefined, change),
+			restPath,
+			change,
+		);
+	} else {
+		return applyChangeToJsonArray(nodeOrDocument, property, restPath, change);
+	}
 
-	readonly document: Document;
+	function isEmpty(value: unknown[]): value is [] {
+		return value.length === 0;
+	}
 
-	constructor(
-		projects: SnuggeryProjectDefinitionCollection,
+	function startsWithProperty(
+		value: [JsonPropertyName, ...unknown[]],
+	): value is [string, ...unknown[]] {
+		return typeof value[0] === 'string';
+	}
+}
+
+function parseWorkspace(document: Document): JsonObject {
+	const projects: [string, JsonObject][] = [];
+	const workspace: [string, JsonValue][] = [];
+
+	for (const node of document.nodes) {
+		switch (node.name.name) {
+			case 'project':
+				projects.push(parseProject(node));
+				break;
+			default:
+				workspace.push([node.name.name, toJsonValue(node)]);
+		}
+	}
+
+	if (projects.length) {
+		workspace.push(['projects', Object.fromEntries(projects)]);
+	}
+
+	workspace.push(['version', 1]);
+
+	return Object.fromEntries(workspace);
+}
+
+function unparseWorkspace(workspace: JsonObject): Document {
+	return new Document(
+		Object.entries(workspace).flatMap(([name, value]) => {
+			switch (name) {
+				case 'projects':
+					return Object.entries(value as JsonObject).map(
+						([projectName, project]) =>
+							unparseProject(projectName, project as JsonObject),
+					);
+				case 'version':
+					return fromJsonValue(0, name);
+				default:
+					return fromJsonValue(value, name);
+			}
+		}),
+	);
+}
+
+class SnuggeryWorkspaceFileHandle extends AbstractFileHandle<Document> {
+	parse(content: string): Document {
+		try {
+			return parse(content);
+		} catch (e) {
+			if (e instanceof InvalidKdlError) {
+				throw new InvalidConfigurationError(e.message);
+			}
+
+			throw e;
+		}
+	}
+
+	getValue(document: Document): JsonObject {
+		return parseWorkspace(document);
+	}
+
+	stringify(value: JsonObject): string {
+		return format(unparseWorkspace(value));
+	}
+
+	createHeader(header: string | string[]): string {
+		if (Array.isArray(header)) {
+			return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */`;
+		}
+
+		return `// ${header}`;
+	}
+
+	applyChanges(
+		_source: string,
 		document: Document,
-	) {
-		super();
-		this.projects = projects;
+		changes: readonly Change[],
+	): string {
+		for (const change of changes) {
+			let path = Array.from(change.path) as [string, ...JsonPropertyPath];
 
-		this.extensions = proxyJsonObject(document, {
-			remove: new Set(['project', 'version', '$schema']),
-		});
+			if (change.path[0] !== 'projects') {
+				applyChangeToJsonObject(document, path, change);
+				continue;
+			}
 
-		this.document = document;
+			if (path.length === 1) {
+				if (change.type !== ChangeType.Add) {
+					document.nodes = document.nodes.filter(
+						node => node.name.name !== 'project',
+					);
+				}
+
+				if (change.type !== ChangeType.Delete) {
+					document.nodes.push(
+						...Object.entries(change.value as JsonObject).map(
+							([name, project]) => unparseProject(name, project as JsonObject),
+						),
+					);
+				}
+
+				continue;
+			}
+
+			const projectName = change.path[1] as string;
+
+			if (path.length === 2) {
+				switch (change.type) {
+					case ChangeType.Delete:
+						document.nodes.splice(
+							document.nodes.indexOf(
+								findNamedChild(document, 'project', projectName, change),
+							),
+						);
+						break;
+					case ChangeType.Add: {
+						const allProjects = document.nodes.filter(
+							node => node.name.name === 'project',
+						);
+						document.nodes.splice(
+							document.nodes.indexOf(allProjects[allProjects.length - 1]!) + 1,
+							0,
+							unparseProject(projectName, change.value as JsonObject),
+						);
+						break;
+					}
+					case ChangeType.Modify:
+						replaceNodeInPlace(
+							findNamedChild(document, 'project', projectName, change),
+							unparseProject(projectName, change.value as JsonObject),
+						);
+						break;
+				}
+
+				continue;
+			}
+
+			const project = findNamedChild(document, 'project', projectName, change);
+			path = path.slice(2) as [string, ...JsonPropertyPath];
+
+			if (path[0] !== 'targets' && path[0] !== 'architect') {
+				applyChangeToJsonObject(project, path, change);
+				continue;
+			}
+
+			if (path.length === 1) {
+				if (change.type !== ChangeType.Add) {
+					if (project.children != null) {
+						project.children.nodes = project.children.nodes.filter(
+							node => node.name.name !== 'target',
+						);
+						if (project.children.nodes.length === 0) {
+							project.children = null;
+						}
+					}
+				}
+
+				if (change.type !== ChangeType.Delete) {
+					getDocument(project, true).nodes.push(
+						...Object.entries(change.value as JsonObject).map(
+							([name, target]) => unparseTarget(name, target as JsonObject),
+						),
+					);
+				}
+
+				continue;
+			}
+
+			const targetName = path[1] as string;
+
+			if (path.length === 2) {
+				switch (change.type) {
+					case ChangeType.Delete: {
+						const target = findNamedChild(
+							project,
+							'target',
+							targetName,
+							change,
+						);
+
+						project.children!.nodes.splice(
+							project.children!.nodes.indexOf(target),
+						);
+						break;
+					}
+					case ChangeType.Add: {
+						const projectDoc = getDocument(project, true);
+						const allTargets = projectDoc.nodes.filter(
+							node => node.name.name === 'target',
+						);
+						projectDoc.nodes.splice(
+							projectDoc.nodes.indexOf(allTargets[allTargets.length - 1]!) + 1,
+							0,
+							unparseTarget(targetName, change.value as JsonObject),
+						);
+						break;
+					}
+					case ChangeType.Modify:
+						replaceNodeInPlace(
+							findNamedChild(project, 'target', targetName, change),
+							unparseTarget(targetName, change.value as JsonObject),
+						);
+						break;
+				}
+
+				continue;
+			}
+
+			const target = findNamedChild(project, 'target', targetName, change);
+			path = path.slice(2) as [string, ...JsonPropertyPath];
+
+			if (path.length === 1 && path[0] === 'options') {
+				if (change.type === ChangeType.Delete) {
+					deleteValue(target, 'options');
+					continue;
+				}
+
+				const options = fromJsonObject(change.value as JsonObject, 'options', {
+					ignoreEntries: true,
+				});
+
+				if (change.type === ChangeType.Add) {
+					getDocument(target, true).nodes.unshift(options);
+				} else {
+					replaceNodeInPlace(
+						findNamedChild(target, 'options', undefined, change),
+						unparseTarget(targetName, change.value as JsonObject),
+					);
+				}
+
+				continue;
+			}
+
+			if (path[0] !== 'configurations') {
+				applyChangeToJsonObject(target, path, change);
+				continue;
+			}
+
+			if (path.length === 1) {
+				if (change.type !== ChangeType.Add) {
+					if (target.children != null) {
+						target.children.nodes = target.children.nodes.filter(
+							node => node.name.name !== 'configuration',
+						);
+						if (target.children.nodes.length === 0) {
+							target.children = null;
+						}
+					}
+				}
+
+				if (change.type !== ChangeType.Delete) {
+					getDocument(target, true).nodes.push(
+						...Object.entries(change.value as JsonObject).map(
+							([name, configuration]) =>
+								unparseConfiguration(name, configuration as JsonObject),
+						),
+					);
+				}
+
+				continue;
+			}
+
+			const configurationName = path[1] as string;
+
+			if (path.length === 2) {
+				switch (change.type) {
+					case ChangeType.Delete: {
+						const configuration = findNamedChild(
+							target,
+							'configuration',
+							configurationName,
+							change,
+						);
+
+						target.children!.nodes.splice(
+							target.children!.nodes.indexOf(configuration),
+						);
+						break;
+					}
+					case ChangeType.Add: {
+						const projectDoc = getDocument(target, true);
+						const allConfigurations = projectDoc.nodes.filter(
+							node => node.name.name === 'configuration',
+						);
+						projectDoc.nodes.splice(
+							projectDoc.nodes.indexOf(
+								allConfigurations[allConfigurations.length - 1]!,
+							) + 1,
+							0,
+							unparseConfiguration(
+								configurationName,
+								change.value as JsonObject,
+							),
+						);
+						break;
+					}
+					case ChangeType.Modify:
+						replaceNodeInPlace(
+							findNamedChild(
+								target,
+								'configuration',
+								configurationName,
+								change,
+							),
+							unparseConfiguration(
+								configurationName,
+								change.value as JsonObject,
+							),
+						);
+						break;
+				}
+
+				continue;
+			}
+
+			const configuration = findNamedChild(
+				target,
+				'configuration',
+				configurationName,
+				change,
+			);
+			path = path.slice(2) as [string, ...JsonPropertyPath];
+
+			applyChangeToJsonObject(configuration, path, change);
+		}
+
+		return format(document);
+	}
+}
+
+export class SnuggeryKdlWorkspaceHandle extends AngularWorkspaceHandle {
+	constructor(source: TextFileHandle) {
+		super(
+			new SnuggeryWorkspaceFileHandle({
+				source,
+				async createFileHandle() {
+					throw new InvalidConfigurationError(
+						'Split KDL files are not currently supported',
+					);
+				},
+			}),
+		);
 	}
 }

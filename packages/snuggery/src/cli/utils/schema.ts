@@ -15,6 +15,7 @@ export function applyAliases(
 	}
 
 	const properties = new Set(Object.keys(schema.properties));
+	const presentProperties = new Set(Object.keys(value));
 	const aliases = new Map<string, string>();
 	for (const [property, definition] of Object.entries(schema.properties)) {
 		if (!isJsonObject(definition)) {
@@ -27,7 +28,8 @@ export function applyAliases(
 			if (
 				typeof alias !== 'string' ||
 				aliases.has(alias) ||
-				properties.has(alias)
+				properties.has(alias) ||
+				!presentProperties.has(alias)
 			) {
 				continue;
 			}

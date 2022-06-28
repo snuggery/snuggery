@@ -122,10 +122,11 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 	version: Version,
 	changes: ChangeTracker,
 	ensureCloning: () => T,
+	revocations: (() => void)[],
 ): T {
 	const isArray = Array.isArray(value);
 
-	return new Proxy(value, {
+	const {proxy, revoke} = Proxy.revocable(value, {
 		get(source, prop): JsonValue | undefined {
 			if (
 				typeof prop === 'symbol' ||
@@ -159,6 +160,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 
 					return clonedValue;
 				},
+				revocations,
 			);
 		},
 		deleteProperty(source, prop): boolean {
@@ -235,6 +237,9 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			return true;
 		},
 	});
+
+	revocations.push(revoke);
+	return proxy;
 }
 
 interface ChangeTracker {
@@ -275,9 +280,10 @@ function createChangeTracker(
 }
 
 export interface Tracker<T> {
-	readonly value: T;
-
-	open(cb: (value: T) => void | Promise<void>): Promise<readonly Change[]>;
+	open(): {
+		value: T;
+		close(): readonly Change[];
+	};
 }
 
 export function makeTracker<T extends JsonObject | JsonValue[]>(
@@ -289,16 +295,14 @@ export function makeTracker<T extends JsonObject | JsonValue[]>(
 	let value = cloneValueDeep(original);
 
 	return {
-		get value() {
-			return value;
-		},
-		async open(cb) {
+		open() {
 			// A value guaranteed to be different from everything except itself
 			const version = {};
 			const changes: Change[] = [];
+			const revocations: (() => void)[] = [];
 
-			await cb(
-				makeValueObservable(
+			return {
+				value: makeValueObservable(
 					value,
 					version,
 					createChangeTracker(changes, []),
@@ -306,10 +310,16 @@ export function makeTracker<T extends JsonObject | JsonValue[]>(
 						value = cloneValue(value, version);
 						return value;
 					},
+					revocations,
 				),
-			);
+				close() {
+					for (const revoke of revocations) {
+						revoke();
+					}
 
-			return changes;
+					return changes;
+				},
+			};
 		},
 	};
 }

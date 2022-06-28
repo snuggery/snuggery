@@ -149,11 +149,15 @@ export function makeCombinedTracker<T extends JsonObject | JsonValue[]>(
 	const originalTracker = makeTracker(original);
 
 	return {
-		get value() {
-			return originalTracker.value;
-		},
-		async open(cb) {
-			return combineChanges(await originalTracker.open(cb));
+		open() {
+			const {value, close} = originalTracker.open();
+
+			return {
+				value,
+				close() {
+					return combineChanges(close());
+				},
+			};
 		},
 	};
 }

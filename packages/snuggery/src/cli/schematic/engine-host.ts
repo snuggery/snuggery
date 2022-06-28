@@ -158,6 +158,9 @@ export class SnuggeryEngineHost
 		});
 		this.registerTaskExecutor(BuiltinTaskExecutor.RunSchematic);
 
+		this.registerOptionsTransform((_schematic, options) =>
+			JSON.parse(JSON.stringify(options)),
+		);
 		if (optionTransforms) {
 			for (const transform of optionTransforms) {
 				this.registerOptionsTransform(transform);

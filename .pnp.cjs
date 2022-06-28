@@ -615,37 +615,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@chevrotain/cst-dts-gen", [\
-        ["npm:10.1.2", {\
-          "packageLocation": "./.yarn/cache/@chevrotain-cst-dts-gen-npm-10.1.2-964f6426a3-47bcab11b4.zip/node_modules/@chevrotain/cst-dts-gen/",\
+      ["@bgotink/kdl", [\
+        ["npm:0.0.3", {\
+          "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.0.3-e88fbb0587-2a7cffb3a5.zip/node_modules/@bgotink/kdl/",\
           "packageDependencies": [\
-            ["@chevrotain/cst-dts-gen", "npm:10.1.2"],\
-            ["@chevrotain/gast", "npm:10.1.2"],\
-            ["@chevrotain/types", "npm:10.1.2"],\
-            ["lodash", "npm:4.17.21"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@chevrotain/gast", [\
-        ["npm:10.1.2", {\
-          "packageLocation": "./.yarn/cache/@chevrotain-gast-npm-10.1.2-754640f899-dbb8c80903.zip/node_modules/@chevrotain/gast/",\
-          "packageDependencies": [\
-            ["@chevrotain/gast", "npm:10.1.2"],\
-            ["@chevrotain/types", "npm:10.1.2"],\
-            ["lodash", "npm:4.17.21"]\
+            ["@bgotink/kdl", "npm:0.0.3"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@chevrotain/types", [\
-        ["npm:10.1.2", {\
-          "packageLocation": "./.yarn/cache/@chevrotain-types-npm-10.1.2-8c054d1771-cc3779e493.zip/node_modules/@chevrotain/types/",\
-          "packageDependencies": [\
-            ["@chevrotain/types", "npm:10.1.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:9.1.0", {\
           "packageLocation": "./.yarn/cache/@chevrotain-types-npm-9.1.0-80ac254cc2-5f26ff26aa.zip/node_modules/@chevrotain/types/",\
           "packageDependencies": [\
@@ -655,13 +634,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@chevrotain/utils", [\
-        ["npm:10.1.2", {\
-          "packageLocation": "./.yarn/cache/@chevrotain-utils-npm-10.1.2-47870d0685-05301feae7.zip/node_modules/@chevrotain/utils/",\
-          "packageDependencies": [\
-            ["@chevrotain/utils", "npm:10.1.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:9.1.0", {\
           "packageLocation": "./.yarn/cache/@chevrotain-utils-npm-9.1.0-5e5d6d7acc-ca78c97c7c.zip/node_modules/@chevrotain/utils/",\
           "packageDependencies": [\
@@ -1610,13 +1582,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
+            ["@bgotink/kdl", "npm:0.0.3"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\
             ["@types/typanion", null],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
             ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
@@ -1633,12 +1605,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
+            ["@bgotink/kdl", "npm:0.0.3"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\
             ["expect", "npm:27.3.1"],\
             ["jsonc-parser", "npm:3.0.0"],\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
             ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
@@ -3628,19 +3600,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chevrotain", "npm:9.1.0"],\
             ["@chevrotain/types", "npm:9.1.0"],\
             ["@chevrotain/utils", "npm:9.1.0"],\
-            ["regexp-to-ast", "npm:0.5.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["patch:chevrotain@npm%3A10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::version=10.1.2&hash=5d00c6&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/chevrotain-patch-3cd72da264-1bba1a9f7c.zip/node_modules/chevrotain/",\
-          "packageDependencies": [\
-            ["chevrotain", "patch:chevrotain@npm%3A10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::version=10.1.2&hash=5d00c6&locator=snuggery-workspace%40workspace%3A."],\
-            ["@chevrotain/cst-dts-gen", "npm:10.1.2"],\
-            ["@chevrotain/gast", "npm:10.1.2"],\
-            ["@chevrotain/types", "npm:10.1.2"],\
-            ["@chevrotain/utils", "npm:10.1.2"],\
-            ["lodash", "npm:4.17.21"],\
             ["regexp-to-ast", "npm:0.5.0"]\
           ],\
           "linkType": "HARD"\
@@ -6306,16 +6265,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonfile", "npm:6.1.0"],\
             ["graceful-fs", "npm:4.2.10"],\
             ["universalify", "npm:2.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["kdljs", [\
-        ["patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/kdljs-patch-f8730cbbb6-2fe05568c7.zip/node_modules/kdljs/",\
-          "packageDependencies": [\
-            ["kdljs", "patch:kdljs@npm%3A0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch::version=0.1.4&hash=0e219c&locator=snuggery-workspace%40workspace%3A."],\
-            ["chevrotain", "patch:chevrotain@npm%3A10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch::version=10.1.2&hash=5d00c6&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "HARD"\
         }]\

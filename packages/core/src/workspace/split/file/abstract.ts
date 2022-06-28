@@ -36,12 +36,14 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 				const source = await this.#context.source.read();
 				const document = await this.parse(source);
 
-				const changes = await makeCombinedTracker(
+				const {value, close} = makeCombinedTracker(
 					await this.getValue(document),
-				).open(async value => {
-					resolve(value);
-					await updateReady;
-				});
+				).open();
+
+				resolve(value);
+				await updateReady;
+
+				const changes = close();
 
 				await this.#context.source.write(
 					await this.applyChanges(source, document, changes),
@@ -72,9 +74,13 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 			const source = await this.#context.source.read();
 			const document = await this.parse(source);
 
-			const changes = await makeCombinedTracker(
+			const {value, close} = makeCombinedTracker(
 				await this.getValue(document),
-			).open(updater);
+			).open();
+
+			await updater(value);
+
+			const changes = close();
 
 			await this.#context.source.write(
 				await this.applyChanges(source, document, changes),

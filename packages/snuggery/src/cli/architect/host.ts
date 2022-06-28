@@ -344,7 +344,9 @@ export class SnuggeryArchitectHost
 
 	/** @override */
 	async getOptionsForTarget(target: Target): Promise<JsonObject | null> {
-		return this.#workspace.getOptionsForTarget(target);
+		return JSON.parse(
+			JSON.stringify(this.#workspace.getOptionsForTarget(target)),
+		);
 	}
 
 	/** @override */
