@@ -103,9 +103,9 @@ export class GitRepository implements VersionControlSystem {
 		};
 
 		if (to != null) {
-			from ??= `${to}^`;
+			from = from ?? `${to}^`;
 		} else {
-			from ??= 'HEAD';
+			from = from ?? 'HEAD';
 
 			await Promise.all([
 				addFilesFrom(

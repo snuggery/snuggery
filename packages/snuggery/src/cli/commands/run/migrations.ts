@@ -225,7 +225,9 @@ export class RunMigrationsCommand extends MigrationCommand {
 				continue;
 			}
 
-			migration.skippedMigrations ??= [];
+			if (migration.skippedMigrations == null) {
+				migration.skippedMigrations = [];
+			}
 
 			const migrationNames = new Set(
 				includedSchematics.map(mig => mig.schematic.description.name),

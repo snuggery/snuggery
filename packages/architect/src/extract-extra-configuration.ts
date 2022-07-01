@@ -44,7 +44,9 @@ export async function extractExtraConfiguration(
 	context: BuilderContext,
 	workspace?: WorkspaceDefinition | workspaces.WorkspaceDefinition,
 ): Promise<JsonValue[]> {
-	workspace ??= await findWorkspace(context);
+	if (workspace == null) {
+		workspace = await findWorkspace(context);
+	}
 
 	// Angular CLI tends to pass a non-empty target with empty project in certain cases...
 	if (context.target?.project) {
