@@ -1,8 +1,0 @@
-declined:
-  - "@snuggery/affected"
-  - "@snuggery/architect"
-  - "@snuggery/core"
-  - "@snuggery/global"
-  - "@snuggery/schematics"
-  - "@snuggery/snuggery"
-  - "@snuggery/yarn"
