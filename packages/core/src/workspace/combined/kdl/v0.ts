@@ -87,23 +87,13 @@ function parseConfiguration(
 }
 
 function unparseConfiguration(name: string, configuration: JsonObject): Node {
-	const children = Object.entries(configuration).flatMap(
-		([optionName, value]) => {
-			const nodeOrDocument = fromJsonValue(value, optionName, {
-				allowDocument: true,
-			});
+	const node = fromJsonObject(configuration, 'configuration', {
+		ignoreEntries: true,
+	});
 
-			return nodeOrDocument instanceof Document
-				? nodeOrDocument.nodes
-				: nodeOrDocument;
-		},
-	);
+	node.entries.unshift(new Entry(new Value(name), null));
 
-	return new Node(
-		new Identifier('configuration'),
-		[new Entry(new Value(name), null)],
-		children.length > 0 ? new Document(children) : null,
-	);
+	return node;
 }
 
 function parseTarget(projectName: string, node: Node): [string, JsonObject] {
@@ -114,7 +104,7 @@ function parseTarget(projectName: string, node: Node): [string, JsonObject] {
 	const target = toJsonObject(node, {
 		allowArray: false,
 		ignoreValues: true,
-		ignoreChildren: new Set('configuration'),
+		ignoreChildren: new Set(['configuration']),
 	});
 
 	if (node.children != null) {
@@ -129,7 +119,8 @@ function parseTarget(projectName: string, node: Node): [string, JsonObject] {
 }
 
 function unparseTarget(name: string, target: JsonObject): Node {
-	const node = new Node(new Identifier(name), [
+	const node = new Node(new Identifier('target'), [
+		new Entry(new Value(name), null),
 		new Entry(new Value(target.builder as string), new Identifier('builder')),
 	]);
 
@@ -155,6 +146,15 @@ function unparseTarget(name: string, target: JsonObject): Node {
 							configuration as JsonObject,
 						),
 				);
+			case 'options': {
+				const options = fromJsonObject(value as JsonObject, propertyName, {
+					ignoreEntries: true,
+				});
+				if (!options.entries.length && options.children == null) {
+					return [];
+				}
+				return options;
+			}
 			default:
 				return fromJsonValue(value, propertyName);
 		}
@@ -172,7 +172,7 @@ function parseProject(node: Node): [string, JsonObject] {
 	const project = toJsonObject(node, {
 		allowArray: false,
 		ignoreValues: true,
-		ignoreChildren: new Set('target'),
+		ignoreChildren: new Set(['target']),
 	});
 
 	if (node.children != null) {
@@ -187,7 +187,8 @@ function parseProject(node: Node): [string, JsonObject] {
 }
 
 function unparseProject(name: string, project: JsonObject): Node {
-	const node = new Node(new Identifier(name), [
+	const node = new Node(new Identifier('project'), [
+		new Entry(new Value(name), null),
 		new Entry(new Value(project.root as string), new Identifier('root')),
 	]);
 

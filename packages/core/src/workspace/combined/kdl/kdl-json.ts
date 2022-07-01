@@ -223,34 +223,37 @@ export function fromJsonObject(
 	const children: Node[] = [];
 
 	for (const [name, value] of Object.entries(object)) {
-		if (isJsonArray(value)) {
-			if (ignoreEntries || !isArrayOfPrimitive(value)) {
-				children.push(
-					...value.map(item =>
-						fromJsonValue(
-							item,
-							name === implicitKeyForValue ? arrayItemKey : name,
-						),
-					),
-				);
-			} else {
-				node.entries.push(
-					...value.map(
-						item => new Entry(new Value(item), new Identifier(name)),
-					),
-				);
+		if (!ignoreEntries) {
+			if (name === implicitKeyForValue && isJsonArray(value)) {
+				if (isArrayOfPrimitive(value)) {
+					node.entries.push(
+						...value.map(item => new Entry(new Value(item), null)),
+					);
+					continue;
+				}
 			}
-		} else if (isJsonObject(value)) {
-			children.push(fromJsonObject(value, name));
-		} else {
-			if (ignoreEntries) {
-				children.push(
-					new Node(new Identifier(name), [new Entry(new Value(value), null)]),
+
+			if (!isJsonObject(value) && !isJsonArray(value)) {
+				node.entries.push(
+					new Entry(
+						new Value(value),
+						name === implicitKeyForValue ? null : new Identifier(name),
+					),
 				);
-			} else {
-				node.entries.push(new Entry(new Value(value), new Identifier(name)));
+				continue;
 			}
 		}
+
+		const nodeOrDocument = fromJsonValue(value, name, {allowDocument: true});
+		if (nodeOrDocument instanceof Node) {
+			children.push(nodeOrDocument);
+		} else {
+			children.push(...nodeOrDocument.nodes);
+		}
+	}
+
+	if (children.length) {
+		node.children = new Document(children);
 	}
 
 	return node;
