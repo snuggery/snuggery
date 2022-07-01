@@ -431,10 +431,10 @@ class SnuggeryWorkspaceFileHandle extends AbstractFileHandle<Document> {
 
 	createHeader(header: string | string[]): string {
 		if (Array.isArray(header)) {
-			return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */`;
+			return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */\n`;
 		}
 
-		return `// ${header}`;
+		return `// ${header}\n`;
 	}
 
 	applyChanges(
