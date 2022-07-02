@@ -69,7 +69,7 @@ function isJsonEqual(
 }
 
 export class SyncConfigToCommand extends AbstractCommand {
-	static override readonly paths = [['--sync-config-to']];
+	static override readonly paths = [['--sync-config']];
 
 	static override readonly usage = AbstractCommand.Usage({
 		category: 'Utility commands',
@@ -108,11 +108,15 @@ export class SyncConfigToCommand extends AbstractCommand {
 		examples: [
 			[
 				'Write the project configuration to `angular.json` to allow using `ng` in the workspace',
-				`$0 --sync-config-to angular.json`,
+				`$0 --sync-config --to angular.json`,
 			],
 			[
 				'Validate the project configuration in `angular.json` to ensure the configuration in that file is in sync with the "real" configuration file',
-				`$0 --sync-config-to angular.json --validate`,
+				`$0 --sync-config --to angular.json --validate`,
+			],
+			[
+				'Copy the configuration from angular.json to workspace.json, e.g. to sync after an angular schematic modified the configuration',
+				`$0 --sync-config --from angular.json --to workspace.json`,
 			],
 		],
 	});
@@ -121,33 +125,46 @@ export class SyncConfigToCommand extends AbstractCommand {
 		description: 'Validate the existing output file instead of updating it',
 	});
 
-	output = Option.String({
+	source = Option.String('--from', {
+		description:
+			'The configuration file to use as source, defaults to the active workspace configuration',
+		validator: isEnum(workspaceFilenames),
+	});
+
+	target = Option.String('--to', {
 		required: true,
 		validator: isEnum(workspaceFilenames),
 	});
 
 	async execute(): Promise<number> {
-		const {workspace, report} = this;
+		const {
+			report,
+			workspace: {workspaceFolder, workspaceFilename},
+		} = this;
+
+		const source = this.source
+			? await readWorkspace(join(workspaceFolder, this.source))
+			: this.workspace;
 
 		const clone: WorkspaceDefinition = {
-			extensions: cloneJson(workspace.extensions),
+			extensions: cloneJson(source.extensions),
 
 			projects: new ProjectDefinitionCollection(),
 		};
 
 		delete clone.extensions.version;
 
-		await this.#copyProjects(clone);
+		await this.#copyProjects(clone, source);
 		await this.#updateSchematics(clone);
 
 		if (this.validate) {
 			if (await this.#isValid(clone)) {
-				report.reportInfo(`The workspace file at ${this.output} is in sync`);
+				report.reportInfo(`The workspace file at ${this.target} is in sync`);
 				return 0;
 			} else {
 				report.reportError(
 					formatMarkdownish(
-						`The workspace file at ${this.output} is out of sync, run \`${this.cli.binaryName} --sync-config-to ${this.output}\` to update`,
+						`The workspace file at ${this.target} is out of sync, run \`${this.cli.binaryName} --sync-config-to ${this.target}\` to update`,
 						{format: this.format, maxLineLength: Infinity},
 					),
 				);
@@ -155,9 +172,11 @@ export class SyncConfigToCommand extends AbstractCommand {
 			}
 		}
 
-		await writeWorkspace(join(workspace.workspaceFolder, this.output), clone, {
+		await writeWorkspace(join(workspaceFolder, this.target), clone, {
 			header: [
-				`This file was generated from ${workspace.workspaceFilename} using \`sn --sync-config-to ${this.output}\``,
+				`This file was generated from ${
+					this.source ?? workspaceFilename
+				} using \`sn --sync-config-to ${this.target}\``,
 				'Make changes to the original configuration file and re-run the command to regenerate this file,',
 				'otherwise your changes might get lost the next time the configuration is synced.',
 			],
@@ -165,18 +184,25 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		if (report.numberOfErrors > 0) {
 			report.reportWarning(
-				`Copied the workspace in ${workspace.workspaceFilename} to ${this.output}, ignoring parts of the file due to errors logged above`,
+				`Copied the workspace in ${this.source ?? workspaceFilename} to ${
+					this.target
+				}, ignoring parts of the file due to errors logged above`,
 			);
 			return 1;
 		}
 
 		report.reportInfo(
-			`Successfully copied the workspace in ${workspace.workspaceFilename} to ${this.output}`,
+			`Successfully copied the workspace in ${
+				this.source ?? workspaceFilename
+			} to ${this.target}`,
 		);
 		return 0;
 	}
 
-	async #copyProjects(clone: WorkspaceDefinition) {
+	async #copyProjects(
+		target: WorkspaceDefinition,
+		source: WorkspaceDefinition,
+	) {
 		const [architectHost, registry] = await Promise.all([
 			this.architectHost,
 			this.architectSchemaRegistry,
@@ -193,8 +219,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 			},
 		);
 
-		for (const [name, project] of this.workspace.projects) {
-			const cloneProject = clone.projects.add({
+		for (const [name, project] of source.projects) {
+			const targetProject = target.projects.add({
 				...cloneJson(project.extensions),
 				name,
 				root: project.root,
@@ -215,7 +241,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 					continue;
 				}
 
-				cloneProject.targets.add({
+				targetProject.targets.add({
 					...cloneJson(target.extensions),
 					name: targetName,
 					builder: target.builder,
@@ -247,7 +273,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 		}
 	}
 
-	async #updateSchematics(clone: WorkspaceDefinition) {
+	async #updateSchematics(target: WorkspaceDefinition) {
 		const registry = await this.schematicsSchemaRegistry;
 		const engineHost = await this.createEngineHost(
 			this.workspace.workspaceFolder,
@@ -335,8 +361,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 			}
 		};
 
-		await processExtensions('in the workspace', clone.extensions);
-		for (const [name, project] of clone.projects) {
+		await processExtensions('in the workspace', target.extensions);
+		for (const [name, project] of target.projects) {
 			await processExtensions(
 				`in project ${JSON.stringify(name)}`,
 				project.extensions,
@@ -346,7 +372,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 	async #isValid(clone: WorkspaceDefinition): Promise<boolean> {
 		const workspace = await readWorkspace(
-			join(this.workspace.workspaceFolder, this.output),
+			join(this.workspace.workspaceFolder, this.target),
 		);
 
 		if (

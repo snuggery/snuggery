@@ -50,7 +50,7 @@ Update commands
 
 Utility commands
 
-  sn --sync-config-to [--validate] <output>
+  sn --sync-config [--validate] [--from #0] <--to #0>
     Sync config from one format to another
 
   sn help
