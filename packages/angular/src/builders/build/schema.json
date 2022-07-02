@@ -66,6 +66,11 @@
 					"to": {
 						"type": "string",
 						"description": "The path to write the assets to, defaults to the folder the package is being built into"
+					},
+					"allowEmpty": {
+						"type": "boolean",
+						"default": false,
+						"description": "Whether to succeed when no files are found for this asset"
 					}
 				},
 				"required": ["include"],

@@ -26,6 +26,11 @@ export interface AssetSpec {
 	 * The path to write the assets to, defaults to the folder the package is being built into
 	 */
 	to?: string;
+
+	/**
+	 * Return a successful result if no matching files were found
+	 */
+	allowEmpty?: boolean;
 }
 
 export async function copyAssets(
@@ -58,6 +63,13 @@ export async function copyAssets(
 				error: `Failed to match pattern in asset ${i}: ${
 					e instanceof Error ? e.message : e
 				}`,
+			};
+		}
+
+		if (files.size === 0 && !asset.allowEmpty) {
+			return {
+				success: false,
+				error: `Failed to match any assets for ${JSON.stringify(rawAsset)}`,
 			};
 		}
 

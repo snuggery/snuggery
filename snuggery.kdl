@@ -119,10 +119,6 @@ project "@snuggery/architect" root="packages/architect" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
 		}
 	}
 }
@@ -132,10 +128,6 @@ project "@snuggery/core" root="packages/core" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
 		}
 	}
 }

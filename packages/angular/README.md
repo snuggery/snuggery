@@ -121,6 +121,11 @@ Properties:
     built into
     Type: `string`
 
+  - `allowEmpty`
+    Whether to succeed when no files are found for this asset
+    Default value is `false`
+    Type: `boolean`
+
 
 - `packager`
   Packager to run after building, e.g. `@snuggery/yarn:pack`. If the builder
