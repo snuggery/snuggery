@@ -77,4 +77,7 @@ if (!traceCli) {
 	process.exit();
 }
 
-0 && ((exports.findWorkspace = void 0), (exports.run = void 0));
+0 &&
+	((exports.findWorkspace = void 0),
+	(exports.workspaceFilenames = void 0),
+	(exports.run = void 0));

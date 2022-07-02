@@ -29,6 +29,8 @@ import {SyncConfigToCommand} from './commands/sync-config-to';
 import {VersionCommand} from './commands/version';
 import {Report} from './utils/report';
 
+export {workspaceFilenames} from '@snuggery/core';
+
 export type {SnuggeryArchitectHost} from './architect';
 export {CliWorkspace, findWorkspace} from './command/context';
 
