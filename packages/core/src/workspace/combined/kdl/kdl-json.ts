@@ -1,3 +1,5 @@
+// cspell:ignore serializers
+
 import type {JsonArray} from '@angular-devkit/core';
 import {Document, Entry, Identifier, Node, Value} from '@bgotink/kdl';
 
@@ -16,6 +18,40 @@ import {
 	isValue,
 	replaceNodeInPlace,
 } from './kdl-utils';
+
+export interface EntrySerializer {
+	deserialize(entry: Entry): JsonValue;
+	serialize(entry: Entry, value: JsonValue): boolean;
+}
+
+function deserialize(
+	serializers: Map<string, EntrySerializer> | undefined,
+	entry: Entry,
+) {
+	const serializer = serializers?.get(entry.tag?.name as string);
+	return serializer ? serializer.deserialize(entry) : entry.value.value;
+}
+
+function updateEntry(
+	serializers: Map<string, EntrySerializer> | undefined,
+	entry: Entry,
+	value: JsonValue,
+) {
+	const serializer = serializers?.get(entry.tag?.name as string);
+
+	if (serializer) {
+		return serializer.serialize(entry, value);
+	}
+
+	if (isJsonObject(value) || isJsonArray(value)) {
+		return false;
+	}
+
+	if (entry.value.value !== value) {
+		entry.value = new Value(value);
+	}
+	return true;
+}
 
 export const implicitKeyForValue = '$implicit';
 export const arrayItemKey = '-';
@@ -72,9 +108,12 @@ export function findArrayItems(
 	};
 }
 
-export function toJsonValue(node: Node): JsonValue {
+export function toJsonValue(
+	node: Node,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+): JsonValue {
 	if (node.children != null || node.entries.some(isProperty)) {
-		return toJsonObject(node);
+		return toJsonObject(node, {serializers});
 	}
 
 	switch (node.entries.length) {
@@ -83,9 +122,9 @@ export function toJsonValue(node: Node): JsonValue {
 			// options { watch; coverage; }
 			return null;
 		case 1:
-			return node.entries[0]!.value.value;
+			return deserialize(serializers, node.entries[0]!);
 		default:
-			return node.entries.map(entry => entry.value.value);
+			return node.entries.map(entry => deserialize(serializers, entry));
 	}
 }
 
@@ -96,6 +135,7 @@ export function toJsonObject(
 		ignoreValues?: boolean;
 		ignoreChildren?: Set<string>;
 		allowArray?: true;
+		serializers?: Map<string, EntrySerializer>;
 	},
 ): JsonObject | JsonArray;
 export function toJsonObject(
@@ -105,6 +145,7 @@ export function toJsonObject(
 		ignoreValues?: boolean;
 		ignoreChildren?: Set<string>;
 		allowArray: false;
+		serializers?: Map<string, EntrySerializer>;
 	},
 ): JsonObject;
 export function toJsonObject(
@@ -114,17 +155,24 @@ export function toJsonObject(
 		ignoreValues = false,
 		ignoreChildren = new Set<string>(),
 		allowArray = true,
+		serializers,
+	}: {
+		ignoreEntries?: boolean;
+		ignoreValues?: boolean;
+		ignoreChildren?: Set<string>;
+		allowArray?: boolean;
+		serializers?: Map<string, EntrySerializer>;
 	} = {},
 ): JsonObject | JsonArray {
-	const implicitValues: Value['value'][] = [];
+	const implicitValues: JsonValue[] = [];
 	const result = new Map<string, JsonValue>();
 
 	if (!ignoreEntries) {
-		for (const {name, value} of node.entries) {
-			if (name == null) {
-				implicitValues.push(value.value);
+		for (const entry of node.entries) {
+			if (entry.name == null) {
+				implicitValues.push(deserialize(serializers, entry));
 			} else {
-				result.set(name.name, value.value);
+				result.set(entry.name.name, deserialize(serializers, entry));
 			}
 		}
 	}
@@ -147,7 +195,7 @@ export function toJsonObject(
 				childValues.set(child.name.name, values);
 			}
 
-			values.push(toJsonValue(child));
+			values.push(toJsonValue(child, {serializers}));
 		}
 
 		if (childValues.get(arrayItemKey) != null) {
@@ -398,6 +446,7 @@ export function modifyValue(
 	nodeOrDocument: Node | Document,
 	name: string,
 	value: JsonValue,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
 ) {
 	if (nodeOrDocument instanceof Node) {
 		const matchingEntryIndex = nodeOrDocument.entries.findIndex(
@@ -405,10 +454,13 @@ export function modifyValue(
 		);
 
 		if (matchingEntryIndex !== -1) {
-			if (value == null || typeof value !== 'object') {
-				const matchingEntry = nodeOrDocument.entries[matchingEntryIndex]!;
-				matchingEntry.value = new Value(value);
-				matchingEntry.tag = null;
+			if (
+				updateEntry(
+					serializers,
+					nodeOrDocument.entries[matchingEntryIndex]!,
+					value,
+				)
+			) {
 				return;
 			}
 
@@ -437,6 +489,7 @@ export function modifyEntry(
 	index: number,
 	name: string,
 	value: JsonValue,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
 ) {
 	const items = findArrayItems(nodeOrDocument, name);
 
@@ -461,9 +514,7 @@ export function modifyEntry(
 		throw new Error(`Failed to find ${stringifyPath(path)} to modify`);
 	}
 
-	if (value == null || typeof value !== 'object') {
-		entries[index]!.tag = null;
-		entries[index]!.value = new Value(value);
+	if (updateEntry(serializers, entries[index]!, value)) {
 		return;
 	}
 

@@ -1,4 +1,4 @@
-// cspell:ignore unparse
+// cspell:ignore unparse serializers
 
 /**
  * @fileoverview Implements two-way conversion between the workspace configuration types and
@@ -35,6 +35,7 @@ import {
 	arrayItemKey,
 	deleteEntry,
 	deleteValue,
+	EntrySerializer,
 	findArrayItems,
 	fromJsonObject,
 	fromJsonValue,
@@ -44,6 +45,7 @@ import {
 	toJsonValue,
 } from './kdl-json';
 import {getDocument, replaceNodeInPlace} from './kdl-utils';
+import {projectRelative} from './serializers';
 
 function getSingleValue(node: Node, location: string): Value['value'] {
 	const values = node.entries.filter(entry => entry.name == null);
@@ -73,6 +75,7 @@ function parseConfiguration(
 	projectName: string,
 	targetName: string,
 	node: Node,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
 ): [string, JsonObject] {
 	return [
 		getSingleStringValue(
@@ -82,6 +85,7 @@ function parseConfiguration(
 		toJsonObject(node, {
 			allowArray: false,
 			ignoreValues: true,
+			serializers,
 		}),
 	];
 }
@@ -96,7 +100,11 @@ function unparseConfiguration(name: string, configuration: JsonObject): Node {
 	return node;
 }
 
-function parseTarget(projectName: string, node: Node): [string, JsonObject] {
+function parseTarget(
+	projectName: string,
+	node: Node,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+): [string, JsonObject] {
 	const name = getSingleStringValue(
 		node,
 		`in target for project ${projectName}`,
@@ -105,13 +113,16 @@ function parseTarget(projectName: string, node: Node): [string, JsonObject] {
 		allowArray: false,
 		ignoreValues: true,
 		ignoreChildren: new Set(['configuration']),
+		serializers,
 	});
 
 	if (node.children != null) {
 		target.configurations = Object.fromEntries(
 			node.children.nodes
 				.filter(node => node.name.name === 'configuration')
-				.map(node => parseConfiguration(projectName, name, node)),
+				.map(node =>
+					parseConfiguration(projectName, name, node, {serializers}),
+				),
 		);
 	}
 
@@ -167,19 +178,29 @@ function unparseTarget(name: string, target: JsonObject): Node {
 	return node;
 }
 
-function parseProject(node: Node): [string, JsonObject] {
+function parseProject(
+	node: Node,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+): [string, JsonObject] {
 	const name = getSingleStringValue(node, `for project`);
+
+	const projectSerializers = new Map(serializers);
+	projectSerializers.set('project-relative', projectRelative(node));
+
 	const project = toJsonObject(node, {
 		allowArray: false,
 		ignoreValues: true,
 		ignoreChildren: new Set(['target']),
+		serializers: projectSerializers,
 	});
 
 	if (node.children != null) {
 		project.targets = Object.fromEntries(
 			node.children.nodes
 				.filter(node => node.name.name === 'target')
-				.map(node => parseTarget(name, node)),
+				.map(node =>
+					parseTarget(name, node, {serializers: projectSerializers}),
+				),
 		);
 	}
 
@@ -367,17 +388,20 @@ function applyChangeToJsonObject(
 	}
 }
 
-function parseWorkspace(document: Document): JsonObject {
+function parseWorkspace(
+	document: Document,
+	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+): JsonObject {
 	const projects: [string, JsonObject][] = [];
 	const workspace: [string, JsonValue][] = [];
 
 	for (const node of document.nodes) {
 		switch (node.name.name) {
 			case 'project':
-				projects.push(parseProject(node));
+				projects.push(parseProject(node, {serializers}));
 				break;
 			default:
-				workspace.push([node.name.name, toJsonValue(node)]);
+				workspace.push([node.name.name, toJsonValue(node, {serializers})]);
 		}
 	}
 

@@ -84,7 +84,7 @@ project "@snuggery/snuggery" root="packages/snuggery" {
 		options {
 			asset "README.md" "NOTICE.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/snuggery/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -106,7 +106,7 @@ project "@snuggery/affected" root="packages/affected" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/affected/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -119,7 +119,7 @@ project "@snuggery/architect" root="packages/architect" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/architect/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -132,7 +132,7 @@ project "@snuggery/core" root="packages/core" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/core/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -145,7 +145,7 @@ project "@snuggery/angular" root="packages/angular" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset "**/*" from="packages/angular/src"
+			asset "**/*" from=(project-relative)"src"
 		}
 	}
 }
@@ -155,7 +155,7 @@ project "@snuggery/node" root="packages/node" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/node/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -168,7 +168,7 @@ project "@snuggery/schematics" root="packages/schematics" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/schematics/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -181,7 +181,7 @@ project "@snuggery/yarn" root="packages/yarn" {
 		options {
 			asset "README.md"
 			asset "LICENSE.md" from="."
-			asset from="packages/yarn/src" {
+			asset from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
