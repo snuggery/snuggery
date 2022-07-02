@@ -75,17 +75,29 @@ function parseConfiguration(
 	projectName: string,
 	targetName: string,
 	node: Node,
-	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+	{
+		serializers,
+		baseConfigurations,
+	}: {
+		serializers?: Map<string, EntrySerializer>;
+		baseConfigurations?: Document | null;
+	} = {},
 ): [string, JsonObject] {
+	const name = getSingleStringValue(
+		node,
+		`in configuration for target ${targetName} in project ${projectName}`,
+	);
 	return [
-		getSingleStringValue(
-			node,
-			`in configuration for target ${targetName} in project ${projectName}`,
-		),
+		name,
 		toJsonObject(node, {
 			allowArray: false,
 			ignoreValues: true,
 			serializers,
+			baseNode: baseConfigurations?.nodes.find(
+				baseNode =>
+					baseNode.name.name === 'configuration' &&
+					getSingleStringValue(baseNode, '') === name,
+			),
 		}),
 	];
 }
@@ -103,27 +115,57 @@ function unparseConfiguration(name: string, configuration: JsonObject): Node {
 function parseTarget(
 	projectName: string,
 	node: Node,
-	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+	{
+		serializers,
+		baseTargets,
+	}: {
+		serializers?: Map<string, EntrySerializer>;
+		baseTargets?: Document | null;
+	} = {},
 ): [string, JsonObject] {
 	const name = getSingleStringValue(
 		node,
 		`in target for project ${projectName}`,
+	);
+	const baseTarget = baseTargets?.nodes.find(
+		baseNode =>
+			baseNode.name.name === 'target' &&
+			getSingleStringValue(baseNode, '') === name,
 	);
 	const target = toJsonObject(node, {
 		allowArray: false,
 		ignoreValues: true,
 		ignoreChildren: new Set(['configuration']),
 		serializers,
+		baseNode: baseTarget,
 	});
 
-	if (node.children != null) {
+	if (baseTarget?.children != null) {
 		target.configurations = Object.fromEntries(
-			node.children.nodes
+			baseTarget.children.nodes
 				.filter(node => node.name.name === 'configuration')
 				.map(node =>
-					parseConfiguration(projectName, name, node, {serializers}),
+					parseConfiguration(projectName, name, node, {
+						serializers,
+					}),
 				),
 		);
+	}
+
+	if (node.children != null) {
+		target.configurations = {
+			...(target.configurations as JsonObject | undefined),
+			...Object.fromEntries(
+				node.children?.nodes
+					.filter(node => node.name.name === 'configuration')
+					.map(node =>
+						parseConfiguration(projectName, name, node, {
+							serializers,
+							baseConfigurations: baseTarget?.children,
+						}),
+					),
+			),
+		};
 	}
 
 	return [name, target];
@@ -180,9 +222,29 @@ function unparseTarget(name: string, target: JsonObject): Node {
 
 function parseProject(
 	node: Node,
-	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+	{
+		serializers,
+		abstractProjects,
+	}: {
+		serializers?: Map<string, EntrySerializer>;
+		abstractProjects: Map<string, Node>;
+	},
 ): [string, JsonObject] {
 	const name = getSingleStringValue(node, `for project`);
+
+	let baseProject: Node | undefined;
+	const baseName = node.entries.find(entry => entry.name?.name === 'extends')
+		?.value.value;
+	if (baseName != null) {
+		baseProject = abstractProjects.get(baseName as string);
+		if (baseProject == null) {
+			throw new InvalidConfigurationError(
+				`Project ${JSON.stringify(
+					name,
+				)} extends nonexistent abstract project ${JSON.stringify(baseName)}`,
+			);
+		}
+	}
 
 	const projectSerializers = new Map(serializers);
 	projectSerializers.set('project-relative', projectRelative(node));
@@ -191,17 +253,37 @@ function parseProject(
 		allowArray: false,
 		ignoreValues: true,
 		ignoreChildren: new Set(['target']),
+		ignoreEntries: new Set(['extends']),
 		serializers: projectSerializers,
+		baseNode: baseProject,
 	});
 
-	if (node.children != null) {
+	if (baseProject?.children != null) {
 		project.targets = Object.fromEntries(
-			node.children.nodes
+			baseProject.children.nodes
 				.filter(node => node.name.name === 'target')
 				.map(node =>
-					parseTarget(name, node, {serializers: projectSerializers}),
+					parseTarget(name, node, {
+						serializers: projectSerializers,
+					}),
 				),
 		);
+	}
+
+	if (node.children != null) {
+		project.targets = {
+			...(project.targets as JsonObject | undefined),
+			...Object.fromEntries(
+				node.children.nodes
+					.filter(node => node.name.name === 'target')
+					.map(node =>
+						parseTarget(name, node, {
+							serializers: projectSerializers,
+							baseTargets: baseProject?.children,
+						}),
+					),
+			),
+		};
 	}
 
 	return [name, project];
@@ -392,17 +474,28 @@ function parseWorkspace(
 	document: Document,
 	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
 ): JsonObject {
-	const projects: [string, JsonObject][] = [];
 	const workspace: [string, JsonValue][] = [];
 
+	const allProjectNodes = document.nodes.filter(
+		node => node.name.name === 'project',
+	);
+
+	const abstractProjects = new Map(
+		allProjectNodes
+			.filter(node => node.tag?.name === 'abstract')
+			.map(node => [getSingleStringValue(node, `for abstract project`), node]),
+	);
+
+	const projects = allProjectNodes
+		.filter(node => node.tag?.name !== 'abstract')
+		.map(node => parseProject(node, {serializers, abstractProjects}));
+
 	for (const node of document.nodes) {
-		switch (node.name.name) {
-			case 'project':
-				projects.push(parseProject(node, {serializers}));
-				break;
-			default:
-				workspace.push([node.name.name, toJsonValue(node, {serializers})]);
+		if (node.name.name === 'project') {
+			continue;
 		}
+
+		workspace.push([node.name.name, toJsonValue(node, {serializers})]);
 	}
 
 	if (projects.length) {

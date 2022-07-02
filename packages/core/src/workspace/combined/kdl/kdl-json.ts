@@ -110,44 +110,61 @@ export function findArrayItems(
 
 export function toJsonValue(
 	node: Node,
-	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
+	{
+		serializers,
+		baseNode,
+	}: {serializers?: Map<string, EntrySerializer>; baseNode?: Node} = {},
 ): JsonValue {
 	if (node.children != null || node.entries.some(isProperty)) {
-		return toJsonObject(node, {serializers});
+		return toJsonObject(node, {
+			serializers,
+			baseNode,
+		});
 	}
 
-	switch (node.entries.length) {
-		case 0:
-			// TODO: make this true, like a flag?
-			// options { watch; coverage; }
-			return null;
-		case 1:
-			return deserialize(serializers, node.entries[0]!);
-		default:
-			return node.entries.map(entry => deserialize(serializers, entry));
+	const values = node.entries.map(entry => deserialize(serializers, entry));
+	if (values.length === 0) {
+		// TODO: make this true, like a flag?
+		// options { watch; coverage; }
+		return null;
 	}
+
+	const baseValue = baseNode && toJsonValue(baseNode, {serializers});
+
+	if (node.tag != null && isJsonArray(baseValue)) {
+		switch (node.tag.name) {
+			case 'append':
+				return [...baseValue, ...values];
+			case 'prepend':
+				return [...values, ...baseValue];
+		}
+	}
+
+	return values.length === 1 ? values[0]! : values;
 }
 
 export function toJsonObject(
 	node: Node,
-	options?: {
-		ignoreEntries?: boolean;
-		ignoreValues?: boolean;
-		ignoreChildren?: Set<string>;
-		allowArray?: true;
-		serializers?: Map<string, EntrySerializer>;
-	},
-): JsonObject | JsonArray;
-export function toJsonObject(
-	node: Node,
 	options: {
-		ignoreEntries?: boolean;
+		ignoreEntries?: boolean | Set<string>;
 		ignoreValues?: boolean;
 		ignoreChildren?: Set<string>;
 		allowArray: false;
 		serializers?: Map<string, EntrySerializer>;
+		baseNode?: Node;
 	},
 ): JsonObject;
+export function toJsonObject(
+	node: Node,
+	options?: {
+		ignoreEntries?: boolean | Set<string>;
+		ignoreValues?: boolean;
+		ignoreChildren?: Set<string>;
+		allowArray?: boolean;
+		serializers?: Map<string, EntrySerializer>;
+		baseNode?: Node;
+	},
+): JsonObject | JsonArray;
 export function toJsonObject(
 	node: Node,
 	{
@@ -156,19 +173,46 @@ export function toJsonObject(
 		ignoreChildren = new Set<string>(),
 		allowArray = true,
 		serializers,
+		baseNode,
 	}: {
-		ignoreEntries?: boolean;
+		ignoreEntries?: boolean | Set<string>;
 		ignoreValues?: boolean;
 		ignoreChildren?: Set<string>;
 		allowArray?: boolean;
 		serializers?: Map<string, EntrySerializer>;
+		baseNode?: Node;
 	} = {},
 ): JsonObject | JsonArray {
+	let baseValue =
+		baseNode &&
+		toJsonObject(baseNode, {
+			ignoreEntries,
+			ignoreValues,
+			ignoreChildren,
+			allowArray,
+			serializers,
+		});
+	if (node.tag?.name === 'overwrite') {
+		baseValue = undefined;
+	}
+
 	const implicitValues: JsonValue[] = [];
+	const baseValues = new Map(
+		isJsonObject(baseValue)
+			? Object.entries(baseValue).filter(([name]) => !ignoreChildren.has(name))
+			: undefined,
+	);
 	const result = new Map<string, JsonValue>();
 
-	if (!ignoreEntries) {
+	if (ignoreEntries !== true) {
+		const ignoredEntries =
+			ignoreEntries instanceof Set ? ignoreEntries : new Set<string>();
+
 		for (const entry of node.entries) {
+			if (ignoredEntries.has(entry.name?.name as string)) {
+				continue;
+			}
+
 			if (entry.name == null) {
 				implicitValues.push(deserialize(serializers, entry));
 			} else {
@@ -182,43 +226,92 @@ export function toJsonObject(
 	}
 
 	if (node.children != null) {
-		const childValues = new Map<string, JsonValue[]>();
-
+		const childrenByName = new Map<string, Node[]>();
 		for (const child of node.children.nodes) {
-			if (ignoreChildren.has(child.name.name)) {
+			const name = child.name.name;
+			if (ignoreChildren.has(name)) {
 				continue;
 			}
 
-			let values = childValues.get(child.name.name);
-			if (values == null) {
-				values = [];
-				childValues.set(child.name.name, values);
+			let childrenForName = childrenByName.get(name);
+			if (childrenForName == null) {
+				childrenForName = [];
+				childrenByName.set(name, childrenForName);
 			}
 
-			values.push(toJsonValue(child, {serializers}));
+			childrenForName.push(child);
 		}
 
-		if (childValues.get(arrayItemKey) != null) {
-			const values = childValues.get(arrayItemKey)!;
+		for (const [name, children] of childrenByName) {
+			if (
+				name !== arrayItemKey &&
+				children.length === 1 &&
+				!isJsonArray(baseValues.get(name))
+			) {
+				const baseChildren = baseNode?.children?.nodes.filter(
+					child => child.name.name === name,
+				);
 
-			if (!allowArray || childValues.size > 1 || result.size > 0) {
-				result.set(implicitKeyForValue, values);
-				childValues.delete(arrayItemKey);
-			} else {
-				return values;
+				result.set(
+					name,
+					toJsonValue(children[0]!, {
+						serializers,
+						baseNode: baseChildren?.[0],
+					}),
+				);
+				continue;
 			}
-		}
 
-		for (const [name, values] of childValues) {
-			if (values.length === 1) {
-				result.set(name, values[0]!);
-			} else {
-				result.set(name, values);
+			const ownValues: JsonValue[] = [];
+			const prepend: JsonValue[] = [];
+			const append: JsonValue[] = [];
+
+			for (const child of children) {
+				const value = toJsonValue(child, {serializers});
+
+				switch (child.tag?.name) {
+					case 'append':
+						append.push(value);
+						break;
+					case 'prepend':
+						prepend.push(value);
+						break;
+					default:
+						ownValues.push(value);
+				}
 			}
+
+			const baseResult = baseValues.get(name);
+			const childResult = [
+				...prepend,
+				...(ownValues.length === 0 && isJsonArray(baseResult)
+					? baseResult
+					: ownValues),
+				...append,
+			];
+
+			if (name !== arrayItemKey) {
+				result.set(
+					name,
+					childResult.length === 1 ? childResult[0]! : childResult,
+				);
+				continue;
+			}
+
+			if (
+				allowArray &&
+				childrenByName.size === 1 &&
+				result.size == 0 &&
+				baseValues.size == 0
+			) {
+				return childResult;
+			}
+
+			result.set(implicitKeyForValue, childResult);
 		}
 	}
 
-	return Object.fromEntries(result);
+	return Object.fromEntries(new Map([...baseValues, ...result]));
 }
 
 export function fromJsonValue(

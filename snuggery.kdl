@@ -79,12 +79,12 @@ project "all" root="" {
 	}
 }
 
-project "@snuggery/snuggery" root="packages/snuggery" {
+(abstract)project "parent" {
 	target "build" builder="@snuggery/node:build" {
 		options {
 			asset "README.md" "NOTICE.md"
 			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
+			asset allowEmpty=true from=(project-relative)"src" {
 				include "**/*.d.ts" 
 				include "**/*.json" 
 			}
@@ -92,94 +92,35 @@ project "@snuggery/snuggery" root="packages/snuggery" {
 	}
 }
 
-project "@snuggery/global" root="packages/global" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md" "NOTICE.md" "bin.sh"
-			asset from="." "LICENSE.md" ".pnp.loader.mjs"
+project "@snuggery/snuggery" extends="parent" root="packages/snuggery"
+
+project "@snuggery/global" extends="parent" root="packages/global" {
+	(merge)target "build" {
+		(merge)options {
+			(append)asset ".pnp.loader.mjs" from="."
 		}
 	}
 }
 
-project "@snuggery/affected" root="packages/affected" {
-	target "build" builder="@snuggery/node:build" {
+project "@snuggery/affected" extends="parent" root="packages/affected"
+
+project "@snuggery/architect" extends="parent" root="packages/architect"
+
+project "@snuggery/core" extends="parent" root="packages/core"
+
+project "@snuggery/angular" extends="parent" root="packages/angular" {
+	target "build" {
 		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
+			(append)asset "**/*" from=(project-relative)"src"
 		}
 	}
 }
 
-project "@snuggery/architect" root="packages/architect" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-		}
-	}
-}
+project "@snuggery/node" extends="parent" root="packages/node"
 
-project "@snuggery/core" root="packages/core" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-		}
-	}
-}
+project "@snuggery/schematics" extends="parent" root="packages/schematics"
 
-project "@snuggery/angular" root="packages/angular" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-			asset "**/*" from=(project-relative)"src"
-		}
-	}
-}
-
-project "@snuggery/node" root="packages/node" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
-		}
-	}
-}
-
-project "@snuggery/schematics" root="packages/schematics" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
-		}
-	}
-}
-
-project "@snuggery/yarn" root="packages/yarn" {
-	target "build" builder="@snuggery/node:build" {
-		options {
-			asset "README.md"
-			asset "LICENSE.md" from="."
-			asset from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
-			}
-		}
-	}
-}
+project "@snuggery/yarn" extends="parent" root="packages/yarn"
 
 project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
 	target "build" builder="@snuggery/snuggery:execute" {
