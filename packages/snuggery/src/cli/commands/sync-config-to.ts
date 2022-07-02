@@ -249,25 +249,28 @@ export class SyncConfigToCommand extends AbstractCommand {
 					defaultConfiguration: target.defaultConfiguration!,
 
 					options:
-						target.options! &&
-						((await compiledSchema.applyPreTransforms(
-							target.options,
-						)) as JsonObject),
+						target.options! && Object.keys(target.options).length > 0
+							? ((await compiledSchema.applyPreTransforms(
+									target.options,
+							  )) as JsonObject)
+							: undefined!,
 					configurations:
 						target.configurations! &&
-						Object.fromEntries(
-							await Promise.all(
-								Object.entries(target.configurations).map(
-									async ([name, configuration]) =>
-										[
-											name,
-											(await compiledSchema!.applyPreTransforms(
-												configuration,
-											)) as JsonObject,
-										] as const,
-								),
-							),
-						),
+						Object.keys(target.configurations).length > 0
+							? Object.fromEntries(
+									await Promise.all(
+										Object.entries(target.configurations).map(
+											async ([name, configuration]) =>
+												[
+													name,
+													(await compiledSchema!.applyPreTransforms(
+														configuration,
+													)) as JsonObject,
+												] as const,
+										),
+									),
+							  )
+							: undefined!,
 				});
 			}
 		}
