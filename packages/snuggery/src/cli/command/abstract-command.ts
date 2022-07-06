@@ -20,7 +20,6 @@ import {
 } from '../utils/parse-options';
 import type {Option} from '../utils/parse-schema';
 import type {Report} from '../utils/report';
-import {createWorkspaceTransform} from '../utils/schema';
 
 import type {CliWorkspace, Context} from './context';
 
@@ -127,10 +126,10 @@ export abstract class AbstractCommand extends Command<Context> {
 
 	protected async createSchemaRegistry({
 		formats,
-		workspaceFilename,
+		workspace = this.context.workspace,
 	}: {
 		formats?: import('@angular-devkit/core').schema.SchemaFormat[];
-		workspaceFilename?: string;
+		workspace?: CliWorkspace | null;
 	} = {}): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
 		const [{SchemaRegistry}, {schema}] = await Promise.all([
 			import('../utils/schema-registry.js'),
@@ -138,11 +137,9 @@ export abstract class AbstractCommand extends Command<Context> {
 		]);
 
 		const registry = new SchemaRegistry(formats);
-		registry.addPreTransform(
-			createWorkspaceTransform(
-				workspaceFilename ?? this.context.workspace?.workspaceFilename,
-			),
-		);
+		if (workspace != null) {
+			registry.addPreTransform(workspace.createWorkspaceDataVisitor());
+		}
 
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));

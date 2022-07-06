@@ -1,5 +1,5 @@
 import type {Target} from '@angular-devkit/architect';
-import type {workspaces} from '@angular-devkit/core';
+import type {schema, workspaces} from '@angular-devkit/core';
 import {
 	type JsonObject,
 	type ProjectDefinition,
@@ -9,19 +9,11 @@ import {
 	workspaceFilenames,
 } from '@snuggery/core';
 import {type BaseContext, UsageError} from 'clipanion';
-import {
-	basename,
-	dirname,
-	extname,
-	normalize,
-	relative,
-	resolve,
-	sep,
-} from 'path';
+import {basename, dirname, normalize, relative, resolve, sep} from 'path';
 
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
-import type {SchemaRegistry} from '../utils/schema-registry';
+import {createWorkspaceTransform} from '../utils/schema';
 
 export interface Context extends BaseContext {
 	/**
@@ -175,6 +167,13 @@ export class CliWorkspace implements WorkspaceDefinition {
 			project: projectName,
 			target: targetName,
 		};
+	}
+
+	/**
+	 * Create a JsonVisitor for all data in this workspace validated by a schema.
+	 */
+	createWorkspaceDataVisitor(): schema.JsonVisitor {
+		return createWorkspaceTransform(this.workspaceFilename);
 	}
 }
 

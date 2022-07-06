@@ -19,19 +19,19 @@ export class ChildArchitect {
 	readonly #workspace: Promise<CliWorkspace>;
 
 	public constructor(workspaceRoot: string) {
-		const registry = new schema.CoreSchemaRegistry();
-		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
-
 		const workspace = findWorkspace(workspaceRoot) as Promise<CliWorkspace>;
 		this.#workspace = workspace;
 
-		this.#architect = workspace.then(
-			workspace =>
-				new Architect(
-					createArchitectHost({startCwd: process.cwd()}, workspace),
-					registry,
-				),
-		);
+		this.#architect = workspace.then(workspace => {
+			const registry = new schema.CoreSchemaRegistry();
+			registry.addPreTransform(workspace.createWorkspaceDataVisitor());
+			registry.addPostTransform(schema.transforms.addUndefinedDefaults);
+
+			return new Architect(
+				createArchitectHost({startCwd: process.cwd()}, workspace),
+				registry,
+			);
+		});
 	}
 
 	public executeTarget(

@@ -11,6 +11,7 @@ import {Option} from 'clipanion';
 import {join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
+import {CliWorkspace} from '../index';
 import {formatMarkdownish} from '../utils/format';
 import {memoize} from '../utils/memoize';
 import type {CompiledSchema} from '../utils/schema-registry';
@@ -144,7 +145,10 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		const sourceName = this.source ?? workspaceFilename;
 		const source = this.source
-			? await readWorkspace(join(workspaceFolder, this.source))
+			? new CliWorkspace(
+					await readWorkspace(join(workspaceFolder, this.source)),
+					join(workspaceFolder, this.source),
+			  )
 			: this.workspace;
 
 		const clone: WorkspaceDefinition = {
@@ -155,8 +159,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		delete clone.extensions.version;
 
-		await this.#copyProjects(clone, source, sourceName);
-		await this.#updateSchematics(clone, sourceName);
+		await this.#copyProjects(clone, source);
+		await this.#updateSchematics(clone, source);
 
 		if (this.validate) {
 			if (await this.#isValid(clone)) {
@@ -194,15 +198,11 @@ export class SyncConfigToCommand extends AbstractCommand {
 		return 0;
 	}
 
-	async #copyProjects(
-		target: WorkspaceDefinition,
-		source: WorkspaceDefinition,
-		sourceName: string,
-	) {
+	async #copyProjects(target: WorkspaceDefinition, source: CliWorkspace) {
 		const [architectHost, registry] = await Promise.all([
 			this.architectHost,
 			this.createSchemaRegistry({
-				workspaceFilename: sourceName,
+				workspace: source,
 			}),
 		]);
 
@@ -274,9 +274,9 @@ export class SyncConfigToCommand extends AbstractCommand {
 		}
 	}
 
-	async #updateSchematics(target: WorkspaceDefinition, sourceName: string) {
+	async #updateSchematics(target: WorkspaceDefinition, source: CliWorkspace) {
 		const registry = await this.createSchemaRegistry({
-			workspaceFilename: sourceName,
+			workspace: source,
 		});
 		const engineHost = await this.createEngineHost(
 			this.workspace.workspaceFolder,
