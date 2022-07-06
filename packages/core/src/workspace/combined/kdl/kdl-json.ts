@@ -117,19 +117,22 @@ export function toJsonValue(
 
 	const values = node.entries.map(entry => deserialize(serializers, entry));
 	if (values.length === 0) {
+		if (node.children != null) {
+			// lorem {} -> set lorem to an object
+			return toJsonObject(node, {serializers, baseNode});
+		}
+
 		// TODO: make this true, like a flag?
-		// options { watch; coverage; }
+		// options { watch; codeCoverage; }
 		return null;
 	}
 
-	const baseValue = baseNode && toJsonValue(baseNode, {serializers});
-
-	if (node.tag != null && isJsonArray(baseValue)) {
-		switch (node.tag.name) {
+	if (baseNode != null) {
+		switch (node.getTag()) {
 			case 'append':
-				return [...baseValue, ...values];
+				return [toJsonValue(baseNode, {serializers}), values].flat();
 			case 'prepend':
-				return [...values, ...baseValue];
+				return [values, toJsonValue(baseNode, {serializers})].flat();
 		}
 	}
 
@@ -176,18 +179,16 @@ export function toJsonObject(
 		baseNode?: Node;
 	} = {},
 ): JsonObject | JsonArray {
-	let baseValue =
-		baseNode &&
-		toJsonObject(baseNode, {
-			ignoreEntries,
-			ignoreValues,
-			ignoreChildren,
-			allowArray,
-			serializers,
-		});
-	if (node.getTag() === 'overwrite') {
-		baseValue = undefined;
-	}
+	const baseValue =
+		baseNode != null && node.getTag() !== 'overwrite'
+			? toJsonObject(baseNode, {
+					ignoreEntries,
+					ignoreValues,
+					ignoreChildren,
+					allowArray,
+					serializers,
+			  })
+			: undefined;
 
 	const implicitValues: JsonValue[] = [];
 	const baseValues = new Map(
@@ -215,7 +216,10 @@ export function toJsonObject(
 	}
 
 	if (!ignoreValues && implicitValues.length > 0) {
-		result.set(implicitKeyForValue, implicitValues);
+		result.set(
+			implicitKeyForValue,
+			implicitValues.length === 1 ? implicitValues[0]! : implicitKeyForValue,
+		);
 	}
 
 	if (node.children != null) {
