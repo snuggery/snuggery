@@ -21,7 +21,6 @@ import {
 
 import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
-import {applyAliases, autoArray, autoObject} from '../utils/schema';
 import type {SchemaRegistry} from '../utils/schema-registry';
 
 export interface Context extends BaseContext {
@@ -176,21 +175,6 @@ export class CliWorkspace implements WorkspaceDefinition {
 			project: projectName,
 			target: targetName,
 		};
-	}
-
-	// TODO this should move to core
-	applyWorkspaceTransforms(registry: SchemaRegistry) {
-		if (extname(this.workspaceFilename) !== '.kdl') {
-			return;
-		}
-
-		registry.addPreTransform((value, pointer, schema) =>
-			applyAliases(
-				autoArray(autoObject(value, pointer, schema), pointer, schema),
-				pointer,
-				schema,
-			),
-		);
 	}
 }
 

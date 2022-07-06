@@ -142,6 +142,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 			workspace: {workspaceFolder, workspaceFilename},
 		} = this;
 
+		const sourceName = this.source ?? workspaceFilename;
 		const source = this.source
 			? await readWorkspace(join(workspaceFolder, this.source))
 			: this.workspace;
@@ -154,8 +155,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		delete clone.extensions.version;
 
-		await this.#copyProjects(clone, source);
-		await this.#updateSchematics(clone);
+		await this.#copyProjects(clone, source, sourceName);
+		await this.#updateSchematics(clone, sourceName);
 
 		if (this.validate) {
 			if (await this.#isValid(clone)) {
@@ -174,9 +175,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		await writeWorkspace(join(workspaceFolder, this.target), clone, {
 			header: [
-				`This file was generated from ${
-					this.source ?? workspaceFilename
-				} using \`sn --sync-config-to ${this.target}\``,
+				`This file was generated from ${sourceName} using \`sn --sync-config-to ${this.target}\``,
 				'Make changes to the original configuration file and re-run the command to regenerate this file,',
 				'otherwise your changes might get lost the next time the configuration is synced.',
 			],
@@ -184,17 +183,13 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 		if (report.numberOfErrors > 0) {
 			report.reportWarning(
-				`Copied the workspace in ${this.source ?? workspaceFilename} to ${
-					this.target
-				}, ignoring parts of the file due to errors logged above`,
+				`Copied the workspace in ${sourceName} to ${this.target}, ignoring parts of the file due to errors logged above`,
 			);
 			return 1;
 		}
 
 		report.reportInfo(
-			`Successfully copied the workspace in ${
-				this.source ?? workspaceFilename
-			} to ${this.target}`,
+			`Successfully copied the workspace in ${sourceName} to ${this.target}`,
 		);
 		return 0;
 	}
@@ -202,10 +197,13 @@ export class SyncConfigToCommand extends AbstractCommand {
 	async #copyProjects(
 		target: WorkspaceDefinition,
 		source: WorkspaceDefinition,
+		sourceName: string,
 	) {
 		const [architectHost, registry] = await Promise.all([
 			this.architectHost,
-			this.architectSchemaRegistry,
+			this.createSchemaRegistry({
+				workspaceFilename: sourceName,
+			}),
 		]);
 
 		const getCompiledSchema = memoize(
@@ -276,8 +274,10 @@ export class SyncConfigToCommand extends AbstractCommand {
 		}
 	}
 
-	async #updateSchematics(target: WorkspaceDefinition) {
-		const registry = await this.schematicsSchemaRegistry;
+	async #updateSchematics(target: WorkspaceDefinition, sourceName: string) {
+		const registry = await this.createSchemaRegistry({
+			workspaceFilename: sourceName,
+		});
 		const engineHost = await this.createEngineHost(
 			this.workspace.workspaceFolder,
 			false,

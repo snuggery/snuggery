@@ -20,6 +20,7 @@ import {
 } from '../utils/parse-options';
 import type {Option} from '../utils/parse-schema';
 import type {Report} from '../utils/report';
+import {createWorkspaceTransform} from '../utils/schema';
 
 import type {CliWorkspace, Context} from './context';
 
@@ -124,16 +125,24 @@ export abstract class AbstractCommand extends Command<Context> {
 		});
 	}
 
-	async #createSchemaRegistry(
-		formats?: import('@angular-devkit/core').schema.SchemaFormat[],
-	): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
+	protected async createSchemaRegistry({
+		formats,
+		workspaceFilename,
+	}: {
+		formats?: import('@angular-devkit/core').schema.SchemaFormat[];
+		workspaceFilename?: string;
+	} = {}): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
 		const [{SchemaRegistry}, {schema}] = await Promise.all([
 			import('../utils/schema-registry.js'),
 			import('@angular-devkit/core'),
 		]);
 
 		const registry = new SchemaRegistry(formats);
-		this.context.workspace?.applyWorkspaceTransforms(registry);
+		registry.addPreTransform(
+			createWorkspaceTransform(
+				workspaceFilename ?? this.context.workspace?.workspaceFilename,
+			),
+		);
 
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
@@ -177,7 +186,7 @@ export abstract class AbstractCommand extends Command<Context> {
 
 	@Cached()
 	protected get architectSchemaRegistry() {
-		return this.#createSchemaRegistry();
+		return this.createSchemaRegistry();
 	}
 
 	@Cached()
@@ -207,9 +216,9 @@ export abstract class AbstractCommand extends Command<Context> {
 	@Cached()
 	protected get schematicsSchemaRegistry() {
 		return import('@angular-devkit/schematics').then(async ({formats}) => {
-			const registry = await this.#createSchemaRegistry(
-				formats.standardFormats,
-			);
+			const registry = await this.createSchemaRegistry({
+				formats: formats.standardFormats,
+			});
 
 			registry.addSmartDefaultProvider(
 				'projectName',
