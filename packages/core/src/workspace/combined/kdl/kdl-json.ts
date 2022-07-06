@@ -1,7 +1,7 @@
 // cspell:ignore serializers
 
 import type {JsonArray} from '@angular-devkit/core';
-import {Document, Entry, Identifier, Node, Value} from '@bgotink/kdl';
+import {Document, Entry, Identifier, Node} from '@bgotink/kdl';
 
 import {
 	isJsonArray,
@@ -12,12 +12,7 @@ import {
 	stringifyPath,
 } from '../../types';
 
-import {
-	getDocument,
-	isProperty,
-	isValue,
-	replaceNodeInPlace,
-} from './kdl-utils';
+import {getDocument, replaceNodeInPlace} from './kdl-utils';
 
 export interface EntrySerializer {
 	deserialize(entry: Entry): JsonValue;
@@ -28,8 +23,8 @@ function deserialize(
 	serializers: Map<string, EntrySerializer> | undefined,
 	entry: Entry,
 ) {
-	const serializer = serializers?.get(entry.tag?.name as string);
-	return serializer ? serializer.deserialize(entry) : entry.value.value;
+	const serializer = serializers?.get(entry.getTag()!);
+	return serializer ? serializer.deserialize(entry) : entry.getValue();
 }
 
 function updateEntry(
@@ -37,7 +32,7 @@ function updateEntry(
 	entry: Entry,
 	value: JsonValue,
 ) {
-	const serializer = serializers?.get(entry.tag?.name as string);
+	const serializer = serializers?.get(entry.getTag()!);
 
 	if (serializer) {
 		return serializer.serialize(entry, value);
@@ -47,8 +42,8 @@ function updateEntry(
 		return false;
 	}
 
-	if (entry.value.value !== value) {
-		entry.value = new Value(value);
+	if (entry.getValue() !== value) {
+		entry.setValue(value);
 	}
 	return true;
 }
@@ -80,7 +75,7 @@ export function findArrayItems(
 		return null;
 	}
 
-	const nodes = document.nodes.filter(node => node.name.name === name);
+	const nodes = document.findNodesByName(name);
 
 	if (nodes.length === 0) {
 		return null;
@@ -91,10 +86,8 @@ export function findArrayItems(
 	}
 
 	const child = nodes[0]!;
-	const itemChildren = child.children?.nodes.filter(
-		node => node.name.name === arrayItemKey,
-	);
-	if (itemChildren?.length) {
+	const itemChildren = child.findNodesByName(arrayItemKey);
+	if (itemChildren.length > 0) {
 		return {
 			nodes: itemChildren as [Node, ...Node[]],
 			document: child.children!,
@@ -102,7 +95,7 @@ export function findArrayItems(
 	}
 
 	return {
-		entries: child.entries.filter(isValue),
+		entries: child.getArgumentEntries(),
 		node: child,
 		document,
 	};
@@ -115,7 +108,7 @@ export function toJsonValue(
 		baseNode,
 	}: {serializers?: Map<string, EntrySerializer>; baseNode?: Node} = {},
 ): JsonValue {
-	if (node.children != null || node.entries.some(isProperty)) {
+	if (node.hasChildren() || node.hasProperties()) {
 		return toJsonObject(node, {
 			serializers,
 			baseNode,
@@ -192,7 +185,7 @@ export function toJsonObject(
 			allowArray,
 			serializers,
 		});
-	if (node.tag?.name === 'overwrite') {
+	if (node.getTag() === 'overwrite') {
 		baseValue = undefined;
 	}
 
@@ -205,18 +198,18 @@ export function toJsonObject(
 	const result = new Map<string, JsonValue>();
 
 	if (ignoreEntries !== true) {
-		const ignoredEntries =
-			ignoreEntries instanceof Set ? ignoreEntries : new Set<string>();
+		const ignoredEntries = ignoreEntries || undefined;
 
 		for (const entry of node.entries) {
-			if (ignoredEntries.has(entry.name?.name as string)) {
+			const name = entry.getName();
+			if (ignoredEntries?.has(name as string)) {
 				continue;
 			}
 
-			if (entry.name == null) {
+			if (name == null) {
 				implicitValues.push(deserialize(serializers, entry));
 			} else {
-				result.set(entry.name.name, deserialize(serializers, entry));
+				result.set(name, deserialize(serializers, entry));
 			}
 		}
 	}
@@ -228,7 +221,7 @@ export function toJsonObject(
 	if (node.children != null) {
 		const childrenByName = new Map<string, Node[]>();
 		for (const child of node.children.nodes) {
-			const name = child.name.name;
+			const name = child.getName();
 			if (ignoreChildren.has(name)) {
 				continue;
 			}
@@ -248,9 +241,7 @@ export function toJsonObject(
 				children.length === 1 &&
 				!isJsonArray(baseValues.get(name))
 			) {
-				const baseChildren = baseNode?.children?.nodes.filter(
-					child => child.name.name === name,
-				);
+				const baseChildren = baseNode?.findNodesByName(name);
 
 				result.set(
 					name,
@@ -269,7 +260,7 @@ export function toJsonObject(
 			for (const child of children) {
 				const value = toJsonValue(child, {serializers});
 
-				switch (child.tag?.name) {
+				switch (child.getTag()) {
 					case 'append':
 						append.push(value);
 						break;
@@ -333,7 +324,7 @@ export function fromJsonValue(
 		if (isArrayOfPrimitive(value)) {
 			return new Node(
 				new Identifier(name),
-				value.map(item => new Entry(new Value(item), null)),
+				value.map(item => Entry.createArgument(item)),
 			);
 		}
 
@@ -352,7 +343,7 @@ export function fromJsonValue(
 		return fromJsonObject(value, name);
 	}
 
-	return new Node(new Identifier(name), [new Entry(new Value(value), null)]);
+	return new Node(new Identifier(name), [Entry.createArgument(value)]);
 }
 
 export function fromJsonObject(
@@ -360,56 +351,38 @@ export function fromJsonObject(
 	nodeName: string,
 	{ignoreEntries = false} = {},
 ): Node {
-	const node = new Node(new Identifier(nodeName));
-	const children: Node[] = [];
+	const node = Node.create(nodeName);
 
 	for (const [name, value] of Object.entries(object)) {
 		if (!ignoreEntries) {
 			if (name === implicitKeyForValue && isJsonArray(value)) {
 				if (isArrayOfPrimitive(value)) {
-					node.entries.push(
-						...value.map(item => new Entry(new Value(item), null)),
-					);
+					node.entries.push(...value.map(item => Entry.createArgument(item)));
 					continue;
 				}
 			}
 
 			if (!isJsonObject(value) && !isJsonArray(value)) {
-				node.entries.push(
-					new Entry(
-						new Value(value),
-						name === implicitKeyForValue ? null : new Identifier(name),
-					),
-				);
+				if (name === implicitKeyForValue) {
+					node.addArgument(value);
+				} else {
+					node.setProperty(name, value);
+				}
 				continue;
 			}
 		}
 
-		const nodeOrDocument = fromJsonValue(value, name, {allowDocument: true});
-		if (nodeOrDocument instanceof Node) {
-			children.push(nodeOrDocument);
-		} else {
-			children.push(...nodeOrDocument.nodes);
-		}
-	}
-
-	if (children.length) {
-		node.children = new Document(children);
+		node.appendNode(fromJsonValue(value, name, {allowDocument: true}));
 	}
 
 	return node;
 }
 
 export function deleteValue(nodeOrDocument: Node | Document, name: string) {
-	const document = getDocument(nodeOrDocument);
-	if (document != null) {
-		document.nodes = document.nodes.filter(node => node.name.name !== name);
-	}
+	nodeOrDocument.removeNodesByName(name);
 
 	if (nodeOrDocument instanceof Node) {
-		nodeOrDocument.entries = nodeOrDocument.entries.filter(
-			entry => entry.name?.name !== name,
-		);
+		nodeOrDocument.deleteProperty(name);
 	}
 }
 
@@ -432,7 +405,7 @@ export function deleteEntry(
 			throw new Error(`Failed to find ${stringifyPath(path)} to delete`);
 		}
 
-		node.entries.splice(node.entries.indexOf(entries[index]!), 1);
+		node.removeArgument(index);
 		return;
 	}
 
@@ -442,7 +415,7 @@ export function deleteEntry(
 		throw new Error(`Failed to find ${stringifyPath(path)} to delete`);
 	}
 
-	document.nodes.splice(document.nodes.indexOf(nodes[index]!), 1);
+	document.removeNode(nodes[index]!);
 }
 
 export function addValue(
@@ -452,31 +425,24 @@ export function addValue(
 	value: JsonValue,
 	{tryEntry = true} = {},
 ) {
+	if (nodeOrDocument.findNodeByName(name)) {
+		throw new Error(`Didn't expect ${stringifyPath(path)} to already exist`);
+	}
+
 	if (nodeOrDocument instanceof Node) {
-		if (
-			nodeOrDocument.entries.some(entry => entry.name?.name === name) ||
-			nodeOrDocument.children?.nodes.some(child => child.name.name === name)
-		) {
+		if (nodeOrDocument.hasProperty(name)) {
 			throw new Error(`Didn't expect ${stringifyPath(path)} to already exist`);
 		}
 
 		if (tryEntry && (value == null || typeof value !== 'object')) {
-			nodeOrDocument.entries.push(
-				new Entry(new Value(value), new Identifier(name)),
-			);
+			nodeOrDocument.entries.push(Entry.createProperty(name, value));
+			return;
 		}
 	}
 
 	// We must add a child node
 
-	const document = getDocument(nodeOrDocument, true);
-
-	const newNodeOrDocument = fromJsonValue(value, name, {allowDocument: true});
-	if (newNodeOrDocument instanceof Node) {
-		document.nodes.push(newNodeOrDocument);
-	} else {
-		document.nodes.push(...newNodeOrDocument.nodes);
-	}
+	nodeOrDocument.appendNode(fromJsonValue(value, name, {allowDocument: true}));
 }
 
 export function addEntry(
@@ -494,10 +460,9 @@ export function addEntry(
 	if ('nodes' in items) {
 		const {nodes, document} = items;
 
-		document.nodes.splice(
-			document.nodes.indexOf(nodes[nodes.length - 1]!) + 1,
-			0,
+		document.insertNodeAfter(
 			fromJsonValue(value, nodes[0].name.name),
+			nodes[nodes.length - 1]!,
 		);
 		return;
 	}
@@ -508,7 +473,7 @@ export function addEntry(
 		node.entries.splice(
 			node.entries.indexOf(entries[entries.length - 1]!) + 1,
 			0,
-			new Entry(new Value(value), null),
+			Entry.createArgument(value),
 		);
 		return;
 	}
@@ -517,20 +482,24 @@ export function addEntry(
 	// instead
 
 	if (entries.length === node.entries.length) {
-		document.nodes.splice(
-			document.nodes.indexOf(node),
-			1,
-			...entries.map(entry => new Node(new Identifier(name), [entry])),
-			fromJsonValue(value, name),
+		document.replaceNode(
+			node,
+			new Document([
+				...entries.map(entry => new Node(new Identifier(name), [entry])),
+				fromJsonValue(value, name),
+			]),
 		);
+		return;
 	}
 
 	// This node has properties, so turn entries into children with `-`
 
-	node.entries = node.entries.filter(isProperty);
-	getDocument(node, true).nodes.push(
-		...entries.map(entry => new Node(new Identifier(arrayItemKey), [entry])),
-		fromJsonValue(value, arrayItemKey),
+	node.entries = node.getPropertyEntries();
+	node.appendNode(
+		new Document([
+			...entries.map(entry => new Node(new Identifier(arrayItemKey), [entry])),
+			fromJsonValue(value, arrayItemKey),
+		]),
 	);
 }
 
@@ -542,32 +511,20 @@ export function modifyValue(
 	{serializers}: {serializers?: Map<string, EntrySerializer>} = {},
 ) {
 	if (nodeOrDocument instanceof Node) {
-		const matchingEntryIndex = nodeOrDocument.entries.findIndex(
-			entry => entry.name?.name === name,
-		);
+		const entry = nodeOrDocument.getPropertyEntry(name);
 
-		if (matchingEntryIndex !== -1) {
-			if (
-				updateEntry(
-					serializers,
-					nodeOrDocument.entries[matchingEntryIndex]!,
-					value,
-				)
-			) {
+		if (entry != null) {
+			if (updateEntry(serializers, entry, value)) {
 				return;
 			}
 
-			// We have to move from a property to a child node, so remove the property
-			nodeOrDocument.entries.splice(matchingEntryIndex, 1);
-
-			const newChild = fromJsonValue(value, name);
-			getDocument(nodeOrDocument, true).nodes.push(newChild);
+			// We have to move from a property to a child node
+			nodeOrDocument.deleteProperty(name);
+			nodeOrDocument.appendNode(fromJsonValue(value, name));
 		}
 	}
 
-	const existingChild = getDocument(nodeOrDocument)?.nodes.find(
-		child => child.name.name === name,
-	);
+	const existingChild = nodeOrDocument.findNodesByName(name)?.[0];
 
 	if (existingChild == null) {
 		throw new Error(`Expected to find ${stringifyPath(path)} to modify`);
@@ -615,25 +572,28 @@ export function modifyEntry(
 	// instead
 
 	if (entries.length === node.entries.length) {
-		document.nodes.splice(
-			document.nodes.indexOf(node),
-			1,
-			...entries.map((v, i) =>
-				i === index
-					? fromJsonValue(value, name)
-					: new Node(new Identifier(name), [v]),
+		document.replaceNode(
+			node,
+			new Document(
+				entries.map((v, i) =>
+					i === index
+						? fromJsonValue(value, name)
+						: new Node(new Identifier(name), [v]),
+				),
 			),
 		);
 	}
 
 	// This node has properties, so turn entries into children with `-`
 
-	node.entries = node.entries.filter(isProperty);
-	getDocument(node, true).nodes.push(
-		...entries.map((entry, i) =>
-			i === index
-				? fromJsonValue(value, arrayItemKey)
-				: new Node(new Identifier(arrayItemKey), [entry]),
+	node.entries = node.getPropertyEntries();
+	node.appendNode(
+		new Document(
+			entries.map((entry, i) =>
+				i === index
+					? fromJsonValue(value, arrayItemKey)
+					: new Node(new Identifier(arrayItemKey), [entry]),
+			),
 		),
 	);
 }

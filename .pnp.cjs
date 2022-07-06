@@ -616,10 +616,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@bgotink/kdl", [\
-        ["npm:0.0.3", {\
-          "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.0.3-e88fbb0587-2a7cffb3a5.zip/node_modules/@bgotink/kdl/",\
+        ["npm:0.1.1", {\
+          "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.1.1-34b89c018f-05ce4759a3.zip/node_modules/@bgotink/kdl/",\
           "packageDependencies": [\
-            ["@bgotink/kdl", "npm:0.0.3"]\
+            ["@bgotink/kdl", "npm:0.1.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1582,7 +1582,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@bgotink/kdl", "npm:0.0.3"],\
+            ["@bgotink/kdl", "npm:0.1.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\
@@ -1605,7 +1605,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@bgotink/kdl", "npm:0.0.3"],\
+            ["@bgotink/kdl", "npm:0.1.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\

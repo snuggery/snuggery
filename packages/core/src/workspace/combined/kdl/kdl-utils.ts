@@ -1,32 +1,15 @@
-import {Document, Entry, Node, Value} from '@bgotink/kdl';
+import {Document, Node, Value} from '@bgotink/kdl';
 
-export function isProperty(entry: Entry): boolean {
-	return entry.name != null;
-}
-
-export function isValue(entry: Entry): boolean {
-	return entry.name == null;
-}
-
-export function findNamedValue(node: Node, name: string): Value | null {
-	const entry = node.entries.find(entry => entry.name?.name === name);
-	if (entry != null) {
-		return entry.value;
+export function findNamedValue(
+	node: Node,
+	name: string,
+): Value['value'] | undefined {
+	const property = node.getProperty(name);
+	if (property !== undefined) {
+		return property;
 	}
 
-	if (node.children == null) {
-		return null;
-	}
-
-	const children = node.children.nodes.filter(
-		child =>
-			child.name.name === name && child.entries.filter(isValue).length === 1,
-	);
-	if (children.length === 0) {
-		return null;
-	}
-
-	return children[children.length - 1]!.entries.find(isValue)!.value;
+	return node.findParameterizedNode(name)?.getArgument(0);
 }
 
 export function getDocument(

@@ -14,9 +14,7 @@ import {findNamedValue} from './kdl-utils';
 
 export function projectRelative(project: Node | JsonObject): EntrySerializer {
 	const root =
-		project instanceof Node
-			? findNamedValue(project, 'root')?.value
-			: project.root;
+		project instanceof Node ? findNamedValue(project, 'root') : project.root;
 
 	if (typeof root !== 'string') {
 		throw new InvalidConfigurationError(
