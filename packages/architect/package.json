@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/architect",
-	"version": "0.5.1",
+	"version": "0.6.0",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -25,7 +25,7 @@
 		}
 	},
 	"dependencies": {
-		"@snuggery/core": "0.4.0",
+		"@snuggery/core": "0.4.1",
 		"fs-extra": "10.0.0",
 		"glob": "7.2.0",
 		"rxjs": "^6.6.7"
