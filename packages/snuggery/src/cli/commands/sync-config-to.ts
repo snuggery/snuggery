@@ -336,7 +336,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 						extensions.schematics[collectionOrName] =
 							await compiledSchema.applyPreTransforms(config);
 					}
-					return;
+					continue;
 				}
 
 				for (const [schematicName, schematicConfig] of Object.entries(config)) {
