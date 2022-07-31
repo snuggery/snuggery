@@ -6523,7 +6523,7 @@ __metadata:
     is-ci: ^3.0.1
     prettier: ^2.5.1
     typescript: 4.7.2
-    uvu: ^0.5.2
+    uvu: ^0.5.6
   dependenciesMeta:
     esbuild:
       built: true
@@ -6862,13 +6862,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"totalist@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "totalist@npm:2.0.0"
-  checksum: 9cc5aa15c78374e50ea90a93fd0137dfec68c2139db6767f0707951681fa931343ae9a71ed257da80bc5deb994cf841f14a1512cb6708c4806617eb4513cd965
-  languageName: node
-  linkType: hard
-
 "treeify@npm:^1.1.0":
   version: 1.1.0
   resolution: "treeify@npm:1.1.0"
@@ -7068,33 +7061,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uvu@npm:0.5.2":
-  version: 0.5.2
-  resolution: "uvu@npm:0.5.2"
+"uvu@npm:^0.5.2, uvu@npm:^0.5.6":
+  version: 0.5.6
+  resolution: "uvu@npm:0.5.6"
   dependencies:
     dequal: ^2.0.0
     diff: ^5.0.0
     kleur: ^4.0.3
     sade: ^1.7.3
-    totalist: ^2.0.0
   bin:
     uvu: bin.js
-  checksum: 369135a16dc454121681a83fbfe0a5d7733d3758403e921f4911eab8355235a1a5aeb59046f842046fbd4695d5267c463ca2b0ceb6787d6772d67e2f377bcf1f
-  languageName: node
-  linkType: hard
-
-"uvu@patch:uvu@npm:0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::locator=snuggery-workspace%40workspace%3A.":
-  version: 0.5.2
-  resolution: "uvu@patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."
-  dependencies:
-    dequal: ^2.0.0
-    diff: ^5.0.0
-    kleur: ^4.0.3
-    sade: ^1.7.3
-    totalist: ^2.0.0
-  bin:
-    uvu: bin.js
-  checksum: e6887452ffd843b9379404646c0d0be6e8d5332dbd2b1bc60285736274b9fe19a450d6d2ab0c19113095b24fd5df4af043dbf339f66242ce55419901c507cdea
+  checksum: 09460a37975627de9fcad396e5078fb844d01aaf64a6399ebfcfd9e55f1c2037539b47611e8631f89be07656962af0cf48c334993db82b9ae9c3d25ce3862168
   languageName: node
   linkType: hard
 

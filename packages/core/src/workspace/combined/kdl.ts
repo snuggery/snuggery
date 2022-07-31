@@ -1,5 +1,3 @@
-/* cspell:ignore kdljs */
-
 import type {workspaces} from '@angular-devkit/core';
 
 import type {TextFileHandle} from '../file';

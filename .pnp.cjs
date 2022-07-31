@@ -153,7 +153,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.5.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1453,7 +1453,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["rxjs", "npm:6.6.7"],\
             ["semver", "npm:7.3.7"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1543,7 +1543,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["glob", "npm:7.2.0"],\
             ["rxjs", "npm:6.6.7"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "packagePeers": [\
             "@angular-devkit/architect",\
@@ -1571,7 +1571,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["glob", "npm:7.2.0"],\
             ["rxjs", "npm:6.6.7"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1591,7 +1591,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonc-parser", "npm:3.0.0"],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
+            ["uvu", "npm:0.5.6"],\
             ["yaml", "npm:2.0.0-9"]\
           ],\
           "packagePeers": [\
@@ -1613,7 +1613,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonc-parser", "npm:3.0.0"],\
             ["micromatch", "npm:4.0.2"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
+            ["uvu", "npm:0.5.6"],\
             ["yaml", "npm:2.0.0-9"]\
           ],\
           "linkType": "SOFT"\
@@ -1714,7 +1714,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["semver", "npm:7.3.5"],\
             ["strip-ansi", "npm:6.0.1"],\
             ["typanion", "npm:3.7.1"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
+            ["uvu", "npm:0.5.6"],\
             ["which-pm-runs", "npm:1.0.0"]\
           ],\
           "linkType": "SOFT"\
@@ -5719,7 +5719,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["expect", "npm:27.3.1"],\
             ["test-builders", "workspace:integration/test-builders"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -7913,7 +7913,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.5.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=7ad353"],\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."]\
+            ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8303,15 +8303,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["totalist", [\
-        ["npm:2.0.0", {\
-          "packageLocation": "./.yarn/cache/totalist-npm-2.0.0-09525663e6-9cc5aa15c7.zip/node_modules/totalist/",\
-          "packageDependencies": [\
-            ["totalist", "npm:2.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["treeify", [\
         ["npm:1.1.0", {\
           "packageLocation": "./.yarn/cache/treeify-npm-1.1.0-abf9292333-aa00dded22.zip/node_modules/treeify/",\
@@ -8538,15 +8529,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["uvu", [\
-        ["patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/uvu-patch-41a99e2e3a-e6887452ff.zip/node_modules/uvu/",\
+        ["npm:0.5.6", {\
+          "packageLocation": "./.yarn/cache/uvu-npm-0.5.6-c8507ad49b-09460a3797.zip/node_modules/uvu/",\
           "packageDependencies": [\
-            ["uvu", "patch:uvu@npm%3A0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch::version=0.5.2&hash=209d2a&locator=snuggery-workspace%40workspace%3A."],\
+            ["uvu", "npm:0.5.6"],\
             ["dequal", "npm:2.0.2"],\
             ["diff", "npm:5.0.0"],\
             ["kleur", "npm:4.1.4"],\
-            ["sade", "npm:1.7.4"],\
-            ["totalist", "npm:2.0.0"]\
+            ["sade", "npm:1.7.4"]\
           ],\
           "linkType": "HARD"\
         }]\

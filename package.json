@@ -35,7 +35,7 @@
 		"is-ci": "^3.0.1",
 		"prettier": "^2.5.1",
 		"typescript": "4.7.2",
-		"uvu": "^0.5.2"
+		"uvu": "^0.5.6"
 	},
 	"dependenciesMeta": {
 		"esbuild": {
@@ -48,8 +48,6 @@
 		"@angular/compiler-cli@14.0.0": "patch:@angular/compiler-cli@npm:14.0.0#.yarn/patches/@angular-compiler-cli-npm-14.0.0-69a2094afa.patch",
 		"sass@^1.51.0": "patch:sass@npm:1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch",
 		"resolve.exports@1.1.0": "patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch",
-		"uvu@^0.5.2": "patch:uvu@npm:0.5.2#.yarn/patches/uvu-npm-0.5.2-b2ea776eb0.patch",
-		"kdljs@0.1.4": "patch:kdljs@npm:0.1.4#.yarn/patches/kdljs-npm-0.1.4-336edb04dd.patch",
 		"chevrotain@^10.1.2": "patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch",
 		"@angular-devkit/schematics@14.0.0": "patch:@angular-devkit/schematics@npm:14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch"
 	},
