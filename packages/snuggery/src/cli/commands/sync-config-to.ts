@@ -11,7 +11,7 @@ import {Option} from 'clipanion';
 import {join} from 'path';
 
 import {AbstractCommand} from '../command/abstract-command';
-import {CliWorkspace} from '../index';
+import {CliWorkspace} from '../command/context';
 import {formatMarkdownish} from '../utils/format';
 import {memoize} from '../utils/memoize';
 import type {CompiledSchema} from '../utils/schema-registry';

@@ -421,10 +421,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bgotink/kdl@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@bgotink/kdl@npm:0.1.1"
-  checksum: 05ce4759a36ba04daab1406a1bfaf80e64b43fadeaea808036acbc1e1c2e20c5d955dea404bcab4007d94ae01ba0e4c6fc992b724933c46eda66060c31a91c38
+"@bgotink/kdl@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@bgotink/kdl@npm:0.1.2"
+  checksum: 0716384f538d92cd715e69309baf966f7ff32666d4adb68947dc54eed2e960dfb032d13bd8bb7b7aa32265bc216ba9113ea3deeda6c2bd29bddb4eb82c478b35
   languageName: node
   linkType: hard
 
@@ -1202,7 +1202,7 @@ __metadata:
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
     "@angular-devkit/core": 14.0.0
-    "@bgotink/kdl": 0.1.1
+    "@bgotink/kdl": 0.1.2
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": ^4
     "@types/node": ^16.11.35

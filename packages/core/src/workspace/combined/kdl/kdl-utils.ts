@@ -1,49 +1,65 @@
-import {Document, Node, Value} from '@bgotink/kdl';
+import {Document, Node} from '@bgotink/kdl';
 
-export function findNamedValue(
-	node: Node,
-	name: string,
-): Value['value'] | undefined {
-	const property = node.getProperty(name);
-	if (property !== undefined) {
-		return property;
-	}
+export const arrayItemKey = '-';
 
-	return node.findParameterizedNode(name)?.getArgument(0);
+export const implicitPropertyKey = '$implicit';
+
+export const tagOverwrite = 'overwrite';
+
+export function append(
+	parent: Node | Document,
+	children: Node | Node[] | Document,
+) {
+	return parent.appendNode(
+		Array.isArray(children) ? new Document(children) : children,
+	);
 }
 
-export function getDocument(
-	nodeOrDocument: Node | Document,
-	create: true,
-): Document;
-export function getDocument(
-	nodeOrDocument: Node | Document,
-	create?: false,
-): Document | null;
-export function getDocument(
-	nodeOrDocument: Node | Document,
-	create = false,
-): Document | null {
-	if (nodeOrDocument instanceof Document) {
-		return nodeOrDocument;
-	}
-
-	if (!create || nodeOrDocument.children) {
-		return nodeOrDocument.children;
-	}
-
-	return (nodeOrDocument.children = new Document([]));
+export function replace(
+	parent: Node | Document,
+	oldNode: Node,
+	newNode: Node | Node[] | Document,
+) {
+	return parent.replaceNode(
+		oldNode,
+		Array.isArray(newNode) ? new Document(newNode) : newNode,
+	);
 }
 
-export function replaceNodeInPlace(oldNode: Node, newNode: Node): void {
-	oldNode.tag = newNode.tag;
-	oldNode.entries = newNode.entries;
+export function insertBefore(
+	parent: Node | Document,
+	children: Node | Node[] | Document,
+	reference: Node | null,
+) {
+	return parent.insertNodeBefore(
+		Array.isArray(children) ? new Document(children) : children,
+		reference,
+	);
+}
 
-	if (newNode.children == null) {
-		oldNode.children = null;
-	} else if (oldNode.children != null) {
-		oldNode.children.nodes = newNode.children.nodes;
-	} else {
-		oldNode.children = newNode.children;
+export function insertAfter(
+	parent: Node | Document,
+	children: Node | Node[] | Document,
+	reference: Node | null,
+) {
+	return parent.insertNodeAfter(
+		Array.isArray(children) ? new Document(children) : children,
+		reference,
+	);
+}
+
+export function isChildOf(parent: Node | Document, child: Node) {
+	return (
+		(parent instanceof Document ? parent : parent.children)?.nodes.includes(
+			child,
+		) || false
+	);
+}
+
+export function setTag(tag: string | null, nodes: Node[]) {
+	for (const node of nodes) {
+		node.setTag(tag);
 	}
+
+	return nodes;
 }
