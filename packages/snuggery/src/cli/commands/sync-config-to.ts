@@ -1,11 +1,16 @@
-import type {JsonObject, JsonValue} from '@angular-devkit/core';
+import type {json} from '@angular-devkit/core';
 import {
+	isJsonArray,
 	isJsonObject,
+	JsonObject,
+	JsonValue,
+	JsonPropertyPath,
 	ProjectDefinitionCollection,
+	nodeFsHost,
 	readWorkspace,
-	WorkspaceDefinition,
 	workspaceFilenames,
 	writeWorkspace,
+	updateWorkspace,
 } from '@snuggery/core';
 import {Option} from 'clipanion';
 import {join} from 'path';
@@ -17,13 +22,21 @@ import {memoize} from '../utils/memoize';
 import type {CompiledSchema} from '../utils/schema-registry';
 import {isEnum} from '../utils/typanion';
 
-// TODO Not sure how structureClone holds up when using proxies
+// We are handling proxies here, and structuredClone doesn't support proxies
 function cloneJson<T extends JsonValue>(value: T): T {
 	return JSON.parse(JSON.stringify(value));
 }
 
+const isJsonEqualCache = new WeakMap<
+	JsonObject | JsonValue[],
+	{
+		equal: WeakSet<JsonObject | JsonValue[]>;
+		unequal: WeakSet<JsonObject | JsonValue[]>;
+	}
+>();
+
 /**
- * Checks whether the two JSON values are identical
+ * Check whether the two JSON values are identical
  *
  * This function doesn't take property order in objects into account,
  * but the order in arrays does matter.
@@ -32,10 +45,6 @@ function isJsonEqual(
 	a: JsonValue | undefined,
 	b: JsonValue | undefined,
 ): boolean {
-	if (typeof a !== typeof b) {
-		return false;
-	}
-
 	if (
 		typeof a !== 'object' ||
 		a == null ||
@@ -45,28 +54,217 @@ function isJsonEqual(
 		return a === b;
 	}
 
+	let cached = isJsonEqualCache.get(a);
+	if (cached == null) {
+		cached = {
+			equal: new WeakSet(),
+			unequal: new WeakSet(),
+		};
+		isJsonEqualCache.set(a, cached);
+	}
+	const cacheResult = (r: boolean) => {
+		(r ? cached!.equal : cached!.unequal).add(b);
+		return r;
+	};
+
+	if (cached.equal.has(b)) {
+		return true;
+	}
+	if (cached.unequal.has(b)) {
+		return false;
+	}
+
 	if (Array.isArray(a) || Array.isArray(b)) {
 		if (!Array.isArray(a) || !Array.isArray(b)) {
-			return false;
+			return cacheResult(false);
 		}
 
 		if (a.length !== b.length) {
-			return false;
+			return cacheResult(false);
 		}
 
-		return a.every((el, i) => isJsonEqual(el, b[i]));
+		return cacheResult(a.every((el, i) => isJsonEqual(el, b[i])));
 	}
 
 	const aProps = new Set(Object.keys(a));
 	const bProps = Object.keys(b);
 
 	if (bProps.length !== aProps.size) {
-		return false;
+		return cacheResult(false);
 	}
 
-	return bProps.every(
-		prop => aProps.has(prop) && isJsonEqual(a[prop], b[prop]),
+	return cacheResult(
+		bProps.every(prop => aProps.has(prop) && isJsonEqual(a[prop], b[prop])),
 	);
+}
+
+interface ApplyChange {
+	(change: 'modify' | 'add', path: JsonPropertyPath, value: JsonValue): void;
+	(change: 'delete', path: JsonPropertyPath): void;
+}
+
+function pathToPointer(path: JsonPropertyPath): json.schema.JsonPointer {
+	return ('/' + path.join('/')) as json.schema.JsonPointer;
+}
+
+function pointerToPath(pointer: json.schema.JsonPointer): JsonPropertyPath {
+	return pointer.slice(1).split('/');
+}
+
+function createChangeApplier(
+	target: JsonObject | JsonValue[],
+	appliedAliases?: Map<json.schema.JsonPointer, json.schema.JsonPointer>,
+): ApplyChange {
+	if (appliedAliases == null) {
+		return (
+			change: 'modify' | 'add' | 'delete',
+			path: JsonPropertyPath,
+			value?: JsonValue,
+		) => {
+			let currentTarget = target;
+			while (path.length > 1) {
+				const key = path.shift()!;
+				currentTarget = (currentTarget as JsonObject)[key] as JsonObject;
+			}
+
+			if (change === 'delete') {
+				if (isJsonArray(currentTarget)) {
+					currentTarget.splice(+path[0]!, 1);
+				} else {
+					delete currentTarget[path[0]!];
+				}
+			} else {
+				(currentTarget as JsonObject)[path[0]!] = value!;
+			}
+		};
+	}
+
+	// It's important that we take a copy of the alias map here, because there's
+	// only one map that tracks all aliases -> the aliases might get overwritten
+	// later on
+	const reverseAliases = new Map(
+		Array.from(appliedAliases, ([original, alias]) => [alias, original]),
+	);
+
+	return (
+		change: 'modify' | 'add' | 'delete',
+		path: JsonPropertyPath,
+		value?: JsonValue,
+	) => {
+		let pointer = pathToPointer(path);
+		{
+			let changed = true;
+			while (changed) {
+				changed = false;
+
+				for (const [alias, original] of reverseAliases) {
+					if (alias === pointer) {
+						pointer = original;
+						changed = true;
+						break;
+					}
+
+					if (pointer.startsWith(`${alias}/`)) {
+						pointer = `${original}${pointer.slice(
+							alias.length,
+						)}` as typeof pointer;
+						changed = true;
+						break;
+					}
+				}
+			}
+			path = pointerToPath(pointer);
+		}
+
+		let currentTarget = target;
+		while (path.length > 1) {
+			const key = path.shift()!;
+			currentTarget = (currentTarget as JsonObject)[key] as JsonObject;
+		}
+
+		if (change === 'delete') {
+			if (isJsonArray(currentTarget)) {
+				currentTarget.splice(+path[0]!, 1);
+			} else {
+				delete currentTarget[path[0]!];
+			}
+		} else {
+			(currentTarget as JsonObject)[path[0]!] = value!;
+		}
+	};
+}
+
+function merge(
+	applyChange: ApplyChange,
+	target: JsonValue,
+	source: JsonValue,
+	path: JsonPropertyPath = [],
+) {
+	if (isJsonEqual(target, source)) {
+		return;
+	}
+
+	if (target == null || source == null) {
+		if (target != null || source != null) {
+			applyChange('modify', path, source);
+		}
+
+		return;
+	}
+
+	if (isJsonArray(target)) {
+		if (!isJsonArray(source)) {
+			return applyChange('modify', path, source);
+		}
+
+		// TODO be smarter about this, e.g. when an item is inserted in the middle
+		// of the array...
+
+		if (target.length <= source.length) {
+			for (const [i, t] of target.entries()) {
+				merge(applyChange, t, source[i]!, [...path, i]);
+			}
+
+			for (let i = target.length; i < source.length; i++) {
+				applyChange('add', [...path, i], source[i]!);
+			}
+		} else {
+			// TODO
+			applyChange('modify', path, source);
+		}
+
+		return;
+	}
+
+	if (isJsonObject(target)) {
+		if (!isJsonObject(source)) {
+			return applyChange('modify', path, source);
+		}
+
+		const sourceKeys = new Set(Object.keys(source));
+		const targetKeys = new Set(Object.keys(target));
+
+		for (const key of targetKeys) {
+			if (!sourceKeys.has(key)) {
+				applyChange('delete', [...path, key]);
+				continue;
+			}
+
+			merge(applyChange, target[key]!, source[key]!, [...path, key]);
+		}
+
+		for (const key of sourceKeys) {
+			if (!targetKeys.has(key)) {
+				applyChange('add', [...path, key], source[key]!);
+			}
+		}
+
+		return;
+	}
+
+	if (target !== source) {
+		applyChange('modify', path, source);
+	}
 }
 
 export class SyncConfigToCommand extends AbstractCommand {
@@ -116,14 +314,19 @@ export class SyncConfigToCommand extends AbstractCommand {
 				`$0 --sync-config --to angular.json --validate`,
 			],
 			[
-				'Copy the configuration from angular.json to workspace.json, e.g. to sync after an angular schematic modified the configuration',
-				`$0 --sync-config --from angular.json --to workspace.json`,
+				'Merge the configuration from angular.json to workspace.json, e.g. to sync after an angular schematic modified the configuration',
+				`$0 --sync-config --from angular.json --merge --to workspace.json`,
 			],
 		],
 	});
 
-	validate = Option.Boolean(`--validate`, {
+	validate = Option.Boolean('--validate', false, {
 		description: 'Validate the existing output file instead of updating it',
+	});
+
+	merge = Option.Boolean('--merge', false, {
+		description:
+			'Merge changes into existing target file instead of overwriting',
 	});
 
 	source = Option.String('--from', {
@@ -151,33 +354,66 @@ export class SyncConfigToCommand extends AbstractCommand {
 			  )
 			: this.workspace;
 
-		const clone: WorkspaceDefinition = {
-			extensions: cloneJson(source.extensions),
+		if (this.validate || this.merge) {
+			let isValid = true;
+			const host = this.validate
+				? {
+						...nodeFsHost,
+						async write(path: string) {
+							report.reportError(`Configuration file ${path} is out of sync`);
+							isValid = false;
+						},
+				  }
+				: nodeFsHost;
 
-			projects: new ProjectDefinitionCollection(),
-		};
+			await updateWorkspace(
+				join(workspaceFolder, this.target),
+				async target => {
+					await this.#sync(
+						new CliWorkspace(target, join(workspaceFolder, this.target)),
+						source,
+					);
+				},
+				{host},
+			);
 
-		delete clone.extensions.version;
-
-		await this.#copyProjects(clone, source);
-		await this.#updateSchematics(clone, source);
-
-		if (this.validate) {
-			if (await this.#isValid(clone)) {
-				report.reportInfo(`The workspace file at ${this.target} is in sync`);
-				return 0;
-			} else {
-				report.reportError(
+			if (!isValid) {
+				report.reportInfo(
 					formatMarkdownish(
-						`The workspace file at ${this.target} is out of sync, run \`${this.cli.binaryName} --sync-config-to ${this.target}\` to update`,
+						`Run \`${this.cli.binaryName} ${this.context.startArgs
+							.filter(arg => arg !== '--validate')
+							.join(' ')}\` to update`,
 						{format: this.format, maxLineLength: Infinity},
 					),
 				);
+
 				return 1;
 			}
+
+			if (report.numberOfErrors > 0) {
+				report.reportWarning(
+					`Merged the workspace in ${sourceName} into ${this.target}, ignoring parts of the file due to errors logged above`,
+				);
+				return 1;
+			}
+
+			report.reportInfo(
+				`Successfully merged the workspace in ${sourceName} into ${this.target}`,
+			);
+			return 0;
 		}
 
-		await writeWorkspace(join(workspaceFolder, this.target), clone, {
+		const target = new CliWorkspace(
+			{
+				extensions: {},
+				projects: new ProjectDefinitionCollection(),
+			},
+			join(workspaceFolder, this.target),
+		);
+
+		await this.#sync(target, source);
+
+		await writeWorkspace(join(workspaceFolder, this.target), target, {
 			header: [
 				`This file was generated from ${sourceName} using \`sn --sync-config-to ${this.target}\``,
 				'Make changes to the original configuration file and re-run the command to regenerate this file,',
@@ -198,99 +434,54 @@ export class SyncConfigToCommand extends AbstractCommand {
 		return 0;
 	}
 
-	async #copyProjects(target: WorkspaceDefinition, source: CliWorkspace) {
-		const [architectHost, registry] = await Promise.all([
-			this.architectHost,
-			this.createSchemaRegistry({
-				workspace: source,
-			}),
-		]);
+	async #sync(target: CliWorkspace, source: CliWorkspace) {
+		const appliedAliases = new Map<
+			json.schema.JsonPointer,
+			json.schema.JsonPointer
+		>();
+		const {report} = this;
+		const [architectHost, workflow, sourceRegistry, targetRegistry] =
+			await Promise.all([
+				this.architectHost,
+				this.createEngineHost(target.workspaceFolder, false).then(engineHost =>
+					this.createWorkflow(engineHost, target.workspaceFolder, false, true),
+				),
+				this.createSchemaRegistry({
+					workspace: source,
+				}),
+				this.createSchemaRegistry({
+					workspace: target,
+					appliedAliases,
+				}),
+			]);
 
-		const getCompiledSchema = memoize(
-			async (builder: string): Promise<CompiledSchema | null> => {
+		const getCompiledArchitectSchemas = memoize(
+			async (
+				builder: string,
+			): Promise<
+				| [sourceSchema: CompiledSchema, targetSchema: CompiledSchema]
+				| [null, null]
+			> => {
+				let builderInfo;
 				try {
-					const builderInfo = await architectHost.resolveBuilder(builder);
-					return await registry.compile(builderInfo.optionSchema).toPromise();
+					builderInfo = await architectHost.resolveBuilder(builder);
 				} catch {
-					return null;
+					return [null, null];
 				}
+
+				return await Promise.all([
+					sourceRegistry.compile(builderInfo.optionSchema).toPromise(),
+					targetRegistry.compile(builderInfo.optionSchema).toPromise(),
+				]);
 			},
 		);
 
-		for (const [name, project] of source.projects) {
-			const targetProject = target.projects.add({
-				...cloneJson(project.extensions),
-				name,
-				root: project.root,
-				prefix: project.prefix,
-				sourceRoot: project.sourceRoot,
-			});
-
-			for (const [targetName, target] of project.targets) {
-				const compiledSchema = await getCompiledSchema(target.builder);
-				if (compiledSchema == null) {
-					this.report.reportError(
-						`Failed to resolve builder ${JSON.stringify(
-							target.builder,
-						)} for target ${JSON.stringify(target)} in project ${JSON.stringify(
-							project,
-						)}, skipping this target`,
-					);
-					continue;
-				}
-
-				targetProject.targets.add({
-					...cloneJson(target.extensions),
-					name: targetName,
-					builder: target.builder,
-					// TODO figure out how not to need ! in the following properties
-					defaultConfiguration: target.defaultConfiguration!,
-
-					options:
-						target.options! && Object.keys(target.options).length > 0
-							? ((await compiledSchema.applyPreTransforms(
-									target.options,
-							  )) as JsonObject)
-							: undefined!,
-					configurations:
-						target.configurations! &&
-						Object.keys(target.configurations).length > 0
-							? Object.fromEntries(
-									await Promise.all(
-										Object.entries(target.configurations).map(
-											async ([name, configuration]) =>
-												[
-													name,
-													(await compiledSchema!.applyPreTransforms(
-														configuration,
-													)) as JsonObject,
-												] as const,
-										),
-									),
-							  )
-							: undefined!,
-				});
-			}
-		}
-	}
-
-	async #updateSchematics(target: WorkspaceDefinition, source: CliWorkspace) {
-		const registry = await this.createSchemaRegistry({
-			workspace: source,
-		});
-		const engineHost = await this.createEngineHost(
-			this.workspace.workspaceFolder,
-			false,
-		);
-		const workflow = await this.createWorkflow(
-			engineHost,
-			this.workspace.workspaceFolder,
-			false,
-			false,
-		);
-
-		const getCompiledSchema = memoize(
-			async (name: string): Promise<CompiledSchema | null> => {
+		const getCompiledSchematicSchemas = memoize(
+			async (
+				name: string,
+			): Promise<
+				[source: CompiledSchema, target: CompiledSchema] | [null, null]
+			> => {
 				const [collectionName, schematicName] = name.split(':', 2) as [
 					string,
 					string,
@@ -302,123 +493,373 @@ export class SyncConfigToCommand extends AbstractCommand {
 						.createCollection(collectionName)
 						.createSchematic(schematicName);
 				} catch {
-					return null;
+					return [null, null];
 				}
 
-				return await registry
-					.compile(schematic.description.schemaJson || true)
-					.toPromise();
+				return await Promise.all([
+					sourceRegistry
+						.compile(schematic.description.schemaJson || true)
+						.toPromise(),
+					targetRegistry
+						.compile(schematic.description.schemaJson || true)
+						.toPromise(),
+				]);
 			},
 		);
 
-		const processExtensions = async (where: string, extensions: JsonObject) => {
-			if (!isJsonObject(extensions.schematics)) {
-				return;
+		processExtensions('in workspace', target.extensions, source.extensions);
+
+		for (const name of target.projects.keys()) {
+			if (!source.projects.has(name)) {
+				target.projects.delete(name);
+			}
+		}
+
+		for (const [name, sourceProject] of source.projects) {
+			let targetProject = target.projects.get(name);
+			if (targetProject == null) {
+				targetProject = target.projects.add({
+					...cloneJson(sourceProject.extensions),
+					name,
+					root: sourceProject.root,
+					prefix: sourceProject.prefix,
+					sourceRoot: sourceProject.sourceRoot,
+				});
+			} else {
+				if (targetProject.root !== sourceProject.root) {
+					targetProject.root = sourceProject.root;
+				}
+				if (targetProject.sourceRoot !== sourceProject.sourceRoot) {
+					targetProject.sourceRoot = sourceProject.sourceRoot;
+				}
+				if (targetProject.prefix !== sourceProject.prefix) {
+					targetProject.prefix = sourceProject.prefix;
+				}
+
+				processExtensions(
+					`in project ${name}`,
+					targetProject.extensions,
+					sourceProject.extensions,
+				);
 			}
 
-			for (const [collectionOrName, config] of Object.entries(
-				extensions.schematics,
-			)) {
-				if (!isJsonObject(config)) {
+			for (const targetName of targetProject.targets.keys()) {
+				if (!sourceProject.targets.has(targetName)) {
+					targetProject.targets.delete(targetName);
+				}
+			}
+
+			for (const [targetName, sourceTarget] of sourceProject.targets) {
+				const [compiledSourceSchema, compiledTargetSchema] =
+					await getCompiledArchitectSchemas(sourceTarget.builder);
+				if (compiledSourceSchema == null || compiledTargetSchema == null) {
+					this.report.reportError(
+						`Failed to resolve builder ${JSON.stringify(
+							sourceTarget.builder,
+						)} for target ${JSON.stringify(
+							sourceTarget,
+						)} in project ${JSON.stringify(
+							sourceProject,
+						)}, skipping this target`,
+					);
 					continue;
 				}
 
-				if (collectionOrName.includes(':')) {
-					const compiledSchema = await getCompiledSchema(collectionOrName);
-					if (compiledSchema == null) {
-						this.report.reportError(
-							`Failed to resolve schematic ${JSON.stringify(
-								collectionOrName,
-							)} ${where}, skipping this configuration`,
-						);
-						delete extensions.schematics[collectionOrName];
-					} else {
-						extensions.schematics[collectionOrName] =
-							await compiledSchema.applyPreTransforms(config);
+				let targetTarget = targetProject.targets.get(targetName);
+				if (targetTarget == null) {
+					targetTarget = targetProject.targets.add({
+						...cloneJson(sourceTarget.extensions),
+						name: targetName,
+						builder: sourceTarget.builder,
+						// TODO figure out how not to need ! in the following properties
+						defaultConfiguration: sourceTarget.defaultConfiguration!,
+					});
+				} else {
+					if (targetTarget.builder !== sourceTarget.builder) {
+						targetTarget.builder = sourceTarget.builder;
 					}
+					if (
+						targetTarget.defaultConfiguration !==
+						sourceTarget.defaultConfiguration
+					) {
+						targetTarget.defaultConfiguration =
+							sourceTarget.defaultConfiguration;
+					}
+
+					processExtensions(
+						`in target ${targetName} of project ${name}`,
+						targetTarget.extensions,
+						sourceTarget.extensions,
+					);
+				}
+
+				if (sourceTarget.options === undefined) {
+					if (targetTarget.options !== undefined) {
+						targetTarget.options = undefined;
+					}
+				} else {
+					const processedSourceOptions =
+						(await compiledSourceSchema.applyPreTransforms(
+							cloneJson(sourceTarget.options),
+						)) as JsonObject;
+
+					if (targetTarget.options === undefined) {
+						targetTarget.options = processedSourceOptions;
+					} else {
+						appliedAliases.clear();
+						const processedTargetOptions =
+							(await compiledTargetSchema.applyPreTransforms(
+								cloneJson(targetTarget.options),
+							)) as JsonObject;
+
+						merge(
+							createChangeApplier(targetTarget.options, appliedAliases),
+							processedTargetOptions,
+							processedSourceOptions,
+						);
+					}
+				}
+
+				if (sourceTarget.configurations === undefined) {
+					if (targetTarget.configurations !== undefined) {
+						targetTarget.configurations = undefined;
+					}
+				} else {
+					const processedSourceConfigurations = Object.fromEntries(
+						await Promise.all(
+							Object.entries(sourceTarget.configurations).map(
+								async ([configurationName, configuration]) =>
+									[
+										configurationName,
+										(await compiledSourceSchema.applyPreTransforms(
+											cloneJson(configuration),
+										)) as JsonObject,
+									] as const,
+							),
+						),
+					);
+
+					if (targetTarget.configurations === undefined) {
+						targetTarget.configurations = processedSourceConfigurations;
+					} else {
+						const sourceConfigurations = new Map(
+							Object.entries(processedSourceConfigurations),
+						);
+						const targetConfigurations = new Map(
+							Object.entries(targetTarget.configurations),
+						);
+
+						for (const configurationName of targetConfigurations.keys()) {
+							if (!sourceConfigurations.has(configurationName)) {
+								delete targetTarget.configurations[configurationName];
+							}
+						}
+
+						for (const [
+							configurationName,
+							sourceConfiguration,
+						] of sourceConfigurations) {
+							if (!targetConfigurations.has(configurationName)) {
+								targetTarget.configurations[configurationName] =
+									sourceConfiguration;
+								continue;
+							}
+
+							const targetConfiguration =
+								targetConfigurations.get(configurationName)!;
+							appliedAliases.clear();
+							const processedTargetConfiguration =
+								(await compiledTargetSchema.applyPreTransforms(
+									cloneJson(targetConfiguration),
+								)) as JsonObject;
+
+							merge(
+								createChangeApplier(targetConfiguration, appliedAliases),
+								processedTargetConfiguration,
+								sourceConfiguration,
+							);
+						}
+					}
+				}
+			}
+		}
+
+		async function processExtensions(
+			where: string,
+			target: JsonObject,
+			source: JsonObject,
+		) {
+			const targetKeys = new Set(Object.keys(target));
+			const sourceKeys = new Set(Object.keys(source));
+
+			if (where === 'in workspace') {
+				targetKeys.delete('version');
+				sourceKeys.delete('version');
+			}
+
+			for (const key of targetKeys) {
+				if (!sourceKeys.has(key)) {
+					delete target[key];
+				}
+			}
+
+			for (const key of sourceKeys) {
+				if (key !== 'schematics' || !isJsonObject(source[key])) {
+					merge(createChangeApplier(target), target[key]!, source[key]!, [key]);
 					continue;
 				}
 
-				for (const [schematicName, schematicConfig] of Object.entries(config)) {
-					if (!isJsonObject(schematicConfig)) {
+				const processedSourceSchematics = Object.fromEntries(
+					await Promise.all(
+						Array.from(
+							Object.entries(source[key]!),
+							async ([collectionOrName, config]): Promise<
+								[string, JsonObject]
+							> => {
+								if (!isJsonObject(config)) {
+									return [collectionOrName, config];
+								}
+
+								if (collectionOrName.includes(':')) {
+									const [compiledSchema] = await getCompiledSchematicSchemas(
+										collectionOrName,
+									);
+									if (compiledSchema == null) {
+										report.reportError(
+											`Failed to resolve schematic ${JSON.stringify(
+												collectionOrName,
+											)} ${where}, skipping this configuration`,
+										);
+										return [collectionOrName, config];
+									} else {
+										return [
+											collectionOrName,
+											(await compiledSchema.applyPreTransforms(
+												cloneJson(config),
+											)) as JsonObject,
+										];
+									}
+								}
+
+								return [
+									collectionOrName,
+									Object.fromEntries(
+										await Promise.all(
+											Array.from(
+												Object.entries(config),
+												async ([schematicName, schematicConfig]) => {
+													if (!isJsonObject(schematicConfig)) {
+														return [schematicName, schematicConfig];
+													}
+
+													const [compiledSchema] =
+														await getCompiledSchematicSchemas(
+															`${collectionOrName}:${schematicName}`,
+														);
+													if (compiledSchema == null) {
+														report.reportError(
+															`Failed to resolve schematic ${JSON.stringify(
+																schematicName,
+															)} in collection ${JSON.stringify(
+																collectionOrName,
+															)} ${where}, skipping this configuration`,
+														);
+														return [schematicName, schematicConfig];
+													} else {
+														return [
+															schematicName,
+															await compiledSchema.applyPreTransforms(
+																cloneJson(config),
+															),
+														];
+													}
+												},
+											),
+										),
+									),
+								];
+							},
+						),
+					),
+				);
+
+				const targetSchematics = target[key];
+				if (!isJsonObject(targetSchematics)) {
+					target[key] = processedSourceSchematics;
+					continue;
+				}
+
+				for (const collectionOrName of Object.keys(targetSchematics)) {
+					if (processedSourceSchematics[collectionOrName] == null) {
+						delete targetSchematics[collectionOrName];
+					}
+				}
+
+				for (const [collectionOrName, sourceOptions] of Object.entries(
+					processedSourceSchematics,
+				)) {
+					const targetOptions = targetSchematics[collectionOrName];
+					if (!isJsonObject(targetOptions)) {
+						targetSchematics[collectionOrName] = sourceOptions;
 						continue;
 					}
 
-					const compiledSchema = await getCompiledSchema(
-						`${collectionOrName}:${schematicName}`,
-					);
-					if (compiledSchema == null) {
-						this.report.reportError(
-							`Failed to resolve schematic ${JSON.stringify(
-								schematicName,
-							)} in collection ${JSON.stringify(
-								collectionOrName,
-							)} ${where}, skipping this configuration`,
+					if (collectionOrName.includes(':')) {
+						const [, compiledSchema] = await getCompiledSchematicSchemas(
+							collectionOrName,
 						);
-						delete extensions.schematics[collectionOrName];
-					} else {
-						extensions.schematics[collectionOrName] =
-							await compiledSchema.applyPreTransforms(config);
+
+						appliedAliases.clear();
+						const processedTargetOptions = compiledSchema
+							? ((await compiledSchema.applyPreTransforms(
+									cloneJson(targetOptions),
+							  )) as JsonObject)
+							: targetOptions;
+
+						merge(
+							createChangeApplier(targetOptions, appliedAliases),
+							processedTargetOptions,
+							sourceOptions,
+						);
+					}
+
+					for (const schematicName of Object.keys(targetOptions)) {
+						if (sourceOptions[schematicName] == null) {
+							delete targetOptions[schematicName];
+						}
+					}
+
+					for (const [schematicName, sourceSchematicConfig] of Object.entries(
+						sourceOptions,
+					)) {
+						const targetSchematicConfig = targetOptions[schematicName];
+						if (
+							!isJsonObject(sourceSchematicConfig) ||
+							!isJsonObject(targetSchematicConfig)
+						) {
+							targetOptions[schematicName] = sourceSchematicConfig;
+							continue;
+						}
+
+						const [, compiledSchema] = await getCompiledSchematicSchemas(
+							`${collectionOrName}:${schematicName}`,
+						);
+
+						appliedAliases.clear();
+						const processedTargetSchematicConfig = compiledSchema
+							? ((await compiledSchema.applyPreTransforms(
+									cloneJson(targetSchematicConfig),
+							  )) as JsonObject)
+							: targetSchematicConfig;
+
+						merge(
+							createChangeApplier(targetOptions, appliedAliases),
+							processedTargetSchematicConfig,
+							sourceSchematicConfig,
+						);
 					}
 				}
 			}
-		};
-
-		await processExtensions('in the workspace', target.extensions);
-		for (const [name, project] of target.projects) {
-			await processExtensions(
-				`in project ${JSON.stringify(name)}`,
-				project.extensions,
-			);
 		}
-	}
-
-	async #isValid(clone: WorkspaceDefinition): Promise<boolean> {
-		const workspace = await readWorkspace(
-			join(this.workspace.workspaceFolder, this.target),
-		);
-
-		if (
-			!isJsonEqual(clone.extensions, workspace.extensions) ||
-			clone.projects.size !== workspace.projects.size
-		) {
-			return false;
-		}
-
-		for (const [projectName, cloneProject] of clone.projects) {
-			const project = workspace.projects.get(projectName);
-			if (project == null) {
-				return false;
-			}
-
-			if (
-				project.root !== cloneProject.root ||
-				project.prefix !== cloneProject.prefix ||
-				project.sourceRoot !== cloneProject.sourceRoot ||
-				!isJsonEqual(project.extensions, cloneProject.extensions) ||
-				project.targets.size !== cloneProject.targets.size
-			) {
-				return false;
-			}
-
-			for (const [targetName, cloneTarget] of cloneProject.targets) {
-				const target = project.targets.get(targetName);
-				if (target == null) {
-					return false;
-				}
-
-				if (
-					target.builder !== cloneTarget.builder ||
-					target.defaultConfiguration !== cloneTarget.defaultConfiguration ||
-					!isJsonEqual(target.options, cloneTarget.options) ||
-					!isJsonEqual(target.configurations, cloneTarget.configurations) ||
-					!isJsonEqual(target.extensions, cloneTarget.extensions)
-				) {
-					return false;
-				}
-			}
-		}
-
-		return true;
 	}
 }

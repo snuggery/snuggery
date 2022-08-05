@@ -22,6 +22,11 @@ export interface Context extends BaseContext {
 	startCwd: string;
 
 	/**
+	 * The original arguments passed into the CLI
+	 */
+	startArgs: readonly string[];
+
+	/**
 	 * The configured workspace, if any
 	 */
 	workspace: CliWorkspace | null;
@@ -172,8 +177,10 @@ export class CliWorkspace implements WorkspaceDefinition {
 	/**
 	 * Create a JsonVisitor for all data in this workspace validated by a schema.
 	 */
-	createWorkspaceDataVisitor(): schema.JsonVisitor {
-		return createWorkspaceTransform(this.workspaceFilename);
+	createWorkspaceDataVisitor(
+		opts?: Parameters<typeof createWorkspaceTransform>[1],
+	): schema.JsonVisitor {
+		return createWorkspaceTransform(this.workspaceFilename, opts);
 	}
 }
 

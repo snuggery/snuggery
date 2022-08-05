@@ -131,7 +131,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			if (
 				typeof prop === 'symbol' ||
 				!Reflect.has(source, prop) ||
-				(isArray && isNaN(prop))
+				(isArray && prop !== 'length' && isNaN(prop))
 			) {
 				// JSON can't use symbol keys
 				return undefined;

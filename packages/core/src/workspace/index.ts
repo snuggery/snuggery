@@ -37,6 +37,8 @@ export const workspaceFilenames = [
 	...splitWorkspaceFilenames,
 ];
 
+export {nodeFsHost};
+
 /**
  * Read the workspace configuration at the given path
  *

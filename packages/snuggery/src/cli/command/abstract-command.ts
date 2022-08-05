@@ -127,7 +127,8 @@ export abstract class AbstractCommand extends Command<Context> {
 	protected async createSchemaRegistry({
 		formats,
 		workspace = this.context.workspace,
-	}: {
+		...opts
+	}: Parameters<CliWorkspace['createWorkspaceDataVisitor']>[0] & {
 		formats?: import('@angular-devkit/core').schema.SchemaFormat[];
 		workspace?: CliWorkspace | null;
 	} = {}): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
@@ -138,7 +139,7 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		const registry = new SchemaRegistry(formats);
 		if (workspace != null) {
-			registry.addPreTransform(workspace.createWorkspaceDataVisitor());
+			registry.addPreTransform(workspace.createWorkspaceDataVisitor(opts));
 		}
 
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);

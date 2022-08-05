@@ -12,6 +12,7 @@ export {
 	TargetDefinitionCollection,
 	type WorkspaceDefinition,
 	type WorkspaceHost,
+	nodeFsHost,
 	workspaceFilenames,
 	isJsonArray,
 	isJsonObject,

@@ -2,8 +2,8 @@ import {workspaces} from '@angular-devkit/core';
 import expect from 'expect';
 import type {Test} from 'uvu';
 
-import type {FileHandle} from '../../../file';
 import type {JsonObject} from '../../../types';
+import type {FileHandle} from '../../file';
 import type {WorkspaceHandleFactory} from '../types';
 
 function clone(value: JsonObject): JsonObject {
@@ -101,31 +101,34 @@ export function itShouldHandleAngularConfiguration(
 		test('should write workspaces correctly to angular configuration', async () => {
 			const file = new TestFileHandle({});
 
-			await new Factory(file).write({
-				extensions: {
-					schematics: {
-						'@snuggery/schematics': {
-							hook: {
-								'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+			await new Factory(file).write(
+				{
+					extensions: {
+						schematics: {
+							'@snuggery/schematics': {
+								hook: {
+									'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+								},
 							},
 						},
 					},
-				},
-				projects: new workspaces.ProjectDefinitionCollection({
-					all: {
-						root: '',
-						targets: new workspaces.TargetDefinitionCollection({
-							build: {
-								builder: '@snuggery/snuggery:glob',
-								options: {
-									include: '**',
+					projects: new workspaces.ProjectDefinitionCollection({
+						all: {
+							root: '',
+							targets: new workspaces.TargetDefinitionCollection({
+								build: {
+									builder: '@snuggery/snuggery:glob',
+									options: {
+										include: '**',
+									},
 								},
-							},
-						}),
-						extensions: {},
-					},
-				}),
-			});
+							}),
+							extensions: {},
+						},
+					}),
+				},
+				{},
+			);
 
 			expect(file.value).toEqual({
 				version: 1,
@@ -201,7 +204,7 @@ export function itShouldHandleAngularConfiguration(
 		allProject.targets.delete('e2e');
 		allProject.targets.get('build')!.options!.include = ['**'];
 
-		await handle.write(workspace);
+		await handle.write(workspace, {});
 
 		expect(file.value).toEqual({
 			version: 1,

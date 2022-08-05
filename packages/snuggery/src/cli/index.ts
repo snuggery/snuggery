@@ -43,7 +43,7 @@ export const createArchitectHost: typeof import('./architect').createArchitectHo
 
 export function run(
 	args: string[],
-	context: RunContext<Omit<Context, 'report'>>,
+	context: RunContext<Omit<Context, 'report' | 'startArgs'>>,
 ): Promise<number> {
 	const cli = new Cli<Context>({
 		binaryLabel: 'Snuggery',
@@ -84,9 +84,11 @@ export function run(
 	cli.register(RunMigrationsCommand);
 
 	const stdout = context.stdout ?? Cli.defaultContext.stdout;
+	const startArgs = args.slice();
 
 	const command = cli.process(args, {
 		...context,
+		startArgs,
 		report: new Report({
 			enableColors: cli.enableColors ?? Cli.defaultContext.colorDepth > 1,
 			stdout,
@@ -101,6 +103,7 @@ export function run(
 
 	return cli.run(command, {
 		...context,
+		startArgs,
 		report,
 	});
 }
