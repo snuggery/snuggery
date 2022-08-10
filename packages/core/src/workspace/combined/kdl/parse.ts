@@ -83,14 +83,11 @@ function _toJsonObject(
 	const extendedProperties = new Map(
 		context.extends && node.getTag() !== tagOverwrite
 			? Object.entries(
-					toJsonObject(
-						{...context.extends, tags: context.tags},
-						{
-							ignoreArguments,
-							ignoreChildren,
-							ignoreProperties,
-						},
-					),
+					toJsonObject(context.extends, {
+						ignoreArguments,
+						ignoreChildren,
+						ignoreProperties,
+					}),
 			  )
 			: undefined,
 	);
@@ -129,10 +126,7 @@ function _toJsonObject(
 		const value = toJsonValue({
 			...context,
 			node: unpackSingleValue(node.findNodesByName(name)),
-			extends: namedSubContext(
-				context.extends && {...context.extends, tags: context.tags},
-				name,
-			),
+			extends: namedSubContext(context.extends, name),
 		});
 
 		ownProperties.set(
@@ -204,36 +198,41 @@ function parseTargets(context: ParserContext & {node: Node}): JsonObject {
 	);
 }
 
-export function addProjectRelativeTag(
-	tags: ParserContext['tags'],
+export function addProjectRelativeTag<T extends ParserContext>(
+	context: T,
 	root: string,
-): ParserContext['tags'] {
-	return new Map([
-		...tags,
-		[
-			'project-relative',
-			{
-				toJson(value) {
-					if (typeof value !== 'string') {
-						throw new InvalidConfigurationError(
-							`The (project-relative) tag only supports string values`,
-						);
-					}
+): T {
+	return {
+		...context,
 
-					return posix.join(root, value);
-				},
-				fromJson(value) {
-					if (typeof value !== 'string') {
-						throw new InvalidConfigurationError(
-							`The (project-relative) tag only supports string values`,
-						);
-					}
+		extends: context.extends && addProjectRelativeTag(context.extends, root),
+		tags: new Map([
+			...context.tags,
+			[
+				'project-relative',
+				{
+					toJson(value) {
+						if (typeof value !== 'string') {
+							throw new InvalidConfigurationError(
+								`The (project-relative) tag only supports string values`,
+							);
+						}
 
-					return posix.relative(root, value);
+						return posix.join(root, value);
+					},
+					fromJson(value) {
+						if (typeof value !== 'string') {
+							throw new InvalidConfigurationError(
+								`The (project-relative) tag only supports string values`,
+							);
+						}
+
+						return posix.relative(root, value);
+					},
 				},
-			},
-		],
-	]);
+			],
+		]),
+	};
 }
 
 function parseProjects(document: Document): JsonObject {
@@ -326,10 +325,7 @@ function parseProjects(document: Document): JsonObject {
 					);
 				}
 
-				projectContext = {
-					...projectContext,
-					tags: addProjectRelativeTag(projectContext.tags, root),
-				};
+				projectContext = addProjectRelativeTag(projectContext, root);
 
 				const project = toJsonObject(projectContext, {
 					ignoreArguments: true,

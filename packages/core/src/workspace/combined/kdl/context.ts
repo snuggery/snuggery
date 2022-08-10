@@ -15,7 +15,7 @@ export interface ParserContext {
 
 	readonly node: Node | Node[];
 
-	readonly extends?: Omit<ParserContext, 'tags'>;
+	readonly extends?: ParserContext;
 }
 
 export function hasNamedSubContext(
@@ -43,12 +43,10 @@ export function namedSubContext(
 	}
 
 	const nodes = node.findNodesByName(name);
-	const _extends =
-		context.extends &&
-		namedSubContext({...context.extends, tags: context.tags}, name);
+	const _extends = namedSubContext(context.extends, name);
 
 	if (!nodes?.length) {
-		return _extends && {..._extends, tags: context.tags};
+		return _extends;
 	}
 
 	return {
@@ -126,10 +124,7 @@ export function collectParameterizedSubContexts(
 		return new Map();
 	}
 
-	const extended = collectParameterizedSubContexts(
-		context.extends && {...context.extends, tags: context.tags},
-		nodeName,
-	);
+	const extended = collectParameterizedSubContexts(context.extends, nodeName);
 
 	const location =
 		context.node instanceof Document

@@ -606,16 +606,15 @@ function applyChangeToProjects(
 	let project = projects.get(name);
 
 	if (project) {
-		project = {
-			...project,
-			tags: addProjectRelativeTag(
-				project.tags,
-				getSingleStringValue(project, 'root'),
-			),
-			extends: project.node.hasProperty('extends')
-				? projects.get(project.node.getProperty('extends') as string)
-				: undefined,
-		};
+		project = addProjectRelativeTag(
+			{
+				...project,
+				extends: project.node.hasProperty('extends')
+					? projects.get(project.node.getProperty('extends') as string)
+					: undefined,
+			},
+			getSingleStringValue(project, 'root'),
+		);
 	}
 
 	if (path.length === 0) {
