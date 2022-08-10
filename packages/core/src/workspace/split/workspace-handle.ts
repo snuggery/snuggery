@@ -1,4 +1,4 @@
-import type {WorkspaceHost} from '../file';
+import {createTextFileHandle, WorkspaceHost} from '../file';
 import type {WorkspaceHandle} from '../types';
 
 import {createFileHandle} from './file';
@@ -36,7 +36,10 @@ export async function createSplitWorkspaceHandle(
 	source: WorkspaceHost,
 	path: string,
 ): Promise<WorkspaceHandle> {
-	const fileType = await createFileHandle(source, path, workspaceFilenames);
+	const fileType = createFileHandle(
+		await createTextFileHandle(source, path, workspaceFilenames),
+		path,
+	);
 
 	const loadFactory = knownTypes.get(fileType.filename);
 	if (loadFactory == null) {

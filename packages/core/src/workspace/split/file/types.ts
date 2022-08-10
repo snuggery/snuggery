@@ -17,6 +17,11 @@ export interface FileHandle {
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle>;
+
+	readDependency(
+		path: string,
+		supportedFilenames?: string[],
+	): Promise<FileHandle>;
 }
 
 export interface FileHandleContext {
@@ -24,7 +29,12 @@ export interface FileHandleContext {
 
 	updateReady?: Promise<unknown>;
 
-	createFileHandle(
+	readRelative(
+		path: string,
+		supportedFilenames?: string[],
+	): Promise<FileHandle>;
+
+	readDependency(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle>;

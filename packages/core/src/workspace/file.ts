@@ -1,3 +1,4 @@
+import {createRequire} from 'module';
 import {basename, dirname, join} from 'path';
 
 import {InvalidConfigurationError} from './types';
@@ -26,12 +27,18 @@ export interface TextFileHandle {
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<TextFileHandle | null>;
+
+	readDependency(
+		path: string,
+		supportedFilenames?: string[],
+	): Promise<TextFileHandle | null>;
 }
 
 export async function createTextFileHandle(
 	source: WorkspaceHost,
 	path: string,
 	supportedFilenames?: readonly string[],
+	readonly = false,
 ): Promise<TextFileHandle | null> {
 	if (await source.isDirectory(path)) {
 		if (supportedFilenames == null) {
@@ -62,8 +69,14 @@ export async function createTextFileHandle(
 		basename: basename(path),
 		dirname: dirname(path),
 		read,
-		write: value => source.write(path, value),
+		write: !readonly
+			? value => source.write(path, value)
+			: async () => {
+					throw new Error(`File ${path} cannot be modified`);
+			  },
 		readRelative: (p, sf) =>
-			createTextFileHandle(source, join(dirname(path), p), sf),
+			createTextFileHandle(source, join(dirname(path), p), sf, readonly),
+		readDependency: (p, sf) =>
+			createTextFileHandle(source, createRequire(path).resolve(p), sf, true),
 	};
 }

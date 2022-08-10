@@ -1,6 +1,6 @@
-import {extname, join} from 'path';
+import {extname} from 'path';
 
-import {createTextFileHandle, WorkspaceHost} from '../file';
+import type {TextFileHandle} from '../file';
 
 import {JsonFileHandle} from './file/json';
 import type {FileHandle, FileHandleFactory} from './file/types';
@@ -13,38 +13,39 @@ const knownHandleTypes = new Map<string, FileHandleFactory>([
 	['.yaml', YamlFileHandle],
 ]);
 
-export async function createFileHandle(
-	source: WorkspaceHost,
+export function createFileHandle(
+	source: TextFileHandle | null,
 	path: string,
-	supportedFilenames?: readonly string[],
 	context: {updateReady?: Promise<void>} = {},
-): Promise<FileHandle> {
-	const textHandle = await createTextFileHandle(
-		source,
-		path,
-		supportedFilenames,
-	);
-	if (textHandle != null) {
-		const Factory = knownHandleTypes.get(extname(textHandle.basename));
-		if (Factory != null) {
-			return new Factory({
-				source: textHandle,
-				get updateReady() {
-					return context.updateReady;
-				},
-				set updateReady(updateReady) {
-					context.updateReady = updateReady;
-				},
-				createFileHandle: (path, supportedFilenames) =>
-					createFileHandle(
-						source,
-						join(textHandle.dirname, path),
-						supportedFilenames,
-						context,
-					),
-			});
-		}
+): FileHandle {
+	if (source == null) {
+		throw new Error(`Cannot find configuration at ${path}`);
 	}
 
-	throw new Error(`Cannot find configuration at ${path}`);
+	const Factory = knownHandleTypes.get(extname(source.basename));
+	if (Factory == null) {
+		throw new Error(`Cannot find configuration at ${path}`);
+	}
+
+	return new Factory({
+		source,
+		get updateReady() {
+			return context.updateReady;
+		},
+		set updateReady(updateReady) {
+			context.updateReady = updateReady;
+		},
+		readRelative: async (path, supportedFilenames) =>
+			createFileHandle(
+				await source.readRelative(path, supportedFilenames),
+				path,
+				context,
+			),
+		readDependency: async (path, supportedFilenames) =>
+			createFileHandle(
+				await source.readDependency(path, supportedFilenames),
+				path,
+				context,
+			),
+	});
 }

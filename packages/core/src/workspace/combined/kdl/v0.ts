@@ -59,17 +59,39 @@ class SnuggeryWorkspaceFileHandle extends AbstractFileHandle<Document> {
 	}
 }
 
+function createFileHandle(
+	source: TextFileHandle,
+	context: {updateReady?: Promise<void>} = {},
+): SnuggeryWorkspaceFileHandle {
+	return new SnuggeryWorkspaceFileHandle({
+		source,
+		async readRelative(path, supportedFilenames) {
+			const newSource = await source.readRelative(path, supportedFilenames);
+
+			if (newSource == null) {
+				throw new InvalidConfigurationError(
+					`Cannot find configuration file ${JSON.stringify(path)}`,
+				);
+			}
+
+			return createFileHandle(newSource, context);
+		},
+		async readDependency(path, supportedFilenames) {
+			const newSource = await source.readDependency(path, supportedFilenames);
+
+			if (newSource == null) {
+				throw new InvalidConfigurationError(
+					`Cannot find configuration file ${JSON.stringify(path)}`,
+				);
+			}
+
+			return createFileHandle(newSource, context);
+		},
+	});
+}
+
 export class SnuggeryKdlWorkspaceHandle extends AngularWorkspaceHandle {
 	constructor(source: TextFileHandle) {
-		super(
-			new SnuggeryWorkspaceFileHandle({
-				source,
-				async createFileHandle() {
-					throw new InvalidConfigurationError(
-						'Split KDL files are not currently supported',
-					);
-				},
-			}),
-		);
+		super(createFileHandle(source));
 	}
 }
