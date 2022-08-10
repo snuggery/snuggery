@@ -13,31 +13,25 @@ export interface FileHandle {
 
 	update(updater: (value: JsonObject) => void | Promise<void>): Promise<void>;
 
-	readRelative(
+	openRelative(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle>;
 
-	readDependency(
+	openDependency(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle>;
 }
 
-export interface FileHandleContext {
+export interface FileHandleContext<T extends FileHandle = FileHandle> {
 	readonly source: TextFileHandle;
 
 	updateReady?: Promise<unknown>;
 
-	readRelative(
-		path: string,
-		supportedFilenames?: string[],
-	): Promise<FileHandle>;
+	openRelative(path: string, supportedFilenames?: string[]): Promise<T>;
 
-	readDependency(
-		path: string,
-		supportedFilenames?: string[],
-	): Promise<FileHandle>;
+	openDependency(path: string, supportedFilenames?: string[]): Promise<T>;
 }
 
 export interface FileHandleFactory {

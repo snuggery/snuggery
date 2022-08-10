@@ -23,12 +23,12 @@ export interface TextFileHandle {
 
 	write(value: string): Promise<void>;
 
-	readRelative(
+	openRelative(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<TextFileHandle | null>;
 
-	readDependency(
+	openDependency(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<TextFileHandle | null>;
@@ -74,9 +74,9 @@ export async function createTextFileHandle(
 			: async () => {
 					throw new Error(`File ${path} cannot be modified`);
 			  },
-		readRelative: (p, sf) =>
+		openRelative: (p, sf) =>
 			createTextFileHandle(source, join(dirname(path), p), sf, readonly),
-		readDependency: (p, sf) =>
+		openDependency: (p, sf) =>
 			createTextFileHandle(source, createRequire(path).resolve(p), sf, true),
 	};
 }

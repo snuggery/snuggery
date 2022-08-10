@@ -38,7 +38,6 @@ import {
 	serializeProject,
 	serializeTarget,
 } from './serialize';
-import {unpackSingleValue} from './utils';
 
 function processTagEntry(
 	context: Pick<ParserContext, 'tags'>,
@@ -578,10 +577,20 @@ function applyChangeToTargets(
 
 function applyChangeToProjects(
 	document: Document,
+	expandedDocument: Document,
+	allDocuments: readonly Document[],
 	path: JsonPropertyPath,
 	change: Change,
 ): void {
 	if (path.length === 0) {
+		// Remove all projects from imported documents,
+		// Then apply the change to the main document
+		for (const doc of allDocuments) {
+			if (doc !== document) {
+				doc.removeNodesByName('project');
+			}
+		}
+
 		applyChangeToNamedMap(
 			{
 				tags: new Map(),
@@ -599,7 +608,7 @@ function applyChangeToProjects(
 	const projects = collectParameterizedSubContexts(
 		{
 			tags: new Map(),
-			node: document,
+			node: expandedDocument,
 		},
 		'project',
 	);
@@ -618,8 +627,11 @@ function applyChangeToProjects(
 	}
 
 	if (path.length === 0) {
+		const ownerDocument =
+			project && allDocuments.find(doc => doc.nodes.includes(project!.node))!;
+
 		if (change.type === ChangeType.Delete) {
-			document.removeNode(project!.node);
+			ownerDocument!.removeNode(project!.node);
 			return;
 		}
 
@@ -629,12 +641,10 @@ function applyChangeToProjects(
 			document.appendNode(newProject);
 		} else if (!project) {
 			append(document, newProject);
-		} else if (!isChildOf(document, project.node)) {
-			append(document, setTag(tagOverwrite, [newProject]));
-		} else if (project.extends != null) {
-			replace(document, project.node, setTag(tagOverwrite, [newProject]));
+		} else if (!isChildOf(ownerDocument!, project.node)) {
+			append(ownerDocument!, newProject);
 		} else {
-			replace(document, project.node, newProject);
+			replace(ownerDocument!, project.node, newProject);
 		}
 		return;
 	}
@@ -652,64 +662,65 @@ function applyChangeToProjects(
 
 export function applyChangeToWorkspace(
 	document: Document,
+	expandedDocument: Document,
+	allDocuments: readonly Document[],
 	change: Change,
 ): void {
 	const [name, ...path] = change.path.slice() as [string, ...JsonPropertyPath];
 
-	switch (name) {
-		case 'version':
-			break;
-		case 'projects':
-			applyChangeToProjects(document, path, change);
-			break;
-		default:
-			if (path.length > 0) {
-				applyChangeToJsonValue(
-					{
-						tags: new Map(),
-						node: unpackSingleValue(document.findNodesByName(name)),
-					},
-					path[0] as string,
-					path.slice(1),
-					change,
-					{allowEntries: false},
-				);
-			} else {
-				// applyChangeToJsonValue requires a node, which we can't provide here
-				switch (change.type) {
-					case ChangeType.Delete:
-						document.removeNodesByName(name);
-						break;
-					case ChangeType.Add:
-						append(
-							document,
-							fromJsonValue(name, change.value, {allowEntries: false}),
-						);
-						break;
-					case ChangeType.Modify: {
-						const existingNodes = document.findNodesByName(name);
-						const firstExistingNode = existingNodes[0];
-						const nodesToDelete = new Set(existingNodes);
-						const newNode = fromJsonValue(name, change.value, {
-							allowEntries: false,
-						});
-
-						let added = false;
-						document.nodes = document.nodes.flatMap(node => {
-							if (node === firstExistingNode) {
-								added = true;
-								return newNode;
-							}
-
-							return nodesToDelete.has(node) ? [] : node;
-						});
-
-						if (!added) {
-							append(document, newNode);
-						}
-						break;
-					}
-				}
-			}
+	if (name === 'version') {
+		return;
 	}
+
+	if (name === 'projects') {
+		return applyChangeToProjects(
+			document,
+			expandedDocument,
+			allDocuments,
+			path,
+			change,
+		);
+	}
+
+	if (path.length > 0) {
+		return applyChangeToJsonValue(
+			{
+				tags: new Map(),
+				node: expandedDocument.findNodeByName(name)!,
+			},
+			path[0] as string,
+			path.slice(1),
+			change,
+			{allowEntries: false},
+		);
+	}
+
+	// applyChangeToJsonValue requires a node, which we can't provide here
+
+	if (change.type === ChangeType.Add) {
+		// Add to the main document
+		append(
+			document,
+			fromJsonValue(name, change.value, {
+				allowEntries: false,
+				insideArray: true,
+			}),
+		);
+		return;
+	}
+
+	const node = expandedDocument.findNodeByName(name)!;
+	const ownerDocument = allDocuments.find(doc => doc.nodes.includes(node))!;
+
+	if (change.type === ChangeType.Delete) {
+		ownerDocument.removeNode(node);
+		return;
+	}
+
+	const newNode = fromJsonValue(name, change.value, {
+		allowEntries: false,
+		insideArray: true,
+	});
+
+	ownerDocument.replaceNode(node, new Document(newNode));
 }

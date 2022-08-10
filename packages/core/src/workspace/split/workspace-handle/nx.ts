@@ -387,7 +387,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 						let projectFile: FileHandle | undefined;
 
 						if (file != null && typeof project == 'string') {
-							projectFile = await file.readRelative(project, projectFilenames);
+							projectFile = await file.openRelative(project, projectFilenames);
 							project = await projectFile.read();
 
 							objectsAndFiles!.push([project, projectFile]);

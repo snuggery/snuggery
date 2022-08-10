@@ -80,7 +80,7 @@ test('add workspace extension', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['cli'],
 		value: {packageManager: 'yarn'},
@@ -96,7 +96,7 @@ test('add project extension', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'lorem', 'cli'],
 		value: {packageManager: 'yarn'},
@@ -115,7 +115,7 @@ test('add configuration', (value, expected) => {
 			`),
 		);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'ipsum', 'targets', 'build', 'configurations', 'test'],
 		value: {added: true},
@@ -134,7 +134,7 @@ test('add options', (value, expected) => {
 			`),
 		);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'ipsum', 'targets', 'build', 'options'],
 		value: {added: true},
@@ -150,7 +150,7 @@ test('add options', (value, expected) => {
 			`),
 		);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'lorem', 'targets', 'build', 'options', 'added'],
 		value: true,
@@ -168,7 +168,7 @@ test('add target', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'lorem', 'targets', 'added'],
 		value: {
@@ -191,7 +191,7 @@ test('add project', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Add,
 		path: ['projects', 'added'],
 		value: {
@@ -213,7 +213,7 @@ test('delete workspace extension', (value, expected) => {
 		.findNodeByName('schematics')!
 		.removeNodesByName('@lorem/ipsum:schematic');
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: ['schematics', '@lorem/ipsum:schematic'],
 		oldValue: {
@@ -225,7 +225,7 @@ test('delete workspace extension', (value, expected) => {
 test('delete project extension', (value, expected) => {
 	expected.findParameterizedNode('project', 'lorem')!.removeNodesByName('i18n');
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: ['projects', 'lorem', 'i18n'],
 		oldValue: {defaultLanguage: 'en-US'},
@@ -238,7 +238,7 @@ test('delete configuration', (value, expected) => {
 		.findParameterizedNode('target', 'build')!
 		.removeNodesByName('configuration');
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: [
 			'projects',
@@ -261,7 +261,7 @@ test('delete options', (value, expected) => {
 		.findParameterizedNode('target', 'test')!
 		.removeNodesByName('options');
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: ['projects', 'lorem', 'targets', 'test', 'options'],
 		oldValue: {},
@@ -272,7 +272,7 @@ test('delete target', (value, expected) => {
 	const project = expected.findParameterizedNode('project', 'ipsum')!;
 	project.removeNode(project.findParameterizedNode('target', 'build')!);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: ['projects', 'ipsum', 'targets', 'build'],
 		oldValue: {},
@@ -282,7 +282,7 @@ test('delete target', (value, expected) => {
 test('delete project', (value, expected) => {
 	expected.removeNode(expected.findParameterizedNode('project', 'ipsum')!);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Delete,
 		path: ['projects', 'ipsum'],
 		oldValue: {},
@@ -298,7 +298,7 @@ test('modify workspace extension', (value, expected) => {
 		parse(String.raw`"@lorem/ipsum:schematic" {modified true;}`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['schematics', '@lorem/ipsum:schematic'],
 		oldValue: {
@@ -315,7 +315,7 @@ test('modify project extension', (value, expected) => {
 		parse(String.raw`i18n defaultLanguage="en-GB"`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['projects', 'lorem', 'i18n'],
 		oldValue: {defaultLanguage: 'en-US'},
@@ -336,7 +336,7 @@ test('modify configuration', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: [
 			'projects',
@@ -367,7 +367,7 @@ test('modify options', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['projects', 'lorem', 'targets', 'build', 'options'],
 		oldValue: {},
@@ -386,7 +386,7 @@ test('modify options', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['projects', 'lorem', 'targets', 'test', 'options'],
 		oldValue: {},
@@ -407,7 +407,7 @@ test('modify target', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['projects', 'ipsum', 'targets', 'build'],
 		oldValue: {},
@@ -428,7 +428,7 @@ test('modify project', (value, expected) => {
 		`),
 	);
 
-	applyChangeToWorkspace(value, {
+	applyChangeToWorkspace(value, value, [value], {
 		type: ChangeType.Modify,
 		path: ['projects', 'ipsum'],
 		oldValue: {},

@@ -35,15 +35,15 @@ export function createFileHandle(
 		set updateReady(updateReady) {
 			context.updateReady = updateReady;
 		},
-		readRelative: async (path, supportedFilenames) =>
+		openRelative: async (path, supportedFilenames) =>
 			createFileHandle(
-				await source.readRelative(path, supportedFilenames),
+				await source.openRelative(path, supportedFilenames),
 				path,
 				context,
 			),
-		readDependency: async (path, supportedFilenames) =>
+		openDependency: async (path, supportedFilenames) =>
 			createFileHandle(
-				await source.readDependency(path, supportedFilenames),
+				await source.openDependency(path, supportedFilenames),
 				path,
 				context,
 			),

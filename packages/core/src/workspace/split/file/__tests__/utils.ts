@@ -1,4 +1,4 @@
-import type {WorkspaceHost} from '../types';
+import {WorkspaceHost} from '../../../file';
 
 export class TestSingleFileWorkspaceHost implements WorkspaceHost {
 	readonly #path: string;

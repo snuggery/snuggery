@@ -8,19 +8,45 @@
 import {Document, format, InvalidKdlError, parse} from '@bgotink/kdl';
 
 import type {TextFileHandle} from '../../file';
-import type {Change} from '../../proxy';
-import {AbstractFileHandle} from '../../split/file/abstract';
+import {makeCombinedTracker} from '../../proxy';
+import type {FileHandle, FileHandleContext} from '../../split/file/types';
 import {AngularWorkspaceHandle} from '../../split/workspace-handle/angular';
 import {InvalidConfigurationError, type JsonObject} from '../../types';
 
 import {applyChangeToWorkspace} from './apply-changes';
+import {expandDocument} from './kdl-utils';
 import {parseWorkspace} from './parse';
 import {serializeWorkspace} from './serialize';
 
-class SnuggeryWorkspaceFileHandle extends AbstractFileHandle<Document> {
-	parse(content: string): Document {
+function formatHeader(header?: string | string[]) {
+	if (header == null) {
+		return '';
+	}
+
+	if (Array.isArray(header)) {
+		return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */\n`;
+	}
+
+	return `// ${header}\n`;
+}
+
+export type {SnuggeryWorkspaceFileHandle};
+class SnuggeryWorkspaceFileHandle implements FileHandle {
+	#context: FileHandleContext<SnuggeryWorkspaceFileHandle>;
+
+	readonly filename: string;
+
+	constructor(context: FileHandleContext<SnuggeryWorkspaceFileHandle>) {
+		this.#context = context;
+
+		this.filename = context.source.basename;
+	}
+
+	async readDocument(): Promise<Document> {
+		const content = await this.#context.source.read();
+		let document: Document;
 		try {
-			return parse(content);
+			document = parse(content);
 		} catch (e) {
 			if (e instanceof InvalidKdlError) {
 				throw new InvalidConfigurationError(e.message);
@@ -28,34 +54,72 @@ class SnuggeryWorkspaceFileHandle extends AbstractFileHandle<Document> {
 
 			throw e;
 		}
-	}
 
-	getValue(document: Document): JsonObject {
-		return parseWorkspace(document);
-	}
-
-	stringify(value: JsonObject): string {
-		return format(serializeWorkspace(value));
-	}
-
-	createHeader(header: string | string[]): string {
-		if (Array.isArray(header)) {
-			return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */\n`;
+		const {updateReady} = this.#context;
+		if (updateReady != null) {
+			this.#context.updateReady = updateReady.then(() =>
+				this.#context.source.write(format(document)),
+			);
 		}
 
-		return `// ${header}\n`;
+		return document;
 	}
 
-	applyChanges(
-		_source: string,
-		document: Document,
-		changes: readonly Change[],
-	): string {
+	async read(): Promise<JsonObject> {
+		const document = await this.readDocument();
+		const expandedDocument = await expandDocument(document, this);
+
+		return parseWorkspace(expandedDocument);
+	}
+
+	async update(
+		updater: (value: JsonObject) => void | Promise<void>,
+	): Promise<void> {
+		if (this.#context.updateReady != null) {
+			throw new Error('Configuration is already being updated');
+		}
+
+		let markReady: () => void;
+		this.#context.updateReady = new Promise<void>(resolve => {
+			markReady = resolve;
+		});
+
+		const document = await this.readDocument();
+		const allDocuments: Document[] = [];
+		const expandedDocument = await expandDocument(document, this, allDocuments);
+
+		const {value, close} = makeCombinedTracker(
+			parseWorkspace(expandedDocument),
+		).open();
+		await updater(value);
+
+		const changes = close();
+
 		for (const change of changes) {
-			applyChangeToWorkspace(document, change);
+			applyChangeToWorkspace(document, expandedDocument, allDocuments, change);
 		}
 
-		return format(document);
+		markReady!();
+
+		await this.#context.updateReady;
+		this.#context.updateReady = undefined;
+	}
+
+	async write(
+		value: JsonObject,
+		{header}: {header?: string | string[]},
+	): Promise<void> {
+		await this.#context.source.write(
+			formatHeader(header) + format(serializeWorkspace(value)),
+		);
+	}
+
+	openRelative(path: string, supportedFilenames?: string[] | undefined) {
+		return this.#context.openRelative(path, supportedFilenames);
+	}
+
+	openDependency(path: string, supportedFilenames?: string[] | undefined) {
+		return this.#context.openDependency(path, supportedFilenames);
 	}
 }
 
@@ -65,8 +129,16 @@ function createFileHandle(
 ): SnuggeryWorkspaceFileHandle {
 	return new SnuggeryWorkspaceFileHandle({
 		source,
-		async readRelative(path, supportedFilenames) {
-			const newSource = await source.readRelative(path, supportedFilenames);
+
+		get updateReady() {
+			return context.updateReady;
+		},
+		set updateReady(updateReady) {
+			context.updateReady = updateReady;
+		},
+
+		async openRelative(path, supportedFilenames) {
+			const newSource = await source.openRelative(path, supportedFilenames);
 
 			if (newSource == null) {
 				throw new InvalidConfigurationError(
@@ -76,8 +148,8 @@ function createFileHandle(
 
 			return createFileHandle(newSource, context);
 		},
-		async readDependency(path, supportedFilenames) {
-			const newSource = await source.readDependency(path, supportedFilenames);
+		async openDependency(path, supportedFilenames) {
+			const newSource = await source.openDependency(path, supportedFilenames);
 
 			if (newSource == null) {
 				throw new InvalidConfigurationError(

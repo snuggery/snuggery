@@ -5,6 +5,7 @@ import expect from 'expect';
 import {suite} from 'uvu';
 import * as YAML from 'yaml';
 
+import {createTextFileHandle} from '../../../file';
 import type {JsonObject} from '../../../types';
 import {createFileHandle} from '../../file';
 
@@ -107,6 +108,9 @@ test('updating should support removing properties by setting to undefined', asyn
 });
 
 test('updating should support modifying properties', async () => {
+	await update({foo: 2, bar: 4}, (obj: any) => {
+		obj.foo = 6;
+	});
 	await expect(
 		update({foo: 2, bar: 4}, (obj: any) => {
 			obj.foo = 6;
@@ -441,16 +445,18 @@ test('updating should handle changes on merged objects', async () => {
 async function parse(content: string) {
 	const host = new TestSingleFileWorkspaceHost('test.yaml', content);
 
-	return await (
-		await createFileHandle(host, 'test.yaml', ['test.yaml'])
+	return await createFileHandle(
+		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
+		'test.yaml',
 	).read();
 }
 
 async function write(content: JsonObject) {
 	const host = new TestSingleFileWorkspaceHost('test.yaml', '');
 
-	await (
-		await createFileHandle(host, 'test.yaml', ['test.yaml'])
+	await createFileHandle(
+		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
+		'test.yaml',
 	).write(content, {});
 
 	return YAML.parse(host.currentContent);
@@ -465,8 +471,9 @@ async function update(
 		YAML.stringify(source),
 	);
 
-	await (
-		await createFileHandle(host, 'test.yaml', ['test.yaml'])
+	await createFileHandle(
+		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
+		'test.yaml',
 	).update(updater);
 
 	return YAML.parse(host.currentContent);
@@ -478,8 +485,9 @@ async function updateString(
 ) {
 	const host = new TestSingleFileWorkspaceHost('test.yaml', source);
 
-	await (
-		await createFileHandle(host, 'test.yaml', ['test.yaml'])
+	await createFileHandle(
+		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
+		'test.yaml',
 	).update(updater);
 
 	return host.currentContent;

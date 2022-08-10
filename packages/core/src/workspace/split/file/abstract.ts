@@ -94,17 +94,17 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		this.#context.updateReady = undefined;
 	}
 
-	readRelative(
+	openRelative(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle> {
-		return this.#context.readRelative(path, supportedFilenames);
+		return this.#context.openRelative(path, supportedFilenames);
 	}
 
-	readDependency(
+	openDependency(
 		path: string,
 		supportedFilenames?: string[],
 	): Promise<FileHandle> {
-		return this.#context.readDependency(path, supportedFilenames);
+		return this.#context.openDependency(path, supportedFilenames);
 	}
 }

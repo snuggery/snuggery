@@ -2,6 +2,7 @@
 import expect from 'expect';
 import {suite} from 'uvu';
 
+import {createTextFileHandle} from '../../../file';
 import type {JsonObject} from '../../../types';
 import {createFileHandle} from '../../file';
 
@@ -149,16 +150,18 @@ test('updating should support multiple changes', async () => {
 async function parse(content: string) {
 	const host = new TestSingleFileWorkspaceHost('test.json', content);
 
-	return await (
-		await createFileHandle(host, 'test.json', ['test.json'])
+	return await createFileHandle(
+		await createTextFileHandle(host, 'test.json', ['test.json']),
+		'test.json',
 	).read();
 }
 
 async function write(content: JsonObject) {
 	const host = new TestSingleFileWorkspaceHost('test.json', '');
 
-	await (
-		await createFileHandle(host, 'test.json', ['test.json'])
+	await createFileHandle(
+		await createTextFileHandle(host, 'test.json', ['test.json']),
+		'test.json',
 	).write(content, {});
 
 	return JSON.parse(host.currentContent);
@@ -173,8 +176,9 @@ async function update(
 		JSON.stringify(source),
 	);
 
-	await (
-		await createFileHandle(host, 'test.json', ['test.json'])
+	await createFileHandle(
+		await createTextFileHandle(host, 'test.json', ['test.json']),
+		'test.json',
 	).update(updater);
 
 	return JSON.parse(host.currentContent);
