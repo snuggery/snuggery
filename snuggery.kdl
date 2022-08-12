@@ -95,8 +95,8 @@ project "all" root="" {
 project "@snuggery/snuggery" extends="parent" root="packages/snuggery"
 
 project "@snuggery/global" extends="parent" root="packages/global" {
-	(merge)target "build" {
-		(merge)options {
+	target "build" {
+		options {
 			(append)asset ".pnp.loader.mjs" from="."
 		}
 	}
