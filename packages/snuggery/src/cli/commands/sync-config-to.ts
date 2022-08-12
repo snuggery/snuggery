@@ -42,59 +42,63 @@ const isJsonEqualCache = new WeakMap<
  * but the order in arrays does matter.
  */
 function isJsonEqual(
-	a: JsonValue | undefined,
-	b: JsonValue | undefined,
+	target: JsonValue | undefined,
+	source: JsonValue | undefined,
 ): boolean {
 	if (
-		typeof a !== 'object' ||
-		a == null ||
-		typeof b !== 'object' ||
-		b == null
+		typeof target !== 'object' ||
+		target == null ||
+		typeof source !== 'object' ||
+		source == null
 	) {
-		return a === b;
+		return target === source;
 	}
 
-	let cached = isJsonEqualCache.get(a);
+	let cached = isJsonEqualCache.get(target);
 	if (cached == null) {
 		cached = {
 			equal: new WeakSet(),
 			unequal: new WeakSet(),
 		};
-		isJsonEqualCache.set(a, cached);
+		isJsonEqualCache.set(target, cached);
 	}
 	const cacheResult = (r: boolean) => {
-		(r ? cached!.equal : cached!.unequal).add(b);
+		(r ? cached!.equal : cached!.unequal).add(source);
 		return r;
 	};
 
-	if (cached.equal.has(b)) {
+	if (cached.equal.has(source)) {
 		return true;
 	}
-	if (cached.unequal.has(b)) {
+	if (cached.unequal.has(source)) {
 		return false;
 	}
 
-	if (Array.isArray(a) || Array.isArray(b)) {
-		if (!Array.isArray(a) || !Array.isArray(b)) {
+	if (Array.isArray(target) || Array.isArray(source)) {
+		if (!Array.isArray(target) || !Array.isArray(source)) {
 			return cacheResult(false);
 		}
 
-		if (a.length !== b.length) {
+		if (target.length !== source.length) {
 			return cacheResult(false);
 		}
 
-		return cacheResult(a.every((el, i) => isJsonEqual(el, b[i])));
+		// Target might be a proxy, in which case we don't currently have access to
+		// array methods, so call source.every and not target.every
+		return cacheResult(source.every((el, i) => isJsonEqual(target[i], el)));
 	}
 
-	const aProps = new Set(Object.keys(a));
-	const bProps = Object.keys(b);
+	const targetProps = new Set(Object.keys(target));
+	const sourceProps = Object.keys(source);
 
-	if (bProps.length !== aProps.size) {
+	if (sourceProps.length !== targetProps.size) {
 		return cacheResult(false);
 	}
 
 	return cacheResult(
-		bProps.every(prop => aProps.has(prop) && isJsonEqual(a[prop], b[prop])),
+		sourceProps.every(
+			prop => targetProps.has(prop) && isJsonEqual(target[prop], source[prop]),
+		),
 	);
 }
 
