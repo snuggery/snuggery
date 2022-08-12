@@ -107,12 +107,22 @@ interface ApplyChange {
 	(change: 'delete', path: JsonPropertyPath): void;
 }
 
+// Implement our own buildJsonPointer / parseJsonPointer functions here to
+// prevent from importing @angular-devkit/core because that package is huge so
+// we would have to lazy load it.
+
 function pathToPointer(path: JsonPropertyPath): json.schema.JsonPointer {
-	return ('/' + path.join('/')) as json.schema.JsonPointer;
+	return ('/' +
+		path
+			.map(entry => String(entry).replace(/~/g, '~0').replace(/\//g, '~1'))
+			.join('/')) as json.schema.JsonPointer;
 }
 
 function pointerToPath(pointer: json.schema.JsonPointer): JsonPropertyPath {
-	return pointer.slice(1).split('/');
+	return pointer
+		.slice(1)
+		.split('/')
+		.map(entry => entry.replace(/~1/g, '/').replace(/~0/g, '~'));
 }
 
 function createChangeApplier(
