@@ -51,5 +51,5 @@
 		"chevrotain@^10.1.2": "patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch",
 		"@angular-devkit/schematics@14.0.0": "patch:@angular-devkit/schematics@npm:14.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch"
 	},
-	"packageManager": "yarn@3.2.1"
+	"packageManager": "yarn@3.2.2"
 }
