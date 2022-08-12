@@ -175,7 +175,14 @@ class NxTargetDefinition implements TargetDefinition {
 }
 
 class NxTargetDefinitionCollection extends TargetDefinitionCollection {
-	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
+	static fromConfiguration(
+		path: JsonPropertyPath,
+		raw: JsonObject | (() => JsonObject),
+	) {
+		if (typeof raw === 'function') {
+			return new this(raw, undefined);
+		}
+
 		return new this(
 			raw,
 			Object.fromEntries(
@@ -198,8 +205,13 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 
 	static fromValue(
 		value: TargetDefinitionCollection | workspaces.TargetDefinitionCollection,
-		raw: JsonObject,
+		getRaw: () => JsonObject,
 	) {
+		if (value.size === 0) {
+			return new this(getRaw, undefined);
+		}
+
+		const raw = getRaw();
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
@@ -215,14 +227,22 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	readonly #raw: JsonObject;
+	#_raw: JsonObject | (() => JsonObject);
 
 	private constructor(
-		raw: JsonObject,
-		initial: Record<string, TargetDefinition>,
+		raw: JsonObject | (() => JsonObject),
+		initial: Record<string, TargetDefinition> | undefined,
 	) {
 		super(initial);
-		this.#raw = raw;
+		this.#_raw = raw;
+	}
+
+	get #raw(): JsonObject {
+		if (typeof this.#_raw === 'function') {
+			this.#_raw = this.#_raw();
+		}
+
+		return this.#_raw;
 	}
 
 	protected override _wrapValue(
@@ -264,11 +284,12 @@ class NxProjectDefinition implements ProjectDefinition {
 		let targets;
 
 		if (!Reflect.has(raw, 'targets')) {
-			// TODO this always adds a "target" property if no targets are configured, is that bad?
-			raw.targets = {};
 			targets = NxTargetDefinitionCollection.fromConfiguration(
 				[...path, 'targets'],
-				raw.targets as JsonObject,
+				() => {
+					raw.targets = {};
+					return raw.targets;
+				},
 			);
 		} else {
 			if (!isJsonObject(raw.targets)) {
@@ -301,10 +322,9 @@ class NxProjectDefinition implements ProjectDefinition {
 			raw.prefix = value.prefix;
 		}
 
-		raw.targets = {};
 		const targets = NxTargetDefinitionCollection.fromValue(
 			value.targets,
-			raw.targets as JsonObject,
+			() => (raw.targets = {}),
 		);
 
 		const instance = new this(targets, raw);
@@ -375,10 +395,14 @@ class NxProjectDefinition implements ProjectDefinition {
 class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	static async fromConfiguration(
 		path: JsonPropertyPath,
-		raw: JsonObject,
+		raw: JsonObject | (() => JsonObject),
 		file?: FileHandle,
 		objectsAndFiles?: [JsonObject, FileHandle][],
 	) {
+		if (typeof raw === 'function') {
+			return new this(raw, undefined);
+		}
+
 		return new this(
 			raw,
 			Object.fromEntries(
@@ -415,8 +439,13 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 	static fromValue(
 		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
-		raw: JsonObject,
+		getRaw: () => JsonObject,
 	) {
+		if (value.size === 0) {
+			return new this(getRaw, undefined);
+		}
+
+		const raw = getRaw();
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
@@ -432,14 +461,22 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	readonly #raw: JsonObject;
+	#_raw: JsonObject | (() => JsonObject);
 
 	private constructor(
-		raw: JsonObject,
-		initial: Record<string, ProjectDefinition>,
+		raw: JsonObject | (() => JsonObject),
+		initial: Record<string, ProjectDefinition> | undefined,
 	) {
 		super(initial);
-		this.#raw = raw;
+		this.#_raw = raw;
+	}
+
+	get #raw(): JsonObject {
+		if (typeof this.#_raw === 'function') {
+			this.#_raw = this.#_raw();
+		}
+
+		return this.#_raw;
 	}
 
 	protected override _wrapValue(
@@ -474,11 +511,12 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 			: undefined;
 
 		if (!Reflect.has(raw, 'projects')) {
-			// TODO this always adds a "projects" property if no projects are configured, is that bad?
-			raw.projects = {};
 			projects = await NxProjectDefinitionCollection.fromConfiguration(
 				['projects'],
-				raw.projects as JsonObject,
+				() => {
+					raw.projects = {};
+					return raw.projects;
+				},
 				file,
 				projectsAndFiles,
 			);
@@ -514,7 +552,7 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		const instance = new this(
 			NxProjectDefinitionCollection.fromValue(
 				value.projects,
-				(raw.projects = {}),
+				() => (raw.projects = {}),
 			),
 			raw,
 		);

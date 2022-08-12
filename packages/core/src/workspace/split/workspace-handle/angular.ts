@@ -171,7 +171,14 @@ class AngularTargetDefinition implements TargetDefinition {
 }
 
 class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
-	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
+	static fromConfiguration(
+		path: JsonPropertyPath,
+		raw: JsonObject | (() => JsonObject),
+	) {
+		if (typeof raw === 'function') {
+			return new this(raw, undefined);
+		}
+
 		return new this(
 			raw,
 			Object.fromEntries(
@@ -197,8 +204,13 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 
 	static fromValue(
 		value: workspaces.TargetDefinitionCollection,
-		raw: JsonObject,
+		getRaw: () => JsonObject,
 	) {
+		if (value.size === 0) {
+			return new this(getRaw, undefined);
+		}
+
+		const raw = getRaw();
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
@@ -214,15 +226,23 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	readonly #raw: JsonObject;
+	#_raw: JsonObject | (() => JsonObject);
 
 	private constructor(
-		raw: JsonObject,
-		initialValue: Record<string, TargetDefinition>,
+		raw: JsonObject | (() => JsonObject),
+		initialValue: Record<string, TargetDefinition> | undefined,
 	) {
 		super(initialValue);
 
-		this.#raw = raw;
+		this.#_raw = raw;
+	}
+
+	get #raw() {
+		if (typeof this.#_raw === 'function') {
+			this.#_raw = this.#_raw();
+		}
+
+		return this.#_raw;
 	}
 
 	protected override _wrapValue(
@@ -278,11 +298,12 @@ class AngularProjectDefinition implements ProjectDefinition {
 		let targets;
 
 		if (!Reflect.has(raw, targetKey)) {
-			// TODO this always adds a "target" property if no targets are configured, is that bad?
-			raw[targetKey] = {};
 			targets = AngularTargetDefinitionCollection.fromConfiguration(
 				[...path, targetKey],
-				raw[targetKey] as JsonObject,
+				() => {
+					raw[targetKey] = {};
+					return raw[targetKey] as JsonObject;
+				},
 			);
 		} else {
 			if (!isJsonObject(raw[targetKey])) {
@@ -315,10 +336,9 @@ class AngularProjectDefinition implements ProjectDefinition {
 			raw.prefix = value.prefix;
 		}
 
-		raw.targets = {};
 		const targets = AngularTargetDefinitionCollection.fromValue(
 			value.targets,
-			raw.targets as JsonObject,
+			() => (raw.targets = {}),
 		);
 
 		const instance = new this(targets, raw);
@@ -386,7 +406,14 @@ class AngularProjectDefinition implements ProjectDefinition {
 }
 
 class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
-	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
+	static fromConfiguration(
+		path: JsonPropertyPath,
+		raw: JsonObject | (() => JsonObject),
+	) {
+		if (typeof raw === 'function') {
+			return new this(raw, undefined);
+		}
+
 		return new this(
 			raw,
 			Object.fromEntries(
@@ -412,8 +439,13 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 	static fromValue(
 		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
-		raw: JsonObject,
+		getRaw: () => JsonObject,
 	) {
+		if (value.size === 0) {
+			return new this(getRaw, undefined);
+		}
+
+		const raw = getRaw();
 		const initial = Object.fromEntries(
 			Array.from(value, ([name, originalDefinition]) => {
 				raw[name] = {};
@@ -429,14 +461,22 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		return new this(raw, initial);
 	}
 
-	readonly #raw: JsonObject;
+	#_raw: JsonObject | (() => JsonObject);
 
 	private constructor(
-		raw: JsonObject,
-		initial: Record<string, ProjectDefinition>,
+		raw: JsonObject | (() => JsonObject),
+		initial: Record<string, ProjectDefinition> | undefined,
 	) {
 		super(initial);
-		this.#raw = raw;
+		this.#_raw = raw;
+	}
+
+	get #raw(): JsonObject {
+		if (typeof this.#_raw === 'function') {
+			this.#_raw = this.#_raw();
+		}
+
+		return this.#_raw;
 	}
 
 	protected override _wrapValue(
@@ -471,11 +511,12 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		let projects;
 
 		if (!Reflect.has(raw, 'projects')) {
-			// TODO this always adds a "projects" property if no projects are configured, is that bad?
-			raw.projects = {};
 			projects = AngularProjectDefinitionCollection.fromConfiguration(
 				['projects'],
-				raw.projects as JsonObject,
+				() => {
+					raw.projects = {};
+					return raw.projects;
+				},
 			);
 		} else {
 			if (!isJsonObject(raw.projects)) {
@@ -507,7 +548,7 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		const instance = new this(
 			AngularProjectDefinitionCollection.fromValue(
 				value.projects,
-				(raw.projects = {}),
+				() => (raw.projects = {}),
 			),
 			raw,
 		);

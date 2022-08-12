@@ -162,39 +162,53 @@ export function toJsonObject(
 // Workspace configuration
 
 function parseConfigurations(context: ParserContext & {node: Node}) {
+	const configurations = collectParameterizedSubContexts(
+		context,
+		'configuration',
+	);
+
+	if (configurations.size === 0) {
+		return undefined;
+	}
+
 	return Object.fromEntries(
-		Array.from(
-			collectParameterizedSubContexts(context, 'configuration'),
-			([name, context]) => [
-				name,
-				toJsonObject(context, {
-					ignoreArguments: true,
-				}),
-			],
-		),
+		Array.from(configurations, ([name, context]) => [
+			name,
+			toJsonObject(context, {
+				ignoreArguments: true,
+			}),
+		]),
 	);
 }
 
-function parseTargets(context: ParserContext & {node: Node}): JsonObject {
+function parseTargets(
+	context: ParserContext & {node: Node},
+): JsonObject | undefined {
+	const targets = collectParameterizedSubContexts(context, 'target');
+
+	if (targets.size === 0) {
+		return undefined;
+	}
+
 	return Object.fromEntries(
-		Array.from(
-			collectParameterizedSubContexts(context, 'target'),
-			([name, context]) => {
-				const target = toJsonObject(context, {
-					ignoreArguments: true,
-					ignoreProperties: new Set([
-						'configuration',
-						'configurations',
-						'options',
-					]),
-					ignoreChildren: new Set(['configuration', 'configurations']),
-				});
+		Array.from(targets, ([name, context]) => {
+			const target = toJsonObject(context, {
+				ignoreArguments: true,
+				ignoreProperties: new Set([
+					'configuration',
+					'configurations',
+					'options',
+				]),
+				ignoreChildren: new Set(['configuration', 'configurations']),
+			});
 
-				target.configurations = parseConfigurations(context);
+			const configurations = parseConfigurations(context);
+			if (configurations) {
+				target.configurations = configurations;
+			}
 
-				return [name, target];
-			},
-		),
+			return [name, target];
+		}),
 	);
 }
 
@@ -235,7 +249,7 @@ export function addProjectRelativeTag<T extends ParserContext>(
 	};
 }
 
-function parseProjects(document: Document): JsonObject {
+function parseProjects(document: Document): JsonObject | undefined {
 	const projectContexts = collectParameterizedSubContexts(
 		{
 			tags: new Map(),
@@ -289,54 +303,63 @@ function parseProjects(document: Document): JsonObject {
 		};
 	}
 
+	const concreteProjects = Array.from(projectContexts).filter(
+		([, project]) => project.node.getTag() !== 'abstract',
+	);
+
+	if (concreteProjects.length === 0) {
+		return undefined;
+	}
+
 	return Object.fromEntries(
-		Array.from(projectContexts)
-			.filter(([, project]) => project.node.getTag() !== 'abstract')
-			.map(([name, shallowProjectContext]) => {
-				const extendsName = shallowProjectContext.node.getProperty('extends');
-				if (extendsName != null && typeof extendsName !== 'string') {
-					throw new InvalidConfigurationError(
-						`Project ${JSON.stringify(
-							name,
-						)} defines a non-string "extends": ${JSON.stringify(extendsName)}`,
-					);
-				}
+		concreteProjects.map(([name, shallowProjectContext]) => {
+			const extendsName = shallowProjectContext.node.getProperty('extends');
+			if (extendsName != null && typeof extendsName !== 'string') {
+				throw new InvalidConfigurationError(
+					`Project ${JSON.stringify(
+						name,
+					)} defines a non-string "extends": ${JSON.stringify(extendsName)}`,
+				);
+			}
 
-				let projectContext = shallowProjectContext;
-				if (extendsName != null) {
-					projectContext = {
-						...shallowProjectContext,
-						extends: getExtendedContext(extendsName, [name]),
-					};
-				}
+			let projectContext = shallowProjectContext;
+			if (extendsName != null) {
+				projectContext = {
+					...shallowProjectContext,
+					extends: getExtendedContext(extendsName, [name]),
+				};
+			}
 
-				const root =
-					shallowProjectContext.node.getProperty('root') ??
-					getSingleStringValue(
-						namedSubContext(projectContext, 'root'),
-						`root in project ${JSON.stringify(name)}`,
-					);
+			const root =
+				shallowProjectContext.node.getProperty('root') ??
+				getSingleStringValue(
+					namedSubContext(projectContext, 'root'),
+					`root in project ${JSON.stringify(name)}`,
+				);
 
-				if (typeof root !== 'string') {
-					throw new InvalidConfigurationError(
-						`Project ${JSON.stringify(
-							name,
-						)} doesn't define a string value for "root"`,
-					);
-				}
+			if (typeof root !== 'string') {
+				throw new InvalidConfigurationError(
+					`Project ${JSON.stringify(
+						name,
+					)} doesn't define a string value for "root"`,
+				);
+			}
 
-				projectContext = addProjectRelativeTag(projectContext, root);
+			projectContext = addProjectRelativeTag(projectContext, root);
 
-				const project = toJsonObject(projectContext, {
-					ignoreArguments: true,
-					ignoreChildren: new Set(['target', 'targets']),
-					ignoreProperties: new Set(['extends']),
-				});
+			const project = toJsonObject(projectContext, {
+				ignoreArguments: true,
+				ignoreChildren: new Set(['target', 'targets']),
+				ignoreProperties: new Set(['extends']),
+			});
 
-				project.targets = parseTargets(projectContext);
+			const targets = parseTargets(projectContext);
+			if (targets != null) {
+				project.targets = targets;
+			}
 
-				return [name, project];
-			}),
+			return [name, project];
+		}),
 	);
 }
 
@@ -358,7 +381,10 @@ export function parseWorkspace(document: Document): JsonObject {
 		}
 	}
 
-	workspace.push(['projects', parseProjects(document)]);
+	const projects = parseProjects(document);
+	if (projects != null) {
+		workspace.push(['projects', projects]);
+	}
 
 	return Object.fromEntries(workspace);
 }
