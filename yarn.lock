@@ -421,10 +421,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bgotink/kdl@npm:0.1.2":
+"@bgotink/kdl@npm:0.1.4, @bgotink/kdl@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@bgotink/kdl@npm:0.1.4"
+  checksum: 1e5f36216a50352051b339f6a408df5221fe47373f7a7439b8e985f1374a581ed4cd8ecf88ac036c724ee85d04b98093af9acb436ab05c0168efaad8e11b6ed7
+  languageName: node
+  linkType: hard
+
+"@bgotink/prettier-plugin-kdl@npm:0.1.2":
   version: 0.1.2
-  resolution: "@bgotink/kdl@npm:0.1.2"
-  checksum: 0716384f538d92cd715e69309baf966f7ff32666d4adb68947dc54eed2e960dfb032d13bd8bb7b7aa32265bc216ba9113ea3deeda6c2bd29bddb4eb82c478b35
+  resolution: "@bgotink/prettier-plugin-kdl@npm:0.1.2"
+  dependencies:
+    "@bgotink/kdl": ^0.1.4
+  peerDependencies:
+    prettier: ^2.7.1
+  checksum: cc867a5abce45d3037ad5e37a108c0a9911209f42c9cd1fb760c983dd4ba7ca71e2d4d692c10856d92e8548c4e7dd15d56534e3d089b41c5d2a719123498cdd8
   languageName: node
   linkType: hard
 
@@ -1202,7 +1213,7 @@ __metadata:
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
     "@angular-devkit/core": 14.0.0
-    "@bgotink/kdl": 0.1.2
+    "@bgotink/kdl": 0.1.4
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": ^4
     "@types/node": ^16.11.35
@@ -5914,12 +5925,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "prettier@npm:2.5.1"
+"prettier@npm:^2.7.1":
+  version: 2.7.1
+  resolution: "prettier@npm:2.7.1"
   bin:
     prettier: bin-prettier.js
-  checksum: 21b9408476ea1c544b0e45d51ceb94a84789ff92095abb710942d780c862d0daebdb29972d47f6b4d0f7ebbfb0ffbf56cc2cfa3e3e9d1cca54864af185b15b66
+  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
   languageName: node
   linkType: hard
 
@@ -6504,6 +6515,7 @@ __metadata:
   resolution: "snuggery-workspace@workspace:."
   dependencies:
     "@angular-eslint/builder": 13.0.1
+    "@bgotink/prettier-plugin-kdl": 0.1.2
     "@microsoft/eslint-formatter-sarif": ^3.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/affected": "workspace:packages/affected"
@@ -6521,7 +6533,7 @@ __metadata:
     express-check-in: ^0.1.0
     husky: ^8.0.1
     is-ci: ^3.0.1
-    prettier: ^2.5.1
+    prettier: ^2.7.1
     typescript: 4.7.2
     uvu: ^0.5.6
   dependenciesMeta:

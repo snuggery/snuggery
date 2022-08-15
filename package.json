@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@angular-eslint/builder": "13.0.1",
+		"@bgotink/prettier-plugin-kdl": "0.1.2",
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/affected": "workspace:packages/affected",
@@ -33,7 +34,7 @@
 		"express-check-in": "^0.1.0",
 		"husky": "^8.0.1",
 		"is-ci": "^3.0.1",
-		"prettier": "^2.5.1",
+		"prettier": "^2.7.1",
 		"typescript": "4.7.2",
 		"uvu": "^0.5.6"
 	},

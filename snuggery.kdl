@@ -58,9 +58,7 @@ project "all" root="" {
 		options {
 			eslintConfig ".eslintrc.yml"
 			ignorePath ".eslintignore"
-			lintFilePatterns \
-				"packages/*/src/**/*.[tj]s" \
-				"integration"
+			lintFilePatterns "packages/*/src/**/*.[tj]s" "integration"
 		}
 		configuration "ci" {
 			silent true
@@ -85,8 +83,8 @@ project "all" root="" {
 			asset "README.md" "NOTICE.md"
 			asset "LICENSE.md" from="."
 			asset allowEmpty=true from=(project-relative)"src" {
-				include "**/*.d.ts" 
-				include "**/*.json" 
+				include "**/*.d.ts"
+				include "**/*.json"
 			}
 		}
 	}
@@ -139,9 +137,7 @@ project "integration" root="integration" {
 	target "test" builder="@snuggery/snuggery:execute" {
 		options {
 			package "uvu"
-      arguments \
-        "--require" \
-        "@snuggery-workspace/scripts/load-ts"
+			arguments "--require" "@snuggery-workspace/scripts/load-ts"
 		}
 	}
 }
