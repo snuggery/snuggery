@@ -35,8 +35,8 @@
 		}
 	},
 	"dependencies": {
-		"@angular-devkit/architect": "0.1400.0",
-		"@angular-devkit/core": "14.0.0",
+		"@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0",
+		"@angular-devkit/core": "^14.0.0",
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery/architect": "^0.6.1",
 		"@snuggery/core": "^0.4.2",
@@ -48,8 +48,8 @@
 		"typanion": "3.7.1"
 	},
 	"devDependencies": {
-		"@angular/compiler": "14.0.0",
-		"@angular/compiler-cli": "14.0.0",
+		"@angular/compiler": "^14.0.0",
+		"@angular/compiler-cli": "^14.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/less": "^3.0.3",
 		"@types/node": "^16.11.35",

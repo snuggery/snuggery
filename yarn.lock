@@ -15,7 +15,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular-devkit/architect@npm:0.1400.0":
+"@angular-devkit/architect@npm:0.1400.0, @angular-devkit/architect@npm:>= 0.1400.0 < 0.1500.0":
   version: 0.1400.0
   resolution: "@angular-devkit/architect@npm:0.1400.0"
   dependencies:
@@ -149,7 +149,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:14.0.0":
+"@angular/compiler@npm:14.0.0, @angular/compiler@npm:^14.0.0":
   version: 14.0.0
   resolution: "@angular/compiler@npm:14.0.0"
   dependencies:
@@ -1127,8 +1127,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/affected@workspace:packages/affected"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.6.1
     "@snuggery/core": ^0.4.2
@@ -1149,10 +1149,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/angular@workspace:packages/angular"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
-    "@angular/compiler": 14.0.0
-    "@angular/compiler-cli": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
+    "@angular/compiler": ^14.0.0
+    "@angular/compiler-cli": ^14.0.0
     "@microsoft/api-extractor": 7.24.1
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.6.1
@@ -1185,8 +1185,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/architect@workspace:packages/architect"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": ^0.4.2
     "@types/fs-extra": 9.0.11
@@ -1212,7 +1212,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
-    "@angular-devkit/core": 14.0.0
+    "@angular-devkit/core": ^14.0.0
     "@bgotink/kdl": 0.1.4
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": ^4
@@ -1248,9 +1248,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/node@workspace:packages/node"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
-    "@angular-devkit/schematics": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
+    "@angular-devkit/schematics": ^14.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.6.1
     "@snuggery/core": ^0.4.2
@@ -1269,8 +1269,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/schematics@workspace:packages/schematics"
   dependencies:
-    "@angular-devkit/core": 14.0.0
-    "@angular-devkit/schematics": 14.0.0
+    "@angular-devkit/core": ^14.0.0
+    "@angular-devkit/schematics": ^14.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": ^0.4.2
     typescript: 4.7.2
@@ -1288,9 +1288,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/snuggery@workspace:packages/snuggery"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
-    "@angular-devkit/schematics": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
+    "@angular-devkit/schematics": ^14.0.0
     "@arcanis/slice-ansi": 1.0.2
     "@nrwl/devkit": ^13.8.3
     "@snuggery-workspace/scripts": "workspace:scripts"
@@ -1351,9 +1351,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/yarn@workspace:packages/yarn"
   dependencies:
-    "@angular-devkit/architect": 0.1400.0
-    "@angular-devkit/core": 14.0.0
-    "@angular-devkit/schematics": 14.0.0
+    "@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0"
+    "@angular-devkit/core": ^14.0.0
+    "@angular-devkit/schematics": ^14.0.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.6.1
     "@types/node": ^16.11.35
