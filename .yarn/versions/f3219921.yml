@@ -1,9 +1,0 @@
-releases:
-  "@snuggery/affected": patch
-  "@snuggery/angular": patch
-  "@snuggery/architect": patch
-  "@snuggery/global": patch
-  "@snuggery/node": patch
-  "@snuggery/schematics": patch
-  "@snuggery/snuggery": patch
-  "@snuggery/yarn": patch
