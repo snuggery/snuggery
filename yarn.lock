@@ -1138,8 +1138,8 @@ __metadata:
     "@types/semver": ^7
     expect: ^27.3.1
     glob: 7.2.0
-    rxjs: 6.6.7
-    semver: ^7.3.5
+    rxjs: ^6.6.7
+    semver: ^7.3.7
     typanion: ^3.7.1
     uvu: ^0.5.2
   languageName: unknown
@@ -1255,7 +1255,7 @@ __metadata:
     "@snuggery/architect": ^0.6.1
     "@snuggery/core": ^0.4.2
     "@types/node": ^16.11.35
-    rxjs: 6.6.7
+    rxjs: ^6.6.7
     typescript: 4.7.2
   peerDependencies:
     typescript: ">= 4.0.0 < 4.8.0"
@@ -1308,8 +1308,8 @@ __metadata:
     json5: 2.2.0
     kleur: 4.1.4
     prompts: 2.4.2
-    rxjs: 6.6.7
-    semver: 7.3.5
+    rxjs: ^6.6.7
+    semver: ^7.3.7
     strip-ansi: 6.0.1
     typanion: 3.7.1
     uvu: ^0.5.2
@@ -1333,7 +1333,7 @@ __metadata:
     "@yarnpkg/plugin-npm": 2.7.0
     "@yarnpkg/plugin-pack": 3.1.1
     clipanion: 3.2.0-rc.10
-    semver: 7.3.1
+    semver: ^7.3.1
     typescript: 4.7.2
   peerDependencies:
     "@yarnpkg/cli": ^3.2.0
@@ -1358,7 +1358,7 @@ __metadata:
     "@snuggery/architect": ^0.6.1
     "@types/node": ^16.11.35
     "@yarnpkg/parsers": ^2.4.1
-    rxjs: 6.6.7
+    rxjs: ^6.6.7
   languageName: unknown
   linkType: soft
 
@@ -6388,15 +6388,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.3.1":
-  version: 7.3.1
-  resolution: "semver@npm:7.3.1"
-  bin:
-    semver: bin/semver.js
-  checksum: e46a602ae0bf7dba90c61df5f1432481e306ae5149194a9f8c7c536df3d0c9c2af04021cd8c9e34978f95b4f4083c393603fe1ee41ad7c0bfcde1035ba6d9455
-  languageName: node
-  linkType: hard
-
 "semver@npm:7.3.4":
   version: 7.3.4
   resolution: "semver@npm:7.3.4"
@@ -6405,17 +6396,6 @@ __metadata:
   bin:
     semver: bin/semver.js
   checksum: 96451bfd7cba9b60ee87571959dc47e87c95b2fe58a9312a926340fee9907fc7bc062c352efdaf5bb24b2dff59c145e14faf7eb9d718a84b4751312531b39f43
-  languageName: node
-  linkType: hard
-
-"semver@npm:7.3.5":
-  version: 7.3.5
-  resolution: "semver@npm:7.3.5"
-  dependencies:
-    lru-cache: ^6.0.0
-  bin:
-    semver: bin/semver.js
-  checksum: 5eafe6102bea2a7439897c1856362e31cc348ccf96efd455c8b5bc2c61e6f7e7b8250dc26b8828c1d76a56f818a7ee907a36ae9fb37a599d3d24609207001d60
   languageName: node
   linkType: hard
 
@@ -6437,7 +6417,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.0.0, semver@npm:^7.1.2, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:~7.3.0":
+"semver@npm:^7.0.0, semver@npm:^7.1.2, semver@npm:^7.3.1, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:~7.3.0":
   version: 7.3.7
   resolution: "semver@npm:7.3.7"
   dependencies:

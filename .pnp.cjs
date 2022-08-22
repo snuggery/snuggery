@@ -1781,7 +1781,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["kleur", "npm:4.1.4"],\
             ["prompts", "npm:2.4.2"],\
             ["rxjs", "npm:6.6.7"],\
-            ["semver", "npm:7.3.5"],\
+            ["semver", "npm:7.3.7"],\
             ["strip-ansi", "npm:6.0.1"],\
             ["typanion", "npm:3.7.1"],\
             ["uvu", "npm:0.5.6"],\
@@ -1822,7 +1822,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/plugin-npm", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:2.7.0"],\
             ["@yarnpkg/plugin-pack", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:3.1.1"],\
             ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.2.0-rc.10"],\
-            ["semver", "npm:7.3.1"],\
+            ["semver", "npm:7.3.7"],\
             ["typescript", "patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=f456af"]\
           ],\
           "linkType": "SOFT"\
@@ -7850,25 +7850,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:7.3.1", {\
-          "packageLocation": "./.yarn/cache/semver-npm-7.3.1-cdd3531f27-e46a602ae0.zip/node_modules/semver/",\
-          "packageDependencies": [\
-            ["semver", "npm:7.3.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:7.3.4", {\
           "packageLocation": "./.yarn/cache/semver-npm-7.3.4-4c3baf0ead-96451bfd7c.zip/node_modules/semver/",\
           "packageDependencies": [\
             ["semver", "npm:7.3.4"],\
-            ["lru-cache", "npm:6.0.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:7.3.5", {\
-          "packageLocation": "./.yarn/cache/semver-npm-7.3.5-618cf5db6a-5eafe6102b.zip/node_modules/semver/",\
-          "packageDependencies": [\
-            ["semver", "npm:7.3.5"],\
             ["lru-cache", "npm:6.0.0"]\
           ],\
           "linkType": "HARD"\
