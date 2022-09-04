@@ -13,8 +13,10 @@ const document = clearFormat(
 			(abstract)project "parent" {
 				target "test" builder="@lorem/ipsum:test" {
 					options {
-						configFile (project-relative)"test.config.json"
-						configFile (project-relative)"test2.config.json"
+						configFiles {
+							- (project-relative)"test.config.json"
+							- (project-relative)"test2.config.json"
+						}
 						verbose false
 					}
 				}
@@ -27,7 +29,10 @@ const document = clearFormat(
 
 				target "test" {
 					options {
-						(append)configFile (project-relative)"test3.config.json"
+						configFiles {
+							super
+							- (project-relative)"test3.config.json"
+						}
 					}
 				}
 

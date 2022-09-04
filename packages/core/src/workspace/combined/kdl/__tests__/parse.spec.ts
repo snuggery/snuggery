@@ -3,7 +3,8 @@ import expect from 'expect';
 import {suite} from 'uvu';
 
 import {ParserContext} from '../context';
-import {toJsonObject, toJsonValue, parseWorkspace} from '../parse';
+import {toJsonObject, toJsonValue} from '../jik/parse';
+import {parseWorkspace} from '../parse';
 
 const test = suite('kdl parse');
 
@@ -34,8 +35,10 @@ test('toJsonObject should work for when passing arrays', () => {
 			ctx(
 				parse(
 					String.raw`parent {
-						node "lorem" object=true
-						node "ipsum"
+						node {
+							- "lorem" object=true
+							- "ipsum"
+						}
 					}`,
 					{as: 'node'},
 				),
@@ -72,7 +75,7 @@ test('parseWorkspace supports extending projects', () => {
 			project "parent" extends="grandparent" root="projects/parent" {
 				target "test" builder="@lorem/ipsum:sit" {
 					options {
-						configFile (project-relative)"test.config.js"
+						(array)configFiles (project-relative)"test.config.js"
 						coverage false
 					}
 					configuration "coverage" {
@@ -84,7 +87,10 @@ test('parseWorkspace supports extending projects', () => {
 			project "child" extends="parent" root="projects/child" {
 				target "test" {
 					options {
-						(append)configFile (project-relative)"test2.config.js"
+						configFiles {
+							super
+							- (project-relative)"test2.config.js"
+						}
 					}
 				}
 			}
@@ -112,7 +118,7 @@ test('parseWorkspace supports extending projects', () => {
 					test: {
 						builder: '@lorem/ipsum:sit',
 						options: {
-							configFile: 'projects/parent/test.config.js',
+							configFiles: ['projects/parent/test.config.js'],
 							coverage: false,
 						},
 						configurations: {
@@ -141,7 +147,7 @@ test('parseWorkspace supports extending projects', () => {
 					test: {
 						builder: '@lorem/ipsum:sit',
 						options: {
-							configFile: [
+							configFiles: [
 								'projects/child/test.config.js',
 								'projects/child/test2.config.js',
 							],

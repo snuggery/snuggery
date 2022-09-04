@@ -1,165 +1,16 @@
 import type {JsonObject} from '@angular-devkit/core';
-import type {Document, Entry, Node} from '@bgotink/kdl';
+import type {Document, Node} from '@bgotink/kdl';
 import {posix} from 'path';
 
 import {InvalidConfigurationError, JsonValue} from '../../types';
 
 import {
-	collectNodes,
 	collectParameterizedSubContexts,
 	getSingleStringValue,
 	namedSubContext,
 	ParserContext,
 } from './context';
-import {arrayItemKey, implicitPropertyKey, tagOverwrite} from './kdl-utils';
-import {unpackSingleValue} from './utils';
-
-// JSON
-
-function processTag(
-	context: Pick<ParserContext, 'tags'>,
-	value: Entry[],
-): JsonValue[];
-function processTag(
-	context: Pick<ParserContext, 'tags'>,
-	value: Entry | Entry[],
-): JsonValue;
-function processTag(
-	context: Pick<ParserContext, 'tags'>,
-	value: Entry | Entry[],
-): JsonValue {
-	if (Array.isArray(value)) {
-		return value.map(v => processTag(context, v));
-	}
-
-	const tag = context.tags.get(value.getTag()!);
-	return tag ? tag.toJson(value.getValue()) : value.getValue();
-}
-
-function _toJsonValue(context: ParserContext, nodes: Node[]): JsonValue {
-	if (nodes.length > 1) {
-		return _toJsonArray(context, nodes);
-	}
-
-	const [node] = nodes as [Node];
-
-	if (node.hasProperties()) {
-		return _toJsonObject(context, node);
-	}
-
-	if (node.hasChildren()) {
-		if (node.children!.nodes.every(node => node.getName() === arrayItemKey)) {
-			return _toJsonArray(context, node.children!.nodes);
-		}
-
-		return _toJsonObject(context, node);
-	}
-
-	// A primitive, so no need to look at the `extends`
-
-	const value = node.getArgumentEntries();
-	return processTag(context, unpackSingleValue(value));
-}
-
-function _toJsonArray(context: ParserContext, nodes: Node[]): JsonValue[] {
-	return nodes.map(node =>
-		_toJsonValue({...context, node, extends: undefined}, [node]),
-	);
-}
-
-function _toJsonObject(
-	context: ParserContext,
-	node: Node,
-	{
-		ignoreArguments = false,
-		ignoreProperties = false,
-		ignoreChildren,
-	}: {
-		ignoreArguments?: boolean;
-		ignoreProperties?: boolean | Set<string>;
-		ignoreChildren?: Set<string>;
-	} = {},
-): JsonObject {
-	const extendedProperties = new Map(
-		context.extends && node.getTag() !== tagOverwrite
-			? Object.entries(
-					toJsonObject(context.extends, {
-						ignoreArguments,
-						ignoreChildren,
-						ignoreProperties,
-					}),
-			  )
-			: undefined,
-	);
-	const ownProperties = new Map<string, JsonValue>();
-
-	if (!ignoreArguments && node.hasArguments()) {
-		const args = node.getArgumentEntries();
-		ownProperties.set(
-			implicitPropertyKey,
-			processTag(context, args.length > 1 ? args : args[0]!),
-		);
-	}
-
-	if (ignoreProperties !== true) {
-		const ignoredProperties = new Set(ignoreProperties || []);
-
-		for (const entry of node.getPropertyEntries()) {
-			const name = entry.getName()!;
-			if (!ignoredProperties.has(name)) {
-				ownProperties.set(name, processTag(context, entry));
-			}
-		}
-	}
-
-	if (node.children == null || !node.hasChildren()) {
-		return Object.fromEntries([...extendedProperties, ...ownProperties]);
-	}
-
-	const childNames = new Set<string>(
-		node.children.nodes
-			.map(child => child.getName())
-			.filter(name => !ignoreChildren?.has(name)),
-	);
-
-	for (const name of childNames) {
-		const value = toJsonValue({
-			...context,
-			node: unpackSingleValue(node.findNodesByName(name)),
-			extends: namedSubContext(context.extends, name),
-		});
-
-		ownProperties.set(
-			name === arrayItemKey ? implicitPropertyKey : name,
-			value,
-		);
-	}
-
-	return Object.fromEntries([...extendedProperties, ...ownProperties]);
-}
-
-export function toJsonValue(context: ParserContext): JsonValue {
-	return _toJsonValue(context, collectNodes(context));
-}
-
-export function toJsonObject(
-	context: ParserContext,
-	options?: {
-		ignoreArguments?: boolean;
-		ignoreProperties?: boolean | Set<string>;
-		ignoreChildren?: Set<string>;
-	},
-): JsonObject {
-	const nodes = collectNodes(context);
-
-	if (nodes.length !== 1) {
-		return {};
-	}
-
-	return _toJsonObject(context, nodes[0]!, options);
-}
-
-// Workspace configuration
+import {toJsonObject, toJsonValue} from './jik/parse';
 
 function parseConfigurations(context: ParserContext & {node: Node}) {
 	const configurations = collectParameterizedSubContexts(

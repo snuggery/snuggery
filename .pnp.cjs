@@ -663,10 +663,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@bgotink/kdl", [\
-        ["npm:0.1.4", {\
-          "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.1.4-f653fce201-1e5f36216a.zip/node_modules/@bgotink/kdl/",\
+        ["npm:0.1.5", {\
+          "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.1.5-33edfe20a9-6f9b567bab.zip/node_modules/@bgotink/kdl/",\
           "packageDependencies": [\
-            ["@bgotink/kdl", "npm:0.1.4"]\
+            ["@bgotink/kdl", "npm:0.1.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -683,7 +683,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@bgotink-prettier-plugin-kdl-virtual-3257158a2f/0/cache/@bgotink-prettier-plugin-kdl-npm-0.1.2-795670b17f-cc867a5abc.zip/node_modules/@bgotink/prettier-plugin-kdl/",\
           "packageDependencies": [\
             ["@bgotink/prettier-plugin-kdl", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:0.1.2"],\
-            ["@bgotink/kdl", "npm:0.1.4"],\
+            ["@bgotink/kdl", "npm:0.1.5"],\
             ["@types/prettier", null],\
             ["prettier", "npm:2.7.1"]\
           ],\
@@ -1652,7 +1652,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@bgotink/kdl", "npm:0.1.4"],\
+            ["@bgotink/kdl", "npm:0.1.5"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\
@@ -1675,7 +1675,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@angular-devkit/core", "virtual:524160fefb28bca132c81125b954cb3555253864c3da8eb16eb41eaa378a28cf8a77b7533a4fb5de48d7c55ccfaa6058ec89ab4f22b4445758748f6d3d2a80be#patch:@angular-devkit/core@npm%3A14.0.0#.yarn/patches/@angular-devkit__core.patch::version=14.0.0&hash=7e0ab3&locator=snuggery-workspace%40workspace%3A."],\
-            ["@bgotink/kdl", "npm:0.1.4"],\
+            ["@bgotink/kdl", "npm:0.1.5"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.1"],\
             ["@types/node", "npm:16.11.35"],\

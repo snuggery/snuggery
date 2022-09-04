@@ -45,9 +45,11 @@ project "all" root="" {
 		options {
 			useWorkspacePlugin true
 			buildTarget ":build:predeploy"
-			exclude "@snuggery/yarn-plugin-*"
-			exclude "integration"
-			exclude "all"
+			exclude {
+				- "@snuggery/yarn-plugin-*"
+				- "integration"
+				- "all"
+			}
 		}
 		configuration "next" {
 			distTag "next"
@@ -71,8 +73,8 @@ project "all" root="" {
 		options {
 			target "lint"
 			optionName "lintFilePatterns"
-			include "**/*.{,m,c}ts"
-			include "**/*.{,m,c}js"
+			include "**/*.{,m,c}ts" \
+			        "**/*.{,m,c}js"
 		}
 	}
 }
@@ -80,11 +82,12 @@ project "all" root="" {
 (abstract)project "parent" {
 	target "build" builder="@snuggery/node:build" {
 		options {
-			asset "README.md" "NOTICE.md"
-			asset "LICENSE.md" from="."
-			asset allowEmpty=true from=(project-relative)"src" {
-				include "**/*.d.ts"
-				include "**/*.json"
+			assets {
+				- "README.md" "NOTICE.md"
+				- "LICENSE.md" from="."
+				- allowEmpty=true from=(project-relative)"src" {
+					include "**/*.d.ts" "**/*.json"
+				}
 			}
 		}
 	}
@@ -95,7 +98,10 @@ project "@snuggery/snuggery" extends="parent" root="packages/snuggery"
 project "@snuggery/global" extends="parent" root="packages/global" {
 	target "build" {
 		options {
-			(append)asset ".pnp.loader.mjs" from="."
+			assets {
+				super
+				- ".pnp.loader.mjs" from="."
+			}
 		}
 	}
 }
@@ -109,7 +115,10 @@ project "@snuggery/core" extends="parent" root="packages/core"
 project "@snuggery/angular" extends="parent" root="packages/angular" {
 	target "build" {
 		options {
-			(append)asset "**/*" from=(project-relative)"src"
+			assets {
+				super
+				- "**/*" from=(project-relative)"src"
+			}
 		}
 	}
 }

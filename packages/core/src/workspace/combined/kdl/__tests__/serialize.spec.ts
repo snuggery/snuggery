@@ -2,14 +2,15 @@ import {clearFormat, Entry, Identifier, Node, parse} from '@bgotink/kdl';
 import expect from 'expect';
 import {suite} from 'uvu';
 
-import {fromJsonValue, fromJsonObject, serializeWorkspace} from '../serialize';
+import {fromJsonObject, fromJsonValue} from '../jik/serialize';
+import {serializeWorkspace} from '../serialize';
 
 const test = suite('kdl serialize');
 
 test('fromJsonValue should work for simple values', () => {
-	expect(fromJsonValue('lorem', 2)).toEqual([
+	expect(fromJsonValue('lorem', 2)).toEqual(
 		new Node(new Identifier('lorem'), [Entry.createArgument(2)]),
-	]);
+	);
 });
 
 test('fromJsonObject should work for objects', () => {
@@ -35,8 +36,10 @@ test('fromJsonObject should work for when passing arrays', () => {
 		clearFormat(
 			parse(
 				String.raw`parent {
-					node "lorem" object=true
-					node "ipsum"
+					node {
+						- "lorem" object=true
+						- "ipsum"
+					}
 				}`,
 				{as: 'node'},
 			),
