@@ -1,0 +1,5 @@
+releases:
+  "@snuggery/affected": patch
+  "@snuggery/global": minor
+  "@snuggery/node": minor
+  "@snuggery/snuggery": minor

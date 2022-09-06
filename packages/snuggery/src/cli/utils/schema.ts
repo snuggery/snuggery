@@ -5,6 +5,8 @@ type JsonObjectSchema = JsonObject & {type: 'object'; properties: JsonObject};
 
 type JsonPointer = json.schema.JsonPointer;
 
+const implicitPropertyKey = '$implicit';
+
 export function createWorkspaceTransform(
 	workspaceFilename: string | undefined,
 	{
@@ -22,21 +24,12 @@ export function createWorkspaceTransform(
 			return value;
 		}
 
-		if (schema.type === 'array') {
-			return autoArray(value, pointer, appliedAliases);
+		if (isJsonObject(value) && !Reflect.has(value, implicitPropertyKey)) {
+			return value;
 		}
 
 		if (schema.type === 'object' && isJsonObject(schema.properties)) {
-			if (isJsonObject(value)) {
-				return applyAliases(
-					value,
-					pointer,
-					schema as JsonObjectSchema,
-					appliedAliases,
-				);
-			}
-
-			return autoObject(
+			return supportImplicit(
 				value,
 				pointer,
 				schema as JsonObjectSchema,
@@ -77,20 +70,12 @@ export function createWorkspaceTransform(
 			}
 
 			if (objectSchemas.length === 1) {
-				if (isJsonObject(value)) {
-					return applyAliases(
-						value,
-						pointer,
-						objectSchemas[0]!,
-						appliedAliases,
-					);
-				}
-
-				return autoObject(value, pointer, objectSchemas[0]!, appliedAliases);
-			}
-
-			if (arraySchemas.length === 1) {
-				return autoArray(value, pointer, appliedAliases);
+				return supportImplicit(
+					value,
+					pointer,
+					objectSchemas[0]!,
+					appliedAliases,
+				);
 			}
 
 			return value;
@@ -100,86 +85,44 @@ export function createWorkspaceTransform(
 	};
 }
 
-function applyAliases(
-	value: JsonObject,
+function supportImplicit(
+	value: JsonValue,
 	pointer: JsonPointer,
 	schema: JsonObjectSchema,
 	appliedAliases?: Map<JsonPointer, JsonPointer>,
 ): JsonValue {
-	const properties = new Set(Object.keys(schema.properties));
-	const presentProperties = new Set(Object.keys(value));
-	const aliases = new Map<string, string>();
-	for (const [property, definition] of Object.entries(schema.properties)) {
-		if (!isJsonObject(definition)) {
-			continue;
-		}
-
-		for (const alias of isJsonArray(definition.alias)
-			? definition.alias
-			: [definition.alias]) {
-			if (
-				typeof alias !== 'string' ||
-				aliases.has(alias) ||
-				properties.has(alias) ||
-				!presentProperties.has(alias)
-			) {
-				continue;
-			}
-
-			aliases.set(alias, property);
-		}
+	if (implicitPropertyKey in schema.properties) {
+		return isJsonObject(value) ? value : {[implicitPropertyKey]: value};
 	}
 
-	if (aliases.size === 0) {
-		return value;
-	}
-
-	return Object.fromEntries(
-		Object.entries(value).map(([key, value]) => {
-			const alias = aliases.get(key);
-
-			if (alias == null) {
-				return [key, value];
-			}
-
-			appliedAliases?.set(
-				`${pointer}/${key}` as JsonPointer,
-				`${pointer}/${alias}` as JsonPointer,
-			);
-			return [alias, value];
-		}),
-	);
-}
-
-function autoArray(
-	value: JsonValue,
-	pointer: JsonPointer,
-	appliedAliases?: Map<JsonPointer, JsonPointer>,
-): JsonValue[] {
-	if (isJsonArray(value)) {
-		return value;
-	}
-
-	appliedAliases?.set(pointer, `${pointer}/0` as JsonPointer);
-	return [value];
-}
-
-function autoObject(
-	value: Exclude<JsonValue, JsonObject>,
-	pointer: JsonPointer,
-	schema: JsonObjectSchema,
-	appliedAliases?: Map<JsonPointer, JsonPointer>,
-): JsonObject {
-	const [$implicitProperty] = Object.entries(schema.properties).find(
+	const configuredImplicitProperty = Object.entries(schema.properties).find(
 		([, property]) =>
 			isJsonObject(property) &&
-			(property.alias === '$implicit' ||
-				(isJsonArray(property.alias) && property.alias.includes('$implicit'))),
-	) ?? ['$implicit'];
+			(isJsonArray(property.aliases)
+				? property.aliases.includes(implicitPropertyKey)
+				: property.alias === implicitPropertyKey),
+	);
+
+	if (!configuredImplicitProperty) {
+		return value;
+	}
+
+	if (!isJsonObject(value)) {
+		appliedAliases?.set(
+			pointer,
+			`${pointer}/${configuredImplicitProperty[0]}` as JsonPointer,
+		);
+		return {[configuredImplicitProperty[0]]: value};
+	}
 
 	appliedAliases?.set(
-		pointer,
-		`${pointer}/${$implicitProperty}` as JsonPointer,
+		`${pointer}/${implicitPropertyKey}` as JsonPointer,
+		`${pointer}/${configuredImplicitProperty[0]}` as JsonPointer,
 	);
-	return {[$implicitProperty]: value};
+	return Object.fromEntries(
+		Object.entries(value).map(([name, property]) => [
+			name === implicitPropertyKey ? configuredImplicitProperty[0] : name,
+			property,
+		]),
+	);
 }

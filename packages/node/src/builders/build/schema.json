@@ -17,13 +17,12 @@
 			"description": "Whether to keep the scripts in package.json, defaults to false"
 		},
 		"assets": {
-			"alias": ["asset"],
 			"type": "array",
 			"items": {
 				"type": "object",
 				"properties": {
 					"include": {
-						"alias": ["$implicit"],
+						"aliases": ["$implicit"],
 						"oneOf": [
 							{
 								"type": "string"
