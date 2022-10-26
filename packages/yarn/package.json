@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/yarn",
-	"version": "0.3.2",
+	"version": "0.4.0",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -19,7 +19,7 @@
 		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
 		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@angular-devkit/schematics": "^15.0.0-rc.0",
-		"@snuggery/architect": "^0.6.2",
+		"@snuggery/architect": "^0.7.0",
 		"@yarnpkg/parsers": "^2.4.1",
 		"rxjs": "^6.6.7"
 	},
