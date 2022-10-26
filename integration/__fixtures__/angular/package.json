@@ -3,8 +3,8 @@
 		"packages/*"
 	],
 	"dependencies": {
-		"@angular/compiler": "^15.0.0-0",
-		"@angular/compiler-cli": "^15.0.0-0",
+		"@angular/compiler": "^15.0.0-rc.0",
+		"@angular/compiler-cli": "^15.0.0-rc.0",
 		"@snuggery/angular": "workspace:packages/angular",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",

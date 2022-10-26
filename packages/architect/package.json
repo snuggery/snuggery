@@ -16,7 +16,7 @@
 	},
 	"peerDependencies": {
 		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-0",
+		"@angular-devkit/core": "^15.0.0-rc.0",
 		"typanion": "^3.7.1"
 	},
 	"peerDependenciesMeta": {
@@ -32,7 +32,7 @@
 	},
 	"devDependencies": {
 		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-0",
+		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/fs-extra": "9.0.11",
 		"@types/glob": "7.1.3",

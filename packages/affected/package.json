@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-0",
+		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@snuggery/architect": "^0.6.2",
 		"@snuggery/core": "^0.4.3",
 		"@snuggery/snuggery": "^0.8.2",
