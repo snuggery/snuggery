@@ -1,8 +1,7 @@
-import type {JsonObject} from '@angular-devkit/core';
 import type {Document, Node} from '@bgotink/kdl';
 import {posix} from 'path';
 
-import {InvalidConfigurationError, JsonValue} from '../../types';
+import {InvalidConfigurationError, JsonObject, JsonValue} from '../../types';
 
 import {
 	collectParameterizedSubContexts,

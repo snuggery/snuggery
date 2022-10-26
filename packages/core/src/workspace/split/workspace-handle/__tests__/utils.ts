@@ -44,6 +44,14 @@ export class TestFileHandle implements FileHandle {
 	readRelative(): Promise<FileHandle> {
 		throw new Error('readRelative not supported in tests');
 	}
+
+	async openRelative(): Promise<never> {
+		throw new Error('Method not implemented.');
+	}
+
+	async openDependency(): Promise<never> {
+		throw new Error('Method not implemented.');
+	}
 }
 
 export function itShouldHandleAngularConfiguration(

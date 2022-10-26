@@ -62,31 +62,34 @@ test('should read nx configuration correctly', async () => {
 test('should write workspaces correctly to nx configuration', async () => {
 	const file = new TestFileHandle({});
 
-	await new NxWorkspaceHandle(file).write({
-		extensions: {
-			schematics: {
-				'@snuggery/schematics': {
-					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+	await new NxWorkspaceHandle(file).write(
+		{
+			extensions: {
+				schematics: {
+					'@snuggery/schematics': {
+						hook: {
+							'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						},
 					},
 				},
 			},
-		},
-		projects: new workspaces.ProjectDefinitionCollection({
-			all: {
-				root: '',
-				targets: new workspaces.TargetDefinitionCollection({
-					build: {
-						builder: '@snuggery/snuggery:glob',
-						options: {
-							include: '*',
+			projects: new workspaces.ProjectDefinitionCollection({
+				all: {
+					root: '',
+					targets: new workspaces.TargetDefinitionCollection({
+						build: {
+							builder: '@snuggery/snuggery:glob',
+							options: {
+								include: '*',
+							},
 						},
-					},
-				}),
-				extensions: {},
-			},
-		}),
-	});
+					}),
+					extensions: {},
+				},
+			}),
+		},
+		{},
+	);
 
 	expect(file.value).toEqual({
 		version: 2,
@@ -161,7 +164,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 	allProject.targets.delete('e2e');
 	allProject.targets.get('build')!.options!.include = ['*'];
 
-	await handle.write(workspace);
+	await handle.write(workspace, {});
 
 	expect(file.value).toEqual({
 		version: 2,

@@ -21,10 +21,10 @@
 		"test": "sn test"
 	},
 	"peerDependencies": {
-		"@angular/compiler-cli": "^14.0.0",
+		"@angular/compiler-cli": "^15.0.0-0",
 		"less": "^4.1.2",
 		"sass": "^1.51.0",
-		"typescript": ">=4.6.2 < 4.8.0"
+		"typescript": ">=4.6.2 < 4.9.0"
 	},
 	"peerDependenciesMeta": {
 		"less": {
@@ -35,8 +35,8 @@
 		}
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.1400.0 < 0.1500.0",
-		"@angular-devkit/core": "^14.0.0",
+		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
+		"@angular-devkit/core": "^15.0.0-0",
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery/architect": "^0.6.2",
 		"@snuggery/core": "^0.4.3",
@@ -48,14 +48,14 @@
 		"typanion": "3.7.1"
 	},
 	"devDependencies": {
-		"@angular/compiler": "^14.0.0",
-		"@angular/compiler-cli": "^14.0.0",
+		"@angular/compiler": "^15.0.0-0",
+		"@angular/compiler-cli": "^15.0.0-0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/less": "^3.0.3",
 		"@types/node": "^16.11.35",
 		"less": "^4.1.2",
 		"sass": "^1.51.0",
-		"typescript": "4.7.2"
+		"typescript": "4.8.4"
 	},
 	"publishConfig": {
 		"exports": {

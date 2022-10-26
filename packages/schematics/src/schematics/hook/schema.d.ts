@@ -1,4 +1,4 @@
-import {JsonObject} from '@angular-devkit/core';
+import {JsonObject} from '@snuggery/core';
 
 export interface HookWithOptions {
 	/**

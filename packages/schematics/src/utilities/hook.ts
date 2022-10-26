@@ -1,5 +1,5 @@
-import type {JsonObject} from '@angular-devkit/core';
 import {externalSchematic, Rule} from '@angular-devkit/schematics';
+import type {JsonObject} from '@snuggery/core';
 
 import type {Hook} from '../schematics/hook/schema';
 

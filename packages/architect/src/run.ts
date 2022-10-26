@@ -3,7 +3,7 @@ import type {
 	BuilderOutput,
 	Target as ArchitectTarget,
 } from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
+import type {JsonObject} from '@snuggery/core';
 import {Observable, defer, of, from} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 

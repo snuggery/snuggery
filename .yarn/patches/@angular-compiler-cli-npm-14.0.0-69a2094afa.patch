@@ -129,13 +129,13 @@ index 9ed220d56843dc18e3c44686b8c5398b19870015..eb66847d490331fbdbdae537903bed0f
   */
  /// <amd-module name="@angular/compiler-cli/src/ngtsc/diagnostics" />
 -export { COMPILER_ERRORS_WITH_GUIDES } from './src/docs';
--export { FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error';
+-export { addDiagnosticChain, FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error';
 -export { ErrorCode } from './src/error_code';
 -export { ERROR_DETAILS_PAGE_BASE_URL } from './src/error_details_base_url';
 -export { ExtendedTemplateDiagnosticName } from './src/extended_template_diagnostic_name';
 -export { ngErrorCode, replaceTsWithNgInErrors } from './src/util';
 +export { COMPILER_ERRORS_WITH_GUIDES } from './src/docs.js';
-+export { FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error.js';
++export { addDiagnosticChain, FatalDiagnosticError, isFatalDiagnosticError, makeDiagnostic, makeDiagnosticChain, makeRelatedInformation } from './src/error.js';
 +export { ErrorCode } from './src/error_code.js';
 +export { ERROR_DETAILS_PAGE_BASE_URL } from './src/error_details_base_url.js';
 +export { ExtendedTemplateDiagnosticName } from './src/extended_template_diagnostic_name.js';
@@ -410,24 +410,26 @@ diff --git a/src/ngtsc/metadata/index.d.ts b/src/ngtsc/metadata/index.d.ts
 index ff2eaf778795fe5c86d544ea31d093ed69db886d..55cd6df0aa856779df6791ff7503bfaa54aa44d4 100755
 --- a/src/ngtsc/metadata/index.d.ts
 +++ b/src/ngtsc/metadata/index.d.ts
-@@ -6,10 +6,10 @@
+@@ -6,11 +6,11 @@
   * found in the LICENSE file at https://angular.io/license
   */
  /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata" />
 -export * from './src/api';
 -export { DtsMetadataReader } from './src/dts';
 -export { flattenInheritedDirectiveMetadata } from './src/inheritance';
--export { CompoundMetadataRegistry, LocalMetadataRegistry, InjectableClassRegistry } from './src/registry';
+-export { CompoundMetadataRegistry, LocalMetadataRegistry } from './src/registry';
 -export { ResourceRegistry, Resource, ComponentResources, isExternalResource, ExternalResource } from './src/resource_registry';
--export { extractDirectiveTypeCheckMeta, CompoundMetadataReader } from './src/util';
+-export { extractDirectiveTypeCheckMeta, hasInjectableFields, CompoundMetadataReader } from './src/util';
 -export { BindingPropertyName, ClassPropertyMapping, ClassPropertyName, InputOrOutput } from './src/property_mapping';
+-export { HostDirectivesResolver } from './src/host_directives_resolver';
 +export * from './src/api.js';
 +export { DtsMetadataReader } from './src/dts.js';
 +export { flattenInheritedDirectiveMetadata } from './src/inheritance.js';
-+export { CompoundMetadataRegistry, LocalMetadataRegistry, InjectableClassRegistry } from './src/registry.js';
++export { CompoundMetadataRegistry, LocalMetadataRegistry } from './src/registry.js';
 +export { ResourceRegistry, Resource, ComponentResources, isExternalResource, ExternalResource } from './src/resource_registry.js';
-+export { extractDirectiveTypeCheckMeta, CompoundMetadataReader } from './src/util.js';
++export { extractDirectiveTypeCheckMeta, hasInjectableFields, CompoundMetadataReader } from './src/util.js';
 +export { BindingPropertyName, ClassPropertyMapping, ClassPropertyName, InputOrOutput } from './src/property_mapping.js';
++export { HostDirectivesResolver } from './src/host_directives_resolver.js';
 diff --git a/src/ngtsc/metadata/src/api.d.ts b/src/ngtsc/metadata/src/api.d.ts
 index f4ed9ddbfffe3db7d182b47824715ef2d53bda3f..7e8284e4b26867ef108941a1aaa70579fc802c78 100755
 --- a/src/ngtsc/metadata/src/api.d.ts
@@ -488,11 +490,11 @@ index 6a2e5fa512c8a5be56605eb4afad17dfeee79e9a..6e8ed4850b8f3093800fa82df43aa080
   */
  /// <amd-module name="@angular/compiler-cli/src/ngtsc/metadata/src/registry" />
 -import { Reference } from '../../imports';
--import { ClassDeclaration, ReflectionHost } from '../../reflection';
--import { DirectiveMeta, MetadataReader, MetadataRegistry, NgModuleMeta, PipeMeta } from './api';
+-import { ClassDeclaration } from '../../reflection';
+-import { DirectiveMeta, MetadataReaderWithIndex, MetadataRegistry, NgModuleMeta, PipeMeta } from './api';
 +import { Reference } from '../../imports/index.js';
-+import { ClassDeclaration, ReflectionHost } from '../../reflection/index.js';
-+import { DirectiveMeta, MetadataReader, MetadataRegistry, NgModuleMeta, PipeMeta } from './api.js';
++import { ClassDeclaration } from '../../reflection/index.js';
++import { DirectiveMeta, MetadataReaderWithIndex, MetadataRegistry, NgModuleMeta, PipeMeta } from './api.js';
  /**
   * A registry of directive, pipe, and module metadata for types defined in the current compilation
   * unit, which supports both reading and registering.
@@ -528,8 +530,8 @@ index 1216fad8b4a56d050ee1bf77ef7cd14f03b5227e..328e18ad47298f55ff37d98ef6e3af58
 +import { DirectiveMeta, DirectiveTypeCheckMeta, MetadataReader, NgModuleMeta, PipeMeta } from './api.js';
 +import { ClassPropertyMapping } from './property_mapping.js';
  export declare function extractReferencesFromType(checker: ts.TypeChecker, def: ts.TypeNode, bestGuessOwningModule: OwningModule | null): Reference<ClassDeclaration>[];
+ export declare function extraReferenceFromTypeQuery(checker: ts.TypeChecker, typeNode: ts.TypeQueryNode, origin: ts.TypeNode, bestGuessOwningModule: OwningModule | null): Reference<ClassDeclaration<ts.ClassDeclaration>>;
  export declare function readBooleanType(type: ts.TypeNode): boolean | null;
- export declare function readStringType(type: ts.TypeNode): string | null;
 diff --git a/src/ngtsc/program.d.ts b/src/ngtsc/program.d.ts
 index 471cb56014357836f0bc1ec2a2cbaf8b252c43d0..9eecb6ee6f16c24a2a75b084495e2b67643dc080 100755
 --- a/src/ngtsc/program.d.ts
@@ -743,13 +745,13 @@ index 875dd35c9f1bcdd9fac7d3d03c63c531e419ff43..ce20414cde646b384e58ed4e8ef26682
 -import { ErrorCode } from '../../diagnostics';
 -import { FullTemplateMapping, NgTemplateDiagnostic, TypeCheckableDirectiveMeta } from './api';
 -import { GlobalCompletion } from './completion';
--import { DirectiveInScope, PipeInScope } from './scope';
+-import { PotentialDirective, PotentialImport, PotentialPipe } from './scope';
 -import { ElementSymbol, Symbol, TcbLocation, TemplateSymbol } from './symbols';
 +import { AbsoluteFsPath } from '../../../../src/ngtsc/file_system/index.js';
 +import { ErrorCode } from '../../diagnostics/index.js';
 +import { FullTemplateMapping, NgTemplateDiagnostic, TypeCheckableDirectiveMeta } from './api.js';
 +import { GlobalCompletion } from './completion.js';
-+import { DirectiveInScope, PipeInScope } from './scope.js';
++import { PotentialDirective, PotentialImport, PotentialPipe } from './scope.js';
 +import { ElementSymbol, Symbol, TcbLocation, TemplateSymbol } from './symbols.js';
  /**
   * Interface to the Angular Template Type Checker to extract diagnostics and intelligence from the
@@ -808,17 +810,19 @@ diff --git a/src/ngtsc/typecheck/api/scope.d.ts b/src/ngtsc/typecheck/api/scope.
 index f49a4b4dc0581e2b49f232df87aa16c4d5878e0a..1c25bd8a986b0efc02fb1ba215d2640a20c124df 100755
 --- a/src/ngtsc/typecheck/api/scope.d.ts
 +++ b/src/ngtsc/typecheck/api/scope.d.ts
-@@ -7,8 +7,8 @@
+@@ -7,9 +7,9 @@
   */
  /// <amd-module name="@angular/compiler-cli/src/ngtsc/typecheck/api/scope" />
  import ts from 'typescript';
+-import { Reference } from '../../imports';
 -import { ClassDeclaration } from '../../reflection';
 -import { SymbolWithValueDeclaration } from '../../util/src/typescript';
++import { Reference } from '../../imports/index.js';
 +import { ClassDeclaration } from '../../reflection/index.js';
 +import { SymbolWithValueDeclaration } from '../../util/src/typescript.js';
  /**
-  * Metadata on a directive which is available in the scope of a template.
-  */
+  * A PotentialImport for some Angular trait has a TypeScript module specifier, which can be
+  * relative, as well as an identifier name.
 diff --git a/src/ngtsc/typecheck/api/symbols.d.ts b/src/ngtsc/typecheck/api/symbols.d.ts
 index fd040fda40b3994e533f51d8ccb26655327f3fb8..3cd078987efe0e61bf1b55ddaa67c38b3b9e0d57 100755
 --- a/src/ngtsc/typecheck/api/symbols.d.ts
@@ -829,10 +833,10 @@ index fd040fda40b3994e533f51d8ccb26655327f3fb8..3cd078987efe0e61bf1b55ddaa67c38b
  import ts from 'typescript';
 -import { AbsoluteFsPath } from '../../file_system';
 -import { SymbolWithValueDeclaration } from '../../util/src/typescript';
--import { DirectiveInScope } from './scope';
+-import { PotentialDirective } from './scope';
 +import { AbsoluteFsPath } from '../../file_system/index.js';
 +import { SymbolWithValueDeclaration } from '../../util/src/typescript.js';
-+import { DirectiveInScope } from './scope.js';
++import { PotentialDirective } from './scope.js';
  export declare enum SymbolKind {
      Input = 0,
      Output = 1,

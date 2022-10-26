@@ -1,5 +1,5 @@
 import {createBuilder} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
+import type {JsonObject} from '@snuggery/core';
 
 import {execute} from './builder';
 import type {Schema} from './schema';
