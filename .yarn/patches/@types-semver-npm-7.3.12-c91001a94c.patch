@@ -1,0 +1,13 @@
+diff --git a/classes/range.d.ts b/classes/range.d.ts
+index 13a97b81b5dac38e4641f5e56d06223ab7a125c1..9ce9b1f8589eb2f9ac7be93b4f40848ccbc91498 100755
+--- a/classes/range.d.ts
++++ b/classes/range.d.ts
+@@ -3,7 +3,7 @@ import Comparator = require('./comparator');
+ import SemVer = require('./semver');
+ 
+ declare class Range {
+-    constructor(range: string | Range, optionsOrLoose?: boolean | semver.Options);
++    constructor(range: string | Range, optionsOrLoose?: boolean | semver.RangeOptions);
+ 
+     range: string;
+     raw: string;

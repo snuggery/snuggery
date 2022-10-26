@@ -1466,7 +1466,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/glob", "npm:7.1.3"],\
             ["@types/node", "npm:14.14.35"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["expect", "npm:27.3.1"],\
             ["glob", "npm:7.2.0"],\
             ["rxjs", "npm:6.6.7"],\
@@ -1720,7 +1720,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["@types/prettier", "npm:2.3.2"],\
             ["@types/prompts", "npm:2.4.0"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@types/which-pm-runs", "npm:1.0.0"],\
             ["ajv", "npm:8.11.0"],\
             ["ajv-formats", "virtual:16896277f8652c418b352e973118fc45641a15bb0a2f25253b2e28e4fd967f313480cd70d08d6afa2fd611de05b8d3febeb3f0aa0a6547bedfe0582e5b8728b1#npm:2.1.1"],\
@@ -1761,7 +1761,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/yarn-plugin-snuggery/",\
           "packageDependencies": [\
             ["@snuggery/yarn-plugin-snuggery", "workspace:packages/yarn-plugin-snuggery"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@yarnpkg/builder", "npm:3.2.0"],\
             ["@yarnpkg/cli", "virtual:eba9d4adf8581509681da63d65826b21b3b9a89a5de6d11c1cd9bad75758091420de0a284b3923b6d935b514f90f2491dca4f77a7cd326d80be2360e25fa1bb0#npm:3.2.0"],\
             ["@yarnpkg/core", "npm:3.2.0"],\
@@ -2028,10 +2028,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/semver", [\
-        ["npm:7.3.12", {\
-          "packageLocation": "./.yarn/cache/@types-semver-npm-7.3.12-c91001a94c-35536b2fc5.zip/node_modules/@types/semver/",\
+        ["patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@types-semver-patch-84f6dbf781-44e82d025f.zip/node_modules/@types/semver/",\
           "packageDependencies": [\
-            ["@types/semver", "npm:7.3.12"]\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2263,7 +2263,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/utils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:5.41.0"],\
             ["@types/eslint", null],\
             ["@types/json-schema", "npm:7.0.9"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@typescript-eslint/scope-manager", "npm:5.41.0"],\
             ["@typescript-eslint/types", "npm:5.41.0"],\
             ["@typescript-eslint/typescript-estree", "virtual:620ccd2f9a9e81802590106d3cead9c9e1927c79be0ec82fb59f2c96955da911cd216513d22c1fb5c259dad50e44f9964c967f158dde4e0ecdf3a8bd09f3378c#npm:5.41.0"],\
@@ -2366,7 +2366,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@yarnpkg/core", "npm:3.2.0"],\
             ["@arcanis/slice-ansi", "npm:1.1.1"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@types/treeify", "npm:1.0.0"],\
             ["@yarnpkg/fslib", "npm:2.6.1"],\
             ["@yarnpkg/json-proxy", "npm:2.1.1"],\
@@ -2615,7 +2615,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@yarnpkg-plugin-git-virtual-2257b7534a/0/cache/@yarnpkg-plugin-git-npm-2.6.0-48a424f147-1c01840e76.zip/node_modules/@yarnpkg/plugin-git/",\
           "packageDependencies": [\
             ["@yarnpkg/plugin-git", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:2.6.0"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@types/yarnpkg__core", null],\
             ["@yarnpkg/core", "npm:3.2.0"],\
             ["@yarnpkg/fslib", "npm:2.6.1"],\
@@ -2918,7 +2918,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@yarnpkg-plugin-pnp-virtual-37b7349257/0/cache/@yarnpkg-plugin-pnp-npm-3.2.0-c3d1eca9b1-3815ad5ec8.zip/node_modules/@yarnpkg/plugin-pnp/",\
           "packageDependencies": [\
             ["@yarnpkg/plugin-pnp", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:3.2.0"],\
-            ["@types/semver", "npm:7.3.12"],\
+            ["@types/semver", "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch::version=7.3.12&hash=8f5686&locator=snuggery-workspace%40workspace%3A."],\
             ["@types/yarnpkg__cli", null],\
             ["@types/yarnpkg__core", null],\
             ["@yarnpkg/cli", "virtual:eba9d4adf8581509681da63d65826b21b3b9a89a5de6d11c1cd9bad75758091420de0a284b3923b6d935b514f90f2491dca4f77a7cd326d80be2360e25fa1bb0#npm:3.2.0"],\

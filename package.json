@@ -53,7 +53,11 @@
 		"sass@^1.51.0": "patch:sass@npm:1.51.0#.yarn/patches/sass-npm-1.51.0-fa78a45677.patch",
 		"resolve.exports@1.1.0": "patch:resolve.exports@npm:1.1.0#.yarn/patches/resolve.exports-npm-1.1.0-81756e03ba.patch",
 		"chevrotain@^10.1.2": "patch:chevrotain@npm:10.1.2#.yarn/patches/chevrotain-npm-10.1.2-7e1027fce6.patch",
-		"@angular-devkit/schematics@^15.0.0-rc.0": "patch:@angular-devkit/schematics@npm:15.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch"
+		"@angular-devkit/schematics@^15.0.0-rc.0": "patch:@angular-devkit/schematics@npm:15.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch",
+		"@types/semver@^7.3.8": "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch",
+		"@types/semver@^7": "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch",
+		"@types/semver@^7.1.0": "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch",
+		"@types/semver@^7.3.12": "patch:@types/semver@npm%3A7.3.12#./.yarn/patches/@types-semver-npm-7.3.12-c91001a94c.patch"
 	},
 	"packageManager": "yarn@3.2.4"
 }
