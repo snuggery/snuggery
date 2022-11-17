@@ -1,5 +1,4 @@
 import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {tags} from '@angular-devkit/core';
 import {concat, forkJoin, of, Observable} from 'rxjs';
 import {catchError, last, mapTo} from 'rxjs/operators';
 
@@ -34,17 +33,13 @@ export function commitAndTag(
 				'commit',
 				'--all',
 				'--message',
-				tags.stripIndents`{chore} release ${appliedVersions.length} package${
+				`{chore} release ${appliedVersions.length} package${
 					appliedVersions.length > 1 ? 's' : ''
-				}
-				
-					${appliedVersions
-						.map(
-							line =>
-								`- ${line.ident}: ${line.oldVersion} -> ${line.newVersion}`,
-						)
-						.join('\n')}
-					`,
+				}\n\n${appliedVersions
+					.map(
+						line => `- ${line.ident}: ${line.oldVersion} -> ${line.newVersion}`,
+					)
+					.join('\n')}\n`,
 			],
 			{root: workspaceRoot},
 		),

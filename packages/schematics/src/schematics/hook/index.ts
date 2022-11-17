@@ -2,7 +2,7 @@ import {
 	chain,
 	externalSchematic,
 	noop,
-	Rule,
+	type Rule,
 	SchematicsException,
 } from '@angular-devkit/schematics';
 import type {JsonObject} from '@snuggery/core';
@@ -46,7 +46,7 @@ export default function ({
 				);
 			}
 
-			return externalSchematic(collectionName!, schematicName, {
+			return externalSchematic(collectionName, schematicName, {
 				...options,
 				...hookOptions,
 			});

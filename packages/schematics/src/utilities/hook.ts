@@ -1,4 +1,4 @@
-import {externalSchematic, Rule} from '@angular-devkit/schematics';
+import {externalSchematic, type Rule} from '@angular-devkit/schematics';
 import type {JsonObject} from '@snuggery/core';
 
 import type {Hook} from '../schematics/hook/schema';
@@ -53,6 +53,8 @@ export function registerHook(schematic: string, hook: Hook): Rule {
 			hookConfig.hooks = {};
 		}
 
-		(hookConfig.hooks[schematic] ??= []).push(hook);
+		(hookConfig.hooks[schematic] ?? (hookConfig.hooks[schematic] = [])).push(
+			hook,
+		);
 	});
 }

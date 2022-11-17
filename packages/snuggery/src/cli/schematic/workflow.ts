@@ -1,6 +1,6 @@
 import {normalize, virtualFs} from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
-import {Engine, workflow} from '@angular-devkit/schematics';
+import {type Engine, workflow} from '@angular-devkit/schematics';
 
 import type {SchemaRegistry} from '../utils/schema-registry';
 

@@ -1,4 +1,3 @@
-import {virtualFs} from '@angular-devkit/core';
 import type {Rule, Tree} from '@angular-devkit/schematics';
 import {
 	updateWorkspace as _updateWorkspace,
@@ -14,7 +13,7 @@ function createHost(tree: Tree): WorkspaceHost {
 			if (!data) {
 				throw new Error('File not found.');
 			}
-			return virtualFs.fileBufferToString(data);
+			return data.toString('utf-8');
 		},
 		async write(path, data) {
 			return tree.overwrite(path, data);

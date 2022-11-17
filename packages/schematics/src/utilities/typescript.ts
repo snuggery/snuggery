@@ -1,5 +1,5 @@
 import type {logging} from '@angular-devkit/core';
-import {SchematicsException, Tree} from '@angular-devkit/schematics';
+import {SchematicsException, type Tree} from '@angular-devkit/schematics';
 import {filterByPatterns} from '@snuggery/core';
 import {posix} from 'path';
 import ts from 'typescript';

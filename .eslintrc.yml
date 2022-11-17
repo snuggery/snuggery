@@ -69,9 +69,16 @@ overrides:
       # This rule blocks lazy loading code, which is counterproductive
       '@typescript-eslint/no-var-requires': off
 
-      # Disallow the private keyword except on constructors
-      # @see https://github.com/typescript-eslint/typescript-eslint/issues/1391
       no-restricted-syntax:
         - error
+        # Disallow the private keyword except on constructors
+        # @see https://github.com/typescript-eslint/typescript-eslint/issues/1391
         - selector: ':matches(PropertyDefinition, MethodDefinition, TSParameterProperty):not([kind="constructor"])[accessibility="private"]'
           message: 'Use #private instead'
+        # Disallow syntax not supported in node 14
+        - selector: 'AssignmentExpression:matches([operator="??="], [operator="||="], [operator="&&="])'
+          message: 'Logical assignment operators are not supported in node 14'
+        - selector: 'BinaryExpression[operator="in"][left.type="PrivateIdentifier"]'
+          message: 'Ergonomic brand checks for private fields are not supported in node 14'
+        - selector: 'StaticBlock'
+          message: 'Static initializers are not supported in node 14'

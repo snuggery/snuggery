@@ -6,18 +6,18 @@ import {
 } from '@angular-devkit/core';
 import {NodeJsSyncHost} from '@angular-devkit/core/node';
 import {
-	Collection,
-	CollectionDescription,
-	EngineHost,
+	type Collection,
+	type CollectionDescription,
+	type EngineHost,
 	HostCreateTree,
-	MergeStrategy,
-	RuleFactory,
-	Schematic,
-	SchematicDescription,
-	Source,
-	TaskExecutor,
-	TaskExecutorFactory,
-	TypedSchematicContext,
+	type MergeStrategy,
+	type RuleFactory,
+	type Schematic,
+	type SchematicDescription,
+	type Source,
+	type TaskExecutor,
+	type TaskExecutorFactory,
+	type TypedSchematicContext,
 	UnregisteredTaskException,
 } from '@angular-devkit/schematics';
 import {BuiltinTaskExecutor} from '@angular-devkit/schematics/tasks/node';
@@ -31,10 +31,10 @@ import {
 	SchematicNameCollisionException,
 	validateOptionsWithSchema,
 } from '@angular-devkit/schematics/tools';
-import {isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
+import {isJsonObject, type JsonObject, type JsonValue} from '@snuggery/core';
 import {createRequire} from 'module';
 import {dirname, join, resolve} from 'path';
-import {defer, isObservable, Observable} from 'rxjs';
+import {defer, isObservable, type Observable} from 'rxjs';
 import type {Url} from 'url';
 
 import {loadJson} from '../../utils/json-resolver';
