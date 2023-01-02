@@ -118,6 +118,7 @@ project "@snuggery/angular" extends="parent" root="packages/angular" {
 			assets {
 				super
 				- "**/*" from=(project-relative)"src"
+				- "tsconfig.base.json"
 			}
 		}
 	}
