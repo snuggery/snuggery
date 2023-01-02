@@ -1,6 +1,0 @@
-releases:
-  "@snuggery/affected": patch
-  "@snuggery/global": patch
-  "@snuggery/schematics": patch
-  "@snuggery/snuggery": patch
-  "@snuggery/yarn": patch
