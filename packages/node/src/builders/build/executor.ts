@@ -5,29 +5,62 @@ import {
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
-import {switchMapSuccessfulResult} from '@snuggery/architect/operators';
 import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {promises as fs} from 'fs';
+import {createRequire} from 'module';
 import {join} from 'path';
-import {forkJoin, from, Observable, ObservableInput, of} from 'rxjs';
-import {switchMap, tap} from 'rxjs/operators';
+import {pathToFileURL} from 'url';
 
+import {loadConfiguration} from './config';
+import {createPlugin, PluginFactory, WrappedPlugin} from './plugin';
 import type {Schema} from './schema';
 import {tsc} from './typescript';
 
 const manifestFilename = 'package.json';
 
-export function executeBuild(
-	{
-		assets = [],
-		compile,
-		keepScripts = false,
-		packager,
-		tsconfig,
-		outputFolder,
-	}: Schema,
+export async function* executeBuild(
+	input: Schema,
 	context: BuilderContext,
-): Observable<BuilderOutput> {
+): AsyncGenerator<BuilderOutput> {
+	const config = await loadConfiguration(context);
+	const workspaceRequire = createRequire(
+		resolveWorkspacePath(context, '<workspace>'),
+	);
+	const loadedPlugins = await Promise.all(
+		(input.plugins ?? config.plugins ?? []).map(
+			async pluginPossiblyWithConfig => {
+				let plugin: string;
+				let config: JsonObject | undefined;
+				if (Array.isArray(pluginPossiblyWithConfig)) {
+					[plugin, config] = pluginPossiblyWithConfig;
+				} else {
+					plugin = pluginPossiblyWithConfig;
+				}
+
+				let exportName: string | undefined;
+				if (plugin.includes('#')) {
+					[plugin, exportName] = plugin.split('#', 2) as [string, string];
+				}
+
+				let resolvedPlugin;
+				try {
+					resolvedPlugin = workspaceRequire.resolve(plugin);
+				} catch {
+					resolvedPlugin = workspaceRequire.resolve(`./${plugin}`);
+				}
+
+				const loadedPluginModule = await import(
+					pathToFileURL(resolvedPlugin).href
+				);
+				const loadedPlugin: PluginFactory = exportName
+					? loadedPluginModule[exportName]
+					: loadedPluginModule.default ?? loadedPluginModule;
+
+				return createPlugin(context, loadedPlugin, input, config);
+			},
+		),
+	);
+
 	let hasTypescript: boolean;
 	try {
 		require.resolve('typescript/package.json');
@@ -36,75 +69,86 @@ export function executeBuild(
 		hasTypescript = false;
 	}
 
-	return forkJoin({
-		outputFolder: outputFolder
-			? of(resolveWorkspacePath(context, outputFolder))
-			: resolveProjectPath(context, 'dist'),
+	const tsconfig = input.tsconfig ?? config.tsconfig;
+	const keepScripts = input.keepScripts ?? config.keepScripts;
+	const keepDevDependencies =
+		input.keepDevDependencies ?? config.keepDevDependencies;
+	const packager = input.packager ?? config.packager;
 
-		manifest: resolveProjectPath(context, manifestFilename)
-			.then(path => fs.readFile(path, 'utf8'))
-			.then(manifest => JSON.parse(manifest) as JsonObject),
-	}).pipe(
-		tap(({manifest}) => context.logger.info(`Building ${manifest.name}`)),
+	const outputFolder = input.outputFolder
+		? resolveWorkspacePath(context, input.outputFolder)
+		: await resolveProjectPath(context, 'dist');
 
-		switchMap(async ({outputFolder, manifest}) => {
-			await fs.mkdir(outputFolder, {recursive: true});
-			return {outputFolder, manifest};
-		}),
+	const manifest = await resolveProjectPath(context, manifestFilename)
+		.then(path => fs.readFile(path, 'utf8'))
+		.then(manifest => JSON.parse(manifest) as JsonObject);
 
-		switchMap(({outputFolder, manifest}) => {
-			return (
-				compile || hasTypescript
-					? from(tsc(context, {compile, tsconfig}, outputFolder))
-					: of<BuilderOutput>({success: true})
-			).pipe(
-				switchMapSuccessfulResult(async (): Promise<BuilderOutput> => {
-					try {
-						await writeManifest(manifest, {keepScripts}, outputFolder);
-						return {success: true};
-					} catch (e) {
-						return {
-							success: false,
-							error: `Failed to copy ${manifestFilename}: ${
-								e instanceof Error ? e.message : e
-							}`,
-						};
-					}
-				}),
+	const {compile = false, assets = []} = input;
 
-				switchMapSuccessfulResult(() => {
-					context.logger.debug('Copying assets...');
-					return copyAssets(context, outputFolder, assets || []);
-				}),
+	context.logger.info(`Building ${manifest.name}`);
 
-				switchMapSuccessfulResult((): ObservableInput<BuilderOutput> => {
-					if (!packager) {
-						return of({success: true});
-					}
+	await fs.mkdir(outputFolder, {recursive: true});
 
-					context.logger.debug('Running packager');
-					return runPackager(context, {packager, directory: outputFolder});
-				}),
+	if (compile || hasTypescript) {
+		const tscResult = await tsc(
+			context,
+			{compile, tsconfig},
+			outputFolder,
+			loadedPlugins,
+		);
+		if (!tscResult.success) {
+			yield tscResult;
+			return;
+		}
+	}
 
-				tap(() =>
-					context.logger.debug(`Build for ${manifest.name} is complete`),
-				),
-			);
-		}),
-	);
+	try {
+		await writeManifest(
+			manifest,
+			{keepScripts, keepDevDependencies},
+			outputFolder,
+			loadedPlugins,
+		);
+	} catch (e) {
+		yield {
+			success: false,
+			error: `Failed to copy ${manifestFilename}: ${
+				e instanceof Error ? e.message : e
+			}`,
+		};
+		return;
+	}
+
+	context.logger.debug('Copying assets...');
+	const assetResult = await copyAssets(context, outputFolder, assets);
+	if (!assetResult.success) {
+		yield assetResult;
+		return;
+	}
+
+	if (packager) {
+		context.logger.debug('Running packager');
+		yield runPackager(context, {packager, directory: outputFolder});
+	} else {
+		yield {success: true};
+	}
+
+	for (const plugin of loadedPlugins) {
+		plugin.finalize();
+	}
+
+	context.logger.debug(`Build for ${manifest.name} is complete`);
 }
 
 async function writeManifest(
 	manifest: JsonObject,
-	{keepScripts}: Pick<Schema, 'keepScripts'>,
+	{
+		keepScripts,
+		keepDevDependencies,
+	}: Pick<Schema, 'keepScripts' | 'keepDevDependencies'>,
 	outputFolder: string,
+	plugins: readonly WrappedPlugin[],
 ) {
-	if (!keepScripts) {
-		delete manifest.scripts;
-	}
-	delete manifest.devDependencies;
-	delete manifest.private;
-
 	if (isJsonObject(manifest.publishConfig)) {
 		if (manifest.publishConfig.main !== undefined) {
 			manifest.main = manifest.publishConfig.main;
@@ -116,6 +160,18 @@ async function writeManifest(
 			delete manifest.publishConfig.exports;
 		}
 	}
+
+	for (const plugin of plugins) {
+		plugin.processManifest(manifest);
+	}
+
+	if (!keepScripts) {
+		delete manifest.scripts;
+	}
+	if (!keepDevDependencies) {
+		delete manifest.devDependencies;
+	}
+	delete manifest.private;
 
 	await fs.writeFile(
 		join(outputFolder, manifestFilename),

@@ -16,6 +16,10 @@
 			"type": "boolean",
 			"description": "Whether to keep the scripts in package.json, defaults to false"
 		},
+		"keepDevDependencies": {
+			"type": "boolean",
+			"description": "Whether to keep the devDependencies in package.json, defaults to false"
+		},
 		"assets": {
 			"type": "array",
 			"items": {
@@ -72,6 +76,21 @@
 		"outputFolder": {
 			"type": "string",
 			"description": "The folder to build the package to, defaults to `<projectFolder>/dist`"
+		},
+		"plugins": {
+			"type": "array",
+			"items": {
+				"oneOf": [
+					{"type": "string"},
+					{
+						"type": "array",
+						"prefixItems": [{"type": "string"}, {"type": "object"}],
+						"items": false
+					}
+				]
+			},
+			"default": [],
+			"description": "List of plugins to use while building"
 		}
 	},
 	"additionalProperties": false

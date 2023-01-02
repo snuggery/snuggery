@@ -29,7 +29,8 @@
 		"@angular-devkit/schematics": "^15.0.0-rc.0",
 		"@snuggery/architect": "^0.7.0",
 		"@snuggery/core": "^0.5.0",
-		"rxjs": "^6.6.7"
+		"rxjs": "^6.6.7",
+		"typanion": "3.7.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

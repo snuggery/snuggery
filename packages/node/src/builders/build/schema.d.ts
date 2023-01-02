@@ -17,6 +17,11 @@ export interface Schema {
 	keepScripts?: boolean;
 
 	/**
+	 * Whether to keep `devDependencies` in the `package.json`, defaults to `false`
+	 */
+	keepDevDependencies?: boolean;
+
+	/**
 	 * Assets to copy
 	 */
 	assets?: AssetSpec[];
@@ -32,4 +37,9 @@ export interface Schema {
 	 * The folder to build the package to, defaults to `<projectFolder>/dist`
 	 */
 	outputFolder?: string;
+
+	/**
+	 * Plugins to load
+	 */
+	plugins?: (string | [string, JsonObject])[];
 }

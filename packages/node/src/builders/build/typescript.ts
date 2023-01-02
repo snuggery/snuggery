@@ -22,14 +22,17 @@ import {
 	createSolutionBuilder,
 	createSolutionBuilderHost,
 	ExitStatus,
+	CustomTransformers,
 } from 'typescript';
 
+import type {WrappedPlugin} from './plugin';
 import type {Schema} from './schema';
 
 export async function tsc(
 	context: BuilderContext,
 	input: Pick<Schema, 'tsconfig' | 'compile'>,
 	outputFolder: string,
+	plugins: readonly WrappedPlugin[],
 ): Promise<BuilderOutput> {
 	if (input.compile === false) {
 		context.logger.debug('Typescript compilation was disabled explicitly');
@@ -55,6 +58,9 @@ export async function tsc(
 	context.logger.debug('Compiling typescript...');
 
 	const tsconfig = readConfigFile(tsconfigPath, path => sys.readFile(path));
+	const customTransformers = plugins
+		.map(plugin => plugin.typescriptTransformers)
+		.reduce(combineCustomTransformers, {});
 
 	if (tsconfig.error) {
 		return {
@@ -109,7 +115,14 @@ export async function tsc(
 			incremental: parsedConfig.options.incremental,
 		});
 
-		if (builder.build(tsconfigPath) === ExitStatus.Success) {
+		if (
+			builder.build(
+				tsconfigPath,
+				undefined,
+				undefined,
+				() => customTransformers,
+			) === ExitStatus.Success
+		) {
 			return {success: true};
 		} else {
 			return {
@@ -139,9 +152,32 @@ export async function tsc(
 			parsedConfig.projectReferences,
 		);
 
-		const {diagnostics} = program.emit();
+		const {diagnostics} = program.emit(
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+			customTransformers,
+		);
 		return processResult(diagnostics, parsedConfig.options);
 	}
+}
+
+function combineCustomTransformers(
+	a: CustomTransformers,
+	b: CustomTransformers,
+): CustomTransformers {
+	return {
+		before: (a.before || b.before) && [
+			...(a.before || []),
+			...(b.before || []),
+		],
+		after: (a.after || b.after) && [...(a.after || []), ...(b.after || [])],
+		afterDeclarations: (a.afterDeclarations || b.afterDeclarations) && [
+			...(a.afterDeclarations || []),
+			...(b.afterDeclarations || []),
+		],
+	};
 }
 
 async function getTsConfigPath(
