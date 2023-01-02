@@ -1,0 +1,8 @@
+releases:
+  "@snuggery/affected": patch
+  "@snuggery/angular": patch
+  "@snuggery/global": patch
+  "@snuggery/snuggery": patch
+  "@snuggery/node": patch
+  "@snuggery/schematics": patch
+  "@snuggery/yarn": patch

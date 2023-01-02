@@ -83,7 +83,7 @@ export async function* executeBuild(
 		.then(path => fs.readFile(path, 'utf8'))
 		.then(manifest => JSON.parse(manifest) as JsonObject);
 
-	const {compile = false, assets = []} = input;
+	const {compile, assets = []} = input;
 
 	context.logger.info(`Building ${manifest.name}`);
 
