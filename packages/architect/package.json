@@ -11,6 +11,7 @@
 	"main": "index.js",
 	"exports": {
 		".": "./src/index.js",
+		"./create-builder": "./src/create-builder.ts",
 		"./operators": "./src/operators.ts",
 		"./package.json": "./package.json"
 	},
@@ -44,6 +45,7 @@
 	"publishConfig": {
 		"exports": {
 			".": "./index.js",
+			"./create-builder": "./create-builder.js",
 			"./operators": "./operators.js",
 			"./package.json": "./package.json"
 		}
