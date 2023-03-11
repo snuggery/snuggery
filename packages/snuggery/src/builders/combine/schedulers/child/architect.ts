@@ -19,7 +19,7 @@ export class ChildArchitect {
 	readonly #workspace: Promise<CliWorkspace>;
 
 	public constructor(workspaceRoot: string) {
-		const workspace = findWorkspace(workspaceRoot) as Promise<CliWorkspace>;
+		const workspace = findWorkspace(workspaceRoot).then(w => w!.workspace());
 		this.#workspace = workspace;
 
 		this.#architect = workspace.then(workspace => {

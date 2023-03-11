@@ -344,7 +344,7 @@ class NxProjectDefinition implements ProjectDefinition {
 		sourceRoot?: string;
 	};
 
-	constructor(targets: NxTargetDefinitionCollection, raw: JsonObject) {
+	private constructor(targets: NxTargetDefinitionCollection, raw: JsonObject) {
 		this.targets = targets;
 
 		this.extensions = proxyObject(raw, {
@@ -570,7 +570,7 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 
 	readonly #files?: [JsonObject, FileHandle][];
 
-	constructor(
+	private constructor(
 		projects: NxProjectDefinitionCollection,
 		raw: JsonObject,
 		files?: [JsonObject, FileHandle][],

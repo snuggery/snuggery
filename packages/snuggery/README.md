@@ -118,6 +118,52 @@ sn help builder @snuggery/snuggery:glob
 
 If you want to install Snuggery globally, see [`@snuggery/global`](https://yarn.pm/@snuggery/global).
 
+## Create your own CLI
+
+You can create your own CLI using the `run` function exported by `@snuggery/snuggery/mini`. Pass it information about your CLI, as well as a mapping of command names onto builders.
+
+```js
+#!/usr/bin/env node
+import {run} from '@snuggery/snuggery/mini';
+import {createRequire} from 'node:module';
+
+await run({
+	// Label used in errors and help messages
+	binaryLabel: 'build-lit',
+	// The name of the binary as it's executed, e.g.
+	//   $ build-lit --help
+	//   $ build-lit test
+	binaryName: 'build-lit',
+	// The version of your binary
+	binaryVersion: createRequire(import.meta.url)('./package.json').version,
+	// Basename(s) of configuration files that can be used by your users
+	// The following extensions are supported: .json, .yaml, and .kdl
+	basename: [
+		// Allow configuration via
+		// build-lit.config.json, build-lit.config.yaml, or build-lit.config.kdl
+		'build-lit.config',
+	],
+	// Map subcommand names onto builders
+	targets: new Map([
+		// make `build-lit build` execute builder '@ngx-lit/build-lit:browser'
+		// This builder can be one of
+		// - A builder created using `@angular-devkit/architect`
+		// - An executor created using nx
+		// - A builder created using `@snuggery/architect`
+		['build', '@ngx-lit/build-lit:browser'],
+		['extract-i18n', '@ngx-lit/build-lit:extract-i18n'],
+		['serve', '@ngx-lit/build-lit:dev-server'],
+		['test', '@ngx-lit/build-lit:karma'],
+	]),
+});
+```
+
+Options can be passed into the commands via CLI arguments, or via the configuration files. These files can contain pre-configured configurations which can be toggled on or off via the `--configuration` argument. Options passed via CLI arguments overrule any configured value for that option.
+
+```
+$ build-lit build --configuration production
+```
+
 ## License
 
 Licensed under the MIT license.

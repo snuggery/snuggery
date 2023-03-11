@@ -28,7 +28,7 @@ type AngularTargetDefinitionData = JsonObject & {
 	configurations?: Record<string, JsonObject>;
 };
 
-class AngularTargetDefinition implements TargetDefinition {
+export class AngularTargetDefinition implements TargetDefinition {
 	static fromConfiguration(path: JsonPropertyPath, data: JsonObject) {
 		if (typeof data.builder !== 'string') {
 			throw new InvalidConfigurationError(
@@ -112,7 +112,7 @@ class AngularTargetDefinition implements TargetDefinition {
 
 	readonly extensions: JsonObject;
 
-	private constructor(data: AngularTargetDefinitionData) {
+	protected constructor(data: AngularTargetDefinitionData) {
 		this.#data = data;
 
 		this.extensions = proxyObject(data, {
@@ -358,7 +358,10 @@ class AngularProjectDefinition implements ProjectDefinition {
 		sourceRoot?: string;
 	};
 
-	constructor(targets: AngularTargetDefinitionCollection, raw: JsonObject) {
+	private constructor(
+		targets: AngularTargetDefinitionCollection,
+		raw: JsonObject,
+	) {
 		this.targets = targets;
 
 		this.extensions = proxyObject(raw, {
@@ -564,7 +567,10 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 
 	readonly data: JsonObject;
 
-	constructor(projects: AngularProjectDefinitionCollection, raw: JsonObject) {
+	private constructor(
+		projects: AngularProjectDefinitionCollection,
+		raw: JsonObject,
+	) {
 		super();
 		this.projects = projects;
 

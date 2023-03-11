@@ -13,6 +13,8 @@ const knownHandleTypes = new Map<string, FileHandleFactory>([
 	['.yaml', YamlFileHandle],
 ]);
 
+export const knownExtensions = Array.from(knownHandleTypes.keys());
+
 export function createFileHandle(
 	source: TextFileHandle | null,
 	path: string,

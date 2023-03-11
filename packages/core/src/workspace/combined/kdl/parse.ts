@@ -11,7 +11,7 @@ import {
 } from './context';
 import {toJsonObject, toJsonValue} from './jik/parse';
 
-function parseConfigurations(context: ParserContext & {node: Node}) {
+function parseConfigurations(context: ParserContext) {
 	const configurations = collectParameterizedSubContexts(
 		context,
 		'configuration',
@@ -31,9 +31,7 @@ function parseConfigurations(context: ParserContext & {node: Node}) {
 	);
 }
 
-function parseTargets(
-	context: ParserContext & {node: Node},
-): JsonObject | undefined {
+function parseTargets(context: ParserContext): JsonObject | undefined {
 	const targets = collectParameterizedSubContexts(context, 'target');
 
 	if (targets.size === 0) {
@@ -234,6 +232,71 @@ export function parseWorkspace(document: Document): JsonObject {
 	const projects = parseProjects(document);
 	if (projects != null) {
 		workspace.push(['projects', projects]);
+	}
+
+	return Object.fromEntries(workspace);
+}
+
+export function parseMiniWorkspace(
+	document: Document,
+	targets: ReadonlyMap<string, string>,
+) {
+	const usedNodes = new Set<Node>();
+	const parsedTargets = Object.fromEntries(
+		Array.from(targets, ([targetName, builder]): [string, JsonObject] => {
+			const node = document.findNodeByName(targetName);
+
+			if (node == null) {
+				return [targetName, {builder}];
+			}
+
+			usedNodes.add(node);
+			const context = {node, tags: new Map()};
+
+			const target = toJsonObject(context, {
+				ignoreArguments: true,
+				ignoreProperties: new Set([
+					'configuration',
+					'configurations',
+					'options',
+				]),
+				ignoreChildren: new Set(['configuration', 'configurations']),
+			});
+
+			const configurations = parseConfigurations(context);
+			if (configurations) {
+				target.configurations = configurations;
+			}
+
+			return [targetName, {...target, builder}];
+		}),
+	);
+
+	const workspace: [string, JsonValue][] = [
+		[
+			'projects',
+			{
+				project: {
+					root: '.',
+					targets: parsedTargets,
+				},
+			},
+		],
+	];
+
+	for (const node of document.nodes) {
+		const name = node.getName();
+		if (usedNodes.has(node) || name === 'version') {
+			continue;
+		}
+
+		workspace.push([
+			name,
+			toJsonValue({
+				tags: new Map(),
+				node,
+			}),
+		]);
 	}
 
 	return Object.fromEntries(workspace);

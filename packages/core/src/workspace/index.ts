@@ -1,14 +1,20 @@
 import type {workspaces} from '@angular-devkit/core';
 
 import {
+	createCombinedMiniWorkspaceHandle,
 	createCombinedWorkspaceHandle,
 	workspaceFilenames as combinedWorkspaceFilenames,
+	workspaceFileExtensions as combinedWorkspaceFileExtensions,
 } from './combined';
 import type {WorkspaceHost} from './file';
+import {findUp} from './find-up';
+import type {MiniWorkspaceOptions} from './mini';
 import {nodeFsHost} from './node';
+import {createSplitMiniWorkspaceHandle} from './split/mini';
 import {
 	createSplitWorkspaceHandle,
 	workspaceFilenames as splitWorkspaceFilenames,
+	workspaceFileExtensions as splitWorkspaceFileExtensions,
 } from './split/workspace-handle';
 import type {
 	ConvertibleWorkspaceDefinition,
@@ -37,7 +43,12 @@ export const workspaceFilenames = [
 	...splitWorkspaceFilenames,
 ];
 
-export {nodeFsHost};
+const workspaceExtensions = [
+	...combinedWorkspaceFileExtensions,
+	...splitWorkspaceFileExtensions,
+];
+
+export {nodeFsHost, type MiniWorkspaceOptions};
 
 /**
  * Read the workspace configuration at the given path
@@ -52,6 +63,79 @@ export async function readWorkspace(
 		(await createCombinedWorkspaceHandle(host, path)) ??
 		(await createSplitWorkspaceHandle(host, path))
 	).read();
+}
+
+/**
+ * Find a workspace configuration for the given directory
+ *
+ * @param directory Directory to look for
+ */
+export async function findWorkspace(
+	directory: string,
+	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
+): Promise<{
+	path: string;
+	workspace(): Promise<ConvertibleWorkspaceDefinition>;
+} | null> {
+	const path = await findUp(workspaceFilenames, directory, {host});
+
+	if (path == null) {
+		return null;
+	}
+
+	return {
+		path,
+		workspace: () => readWorkspace(path, {host}),
+	};
+}
+
+/**
+ * Read the mini-workspace configuration at the given path
+ *
+ * @param path Path to the workspace file or containing directory
+ */
+export async function readMiniWorkspace(
+	path: string,
+	{host = nodeFsHost, ...opts}: MiniWorkspaceOptions & {host?: WorkspaceHost},
+): Promise<ConvertibleWorkspaceDefinition> {
+	return await (
+		(await createCombinedMiniWorkspaceHandle(host, path, opts)) ??
+		(await createSplitMiniWorkspaceHandle(host, path, opts))
+	).read();
+}
+
+/**
+ * Find a mini-workspace configuration for the given directory
+ *
+ * @param directory Directory to look for
+ */
+export async function findMiniWorkspace(
+	directory: string,
+	{
+		host = nodeFsHost,
+		basename,
+		...opts
+	}: MiniWorkspaceOptions & {host?: WorkspaceHost},
+): Promise<{
+	path: string;
+	workspace(): Promise<ConvertibleWorkspaceDefinition>;
+} | null> {
+	const path = await findUp(
+		Array.from(basename).flatMap(base =>
+			workspaceExtensions.map(ext => `${base}${ext}`),
+		),
+		directory,
+		{host},
+	);
+
+	if (path == null) {
+		return null;
+	}
+
+	return {
+		path,
+		workspace: () => readMiniWorkspace(path, {host, basename, ...opts}),
+	};
 }
 
 /**

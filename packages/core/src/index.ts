@@ -3,9 +3,11 @@ export {
 	type ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,
 } from './extract-extra-configuration';
+export {findUp} from './workspace/find-up';
 export {filterByPatterns} from './pattern';
 export {
 	type ConvertibleWorkspaceDefinition,
+	type MiniWorkspaceOptions,
 	type ProjectDefinition,
 	ProjectDefinitionCollection,
 	type TargetDefinition,
@@ -14,9 +16,12 @@ export {
 	type WorkspaceHost,
 	nodeFsHost,
 	workspaceFilenames,
+	findMiniWorkspace,
+	findWorkspace,
 	isJsonArray,
 	isJsonObject,
 	getPrintableType,
+	readMiniWorkspace,
 	readWorkspace,
 	writeWorkspace,
 	updateWorkspace,

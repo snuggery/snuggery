@@ -21,6 +21,7 @@
 		"exports": {
 			"./builders": "./builders/index.js",
 			"./cli": "./cli/index.js",
+			"./mini": "./mini.js",
 			"./package.json": "./package.json"
 		}
 	},

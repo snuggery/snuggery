@@ -4,14 +4,14 @@ import {
 	type JsonObject,
 	type ProjectDefinition,
 	type ProjectDefinitionCollection,
-	readWorkspace,
 	type WorkspaceDefinition,
-	workspaceFilenames,
+	findWorkspace as _findWorkspace,
+	findMiniWorkspace as _findMiniWorkspace,
+	type MiniWorkspaceOptions,
 } from '@snuggery/core';
 import {type BaseContext, UsageError} from 'clipanion';
-import {basename, dirname, normalize, relative, resolve, sep} from 'path';
+import {basename, dirname, normalize, relative, resolve, sep} from 'node:path';
 
-import {findUp} from '../utils/find-up';
 import type {Report} from '../utils/report';
 import {createWorkspaceTransform} from '../utils/schema';
 
@@ -186,12 +186,35 @@ export class CliWorkspace implements WorkspaceDefinition {
 
 export async function findWorkspace(
 	startingCwd: string,
-): Promise<CliWorkspace | null> {
-	const workspacePath = await findUp(workspaceFilenames, startingCwd);
+): Promise<{path: string; workspace(): Promise<CliWorkspace>} | null> {
+	const workspace = await _findWorkspace(startingCwd);
 
-	if (workspacePath == null) {
+	if (workspace == null) {
 		return null;
 	}
 
-	return new CliWorkspace(await readWorkspace(workspacePath), workspacePath);
+	return {
+		path: workspace.path,
+		async workspace() {
+			return new CliWorkspace(await workspace.workspace(), workspace.path);
+		},
+	};
+}
+
+export async function findMiniWorkspace(
+	startingCwd: string,
+	options: MiniWorkspaceOptions,
+): Promise<{path: string; workspace(): Promise<CliWorkspace>} | null> {
+	const workspace = await _findMiniWorkspace(startingCwd, options);
+
+	if (workspace == null) {
+		return null;
+	}
+
+	return {
+		path: workspace.path,
+		async workspace() {
+			return new CliWorkspace(await workspace.workspace(), workspace.path);
+		},
+	};
 }

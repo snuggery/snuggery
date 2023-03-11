@@ -31,6 +31,7 @@ const knownTypes = new Map<string, () => WorkspaceHandleFactory>([
 ]);
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
+export {knownExtensions as workspaceFileExtensions} from './file';
 
 export async function createSplitWorkspaceHandle(
 	source: WorkspaceHost,

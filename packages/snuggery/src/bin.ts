@@ -16,7 +16,8 @@ import('./cli/index.js')
 		// Allow overriding the startCwd using an environment variable. This is
 		// useful when running a local clone of `sn`
 		const startCwd = process.env.SNUGGERY_CWD || process.cwd();
-		const workspace = await findWorkspace(startCwd);
+		const workspace =
+			(await (await findWorkspace(startCwd))?.workspace()) ?? null;
 
 		return run(process.argv.slice(2), {
 			startCwd,

@@ -1,9 +1,12 @@
-import {promises as fs} from 'fs';
-import {join, dirname, parse as parsePath} from 'path';
+import {join, dirname, parse as parsePath} from 'node:path';
+
+import type {WorkspaceHost} from './file';
+import {nodeFsHost} from './node';
 
 export async function findUp(
 	names: string | readonly string[],
 	from: string,
+	{host = nodeFsHost}: {host?: WorkspaceHost} = {},
 ): Promise<string | null> {
 	if (!Array.isArray(names)) {
 		names = [names as string];
@@ -15,7 +18,7 @@ export async function findUp(
 		for (const name of names) {
 			const p = join(currentDir, name);
 			try {
-				if ((await fs.stat(p)).isFile()) {
+				if (await host.isFile(p)) {
 					return p;
 				}
 			} catch {

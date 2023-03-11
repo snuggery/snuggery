@@ -383,3 +383,5 @@ export interface WorkspaceHandle {
 		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void>;
 }
+
+export type MiniWorkspaceHandle = Pick<WorkspaceHandle, 'read'>;

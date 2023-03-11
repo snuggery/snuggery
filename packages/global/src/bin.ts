@@ -23,21 +23,13 @@ import('@snuggery/snuggery/cli')
 	): Promise<
 		Pick<typeof import('@snuggery/snuggery/cli'), 'findWorkspace' | 'run'>
 	> {
-		let workspaceFolder;
+		const workspace = (await globalSnuggery.findWorkspace(startCwd))?.path;
 
-		if (globalSnuggery.workspaceFilenames != null) {
-			workspaceFolder = await findUp(
-				globalSnuggery.workspaceFilenames,
-				startCwd,
-			);
-		} else {
-			workspaceFolder = (await globalSnuggery.findWorkspace(startCwd))
-				?.workspaceFolder;
-		}
-
-		if (workspaceFolder == null) {
+		if (workspace == null) {
 			return globalSnuggery;
 		}
+
+		const workspaceFolder = dirname(workspace);
 
 		if (process.versions.pnp == null) {
 			const pnpFile = await findUp(
@@ -90,7 +82,7 @@ import('@snuggery/snuggery/cli')
 	.then(async ({findWorkspace, run}) =>
 		run(process.argv.slice(2), {
 			startCwd,
-			workspace: await findWorkspace(startCwd),
+			workspace: (await (await findWorkspace(startCwd))?.workspace()) ?? null,
 			globalManifest: require.resolve('@snuggery/global/package.json'),
 		}),
 	)

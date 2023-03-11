@@ -55,6 +55,13 @@ export async function createTextFileHandle(
 				supportedFilenames,
 			);
 		}
+	} else {
+		if (
+			supportedFilenames != null &&
+			!supportedFilenames.includes(basename(path))
+		) {
+			return null;
+		}
 	}
 
 	const read = (await source.isFile(path))

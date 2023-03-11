@@ -1,19 +1,20 @@
+import {
+	SnuggeryKdlWorkspaceHandle,
+	MiniSnuggeryKdlWorkspaceHandle,
+} from './combined/kdl';
 import type {CombinedWorkspaceHandleFactory} from './combined/types';
 import {createTextFileHandle, WorkspaceHost} from './file';
+import type {MiniWorkspaceOptions} from './mini';
 import type {WorkspaceHandle} from './types';
 
-function loadWorkspaceHandleFactory() {
-	return (require('./combined/kdl') as typeof import('./combined/kdl'))
-		.SnuggeryKdlWorkspaceHandle;
-}
-
-const knownTypes = new Map<string, () => CombinedWorkspaceHandleFactory>([
+const knownTypes = new Map<string, CombinedWorkspaceHandleFactory>([
 	// Extend with own configuration when useful
-	['snuggery.kdl', loadWorkspaceHandleFactory],
-	['.snuggery.kdl', loadWorkspaceHandleFactory],
+	['snuggery.kdl', SnuggeryKdlWorkspaceHandle],
+	['.snuggery.kdl', SnuggeryKdlWorkspaceHandle],
 ]);
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
+export const workspaceFileExtensions = ['.kdl'];
 
 export async function createCombinedWorkspaceHandle(
 	source: WorkspaceHost,
@@ -28,11 +29,27 @@ export async function createCombinedWorkspaceHandle(
 		return null;
 	}
 
-	const loadFactory = knownTypes.get(fileHandle.basename);
-	if (loadFactory == null) {
+	const Factory = knownTypes.get(fileHandle.basename);
+	if (Factory == null) {
 		return null;
 	}
 
-	const Factory = loadFactory();
 	return new Factory(fileHandle);
+}
+
+export async function createCombinedMiniWorkspaceHandle(
+	source: WorkspaceHost,
+	path: string,
+	options: MiniWorkspaceOptions,
+): Promise<WorkspaceHandle | null> {
+	const fileHandle = await createTextFileHandle(
+		source,
+		path,
+		Array.from(options.basename, basename => `${basename}.kdl`),
+	);
+	if (fileHandle == null) {
+		return null;
+	}
+
+	return new MiniSnuggeryKdlWorkspaceHandle(fileHandle, options.targets);
 }
