@@ -91,7 +91,8 @@ function createRunner(dir: string): Fixture['run'] {
 	return async function run(args: string[], options = {}) {
 		const startCwd = options.cwd ? path.resolve(dir, options.cwd) : dir;
 
-		const workspace = await snuggery.findWorkspace(startCwd);
+		const workspace =
+			(await (await snuggery.findWorkspace(startCwd))?.workspace()) ?? null;
 
 		assert.equal(
 			workspace?.workspaceFolder,
