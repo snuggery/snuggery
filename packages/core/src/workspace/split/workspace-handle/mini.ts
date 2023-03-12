@@ -62,17 +62,22 @@ class MiniProjectDefinition implements ProjectDefinition {
 	): MiniProjectDefinition {
 		return new this(
 			MiniTargetDefinitionCollection.fromMiniConfiguration(raw, targets),
+			raw,
 		);
 	}
 
-	extensions = {};
+	extensions: JsonObject;
 	targets: MiniTargetDefinitionCollection;
 	root = '';
 	prefix = undefined;
 	sourceRoot = undefined;
 
-	private constructor(targets: MiniTargetDefinitionCollection) {
+	private constructor(
+		targets: MiniTargetDefinitionCollection,
+		extensions: JsonObject,
+	) {
 		this.targets = targets;
+		this.extensions = extensions;
 	}
 }
 

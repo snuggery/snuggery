@@ -272,17 +272,7 @@ export function parseMiniWorkspace(
 		}),
 	);
 
-	const workspace: [string, JsonValue][] = [
-		[
-			'projects',
-			{
-				project: {
-					root: '.',
-					targets: parsedTargets,
-				},
-			},
-		],
-	];
+	const extra: [string, JsonValue][] = [];
 
 	for (const node of document.nodes) {
 		const name = node.getName();
@@ -290,7 +280,7 @@ export function parseMiniWorkspace(
 			continue;
 		}
 
-		workspace.push([
+		extra.push([
 			name,
 			toJsonValue({
 				tags: new Map(),
@@ -299,5 +289,15 @@ export function parseMiniWorkspace(
 		]);
 	}
 
-	return Object.fromEntries(workspace);
+	return {
+		...Object.fromEntries(extra),
+		version: 1,
+		projects: {
+			project: {
+				...Object.fromEntries(extra),
+				root: '.',
+				targets: parsedTargets,
+			},
+		},
+	};
 }
