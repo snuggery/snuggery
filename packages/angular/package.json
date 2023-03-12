@@ -39,7 +39,7 @@
 		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery/architect": "^0.7.1",
-		"@snuggery/core": "^0.5.1",
+		"@snuggery/core": "^0.5.2",
 		"autoprefixer": "10.4.7",
 		"browserslist": "^4.20.3",
 		"esbuild": "^0.14.38",

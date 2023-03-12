@@ -31,7 +31,7 @@
 		"typescript": "4.8.4"
 	},
 	"dependencies": {
-		"@snuggery/core": "^0.5.1"
+		"@snuggery/core": "^0.5.2"
 	},
 	"publishConfig": {
 		"exports": {
