@@ -32,7 +32,7 @@ import {Cached} from './decorator';
 export {Executor, Generator};
 
 function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
-	return value != null && Symbol.asyncIterator in (value as object);
+	return value != null && Symbol.asyncIterator in value;
 }
 
 function extractResult(
@@ -175,11 +175,9 @@ export function makeExecutorIntoBuilder(
 	executor: Executor,
 	workspace: CliWorkspace | null,
 ): ReturnType<typeof createBuilder> {
-	return createBuilder((options, context) => {
-		return extractResult(
-			executor(options, new MappedContext(workspace, context)),
-		);
-	});
+	return createBuilder((options, context) =>
+		extractResult(executor(options, new MappedContext(workspace, context))),
+	);
 }
 
 class MappedTree implements NxTree {

@@ -1,4 +1,5 @@
 import type {BuilderContext} from '@angular-devkit/architect';
+import {BuildFailureError} from '@snuggery/architect/create-builder';
 import type {JsonObject} from '@snuggery/core';
 import type {
 	CustomTransformerFactory,
@@ -108,7 +109,9 @@ export function createPlugin<T = unknown>(
 					context.logger.error(String(e));
 				}
 
-				throw new Error(`Unexpected error in plugin ${factory.name}`);
+				throw new BuildFailureError(
+					`Unexpected error in plugin ${factory.name}`,
+				);
 			}
 		};
 	}

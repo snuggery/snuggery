@@ -4,13 +4,17 @@ import {
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
+import {BuildFailureError} from '@snuggery/architect/create-builder';
 import {readFile} from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {join} from 'node:path';
 import process from 'node:process';
 import {pathToFileURL} from 'node:url';
 
-import {build, BuildFailureError} from '../../compiler.js';
+import {
+	build,
+	BuildFailureError as AngularBuildFailureError,
+} from '../../compiler.js';
 
 import {loadConfiguration} from './config.js';
 
@@ -21,7 +25,7 @@ const emoji = ['✨', '🚢', '🎉', '💯', '✅', '🏁', '🌈', '🦄'];
 /**
  * @param {import('./schema.js').Schema} input
  * @param {import('@angular-devkit/architect').BuilderContext} context
- * @returns {Promise<import('@angular-devkit/architect').BuilderOutput>}
+ * @returns {Promise<void>}
  */
 export async function executeBuild(
 	{
@@ -185,8 +189,8 @@ export async function executeBuild(
 			flags,
 		});
 	} catch (e) {
-		if (e instanceof BuildFailureError) {
-			return {success: false, error: e.message};
+		if (e instanceof AngularBuildFailureError) {
+			throw new BuildFailureError(e.message);
 		}
 
 		throw e;
@@ -194,26 +198,18 @@ export async function executeBuild(
 
 	if (assets?.length > 0) {
 		context.logger.info('Copying assets...');
-		const assetResult = await copyAssets(context, outputFolder, assets);
-		if (!assetResult.success) {
-			return assetResult;
-		}
+		await copyAssets(context, outputFolder, assets);
 	}
 
 	if (packager != null) {
 		context.logger.debug('Running packager...');
-		const packageResult = await runPackager(context, {
+		await runPackager(context, {
 			packager,
 			directory: outputFolder,
 		});
-		if (!packageResult.success) {
-			return packageResult;
-		}
 	}
 
 	context.logger.info(
 		`Done! ${emoji[Math.floor(Math.random() * emoji.length)]}`,
 	);
-
-	return {success: true};
 }

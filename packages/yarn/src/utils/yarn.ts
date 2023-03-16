@@ -1,11 +1,10 @@
 import type {BuilderContext} from '@angular-devkit/architect';
 import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
+import {BuildFailureError} from '@snuggery/architect/create-builder';
 import {parseSyml} from '@yarnpkg/parsers';
-import {spawn} from 'child_process';
-import {promises as fs} from 'fs';
-import {dirname, join, parse as parsePath, resolve} from 'path';
-import {Observable} from 'rxjs';
-import {map, mapTo} from 'rxjs/operators';
+import {spawn} from 'node:child_process';
+import fs from 'node:fs/promises';
+import {dirname, join, parse as parsePath, resolve} from 'node:path';
 
 export interface YarnPlugin {
 	name: string;
@@ -19,14 +18,11 @@ function isYarnPlugin(value: JsonObject): value is JsonObject & YarnPlugin {
 export const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 const oldSnuggeryPluginName = '@yarnpkg/plugin-snuggery-workspace';
 
-class OutdatedYarnPluginError extends Error {
-	readonly clipanion = {type: 'none'};
-
+class OutdatedYarnPluginError extends BuildFailureError {
 	constructor() {
 		super(
 			`Yarn plugin ${oldSnuggeryPluginName} is no longer supported, switch to an updated version of ${snuggeryPluginName} instead`,
 		);
-		this.name = new.target.name;
 	}
 }
 
@@ -74,7 +70,7 @@ class Yarn {
 			cwd?: string;
 			env?: NodeJS.ProcessEnv;
 		},
-	): Observable<JsonObject[]>;
+	): Promise<JsonObject[]>;
 	#exec(
 		args: string[],
 		opts: {
@@ -83,7 +79,7 @@ class Yarn {
 			cwd?: string;
 			env?: NodeJS.ProcessEnv;
 		},
-	): Observable<void>;
+	): Promise<void>;
 	#exec(
 		args: string[],
 		opts: {
@@ -92,7 +88,7 @@ class Yarn {
 			cwd?: string;
 			env?: NodeJS.ProcessEnv;
 		},
-	): Observable<JsonObject[] | void>;
+	): Promise<JsonObject[] | void>;
 	#exec(
 		args: string[],
 		{
@@ -106,8 +102,8 @@ class Yarn {
 			cwd?: string;
 			env?: NodeJS.ProcessEnv;
 		},
-	): Observable<JsonObject[] | void> {
-		return new Observable(observer => {
+	): Promise<JsonObject[] | void> {
+		return new Promise((resolve, reject) => {
 			const child = spawn(process.execPath, [this.#yarnPath, ...args], {
 				cwd,
 				env: {
@@ -133,13 +129,21 @@ class Yarn {
 					stdout.on('error', reject);
 				});
 
-			child.addListener('error', err => observer.error(err));
+			child.addListener('error', err =>
+				reject(
+					new BuildFailureError(
+						`Failed to start yarn: ${
+							err instanceof Error ? err.message : String(err)
+						}`,
+					),
+				),
+			);
 
 			child.addListener('close', (code, signal) => {
 				if (signal) {
-					observer.error(new Error(`Yarn exited with signal ${signal}`));
+					reject(new BuildFailureError(`Yarn exited with signal ${signal}`));
 				} else if (code) {
-					observer.error(new Error(`Yarn exited with exit code ${code}`));
+					reject(new BuildFailureError(`Yarn exited with exit code ${code}`));
 				} else {
 					if (output) {
 						output.then(
@@ -165,93 +169,85 @@ class Yarn {
 									}
 								}
 
-								observer.next(lines);
-								observer.complete();
+								resolve(lines);
 							},
-							err => observer.error(err),
+							err => reject(err),
 						);
 					} else {
-						observer.next();
-						observer.complete();
+						resolve();
 					}
 				}
 			});
 
-			return () => {
+			this.#context.addTeardown(() => {
 				if (child.exitCode == null) {
 					child.kill();
 				}
-			};
+			});
 		});
 	}
 
-	hasPlugin(): Observable<boolean> {
-		return this.#exec(['plugin', 'runtime', '--json'], {
-			captureNdjson: true,
-		}).pipe(
-			map(output => output.filter(isYarnPlugin)),
-			map(plugins => {
-				if (plugins.some(plugin => plugin.name === oldSnuggeryPluginName)) {
-					throw new OutdatedYarnPluginError();
-				}
-
-				return plugins.some(plugin => plugin.name === snuggeryPluginName);
-			}),
-		);
+	async listPlugins(): Promise<YarnPlugin[]> {
+		return (
+			await this.#exec(['plugin', 'runtime', '--json'], {
+				captureNdjson: true,
+			})
+		).filter(isYarnPlugin);
 	}
 
-	listPlugins(): Observable<YarnPlugin[]> {
-		return this.#exec(['plugin', 'runtime', '--json'], {
-			captureNdjson: true,
-		}).pipe(map(output => output.filter(isYarnPlugin)));
+	async hasPlugin(): Promise<boolean> {
+		const plugins = await this.listPlugins();
+
+		if (plugins.some(plugin => plugin.name === oldSnuggeryPluginName)) {
+			throw new OutdatedYarnPluginError();
+		}
+
+		return plugins.some(plugin => plugin.name === snuggeryPluginName);
 	}
 
-	applyVersion(): Observable<AppliedVersion[]> {
-		return this.#exec(['version', 'apply', '--all', '--json'], {
+	async applyVersion(): Promise<AppliedVersion[]> {
+		const output = await this.#exec(['version', 'apply', '--all', '--json'], {
 			captureNdjson: true,
-		}).pipe(
-			map(output => {
-				const versions = output.filter(isAppliedVersion);
+		});
 
-				if (versions.length === 0) {
-					throw new Error(`No versions found to tag`);
-				}
+		const versions = output.filter(isAppliedVersion);
+		if (versions.length === 0) {
+			throw new Error(`No versions found to tag`);
+		}
 
-				return versions;
-			}),
-		);
+		return versions;
 	}
 
-	snuggeryWorkspacePack({
+	async snuggeryWorkspacePack({
 		cwd,
 		directoryToPack,
 	}: {
 		cwd: string;
 		directoryToPack: string;
-	}): Observable<void> {
-		return this.#exec(
+	}): Promise<void> {
+		await this.#exec(
 			['snuggery-workspace', 'pack', directoryToPack, '--json'],
 			{
 				cwd: resolve(this.#context.workspaceRoot, cwd),
 				captureNdjson: true,
 			},
-		).pipe(mapTo(undefined));
+		);
 	}
 
-	npmPack({cwd}: {cwd: string}): Observable<void> {
-		return this.#exec(['pack'], {
+	async npmPack({cwd}: {cwd: string}): Promise<void> {
+		await this.#exec(['pack'], {
 			cwd: resolve(this.#context.workspaceRoot, cwd),
 		});
 	}
 
-	snuggeryWorkspacePublish({
+	async snuggeryWorkspacePublish({
 		tag,
 		cwd,
 	}: {
 		tag?: string;
 		cwd: string;
-	}): Observable<void> {
-		return this.#exec(
+	}): Promise<void> {
+		await this.#exec(
 			[
 				'snuggery-workspace',
 				'publish',
@@ -259,20 +255,20 @@ class Yarn {
 				'--json',
 			],
 			{cwd: resolve(this.#context.workspaceRoot, cwd), captureNdjson: true},
-		).pipe(mapTo(undefined));
+		);
 	}
 
-	npmPublish({tag, cwd}: {tag?: string; cwd: string}): Observable<void> {
-		return this.#exec(
+	async npmPublish({tag, cwd}: {tag?: string; cwd: string}): Promise<void> {
+		await this.#exec(
 			['npm', 'publish', ...(typeof tag === 'string' ? ['--tag', tag] : [])],
 			{cwd: resolve(this.#context.workspaceRoot, cwd)},
 		);
 	}
 
-	snuggeryWorkspaceUp(packages: string[]): Observable<void> {
-		return this.#exec(['snuggery-workspace', 'up', ...packages], {
+	async snuggeryWorkspaceUp(packages: string[]): Promise<void> {
+		await this.#exec(['snuggery-workspace', 'up', ...packages], {
 			cwd: this.#context.workspaceRoot,
-		}).pipe(mapTo(undefined));
+		});
 	}
 }
 
@@ -285,7 +281,7 @@ export async function loadYarn(context: BuilderContext): Promise<Yarn> {
 	);
 
 	if (!yarnConfigurationPath) {
-		throw new Error(
+		throw new BuildFailureError(
 			`Couldn't find yarn configuration for ${context.workspaceRoot}`,
 		);
 	}
@@ -295,7 +291,9 @@ export async function loadYarn(context: BuilderContext): Promise<Yarn> {
 	const yarnConfiguration = parseSyml(rawYarnConfiguration);
 
 	if (typeof yarnConfiguration.yarnPath !== 'string') {
-		throw new Error(`Couldn't find path to yarn in ${context.workspaceRoot}`);
+		throw new BuildFailureError(
+			`Couldn't find path to yarn in ${context.workspaceRoot}`,
+		);
 	}
 
 	return new Yarn(

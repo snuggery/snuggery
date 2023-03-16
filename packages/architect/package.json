@@ -11,7 +11,7 @@
 	"main": "index.js",
 	"exports": {
 		".": "./src/index.js",
-		"./create-builder": "./src/create-builder.ts",
+		"./create-builder": "./src/create-builder.js",
 		"./operators": "./src/operators.ts",
 		"./package.json": "./package.json"
 	},

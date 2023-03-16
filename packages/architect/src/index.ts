@@ -17,6 +17,7 @@ export {
 	scheduleTarget,
 	type TargetSpecifier,
 } from './run';
+export {firstValueFrom, lastValueFrom} from './rxjs';
 export {
 	resolveTargetString,
 	targetFromTargetString,

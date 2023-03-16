@@ -1,27 +1,29 @@
-import {spawn} from 'child_process';
-import {Observable} from 'rxjs';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
+import {spawn} from 'node:child_process';
 
-export function git(args: string[], {root}: {root: string}): Observable<void> {
-	return new Observable(observer => {
+export function git(args: string[], context: BuilderContext): Promise<void> {
+	return new Promise((resolve, reject) => {
 		const child = spawn('git', args, {
-			cwd: root,
+			cwd: context.workspaceRoot,
 			env: process.env,
 			stdio: 'inherit',
 		});
 
 		child.addListener('close', (code, signal) => {
 			if (signal) {
-				observer.error(new Error(`Git exited with signal ${signal}`));
+				reject(new BuildFailureError(`Git exited with signal ${signal}`));
 			} else if (code) {
-				observer.error(new Error(`Git exited with exit code ${code}`));
+				reject(new BuildFailureError(`Git exited with exit code ${code}`));
 			} else {
-				observer.next(undefined);
-				observer.complete();
+				resolve();
 			}
 		});
 
-		return () => {
+		context.addTeardown(() => {
 			child.kill();
-		};
+		});
 	});
 }

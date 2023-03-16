@@ -1,10 +1,13 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
 import {
 	copyAssets,
 	resolveProjectPath,
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
 import {isJsonObject, type JsonObject} from '@snuggery/core';
 import {promises as fs} from 'fs';
 import {createRequire} from 'module';
@@ -18,10 +21,10 @@ import {tsc} from './typescript';
 
 const manifestFilename = 'package.json';
 
-export async function* executeBuild(
+export async function executeBuild(
 	input: Schema,
 	context: BuilderContext,
-): AsyncGenerator<BuilderOutput> {
+): Promise<void> {
 	const config = await loadConfiguration(context);
 	const workspaceRequire = createRequire(
 		resolveWorkspacePath(context, '<workspace>'),
@@ -90,16 +93,7 @@ export async function* executeBuild(
 	await fs.mkdir(outputFolder, {recursive: true});
 
 	if (compile || hasTypescript) {
-		const tscResult = await tsc(
-			context,
-			{compile, tsconfig},
-			outputFolder,
-			loadedPlugins,
-		);
-		if (!tscResult.success) {
-			yield tscResult;
-			return;
-		}
+		await tsc(context, {compile, tsconfig}, outputFolder, loadedPlugins);
 	}
 
 	try {
@@ -110,27 +104,19 @@ export async function* executeBuild(
 			loadedPlugins,
 		);
 	} catch (e) {
-		yield {
-			success: false,
-			error: `Failed to copy ${manifestFilename}: ${
+		throw new BuildFailureError(
+			`Failed to copy ${manifestFilename}: ${
 				e instanceof Error ? e.message : e
 			}`,
-		};
-		return;
+		);
 	}
 
 	context.logger.debug('Copying assets...');
-	const assetResult = await copyAssets(context, outputFolder, assets);
-	if (!assetResult.success) {
-		yield assetResult;
-		return;
-	}
+	await copyAssets(context, outputFolder, assets);
 
 	if (packager) {
 		context.logger.debug('Running packager');
-		yield runPackager(context, {packager, directory: outputFolder});
-	} else {
-		yield {success: true};
+		await runPackager(context, {packager, directory: outputFolder});
 	}
 
 	for (const plugin of loadedPlugins) {

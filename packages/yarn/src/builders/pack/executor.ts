@@ -1,63 +1,44 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
 import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
-import {defer, from, Observable, of} from 'rxjs';
-import {catchError, mapTo, switchMap} from 'rxjs/operators';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
 
 import {loadYarn, snuggeryPluginName} from '../../utils/yarn';
 
 import type {Schema} from './schema';
 
-export function executePack(
+export async function executePack(
 	{directory, useWorkspacePlugin}: Schema,
 	context: BuilderContext,
-): Observable<BuilderOutput> {
-	return defer(() => loadYarn(context)).pipe(
-		switchMap(yarn => {
-			return yarn.hasPlugin().pipe(
-				switchMap(hasPlugin => {
-					if (useWorkspacePlugin && !hasPlugin) {
-						return of({
-							success: false,
-							error: `Couldn't find ${snuggeryPluginName}`,
-						});
-					}
+): Promise<void> {
+	const yarn = await loadYarn(context);
+	const hasPlugin = await yarn.hasPlugin();
 
-					return from(getProjectPath(context)).pipe(
-						switchMap(cwd => {
-							const directoryToPack = directory
-								? resolveWorkspacePath(context, directory)
-								: cwd;
+	if (useWorkspacePlugin && !hasPlugin) {
+		throw new BuildFailureError(`Couldn't find ${snuggeryPluginName}`);
+	}
 
-							if (
-								useWorkspacePlugin === true ||
-								(useWorkspacePlugin !== false &&
-									hasPlugin &&
-									directoryToPack !== cwd)
-							) {
-								return yarn.snuggeryWorkspacePack({
-									cwd,
-									directoryToPack,
-								});
-							} else {
-								if (directoryToPack !== cwd) {
-									throw new Error(
-										`Packing a folder other than the workspace requires the ${snuggeryPluginName} yarn plugin to be installed`,
-									);
-								}
+	const cwd = await getProjectPath(context);
+	const directoryToPack = directory
+		? resolveWorkspacePath(context, directory)
+		: cwd;
 
-								return yarn.npmPack({cwd});
-							}
-						}),
-						mapTo<void, BuilderOutput>({success: true}),
-						catchError(e =>
-							of<BuilderOutput>({
-								success: false,
-								error: e.message,
-							}),
-						),
-					);
-				}),
+	if (
+		useWorkspacePlugin === true ||
+		(useWorkspacePlugin !== false && hasPlugin && directoryToPack !== cwd)
+	) {
+		await yarn.snuggeryWorkspacePack({
+			cwd,
+			directoryToPack,
+		});
+	} else {
+		if (directoryToPack !== cwd) {
+			throw new Error(
+				`Packing a folder other than the workspace requires the ${snuggeryPluginName} yarn plugin to be installed`,
 			);
-		}),
-	);
+		}
+
+		await yarn.npmPack({cwd});
+	}
 }

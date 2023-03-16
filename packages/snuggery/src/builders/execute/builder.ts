@@ -1,7 +1,9 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
-import {Observable, defer, of} from 'rxjs';
-import {concatAll} from 'rxjs/operators';
+import {
+	firstValueFrom,
+	getProjectPath,
+	resolveWorkspacePath,
+} from '@snuggery/architect';
+import type {BuilderContext} from '@snuggery/architect/create-builder';
 
 import {exec} from './exec';
 import {resolvePackageBin} from './resolve-package-bin';
@@ -10,35 +12,27 @@ import type {Schema, PackageBinarySchema} from './schema';
 /**
  * Execute a binary, depending on config either globally installed or installed in a node package
  */
-export function execute(
+export async function execute(
 	config: Schema,
 	context: BuilderContext,
-): Observable<BuilderOutput> {
-	return defer(async () => {
-		const cwd = config.cwd
-			? resolveWorkspacePath(context, config.cwd)
-			: await getProjectPath(context);
+): Promise<void> {
+	const cwd = config.cwd
+		? resolveWorkspacePath(context, config.cwd)
+		: await getProjectPath(context);
 
-		let binary: string;
+	let binary: string;
 
-		if (!isPackageConfiguration(config)) {
-			binary = config.binary;
-		} else {
-			const resolvedBin = await resolvePackageBin(context, {
-				packageName: config.package,
-				binary: config.binary,
-				resolveFrom: config.resolveFrom,
-			});
+	if (!isPackageConfiguration(config)) {
+		binary = config.binary;
+	} else {
+		binary = await resolvePackageBin(context, {
+			packageName: config.package,
+			binary: config.binary,
+			resolveFrom: config.resolveFrom,
+		});
+	}
 
-			if (!resolvedBin.success) {
-				return of(resolvedBin);
-			}
-
-			binary = resolvedBin.bin;
-		}
-
-		return exec(cwd, binary, config);
-	}).pipe(concatAll());
+	await firstValueFrom(context, exec(cwd, binary, config));
 }
 
 function isPackageConfiguration(config: Schema): config is PackageBinarySchema {

@@ -1,4 +1,4 @@
-import {createBuilder} from '@angular-devkit/architect';
+import {createBuilder} from '@snuggery/architect/create-builder';
 import type {JsonObject} from '@snuggery/core';
 
 import {execute} from './builder';

@@ -1,7 +1,10 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
-import {createRequire} from 'module';
-import {dirname, join} from 'path';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
+import {createRequire} from 'node:module';
+import {dirname, join} from 'node:path';
 
 interface Manifest {
 	name: string;
@@ -36,12 +39,9 @@ export async function resolvePackageBin(
 		resolveFrom: string | string[] | undefined;
 		binary: string | undefined;
 	},
-): Promise<{success: true; bin: string} | {success: false; error: string}> {
+): Promise<string> {
 	if (!isPackage(packageName)) {
-		return {
-			success: false,
-			error: `Invalid package name: "${packageName}"`,
-		};
+		throw new BuildFailureError(`Invalid package name: "${packageName}"`);
 	}
 
 	if (resolveFrom == null) {
@@ -82,27 +82,20 @@ export async function resolvePackageBin(
 	}
 
 	if (manifestPath == null) {
-		return {
-			success: false,
-			error: `Couldn't find package ${packageName}`,
-		};
+		throw new BuildFailureError(`Couldn't find package ${packageName}`);
 	}
 
 	const packageFolder = dirname(manifestPath);
 	if (binary && /^\.?\//.test(binary)) {
-		return {
-			success: true,
-			bin: join(packageFolder, binary),
-		} as const;
+		return join(packageFolder, binary);
 	}
 
 	const manifest = require(manifestPath) as Manifest;
 
 	if (!manifest.bin) {
-		return {
-			success: false,
-			error: `Package ${packageName} doesn't expose any binaries`,
-		};
+		throw new BuildFailureError(
+			`Package ${packageName} doesn't expose any binaries`,
+		);
 	}
 
 	let relativeBinaryPath: string;
@@ -112,23 +105,21 @@ export async function resolvePackageBin(
 		const _relativeBinaryPath = manifest.bin[binaryName];
 
 		if (!_relativeBinaryPath) {
-			return {
-				success: false,
-				error: `Package ${packageName} doesn't expose a binary named "${binaryName}"`,
-			};
+			throw new BuildFailureError(
+				`Package ${packageName} doesn't expose a binary named "${binaryName}"`,
+			);
 		}
 
 		relativeBinaryPath = _relativeBinaryPath;
 	} else {
 		if (binary && binary !== getUnscopedName(packageName)) {
-			return {
-				success: false,
-				error: `Package ${packageName} doesn't expose a binary named "${binary}"`,
-			};
+			throw new BuildFailureError(
+				`Package ${packageName} doesn't expose a binary named "${binary}"`,
+			);
 		}
 
 		relativeBinaryPath = manifest.bin;
 	}
 
-	return {success: true, bin: join(packageFolder, relativeBinaryPath)};
+	return join(packageFolder, relativeBinaryPath);
 }

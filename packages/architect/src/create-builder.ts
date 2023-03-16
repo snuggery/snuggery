@@ -35,8 +35,9 @@ export type {BuilderContext, BuilderOutput};
 
 export type BuilderOutputLike =
 	| AsyncIterable<BuilderOutput>
-	| PromiseLike<BuilderOutput>
-	| BuilderOutput;
+	| PromiseLike<BuilderOutput | void>
+	| BuilderOutput
+	| void;
 
 export function createBuilder<OptT = JsonObject>(
 	fn: (input: OptT, context: BuilderContext) => BuilderOutputLike,
@@ -45,10 +46,13 @@ export function createBuilder<OptT = JsonObject>(
 		try {
 			const output = fn(input, context);
 
-			if (isBuilderOutput(output)) {
-				return output;
+			if (output == null || isBuilderOutput(output)) {
+				return {success: true, ...output} as BuilderOutput;
 			} else if (isPromiseLike(output)) {
-				return Promise.resolve(output).catch(e => handleError(e));
+				return Promise.resolve(output).then(
+					result => ({success: true, ...result} as BuilderOutput),
+					e => handleError(e),
+				);
 			} else if (Symbol.asyncIterator in output) {
 				return wrapOutputIterable(output);
 			} else {
@@ -60,9 +64,8 @@ export function createBuilder<OptT = JsonObject>(
 	});
 }
 
-function isPromiseLike(value: unknown): value is PromiseLike<unknown> {
+function isPromiseLike(value: object): value is PromiseLike<unknown> {
 	return (
-		!!value &&
 		'then' in value &&
 		typeof (value as PromiseLike<unknown>).then === 'function'
 	);
@@ -73,7 +76,11 @@ async function* wrapOutputIterable(
 ): AsyncIterable<BuilderOutput> {
 	try {
 		for await (const o of output) {
-			yield o;
+			yield {
+				// @ts-expect-error typescript knows success is already in `o`
+				success: true,
+				...o,
+			} as BuilderOutput;
 		}
 	} catch (e) {
 		yield handleError(e);

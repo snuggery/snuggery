@@ -1,43 +1,36 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import type {TargetSpecifier} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
+import {lastValueFrom, TargetSpecifier} from '@snuggery/architect';
 import {
-	EMPTY,
-	MonoTypeOperatorFunction,
-	Observable,
-	of,
-	pipe,
-	range,
-	throwError,
-	zip,
-} from 'rxjs';
-import {catchError, endWith, mergeMap, mergeMapTo, tap} from 'rxjs/operators';
+	type BuilderContext,
+	type BuilderOutput,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
+import type {JsonObject} from '@snuggery/core';
+import {type MonoTypeOperatorFunction, pipe, range, zip} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 
 import {createScheduler} from './schedulers';
 import type {ParallelTarget, Schema, SerialTarget, Target} from './schema';
 import {Type} from './types';
 
-class BuildFailedError extends Error {
-	public constructor(public readonly output: BuilderOutput) {
-		super();
-	}
-}
-
 function throwIfFailed(): MonoTypeOperatorFunction<BuilderOutput> {
 	return pipe(
-		mergeMap(result =>
-			result.success ? of(result) : throwError(new BuildFailedError(result)),
-		),
+		map(result => {
+			if (result.success) {
+				return result;
+			} else {
+				throw new BuildFailureError(result.error);
+			}
+		}),
 	);
 }
 
 /**
  * Combine multiple builders into a single builder
  */
-export function execute(
+export async function execute(
 	{targets, scheduler: schedulerType, options, ...otherOptions}: Schema,
 	context: BuilderContext,
-): Observable<BuilderOutput> {
+): Promise<void> {
 	if (Array.isArray(targets)) {
 		targets = {
 			type: Type.Serial,
@@ -63,30 +56,25 @@ export function execute(
 		};
 	}
 
-	return zip(
-		scheduler.run(targets, options).pipe(throwIfFailed()),
-		range(1, targetCount),
-	).pipe(
-		tap(([, numberDone]) => context.reportProgress(numberDone)),
-		mergeMapTo(EMPTY),
-
-		endWith({success: true}),
-		catchError(err =>
-			err instanceof BuildFailedError ? of(err.output) : throwError(err),
-		),
+	await lastValueFrom(
+		context,
+		zip(
+			scheduler.run(targets, options).pipe(throwIfFailed()),
+			range(1, targetCount),
+		).pipe(tap(([, numberDone]) => context.reportProgress(numberDone))),
 	);
+}
 
-	function isSingleTarget(target: Target): target is TargetSpecifier {
-		return typeof target === 'string' || 'builder' in target;
-	}
+function isSingleTarget(target: Target): target is TargetSpecifier {
+	return typeof target === 'string' || 'builder' in target;
+}
 
-	function countTargets({targets}: SerialTarget | ParallelTarget): number {
-		return targets.reduce((count, target) => {
-			if (isSingleTarget(target)) {
-				return count + 1;
-			} else {
-				return count + countTargets(target);
-			}
-		}, 0);
-	}
+function countTargets({targets}: SerialTarget | ParallelTarget): number {
+	return targets.reduce((count, target) => {
+		if (isSingleTarget(target)) {
+			return count + 1;
+		} else {
+			return count + countTargets(target);
+		}
+	}, 0);
 }

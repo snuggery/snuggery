@@ -1,6 +1,7 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {defer, Observable, of} from 'rxjs';
-import {catchError, mapTo, switchMap} from 'rxjs/operators';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
 
 import {loadYarn} from '../../utils/yarn';
 
@@ -8,32 +9,14 @@ import type {Schema} from './schema';
 
 const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
 
-export function executeUpdate(
+export async function executeUpdate(
 	{packages}: Schema,
 	context: BuilderContext,
-): Observable<BuilderOutput> {
-	return defer(() => loadYarn(context)).pipe(
-		switchMap(yarn => {
-			return yarn.hasPlugin().pipe(
-				switchMap(hasPlugin => {
-					if (!hasPlugin) {
-						return of({
-							success: false,
-							error: `Couldn't find ${snuggeryPluginName}`,
-						});
-					}
+): Promise<void> {
+	const yarn = await loadYarn(context);
+	if (!(await yarn.hasPlugin())) {
+		throw new BuildFailureError(`Couldn't find ${snuggeryPluginName}`);
+	}
 
-					return yarn.snuggeryWorkspaceUp(packages).pipe(
-						mapTo<void, BuilderOutput>({success: true}),
-						catchError(e =>
-							of<BuilderOutput>({
-								success: false,
-								error: e.message,
-							}),
-						),
-					);
-				}),
-			);
-		}),
-	);
+	await yarn.snuggeryWorkspaceUp(packages);
 }

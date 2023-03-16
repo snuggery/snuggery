@@ -1,25 +1,33 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
-import {take} from 'rxjs/operators';
+import {
+	type BuilderContext,
+	BuildFailureError,
+} from '@snuggery/architect/create-builder';
 
 import {scheduleTarget} from './run';
+import {firstValueFrom} from './rxjs';
 
 export async function runPackager(
 	context: BuilderContext,
 	{packager, directory}: {packager?: string; directory: string},
-): Promise<BuilderOutput> {
+): Promise<void> {
 	if (!packager) {
-		return {success: true};
+		return;
 	}
 
 	const packageBuilder = packager.includes(':') ? packager : `${packager}:pack`;
 
-	return await scheduleTarget(
-		{
-			builder: packageBuilder,
-		},
-		{directory},
+	const result = await firstValueFrom(
 		context,
-	)
-		.pipe(take(1))
-		.toPromise()!;
+		scheduleTarget(
+			{
+				builder: packageBuilder,
+			},
+			{directory},
+			context,
+		),
+	);
+
+	if (!result.success) {
+		throw new BuildFailureError(result.error);
+	}
 }

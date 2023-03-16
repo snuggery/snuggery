@@ -1,7 +1,7 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
 import {join} from 'path';
 import {promisify} from 'util';
 
+import {type BuilderContext, BuildFailureError} from './create-builder';
 import {getProjectPath, resolveWorkspacePath} from './resolve';
 
 const cache: import('glob').IOptions['cache'] = {};
@@ -37,7 +37,7 @@ export async function copyAssets(
 	context: BuilderContext,
 	outputFolder: string,
 	assets: string | string[] | AssetSpec[],
-): Promise<BuilderOutput> {
+): Promise<void> {
 	const {copy} = await import('fs-extra');
 	const glob = promisify((await import('glob')).default);
 
@@ -58,19 +58,17 @@ export async function copyAssets(
 		try {
 			files = await resolveGlobs(context, from, asset);
 		} catch (e) {
-			return {
-				success: false,
-				error: `Failed to match pattern in asset ${i}: ${
+			throw new BuildFailureError(
+				`Failed to match pattern in asset ${i}: ${
 					e instanceof Error ? e.message : e
 				}`,
-			};
+			);
 		}
 
 		if (files.size === 0 && !asset.allowEmpty) {
-			return {
-				success: false,
-				error: `Failed to match any assets for ${JSON.stringify(rawAsset)}`,
-			};
+			throw new BuildFailureError(
+				`Failed to match any assets for ${JSON.stringify(rawAsset)}`,
+			);
 		}
 
 		try {
@@ -81,18 +79,11 @@ export async function copyAssets(
 				});
 			}
 		} catch (e) {
-			return {
-				success: false,
-				error: `Failed to copy asset ${i}: ${
-					e instanceof Error ? e.message : e
-				}`,
-			};
+			throw new BuildFailureError(
+				`Failed to copy asset ${i}: ${e instanceof Error ? e.message : e}`,
+			);
 		}
 	}
-
-	return {
-		success: true,
-	};
 
 	async function resolveGlobs(
 		context: BuilderContext,

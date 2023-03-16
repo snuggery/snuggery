@@ -1,8 +1,6 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import {scheduleTarget} from '@snuggery/architect';
+import {lastValueFrom, scheduleTarget} from '@snuggery/architect';
+import type {BuilderContext} from '@snuggery/architect/create-builder';
 import {filterByPatterns} from '@snuggery/core';
-import {defer, of} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
 
 import {findAffectedProjects} from '../../changes';
 
@@ -12,7 +10,7 @@ function hasTarget(value: unknown): value is {target: string} {
 	return typeof (value as {target: string}).target === 'string';
 }
 
-export function execute(
+export async function execute(
 	{
 		include = '**',
 		exclude,
@@ -25,31 +23,31 @@ export function execute(
 	}: Schema,
 	context: BuilderContext,
 ) {
-	return defer(async () => {
-		const affectedProjects = Array.from(
+	const affectedProjects = filterByPatterns(
+		Array.from(
 			await findAffectedProjects(context, {
 				from: fromRevision,
 				to: toRevision,
 				files: affectedFiles,
 			}),
-		);
+		),
+		{include, exclude},
+	);
 
-		return filterByPatterns(affectedProjects, {include, exclude});
-	}).pipe(
-		switchMap(affectedProjects => {
-			if (printOnly) {
-				context.logger.info(affectedProjects.join('\n'));
-			}
+	if (printOnly) {
+		context.logger.info(affectedProjects.join('\n'));
+	}
 
-			if (printOnly || !affectedProjects.length) {
-				return of({success: true});
-			}
+	if (printOnly || !affectedProjects.length) {
+		return;
+	}
 
-			return scheduleTarget(
-				hasTarget(targetSpec) ? targetSpec.target : targetSpec,
-				{[optionName]: affectedProjects},
-				context,
-			);
-		}),
+	await lastValueFrom(
+		context,
+		scheduleTarget(
+			hasTarget(targetSpec) ? targetSpec.target : targetSpec,
+			{[optionName]: affectedProjects},
+			context,
+		),
 	);
 }

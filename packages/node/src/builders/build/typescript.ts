@@ -1,29 +1,12 @@
-import type {BuilderContext, BuilderOutput} from '@angular-devkit/architect';
+import type {BuilderContext} from '@angular-devkit/architect';
 import {
 	getProjectPath,
 	resolveProjectPath,
 	resolveWorkspacePath,
 } from '@snuggery/architect';
+import {BuildFailureError} from '@snuggery/architect/create-builder';
 import {promises as fs} from 'fs';
-import {
-	CompilerOptions,
-	createEmitAndSemanticDiagnosticsBuilderProgram as createIncrementalProgram,
-	createAbstractBuilder as createProgram,
-	Diagnostic,
-	DiagnosticCategory,
-	formatDiagnostic,
-	FormatDiagnosticsHost,
-	NewLineKind,
-	parseJsonConfigFileContent,
-	readConfigFile,
-	sys,
-	createIncrementalCompilerHost,
-	createCompilerHost,
-	createSolutionBuilder,
-	createSolutionBuilderHost,
-	ExitStatus,
-	CustomTransformers,
-} from 'typescript';
+import ts from 'typescript';
 
 import type {WrappedPlugin} from './plugin';
 import type {Schema} from './schema';
@@ -33,48 +16,43 @@ export async function tsc(
 	input: Pick<Schema, 'tsconfig' | 'compile'>,
 	outputFolder: string,
 	plugins: readonly WrappedPlugin[],
-): Promise<BuilderOutput> {
+): Promise<void> {
 	if (input.compile === false) {
 		context.logger.debug('Typescript compilation was disabled explicitly');
-		return {success: true};
+		return;
 	}
 
 	const tsconfigPath = await getTsConfigPath(context, input);
 
 	if (tsconfigPath == null) {
 		if (input.compile) {
-			return {
-				success: false,
-				error: "Couldn't find tsconfig but compile is set to true",
-			};
+			throw new BuildFailureError(
+				"Couldn't find tsconfig but compile is set to true",
+			);
 		}
 
 		context.logger.info(
 			'No typescript configuration found, skipping compilation',
 		);
-		return {success: true};
+		return;
 	}
 
 	context.logger.debug('Compiling typescript...');
 
-	const tsconfig = readConfigFile(tsconfigPath, path => sys.readFile(path));
+	const tsconfig = ts.readConfigFile(tsconfigPath, path =>
+		ts.sys.readFile(path),
+	);
 	const customTransformers = plugins
 		.map(plugin => plugin.typescriptTransformers)
 		.reduce(combineCustomTransformers, {});
 
 	if (tsconfig.error) {
-		return {
-			success: false,
-			error: formatDiagnostic(
-				tsconfig.error,
-				getFormatDiagnosticsHost(tsconfig.config),
-			),
-		};
+		processResult(context, undefined, [tsconfig.error]);
 	}
 
-	const parsedConfig = parseJsonConfigFileContent(
+	const parsedConfig = ts.parseJsonConfigFileContent(
 		tsconfig.config,
-		sys,
+		ts.sys,
 		await getProjectPath(context),
 	);
 
@@ -87,23 +65,23 @@ export async function tsc(
 
 	if (parsedConfig.options.composite) {
 		if (parsedConfig.options.outDir !== outputFolder) {
-			return {
-				success: false,
-				error: `Expected outDir in ${tsconfigPath} to point towards ${outputFolder}`,
-			};
+			throw new BuildFailureError(
+				`Expected outDir in ${tsconfigPath} to point towards ${outputFolder}`,
+			);
 		}
 
 		const formatDiagnosticsHost = getFormatDiagnosticsHost(
+			context,
 			parsedConfig.options,
 		);
-		const host = createSolutionBuilderHost(sys, undefined, diagnostic => {
-			const message = formatDiagnostic(diagnostic, formatDiagnosticsHost);
+		const host = ts.createSolutionBuilderHost(ts.sys, undefined, diagnostic => {
+			const message = ts.formatDiagnostic(diagnostic, formatDiagnosticsHost);
 
 			switch (diagnostic.category) {
-				case DiagnosticCategory.Error:
+				case ts.DiagnosticCategory.Error:
 					context.logger.error(message);
 					break;
-				case DiagnosticCategory.Warning:
+				case ts.DiagnosticCategory.Warning:
 					context.logger.warn(message);
 					break;
 				default:
@@ -111,7 +89,7 @@ export async function tsc(
 			}
 		});
 
-		const builder = createSolutionBuilder(host, [tsconfigPath], {
+		const builder = ts.createSolutionBuilder(host, [tsconfigPath], {
 			incremental: parsedConfig.options.incremental,
 		});
 
@@ -121,28 +99,23 @@ export async function tsc(
 				undefined,
 				undefined,
 				() => customTransformers,
-			) === ExitStatus.Success
+			) !== ts.ExitStatus.Success
 		) {
-			return {success: true};
-		} else {
-			return {
-				success: false,
-				error: 'Compilation failed',
-			};
+			throw new BuildFailureError('Compilation failed');
 		}
 	} else {
 		parsedConfig.options.outDir = outputFolder;
 
 		const host = (
 			parsedConfig.options.incremental
-				? createIncrementalCompilerHost
-				: createCompilerHost
+				? ts.createIncrementalCompilerHost
+				: ts.createCompilerHost
 		)(parsedConfig.options);
 
 		const program = (
 			parsedConfig.options.incremental
-				? createIncrementalProgram
-				: createProgram
+				? ts.createEmitAndSemanticDiagnosticsBuilderProgram
+				: ts.createAbstractBuilder
 		)(
 			parsedConfig.fileNames,
 			parsedConfig.options,
@@ -159,14 +132,15 @@ export async function tsc(
 			undefined,
 			customTransformers,
 		);
-		return processResult(diagnostics, parsedConfig.options);
+
+		return processResult(context, parsedConfig.options, diagnostics);
 	}
 }
 
 function combineCustomTransformers(
-	a: CustomTransformers,
-	b: CustomTransformers,
-): CustomTransformers {
+	a: ts.CustomTransformers,
+	b: ts.CustomTransformers,
+): ts.CustomTransformers {
 	return {
 		before: (a.before || b.before) && [
 			...(a.before || []),
@@ -199,34 +173,34 @@ async function getTsConfigPath(
 }
 
 function processResult(
-	allDiagnostics: readonly Diagnostic[],
-	options: CompilerOptions | undefined,
-): BuilderOutput {
+	context: BuilderContext,
+	options: ts.CompilerOptions | undefined,
+	allDiagnostics: readonly ts.Diagnostic[],
+): void {
 	const errorsAndWarnings = allDiagnostics.filter(function (d) {
-		return d.category !== DiagnosticCategory.Message;
+		return d.category !== ts.DiagnosticCategory.Message;
 	});
 
 	if (errorsAndWarnings.length === 0) {
-		return {success: true};
+		return;
 	}
-	const formatDiagnosticsHost = getFormatDiagnosticsHost(options);
+	const formatDiagnosticsHost = getFormatDiagnosticsHost(context, options);
 
-	return {
-		success: false,
-		error: errorsAndWarnings
+	throw new BuildFailureError(
+		errorsAndWarnings
 			.map(errorOrWarning =>
-				formatDiagnostic(errorOrWarning, formatDiagnosticsHost),
+				ts.formatDiagnostic(errorOrWarning, formatDiagnosticsHost),
 			)
 			.join('\n'),
-	};
+	);
 }
 
 function getFormatDiagnosticsHost(
-	options?: CompilerOptions,
-): FormatDiagnosticsHost {
-	const baseUrl = options ? options.baseUrl : undefined;
+	context: BuilderContext,
+	options?: ts.CompilerOptions,
+): ts.FormatDiagnosticsHost {
 	return {
-		getCurrentDirectory: () => baseUrl || sys.getCurrentDirectory(),
+		getCurrentDirectory: () => context.workspaceRoot,
 		// We need to normalize the path separators here because by default, TypeScript
 		// compiler hosts use posix canonical paths. In order to print consistent diagnostics,
 		// we also normalize the paths.
@@ -236,9 +210,9 @@ function getFormatDiagnosticsHost(
 			// options. There is no public TypeScript function that returns the corresponding
 			// new line string. see: https://github.com/Microsoft/TypeScript/issues/29581
 			if (options && options.newLine !== undefined) {
-				return options.newLine === NewLineKind.LineFeed ? '\n' : '\r\n';
+				return options.newLine === ts.NewLineKind.LineFeed ? '\n' : '\r\n';
 			}
-			return sys.newLine;
+			return ts.sys.newLine;
 		},
 	};
 }
