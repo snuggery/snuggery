@@ -5,7 +5,7 @@ import {
 	resolveWorkspacePath,
 } from '@snuggery/architect';
 import {BuildFailureError} from '@snuggery/architect/create-builder';
-import {promises as fs} from 'fs';
+import fs from 'node:fs/promises';
 import ts from 'typescript';
 
 import type {WrappedPlugin} from './plugin';

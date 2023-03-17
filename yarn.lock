@@ -1254,14 +1254,19 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.7.1
     "@snuggery/core": ^0.5.2
+    "@snuggery/snuggery": ^0.9.3
     "@types/node": ^16.11.35
     rxjs: ^6.6.7
     typanion: 3.7.1
     typescript: 4.8.4
+    uvu: ^0.5.6
   peerDependencies:
     typescript: ">= 4.0.0 < 4.9.0"
+    uvu: ^0.5.6
   peerDependenciesMeta:
     typescript:
+      optional: true
+    uvu:
       optional: true
   languageName: unknown
   linkType: soft
@@ -1359,7 +1364,6 @@ __metadata:
     "@snuggery/architect": ^0.7.1
     "@types/node": ^16.11.35
     "@yarnpkg/parsers": ^2.4.1
-    rxjs: ^6.6.7
   languageName: unknown
   linkType: soft
 

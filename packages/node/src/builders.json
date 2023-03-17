@@ -1,9 +1,14 @@
 {
 	"builders": {
 		"build": {
-			"implementation": "./builders/build",
+			"implementation": "./builders/build/index.js",
 			"schema": "./builders/build/schema.json",
 			"description": "Build a package via typescript"
+		},
+		"uvu": {
+			"implementation": "./builders/uvu/index.js",
+			"schema": "./builders/uvu/schema.json",
+			"description": "Test a package via uvu"
 		}
 	}
 }

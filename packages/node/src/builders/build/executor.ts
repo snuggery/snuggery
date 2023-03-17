@@ -9,10 +9,10 @@ import {
 	BuildFailureError,
 } from '@snuggery/architect/create-builder';
 import {isJsonObject, type JsonObject} from '@snuggery/core';
-import {promises as fs} from 'fs';
-import {createRequire} from 'module';
-import {join} from 'path';
-import {pathToFileURL} from 'url';
+import fs from 'node:fs/promises';
+import {createRequire} from 'node:module';
+import {join} from 'node:path';
+import {pathToFileURL} from 'node:url';
 
 import {loadConfiguration} from './config';
 import {createPlugin, PluginFactory, WrappedPlugin} from './plugin';

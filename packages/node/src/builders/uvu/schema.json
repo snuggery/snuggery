@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/schema",
+	"title": "Test a node package using uvu",
+	"description": "Test a node package using uvu",
+	"type": "object",
+	"properties": {
+		"dir": {
+			"type": "string",
+			"description": "Base directory in which to look for tests, defaults to the project folder",
+			"alias": "d"
+		},
+		"pattern": {
+			"type": "string",
+			"description": "Pattern to match test files",
+			"alias": "p"
+		},
+		"ignore": {
+			"$ref": "#/definitions/string-or-list",
+			"description": "Any file patterns to ignore",
+			"alias": "i"
+		},
+		"bail": {
+			"type": "boolean",
+			"description": "Exit on first failure",
+			"default": false,
+			"alias": "b"
+		},
+		"require": {
+			"$ref": "#/definitions/string-or-list",
+			"description": "Additional module(s) to preload",
+			"alias": "r"
+		}
+	},
+	"additionalProperties": false,
+	"definitions": {
+		"string-or-list": {
+			"oneOf": [
+				{"type": "string"},
+				{
+					"type": "array",
+					"items": {"type": "string"}
+				}
+			]
+		}
+	}
+}

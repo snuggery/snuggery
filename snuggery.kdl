@@ -29,15 +29,10 @@ project "all" root="" {
 		}
 	}
 
-	target "test" builder="@snuggery/snuggery:execute" {
+	target "test" builder="@snuggery/node:uvu" {
 		options {
-			package "uvu"
-			arguments {
-				- "--require"
-				- "@snuggery-workspace/scripts/load-ts"
-				- "--ignore"
-				- "integration"
-			}
+			require "@snuggery-workspace/scripts/load-ts"
+			ignore "integration"
 		}
 	}
 
@@ -144,10 +139,9 @@ project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
 }
 
 project "integration" root="integration" {
-	target "test" builder="@snuggery/snuggery:execute" {
+	target "test" builder="@snuggery/node:uvu" {
 		options {
-			package "uvu"
-			arguments "--require" "@snuggery-workspace/scripts/load-ts"
+			require "@snuggery-workspace/scripts/load-ts"
 		}
 	}
 }
