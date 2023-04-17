@@ -1,5 +1,6 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import type {Observable} from 'rxjs';
+
+import type {BuilderContext} from './create-builder';
 
 export function firstValueFrom<T>(
 	context: BuilderContext,

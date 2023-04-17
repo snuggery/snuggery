@@ -1,10 +1,10 @@
 import {
-	BuilderContext,
-	BuilderOutput,
-	Target as ArchitectTarget,
+	type Target as ArchitectTarget,
 	targetStringFromTarget,
 } from '@angular-devkit/architect';
 import {
+	type BuilderContext,
+	type BuilderOutput,
 	TransientTarget,
 	resolveTargetString,
 	TargetSpecifier,

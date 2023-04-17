@@ -1,4 +1,3 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import type {workspaces} from '@angular-devkit/core';
 import {
 	type ExtraConfigurationDefinition,
@@ -8,6 +7,7 @@ import {
 	type WorkspaceDefinition,
 } from '@snuggery/core';
 
+import type {BuilderContext} from './create-builder';
 import {findWorkspace} from './workspace';
 
 export type {

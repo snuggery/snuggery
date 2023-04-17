@@ -11,29 +11,17 @@
 	"main": "index.js",
 	"exports": {
 		".": "./src/index.js",
-		"./create-builder": "./src/create-builder.js",
-		"./operators": "./src/operators.ts",
 		"./package.json": "./package.json"
 	},
-	"peerDependencies": {
+	"dependencies": {
 		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
 		"@angular-devkit/core": "^15.0.0-rc.0",
-		"typanion": "^3.7.1"
-	},
-	"peerDependenciesMeta": {
-		"typanion": {
-			"optional": true
-		}
-	},
-	"dependencies": {
 		"@snuggery/core": "^0.5.2",
 		"fs-extra": "10.0.0",
 		"glob": "7.2.0",
 		"rxjs": "^6.6.7"
 	},
 	"devDependencies": {
-		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/fs-extra": "9.0.11",
 		"@types/glob": "7.1.3",
@@ -45,8 +33,6 @@
 	"publishConfig": {
 		"exports": {
 			".": "./index.js",
-			"./create-builder": "./create-builder.js",
-			"./operators": "./operators.js",
 			"./package.json": "./package.json"
 		}
 	}

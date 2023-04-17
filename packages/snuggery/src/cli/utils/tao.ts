@@ -1,8 +1,3 @@
-import {
-	BuilderContext,
-	BuilderHandlerFn,
-	createBuilder,
-} from '@angular-devkit/architect';
 import type {
 	Rule,
 	RuleFactory,
@@ -23,6 +18,11 @@ import type {
 	Generator,
 	Workspace,
 } from '@nrwl/devkit';
+import {
+	type BuilderContext,
+	type BuilderOutputLike,
+	createBuilder,
+} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 
 import type {CliWorkspace} from '../command/context';
@@ -35,9 +35,7 @@ function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
 	return value != null && Symbol.asyncIterator in value;
 }
 
-function extractResult(
-	value: ReturnType<Executor>,
-): ReturnType<BuilderHandlerFn<JsonObject>> {
+function extractResult(value: ReturnType<Executor>): BuilderOutputLike {
 	// @nrwl/devkit declares that an executor returns a promise or async iterable that emits items of
 	// interface {success: boolean}, but they can't actually enforce this as they lack an equivalent
 	// to `createBuilder`.

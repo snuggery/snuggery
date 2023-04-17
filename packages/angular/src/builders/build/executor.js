@@ -1,10 +1,10 @@
 import {
+	BuildFailureError,
 	copyAssets,
 	resolveProjectPath,
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
-import {BuildFailureError} from '@snuggery/architect/create-builder';
 import {readFile} from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {join} from 'node:path';
@@ -24,7 +24,7 @@ const emoji = ['✨', '🚢', '🎉', '💯', '✅', '🏁', '🌈', '🦄'];
 
 /**
  * @param {import('./schema.js').Schema} input
- * @param {import('@angular-devkit/architect').BuilderContext} context
+ * @param {import('@snuggery/architect').BuilderContext} context
  * @returns {Promise<void>}
  */
 export async function executeBuild(

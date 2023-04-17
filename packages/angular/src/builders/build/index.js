@@ -1,4 +1,4 @@
-import {createBuilder} from '@snuggery/architect/create-builder';
+import {createBuilder} from '@snuggery/architect';
 
 import {executeBuild} from './executor.js';
 

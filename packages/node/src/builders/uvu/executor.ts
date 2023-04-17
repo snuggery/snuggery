@@ -1,5 +1,4 @@
-import {getProjectPath} from '@snuggery/architect';
-import type {BuilderContext} from '@snuggery/architect/create-builder';
+import {type BuilderContext, getProjectPath} from '@snuggery/architect';
 import {createRequire} from 'node:module';
 import path from 'node:path';
 import {parse} from 'uvu/parse';

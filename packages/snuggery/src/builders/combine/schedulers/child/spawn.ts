@@ -1,4 +1,4 @@
-import type {BuilderOutput} from '@angular-devkit/architect';
+import type {BuilderOutput} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 import {ChildProcess, fork} from 'child_process';
 import {Observable, Subscriber} from 'rxjs';

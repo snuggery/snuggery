@@ -1,12 +1,9 @@
-import type {
-	BuilderContext,
-	BuilderOutput,
-	Target as ArchitectTarget,
-} from '@angular-devkit/architect';
+import type {Target as ArchitectTarget} from '@angular-devkit/architect';
 import type {JsonObject} from '@snuggery/core';
 import {Observable, defer, of, from} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 
+import type {BuilderContext, BuilderOutput} from './create-builder';
 import {resolveTargetString, targetFromTargetString} from './target';
 
 /**
@@ -74,11 +71,9 @@ export function scheduleTarget(
 				});
 			}
 
-			return from(import('@angular-devkit/architect')).pipe(
-				switchMap(({scheduleTargetAndForget}) =>
-					scheduleTargetAndForget(context, target, options, {target}),
-				),
-			);
+			return (
+				require('@angular-devkit/architect') as typeof import('@angular-devkit/architect')
+			).scheduleTargetAndForget(context, target, options, {target});
 		} else {
 			const currentTarget = context.target;
 

@@ -1,9 +1,8 @@
 import {
-	firstValueFrom,
+	type BuilderContext,
 	getProjectPath,
 	resolveWorkspacePath,
 } from '@snuggery/architect';
-import type {BuilderContext} from '@snuggery/architect/create-builder';
 
 import {exec} from './exec';
 import {resolvePackageBin} from './resolve-package-bin';
@@ -32,7 +31,7 @@ export async function execute(
 		});
 	}
 
-	await firstValueFrom(context, exec(cwd, binary, config));
+	await exec(context, cwd, binary, config);
 }
 
 function isPackageConfiguration(config: Schema): config is PackageBinarySchema {

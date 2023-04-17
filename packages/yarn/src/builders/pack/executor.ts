@@ -1,8 +1,9 @@
-import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
 import {
 	type BuilderContext,
 	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+	getProjectPath,
+	resolveWorkspacePath,
+} from '@snuggery/architect';
 
 import {loadYarn, snuggeryPluginName} from '../../utils/yarn';
 

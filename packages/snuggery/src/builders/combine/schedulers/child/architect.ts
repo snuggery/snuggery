@@ -1,6 +1,6 @@
 import {
 	Architect,
-	BuilderOutput,
+	type BuilderOutput,
 	targetFromTargetString,
 } from '@angular-devkit/architect';
 import {logging, schema} from '@angular-devkit/core';

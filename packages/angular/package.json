@@ -35,8 +35,6 @@
 		}
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery/architect": "^0.7.1",
 		"@snuggery/core": "^0.5.2",

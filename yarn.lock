@@ -1127,8 +1127,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/affected@workspace:packages/affected"
   dependencies:
-    "@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0"
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.7.1
     "@snuggery/core": ^0.5.2
@@ -1149,8 +1147,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/angular@workspace:packages/angular"
   dependencies:
-    "@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0"
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@angular/compiler": ^15.0.0-rc.0
     "@angular/compiler-cli": ^15.0.0-rc.0
     "@microsoft/api-extractor": 7.24.1
@@ -1198,13 +1194,6 @@ __metadata:
     rxjs: ^6.6.7
     typanion: 3.7.1
     uvu: ^0.5.2
-  peerDependencies:
-    "@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0"
-    "@angular-devkit/core": ^15.0.0-rc.0
-    typanion: ^3.7.1
-  peerDependenciesMeta:
-    typanion:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -1223,11 +1212,6 @@ __metadata:
     typanion: 3.7.1
     uvu: ^0.5.2
     yaml: 2.0.0-9
-  peerDependencies:
-    typanion: ^3.7.1
-  peerDependenciesMeta:
-    typanion:
-      optional: true
   languageName: unknown
   linkType: soft
 
@@ -1248,8 +1232,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/node@workspace:packages/node"
   dependencies:
-    "@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0"
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@angular-devkit/schematics": ^15.0.0-rc.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.7.1
@@ -1275,13 +1257,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/schematics@workspace:packages/schematics"
   dependencies:
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@angular-devkit/schematics": ^15.0.0-rc.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": ^0.5.2
     typescript: 4.8.4
   peerDependencies:
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@angular-devkit/schematics": ^15.0.0-rc.0
     typescript: ">= 4.0.0 < 4.9.0"
   peerDependenciesMeta:
@@ -1357,11 +1337,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/yarn@workspace:packages/yarn"
   dependencies:
-    "@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0"
-    "@angular-devkit/core": ^15.0.0-rc.0
     "@angular-devkit/schematics": ^15.0.0-rc.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": ^0.7.1
+    "@snuggery/core": ^0.5.2
     "@types/node": ^16.11.35
     "@yarnpkg/parsers": ^2.4.1
   languageName: unknown

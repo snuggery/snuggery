@@ -1,8 +1,7 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import expect from 'expect';
 import {suite} from 'uvu';
 
-import {resolveTargetString} from '..';
+import {type BuilderContext, resolveTargetString} from '..';
 
 const test = suite('resolveTargetString');
 

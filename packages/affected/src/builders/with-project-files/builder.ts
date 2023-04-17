@@ -1,5 +1,5 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import {
+	type BuilderContext,
 	findWorkspace,
 	lastValueFrom,
 	scheduleTarget,

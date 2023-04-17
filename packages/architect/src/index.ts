@@ -1,5 +1,12 @@
 export {type AssetSpec, copyAssets} from './assets';
 export {
+	BuildFailureError,
+	type BuilderContext,
+	type BuilderOutput,
+	type BuilderOutputLike,
+	createBuilder,
+} from './create-builder';
+export {
 	type ExtraConfigurationDefinition,
 	type ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,

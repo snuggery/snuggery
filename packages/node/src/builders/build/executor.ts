@@ -1,13 +1,11 @@
 import {
+	type BuilderContext,
+	BuildFailureError,
 	copyAssets,
 	resolveProjectPath,
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
 import {isJsonObject, type JsonObject} from '@snuggery/core';
 import fs from 'node:fs/promises';
 import {createRequire} from 'node:module';

@@ -1,5 +1,7 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import {extractExtraConfiguration} from '@snuggery/architect';
+import {
+	type BuilderContext,
+	extractExtraConfiguration,
+} from '@snuggery/architect';
 import * as t from 'typanion';
 
 const testConfiguration = t.isObject({

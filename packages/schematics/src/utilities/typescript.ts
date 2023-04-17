@@ -1,5 +1,8 @@
-import type {logging} from '@angular-devkit/core';
-import {SchematicsException, type Tree} from '@angular-devkit/schematics';
+import {
+	type SchematicContext,
+	SchematicsException,
+	type Tree,
+} from '@angular-devkit/schematics';
 import {filterByPatterns} from '@snuggery/core';
 import {posix} from 'path';
 import ts from 'typescript';
@@ -32,7 +35,7 @@ export interface CreateProgramOptions {
 	/**
 	 * Logger
 	 */
-	logger: logging.LoggerApi;
+	logger: SchematicContext['logger'];
 
 	/**
 	 * TypeScript System created via `createSystem`

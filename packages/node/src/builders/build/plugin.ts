@@ -1,5 +1,4 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import {BuildFailureError} from '@snuggery/architect/create-builder';
+import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 import type {
 	CustomTransformerFactory,

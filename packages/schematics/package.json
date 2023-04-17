@@ -15,7 +15,6 @@
 	},
 	"schematics": "./collection.json",
 	"peerDependencies": {
-		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@angular-devkit/schematics": "^15.0.0-rc.0",
 		"typescript": ">= 4.0.0 < 4.9.0"
 	},
@@ -24,14 +23,13 @@
 			"optional": true
 		}
 	},
-	"devDependencies": {
-		"@angular-devkit/core": "^15.0.0-rc.0",
+	"dependencies": {
 		"@angular-devkit/schematics": "^15.0.0-rc.0",
+		"@snuggery/core": "^0.5.2"
+	},
+	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"typescript": "4.8.4"
-	},
-	"dependencies": {
-		"@snuggery/core": "^0.5.2"
 	},
 	"publishConfig": {
 		"exports": {

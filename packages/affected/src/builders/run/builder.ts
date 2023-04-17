@@ -1,4 +1,4 @@
-import type {BuilderContext} from '@snuggery/architect/create-builder';
+import type {BuilderContext} from '@snuggery/architect';
 import {filterByPatterns} from '@snuggery/core';
 import {glob} from '@snuggery/snuggery/builders';
 

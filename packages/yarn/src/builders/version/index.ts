@@ -1,16 +1,10 @@
-import type {JsonObject} from '@angular-devkit/core';
-import {
-	type BuilderContext,
-	createBuilder,
-} from '@snuggery/architect/create-builder';
+import {createBuilder} from '@snuggery/architect';
 
 import {executeVersion} from './executor';
 
 export type {VersionBuilderOutput} from './yarn';
 export {executeVersion};
 
-export default createBuilder(
-	async (options: JsonObject, context: BuilderContext) => {
-		await executeVersion(options, context);
-	},
-);
+export default createBuilder(async (options, context) => {
+	await executeVersion(options, context);
+});

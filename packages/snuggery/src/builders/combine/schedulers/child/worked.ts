@@ -1,5 +1,5 @@
-import type {BuilderOutput} from '@angular-devkit/architect';
 import {logging} from '@angular-devkit/core';
+import type {BuilderOutput} from '@snuggery/architect';
 import type {Observable} from 'rxjs';
 import {isMainThread, parentPort, workerData} from 'worker_threads';
 

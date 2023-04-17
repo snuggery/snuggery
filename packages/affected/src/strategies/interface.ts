@@ -1,4 +1,4 @@
-import type {BuilderContext} from '@angular-devkit/architect';
+import type {BuilderContext} from '@snuggery/architect';
 import type {JsonObject, WorkspaceDefinition} from '@snuggery/core';
 
 export interface ChangeLocatorContext {

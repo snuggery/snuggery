@@ -1,5 +1,8 @@
-import {scheduleTarget, lastValueFrom} from '@snuggery/architect';
-import type {BuilderContext} from '@snuggery/architect/create-builder';
+import {
+	type BuilderContext,
+	scheduleTarget,
+	lastValueFrom,
+} from '@snuggery/architect';
 import {filterByPatterns} from '@snuggery/core';
 
 import {findAffectedFiles} from '../../changes';

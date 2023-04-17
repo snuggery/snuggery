@@ -1,9 +1,10 @@
-import {lastValueFrom, TargetSpecifier} from '@snuggery/architect';
 import {
 	type BuilderContext,
 	type BuilderOutput,
 	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+	lastValueFrom,
+	TargetSpecifier,
+} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 import {type MonoTypeOperatorFunction, pipe, range, zip} from 'rxjs';
 import {map, tap} from 'rxjs/operators';

@@ -1,5 +1,6 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import {relative, resolve} from 'path';
+
+import type {BuilderContext} from './create-builder';
 
 /**
  * Resolve the given path relative to the workspace root

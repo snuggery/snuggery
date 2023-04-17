@@ -1,5 +1,5 @@
-import type {BuilderOutput} from '@angular-devkit/architect';
 import type {logging} from '@angular-devkit/core';
+import type {BuilderOutput} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 import type {Observable} from 'rxjs';
 

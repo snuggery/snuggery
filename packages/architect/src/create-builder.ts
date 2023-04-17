@@ -1,10 +1,5 @@
-import {
-	createBuilder as _createBuilder,
-	isBuilderOutput,
-	type BuilderOutput,
-	type BuilderContext,
-} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
+import type {BuilderOutput, BuilderContext} from '@angular-devkit/architect';
+import type {JsonObject} from '@snuggery/core';
 
 const buildFailureError = Symbol.for('@snuggery/architect:BuildFailureError');
 
@@ -42,7 +37,10 @@ export type BuilderOutputLike =
 export function createBuilder<OptT = JsonObject>(
 	fn: (input: OptT, context: BuilderContext) => BuilderOutputLike,
 ) {
-	return _createBuilder<OptT>((input, context) => {
+	const {isBuilderOutput, createBuilder} =
+		require('@angular-devkit/architect') as typeof import('@angular-devkit/architect');
+
+	return createBuilder<OptT>((input, context) => {
 		try {
 			const output = fn(input, context);
 

@@ -1,6 +1,5 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import {isJsonObject, JsonObject, JsonValue} from '@angular-devkit/core';
-import {BuildFailureError} from '@snuggery/architect/create-builder';
+import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
+import {isJsonObject, type JsonObject, type JsonValue} from '@snuggery/core';
 import {parseSyml} from '@yarnpkg/parsers';
 import {spawn} from 'node:child_process';
 import fs from 'node:fs/promises';

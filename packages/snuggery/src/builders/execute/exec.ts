@@ -1,35 +1,8 @@
-import type {BuilderOutput} from '@angular-devkit/architect';
-import {fork, spawn, ChildProcess, ForkOptions} from 'child_process';
+import type {BuilderContext, BuilderOutput} from '@snuggery/architect';
+import {fork, spawn, ForkOptions, ChildProcess} from 'child_process';
 import {extname} from 'path';
-import {Observable} from 'rxjs';
 
 import type {Schema} from './schema';
-
-function getResultOfChild(child: ChildProcess): Observable<BuilderOutput> {
-	return new Observable(observer => {
-		child.addListener('close', (code, signal) => {
-			if (signal) {
-				observer.next({
-					success: false,
-					error: `Command exited with signal ${signal}`,
-				});
-			} else if (code) {
-				observer.next({
-					success: false,
-					error: `Command exited with exit code ${code}`,
-				});
-			} else {
-				observer.next({
-					success: true,
-				});
-			}
-
-			observer.complete();
-		});
-
-		return () => child.kill();
-	});
-}
 
 /**
  * Execute a binary
@@ -38,11 +11,12 @@ function getResultOfChild(child: ChildProcess): Observable<BuilderOutput> {
  * @param binary Path for the binary to spawn
  * @param options Options
  */
-export function exec(
+export async function exec(
+	context: BuilderContext,
 	cwd: string,
 	binary: string,
 	{stdio = 'inherit', env = {}, arguments: args = []}: Schema,
-): Observable<BuilderOutput> {
+): Promise<BuilderOutput> {
 	const childOptions: ForkOptions = {
 		cwd,
 		stdio,
@@ -52,13 +26,38 @@ export function exec(
 		},
 	};
 
+	let child: ChildProcess;
 	if (/^\.[cm]?js$/.test(extname(binary))) {
 		if (Array.isArray(childOptions.stdio)) {
 			childOptions.stdio.push('ipc');
 		}
 
-		return getResultOfChild(fork(binary, args, childOptions));
+		child = fork(binary, args, childOptions);
 	} else {
-		return getResultOfChild(spawn(binary, args, childOptions));
+		child = spawn(binary, args, childOptions);
 	}
+
+	context.addTeardown(() => {
+		child.kill();
+	});
+
+	return new Promise(resolve => {
+		child.addListener('close', (code, signal) => {
+			if (signal) {
+				resolve({
+					success: false,
+					error: `Command exited with signal ${signal}`,
+				});
+			} else if (code) {
+				resolve({
+					success: false,
+					error: `Command exited with exit code ${code}`,
+				});
+			} else {
+				resolve({
+					success: true,
+				});
+			}
+		});
+	});
 }

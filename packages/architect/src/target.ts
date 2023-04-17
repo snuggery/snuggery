@@ -1,4 +1,6 @@
-import type {BuilderContext, Target} from '@angular-devkit/architect';
+import type {Target} from '@angular-devkit/architect';
+
+import type {BuilderContext} from './create-builder';
 
 export function targetStringFromTarget(target: Target): string {
 	if (target.configuration) {

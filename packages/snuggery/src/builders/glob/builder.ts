@@ -4,14 +4,12 @@ import {
 } from '@angular-devkit/architect';
 import {tags} from '@angular-devkit/core';
 import {
+	type BuilderContext,
+	BuildFailureError,
 	findProjects,
 	findWorkspace,
 	TargetSpecifier,
 } from '@snuggery/architect';
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
 
 import {execute as executeCombine} from '../combine';
 

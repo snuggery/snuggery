@@ -1,10 +1,10 @@
-import type {BuilderContext} from '@angular-devkit/architect';
 import {
+	type BuilderContext,
+	BuildFailureError,
 	getProjectPath,
 	resolveProjectPath,
 	resolveWorkspacePath,
 } from '@snuggery/architect';
-import {BuildFailureError} from '@snuggery/architect/create-builder';
 import fs from 'node:fs/promises';
 import ts from 'typescript';
 

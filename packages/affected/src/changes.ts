@@ -1,5 +1,8 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import {extractExtraConfiguration, findWorkspace} from '@snuggery/architect';
+import {
+	type BuilderContext,
+	extractExtraConfiguration,
+	findWorkspace,
+} from '@snuggery/architect';
 import {
 	JsonObject,
 	isJsonObject,

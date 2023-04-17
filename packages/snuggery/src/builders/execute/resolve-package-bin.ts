@@ -1,8 +1,9 @@
-import {getProjectPath, resolveWorkspacePath} from '@snuggery/architect';
 import {
 	type BuilderContext,
 	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+	getProjectPath,
+	resolveWorkspacePath,
+} from '@snuggery/architect';
 import {createRequire} from 'node:module';
 import {dirname, join} from 'node:path';
 

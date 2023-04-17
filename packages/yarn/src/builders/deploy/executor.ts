@@ -1,15 +1,13 @@
-import {normalize} from '@angular-devkit/core';
 import {
+	type BuilderContext,
+	BuildFailureError,
 	findProjects,
 	findWorkspace,
 	firstValueFrom,
 	resolveWorkspacePath,
 	scheduleTarget,
 } from '@snuggery/architect';
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+import {normalize} from 'node:path';
 
 import {executeVersion} from '../version';
 

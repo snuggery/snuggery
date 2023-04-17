@@ -13,19 +13,12 @@
 		".": "./src/index.js",
 		"./package.json": "./package.json"
 	},
-	"peerDependencies": {
-		"typanion": "^3.7.1"
-	},
-	"peerDependenciesMeta": {
-		"typanion": {
-			"optional": true
-		}
-	},
 	"dependencies": {
 		"@angular-devkit/core": "^15.0.0-rc.0",
 		"@bgotink/kdl": "^0.1.5",
 		"jsonc-parser": "3.0.0",
 		"micromatch": "4.0.2",
+		"typanion": "3.7.1",
 		"yaml": "2.0.0-9"
 	},
 	"devDependencies": {
@@ -33,7 +26,6 @@
 		"@types/micromatch": "^4",
 		"@types/node": "^16.11.35",
 		"expect": "^27.3.1",
-		"typanion": "3.7.1",
 		"uvu": "^0.5.2"
 	},
 	"publishConfig": {

@@ -1,7 +1,4 @@
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
 
 import {loadYarn} from '../../utils/yarn';
 

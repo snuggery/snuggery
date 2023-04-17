@@ -1,5 +1,5 @@
-import type {BuilderContext} from '@angular-devkit/architect';
-import type {JsonObject} from '@angular-devkit/core';
+import type {BuilderContext} from '@snuggery/architect';
+import type {JsonObject} from '@snuggery/core';
 
 import {commitAndTag, validateWorktreeIsClean} from './git';
 import {applyVersion, VersionBuilderOutput} from './yarn';

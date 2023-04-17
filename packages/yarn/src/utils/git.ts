@@ -1,7 +1,4 @@
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
 import {spawn} from 'node:child_process';
 
 export function git(args: string[], context: BuilderContext): Promise<void> {

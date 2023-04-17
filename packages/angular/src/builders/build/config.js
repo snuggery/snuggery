@@ -22,7 +22,7 @@ const testConfiguration = t.isObject({
 });
 
 /**
- * @param {import('@angular-devkit/architect').BuilderContext} context
+ * @param {import('@snuggery/architect').BuilderContext} context
  * @returns {Promise<t.InferType<typeof testConfiguration>>}
  */
 export async function loadConfiguration(context) {
