@@ -39,9 +39,6 @@
 		"uvu": "^0.5.6"
 	},
 	"dependenciesMeta": {
-		"@angular/compiler-cli@15.0.0-next.6": {
-			"unplugged": true
-		},
 		"esbuild": {
 			"built": true
 		}
