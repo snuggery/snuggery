@@ -1,7 +1,4 @@
-import {
-	type BuilderContext,
-	BuildFailureError,
-} from '@snuggery/architect/create-builder';
+import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
 
 import {scheduleTarget} from './run';
 import {firstValueFrom} from './rxjs';

@@ -1,4 +1,4 @@
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {type BuilderContext, resolveTargetString} from '..';
@@ -14,31 +14,35 @@ const contextWithTarget = {
 
 test('it returns fully resolved arguments', () => {
 	for (const target of ['application:build', 'lorem:ipsum:dolor,sit,amet']) {
-		expect(resolveTargetString(contextWithoutTarget, target)).toBe(target);
-		expect(resolveTargetString(contextWithTarget, target)).toBe(target);
+		assert.equal(resolveTargetString(contextWithoutTarget, target), target);
+		assert.equal(resolveTargetString(contextWithTarget, target), target);
 	}
 });
 
 test('it adds projects if only targets are passed', () => {
 	for (const target of ['build', 'ipsum']) {
-		expect(resolveTargetString(contextWithTarget, target)).toBe(
+		assert.equal(
+			resolveTargetString(contextWithTarget, target),
 			`test-proj:${target}`,
 		);
 
-		expect(() => resolveTargetString(contextWithoutTarget, target)).toThrow(
-			`Target is required to resolve spec "${target}"`,
+		assert.throws(
+			() => resolveTargetString(contextWithoutTarget, target),
+			new RegExp(`Target is required to resolve spec "${target}"`),
 		);
 	}
 });
 
 test('it adds projects if the project is empty', () => {
 	for (const target of [':build', ':ipsum:dolor,sit,amet']) {
-		expect(resolveTargetString(contextWithTarget, target)).toBe(
+		assert.equal(
+			resolveTargetString(contextWithTarget, target),
 			`test-proj${target}`,
 		);
 
-		expect(() => resolveTargetString(contextWithoutTarget, target)).toThrow(
-			`Target is required to resolve spec "${target}"`,
+		assert.throws(
+			() => resolveTargetString(contextWithoutTarget, target),
+			new RegExp(`Target is required to resolve spec "${target}"`),
 		);
 	}
 });

@@ -32,7 +32,9 @@ import {Cached} from './decorator';
 export {Executor, Generator};
 
 function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
-	return value != null && Symbol.asyncIterator in value;
+	return (
+		typeof value === 'object' && value != null && Symbol.asyncIterator in value
+	);
 }
 
 function extractResult(value: ReturnType<Executor>): BuilderOutputLike {

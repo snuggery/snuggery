@@ -1,6 +1,6 @@
-import expect from 'expect';
-import {readFile, rm} from 'fs/promises';
-import {join} from 'path';
+import assert from 'node:assert/strict';
+import {readFile, rm} from 'node:fs/promises';
+import {join} from 'node:path';
 import {suite} from 'uvu';
 
 import {inFixture} from './setup';
@@ -16,9 +16,10 @@ test(
 			cwd: 'projects/one',
 		});
 
-		await expect(
-			readFile(join(directory, 'projects/one/lorem'), 'utf-8'),
-		).resolves.toBe('File created by schematic test-schematics:lorem');
+		assert.equal(
+			await readFile(join(directory, 'projects/one/lorem'), 'utf-8'),
+			'File created by schematic test-schematics:lorem',
+		);
 	}),
 );
 
@@ -36,12 +37,14 @@ test(
 			cwd: 'projects/two',
 		});
 
-		await expect(
-			readFile(join(directory, 'projects/two/lorem'), 'utf-8'),
-		).resolves.toBe('File created by schematic test-schematics:lorem');
-		await expect(
-			readFile(join(directory, 'projects/two/amet'), 'utf-8'),
-		).resolves.toBe('File created by schematic test-other-schematics:amet');
+		assert.equal(
+			await readFile(join(directory, 'projects/two/lorem'), 'utf-8'),
+			'File created by schematic test-schematics:lorem',
+		);
+		assert.equal(
+			await readFile(join(directory, 'projects/two/amet'), 'utf-8'),
+			'File created by schematic test-other-schematics:amet',
+		);
 
 		// Schematic defined in both schematic packages
 
@@ -49,9 +52,10 @@ test(
 			cwd: 'projects/two',
 		});
 
-		await expect(
-			readFile(join(directory, 'projects/two/dolor'), 'utf-8'),
-		).resolves.toBe('File created by schematic test-schematics:dolor');
+		assert.equal(
+			await readFile(join(directory, 'projects/two/dolor'), 'utf-8'),
+			'File created by schematic test-schematics:dolor',
+		);
 	}),
 );
 

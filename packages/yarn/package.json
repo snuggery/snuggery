@@ -16,7 +16,7 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@angular-devkit/schematics": "^15.0.0-rc.0",
+		"@angular-devkit/schematics": "^16.0.0-rc.0",
 		"@snuggery/architect": "^0.7.1",
 		"@snuggery/core": "^0.5.2",
 		"@yarnpkg/parsers": "^2.4.1"

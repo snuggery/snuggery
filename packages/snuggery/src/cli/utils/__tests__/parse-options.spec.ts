@@ -1,10 +1,9 @@
-import {Cli} from 'clipanion';
-import expect from 'expect';
-import {Writable} from 'stream';
+import {Cli, type BaseContext as Context} from 'clipanion';
+import assert from 'node:assert/strict';
+import {Writable} from 'node:stream';
 import {suite} from 'uvu';
 
 import {AbstractCommand} from '../../command/abstract-command';
-import type {Context} from '../../command/context';
 import {parseFreeFormArguments} from '../parse-options';
 import {Option, Type} from '../parse-schema';
 
@@ -43,57 +42,57 @@ test('parseFreeFormArguments without options', ({command}) => {
 	}
 
 	// it should support --foo=bar
-	expect(parse('--foo=bar')).toEqual([true, {foo: 'bar'}]);
+	assert.deepEqual(parse('--foo=bar'), [true, {foo: 'bar'}]);
 
-	expect(parse('--foo=bar', '--lorem=ipsum')).toEqual([
+	assert.deepEqual(parse('--foo=bar', '--lorem=ipsum'), [
 		true,
 		{foo: 'bar', lorem: 'ipsum'},
 	]);
 
 	// it should support --foo bar
-	expect(parse('--foo', 'bar')).toEqual([true, {foo: 'bar'}]);
+	assert.deepEqual(parse('--foo', 'bar'), [true, {foo: 'bar'}]);
 
-	expect(parse('--foo', 'bar', '--lorem', 'ipsum')).toEqual([
+	assert.deepEqual(parse('--foo', 'bar', '--lorem', 'ipsum'), [
 		true,
 		{foo: 'bar', lorem: 'ipsum'},
 	]);
 
 	// it should support boolean values for --flags
-	expect(parse('--foo=true')).toEqual([true, {foo: true}]);
-	expect(parse('--foo')).toEqual([true, {foo: true}]);
+	assert.deepEqual(parse('--foo=true'), [true, {foo: true}]);
+	assert.deepEqual(parse('--foo'), [true, {foo: true}]);
 
-	expect(parse('--foo', '--lorem', 'true')).toEqual([
+	assert.deepEqual(parse('--foo', '--lorem', 'true'), [
 		true,
 		{foo: true, lorem: true},
 	]);
 
 	// it should support -c=lorem
-	expect(parse('-c=lorem')).toEqual([true, {c: 'lorem'}]);
-	expect(parse('-c=lorem', '-d=ipsum')).toEqual([
+	assert.deepEqual(parse('-c=lorem'), [true, {c: 'lorem'}]);
+	assert.deepEqual(parse('-c=lorem', '-d=ipsum'), [
 		true,
 		{c: 'lorem', d: 'ipsum'},
 	]);
 
 	// it should support -c lorem
-	expect(parse('-c', 'lorem')).toEqual([true, {c: 'lorem'}]);
-	expect(parse('-c', 'lorem', '-d', 'ipsum')).toEqual([
+	assert.deepEqual(parse('-c', 'lorem'), [true, {c: 'lorem'}]);
+	assert.deepEqual(parse('-c', 'lorem', '-d', 'ipsum'), [
 		true,
 		{c: 'lorem', d: 'ipsum'},
 	]);
 
 	// it should support numbers
-	expect(parse('-c', '2')).toEqual([true, {c: 2}]);
-	expect(parse('--input', '20.20')).toEqual([true, {input: 20.2}]);
+	assert.deepEqual(parse('-c', '2'), [true, {c: 2}]);
+	assert.deepEqual(parse('--input', '20.20'), [true, {input: 20.2}]);
 
 	// it should support boolean values for -flags
-	expect(parse('-c=true')).toEqual([true, {c: true}]);
-	expect(parse('-c')).toEqual([true, {c: true}]);
-	expect(parse('-c', '-d', 'false')).toEqual([true, {c: true, d: false}]);
-	expect(parse('-cd', 'false')).toEqual([true, {c: true, d: false}]);
-	expect(parse('-cd=false')).toEqual([true, {c: true, d: false}]);
+	assert.deepEqual(parse('-c=true'), [true, {c: true}]);
+	assert.deepEqual(parse('-c'), [true, {c: true}]);
+	assert.deepEqual(parse('-c', '-d', 'false'), [true, {c: true, d: false}]);
+	assert.deepEqual(parse('-cd', 'false'), [true, {c: true, d: false}]);
+	assert.deepEqual(parse('-cd=false'), [true, {c: true, d: false}]);
 
 	// it should support combinations of all options
-	expect(parse('-abc', '-def', '2', '--lorem', '--ipsum', 'dolor')).toEqual([
+	assert.deepEqual(parse('-abc', '-def', '2', '--lorem', '--ipsum', 'dolor'), [
 		true,
 		{
 			a: true,
@@ -122,12 +121,12 @@ test('parseFreeFormArguments with options', ({command}) => {
 	}
 
 	// it should support long aliases
-	expect(parse('--lorem', 'ipsum')).toEqual([true, {lorem: 'ipsum'}]);
-	expect(parse('--lor', 'ipsum')).toEqual([true, {lorem: 'ipsum'}]);
-	expect(parse('-l', 'ipsum')).toEqual([true, {lorem: 'ipsum'}]);
+	assert.deepEqual(parse('--lorem', 'ipsum'), [true, {lorem: 'ipsum'}]);
+	assert.deepEqual(parse('--lor', 'ipsum'), [true, {lorem: 'ipsum'}]);
+	assert.deepEqual(parse('-l', 'ipsum'), [true, {lorem: 'ipsum'}]);
 
 	// it should support short aliases
-	expect(parse('-l', 'ipsum')).toEqual([true, {lorem: 'ipsum'}]);
+	assert.deepEqual(parse('-l', 'ipsum'), [true, {lorem: 'ipsum'}]);
 });
 
 test.run();

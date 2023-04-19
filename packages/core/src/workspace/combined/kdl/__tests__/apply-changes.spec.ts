@@ -1,5 +1,5 @@
 import {clearFormat, Document, format, parse} from '@bgotink/kdl';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {ChangeType} from '../../../proxy';
@@ -70,7 +70,7 @@ const test = (
 
 		fn(value, expected);
 
-		expect(format(clearFormat(value))).toEqual(format(clearFormat(expected)));
+		assert.deepEqual(format(clearFormat(value)), format(clearFormat(expected)));
 	});
 };
 

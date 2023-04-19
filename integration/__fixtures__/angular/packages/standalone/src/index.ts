@@ -1,6 +1,6 @@
 import {type ModuleWithProviders, NgModule} from '@angular/core';
 
-import {MyComponent} from './my.component';
+import {MyComponent} from './my.component.js';
 
 export {MyComponent};
 

@@ -1,5 +1,5 @@
 import {Node, parse} from '@bgotink/kdl';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {ParserContext} from '../context';
@@ -16,21 +16,23 @@ function ctx(nodes: Node): ParserContext {
 }
 
 test('toJsonValue should work for simple values', () => {
-	expect(toJsonValue(ctx(parse(String.raw`node "lorem"`, {as: 'node'})))).toBe(
+	assert.equal(
+		toJsonValue(ctx(parse(String.raw`node "lorem"`, {as: 'node'}))),
 		'lorem',
 	);
 });
 
 test('toJsonObject should work for objects', () => {
-	expect(
+	assert.deepEqual(
 		toJsonObject(
 			ctx(parse(String.raw`parent { node "lorem"; }`, {as: 'node'})),
 		),
-	).toEqual({node: 'lorem'});
+		{node: 'lorem'},
+	);
 });
 
 test('toJsonObject should work for when passing arrays', () => {
-	expect(
+	assert.deepEqual(
 		toJsonObject(
 			ctx(
 				parse(
@@ -44,15 +46,16 @@ test('toJsonObject should work for when passing arrays', () => {
 				),
 			),
 		),
-	).toEqual({
-		node: [
-			{
-				object: true,
-				$implicit: 'lorem',
-			},
-			'ipsum',
-		],
-	});
+		{
+			node: [
+				{
+					object: true,
+					$implicit: 'lorem',
+				},
+				'ipsum',
+			],
+		},
+	);
 });
 
 test('parseWorkspace supports extending projects', () => {
@@ -97,7 +100,7 @@ test('parseWorkspace supports extending projects', () => {
 		`),
 	);
 
-	expect(workspace).toEqual({
+	assert.deepEqual(workspace, {
 		version: 1,
 		projects: {
 			parent: {

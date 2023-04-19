@@ -15,7 +15,7 @@ export class BuildFailureError extends Error {
 }
 
 function isBuildFailureError(e: unknown): e is BuildFailureError {
-	return e != null && buildFailureError in e;
+	return typeof e === 'object' && e != null && buildFailureError in e;
 }
 
 function handleError(e: unknown): BuilderOutput {

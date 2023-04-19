@@ -1,5 +1,5 @@
-import expect from 'expect';
-import {cpus} from 'os';
+import assert from 'node:assert/strict';
+import {cpus} from 'node:os';
 import {suite} from 'uvu';
 
 import {calculate} from '../calculator';
@@ -9,28 +9,28 @@ const test = suite('parallel calculator');
 const numberOfCpus = cpus().length;
 
 test('it returns numbers', () => {
-	expect(calculate(10)).toBe(10);
-	expect(calculate(20)).toBe(20);
+	assert.equal(calculate(10), 10);
+	assert.equal(calculate(20), 20);
 
-	expect(calculate('117')).toBe(117);
-	expect(calculate('23')).toBe(23);
+	assert.equal(calculate('117'), 117);
+	assert.equal(calculate('23'), 23);
 });
 
 test('it performs calculations', () => {
-	expect(calculate('10 + 20')).toBe(30);
-	expect(calculate('10 - 20')).toBe(-10);
-	expect(calculate('10 * 20')).toBe(200);
-	expect(calculate('10 / 20')).toBe(0.5);
+	assert.equal(calculate('10 + 20'), 30);
+	assert.equal(calculate('10 - 20'), -10);
+	assert.equal(calculate('10 * 20'), 200);
+	assert.equal(calculate('10 / 20'), 0.5);
 
-	expect(calculate('10 + (20 / 2)')).toBe(20);
-	expect(calculate('(10 + 20) / 2')).toBe(15);
+	assert.equal(calculate('10 + (20 / 2)'), 20);
+	assert.equal(calculate('(10 + 20) / 2'), 15);
 });
 
 test('it has a cpuCount constant', () => {
-	expect(calculate('cpuCount')).toBe(numberOfCpus);
+	assert.equal(calculate('cpuCount'), numberOfCpus);
 
-	expect(calculate('cpuCount - 2')).toBe(numberOfCpus - 2);
-	expect(calculate('cpuCount / 2 - 1')).toBe(numberOfCpus / 2 - 1);
+	assert.equal(calculate('cpuCount - 2'), numberOfCpus - 2);
+	assert.equal(calculate('cpuCount / 2 - 1'), numberOfCpus / 2 - 1);
 });
 
 test.run();

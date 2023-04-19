@@ -1,5 +1,6 @@
 {
-	"extends": "@snuggery/angular",
+	// @snuggery/angular should work, why doesn't it?
+	"extends": "../../../packages/angular/tsconfig.base.json",
 	"compilerOptions": {
 		"module": "Node16",
 		"moduleResolution": "Node16"

@@ -1,0 +1,121 @@
+diff --git a/index.d.ts b/index.d.ts
+index e5f5699b811eb29337ed680b722295dbae68e8ba..5e50a930e155d7a5de02b4c589d55998a1088bde 100755
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,8 +1,8 @@
+ export { VERSION } from './src/version';
+-export * from './src/transformers/api';
+-export * from './src/transformers/entry_points';
+-export * from './src/perform_compile';
+-export { CompilerOptions as AngularCompilerOptions } from './src/transformers/api';
++export * from './src/transformers/api.js';
++export * from './src/transformers/entry_points.js';
++export * from './src/perform_compile.js';
++export { CompilerOptions as AngularCompilerOptions } from './src/transformers/api.js';
+ export * from './private/tooling';
+ export * from './src/ngtsc/logging';
+ export * from './src/ngtsc/file_system';
+diff --git a/src/ngtsc/core/api/index.d.ts b/src/ngtsc/core/api/index.d.ts
+index 20ace5ec3ca22214c9d82be2e2bb88ac868dd122..0f45983679d3d78c97d0b93cb212494771ad5b78 100755
+--- a/src/ngtsc/core/api/index.d.ts
++++ b/src/ngtsc/core/api/index.d.ts
+@@ -6,6 +6,6 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ export * from './src/adapter';
+-export * from './src/interfaces';
+-export * from './src/options';
+-export * from './src/public_options';
++export * from './src/interfaces.js';
++export * from './src/options.js';
++export * from './src/public_options.js';
+diff --git a/src/ngtsc/core/api/src/adapter.d.ts b/src/ngtsc/core/api/src/adapter.d.ts
+index 7aeca7d761070f9551060b132a8d15210770318e..6eda58deb87b7bb6d3d5a2c2fb1ff9b7fe78f413 100755
+--- a/src/ngtsc/core/api/src/adapter.d.ts
++++ b/src/ngtsc/core/api/src/adapter.d.ts
+@@ -7,7 +7,7 @@
+  */
+ import ts from 'typescript';
+ import { AbsoluteFsPath } from '../../../file_system';
+-import { ExtendedTsCompilerHost, UnifiedModulesHost } from './interfaces';
++import { ExtendedTsCompilerHost, UnifiedModulesHost } from './interfaces.js';
+ /**
+  * Names of methods from `ExtendedTsCompilerHost` that need to be provided by the
+  * `NgCompilerAdapter`.
+diff --git a/src/ngtsc/core/api/src/options.d.ts b/src/ngtsc/core/api/src/options.d.ts
+index 3149f4b38b947652058f97e731ae472d602d442f..25da0318cdfb9e741737f15a7ec0838683898602 100755
+--- a/src/ngtsc/core/api/src/options.d.ts
++++ b/src/ngtsc/core/api/src/options.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { BazelAndG3Options, DiagnosticOptions, I18nOptions, LegacyNgcOptions, MiscOptions, StrictTemplateOptions, TargetOptions } from './public_options';
++import { BazelAndG3Options, DiagnosticOptions, I18nOptions, LegacyNgcOptions, MiscOptions, StrictTemplateOptions, TargetOptions } from './public_options.js';
+ /**
+  * Non-public options which are useful during testing of the compiler.
+  */
+diff --git a/src/perform_compile.d.ts b/src/perform_compile.d.ts
+index 1a2c99661b8e06953430d8c8cee5df237d3fb6f4..30a7da87e87cd3d627febf78452c983a6eab9985 100755
+--- a/src/perform_compile.d.ts
++++ b/src/perform_compile.d.ts
+@@ -7,7 +7,7 @@
+  */
+ import ts from 'typescript';
+ import { AbsoluteFsPath, ReadonlyFileSystem } from '../src/ngtsc/file_system';
+-import * as api from './transformers/api';
++import * as api from './transformers/api.js';
+ export declare function formatDiagnostics(diags: ReadonlyArray<ts.Diagnostic>, host?: ts.FormatDiagnosticsHost): string;
+ /** Used to read configuration files. */
+ export type ConfigurationHost = Pick<ReadonlyFileSystem, 'readFile' | 'exists' | 'lstat' | 'resolve' | 'join' | 'dirname' | 'extname' | 'pwd'>;
+diff --git a/src/transformers/api.d.ts b/src/transformers/api.d.ts
+index c10eb3701ddcda6836cdf17d5f3ab7c37754cb8c..806352e73d4d14f711870b8878333c4e578f4805 100755
+--- a/src/transformers/api.d.ts
++++ b/src/transformers/api.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { ExtendedTsCompilerHost, NgCompilerOptions } from '../ngtsc/core/api';
++import { ExtendedTsCompilerHost, NgCompilerOptions } from '../ngtsc/core/api/index.js';
+ export declare const DEFAULT_ERROR_CODE = 100;
+ export declare const UNKNOWN_ERROR_CODE = 500;
+ export declare const SOURCE: "angular";
+diff --git a/src/transformers/compiler_host.d.ts b/src/transformers/compiler_host.d.ts
+index 4dce8c769f54aed9c4c1938d2c47cf4552789fe6..b199be847ffa839e9b4c9dfc2adac6967cacb934 100755
+--- a/src/transformers/compiler_host.d.ts
++++ b/src/transformers/compiler_host.d.ts
+@@ -6,7 +6,7 @@
+  * found in the LICENSE file at https://angular.io/license
+  */
+ import ts from 'typescript';
+-import { CompilerHost, CompilerOptions } from './api';
++import { CompilerHost, CompilerOptions } from './api.js';
+ export declare function setWrapHostForTest(wrapFn: ((host: ts.CompilerHost) => ts.CompilerHost) | null): void;
+ export declare function createCompilerHost({ options, tsHost }: {
+     options: CompilerOptions;
+diff --git a/src/transformers/entry_points.d.ts b/src/transformers/entry_points.d.ts
+index d21dbff44ad7e25e0b7140904d22292ee98358f5..0dd693687829eb29c89914b46e17079e517ce3b5 100755
+--- a/src/transformers/entry_points.d.ts
++++ b/src/transformers/entry_points.d.ts
+@@ -5,5 +5,5 @@
+  * Use of this source code is governed by an MIT-style license that can be
+  * found in the LICENSE file at https://angular.io/license
+  */
+-export { createCompilerHost } from './compiler_host';
+-export { createProgram } from './program';
++export { createCompilerHost } from './compiler_host.js';
++export { createProgram } from './program.js';
+diff --git a/src/transformers/program.d.ts b/src/transformers/program.d.ts
+index f26f1768bd46bc02667ec19e4171282b6d217b3d..fefd80db8fead08036876bd427302072e8802c35 100755
+--- a/src/transformers/program.d.ts
++++ b/src/transformers/program.d.ts
+@@ -5,7 +5,7 @@
+  * Use of this source code is governed by an MIT-style license that can be
+  * found in the LICENSE file at https://angular.io/license
+  */
+-import { CompilerHost, CompilerOptions, Program } from './api';
++import { CompilerHost, CompilerOptions, Program } from './api.js';
+ export declare function createProgram({ rootNames, options, host, oldProgram }: {
+     rootNames: ReadonlyArray<string>;
+     options: CompilerOptions;

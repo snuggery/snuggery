@@ -166,7 +166,6 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 						if (newPath !== node.moduleSpecifier.text) {
 							return context.factory.updateImportDeclaration(
 								node,
-								node.decorators,
 								node.modifiers,
 								node.importClause,
 								context.factory.createStringLiteral(newPath),

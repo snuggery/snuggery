@@ -484,8 +484,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 				}
 
 				return await Promise.all([
-					sourceRegistry.compile(builderInfo.optionSchema).toPromise(),
-					targetRegistry.compile(builderInfo.optionSchema).toPromise(),
+					sourceRegistry.compile(builderInfo.optionSchema),
+					targetRegistry.compile(builderInfo.optionSchema),
 				]);
 			},
 		);
@@ -511,12 +511,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 				}
 
 				return await Promise.all([
-					sourceRegistry
-						.compile(schematic.description.schemaJson || true)
-						.toPromise(),
-					targetRegistry
-						.compile(schematic.description.schemaJson || true)
-						.toPromise(),
+					sourceRegistry.compile(schematic.description.schemaJson || true),
+					targetRegistry.compile(schematic.description.schemaJson || true),
 				]);
 			},
 		);

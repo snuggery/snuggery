@@ -1,25 +1,38 @@
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {inFixture} from './setup';
 
 const test = suite('target resolution');
 
+function matchObject(actual: unknown, expected: Record<string, unknown>) {
+	assert.equal(typeof actual, 'object');
+	assert.ok(actual);
+	assert.equal(Array.isArray(actual), false);
+
+	assert.deepEqual(
+		Object.fromEntries(
+			Object.entries(actual as Record<string, unknown>).filter(([key]) =>
+				Reflect.has(expected, key),
+			),
+		),
+		expected,
+	);
+}
+
 test(
 	'it builds the correct targets with project with a single configured project',
 	inFixture('single-project', async ({runJson}) => {
-		await expect(runJson(['build', 'fixture'])).resolves.toMatchObject({
+		matchObject(await runJson(['build', 'fixture']), {
 			project: 'fixture',
 			target: 'build',
 		});
-		await expect(runJson(['test', 'fixture'])).resolves.toMatchObject({
+		matchObject(await runJson(['test', 'fixture']), {
 			project: 'fixture',
 			target: 'test',
 		});
 
-		await expect(
-			runJson(['lint', 'fixture', '--configuration', 'foo']),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['lint', 'fixture', '--configuration', 'foo']), {
 			project: 'fixture',
 			target: 'lint',
 			configuration: 'foo',
@@ -30,18 +43,16 @@ test(
 test(
 	'it builds the correct targets without project with a single configured project',
 	inFixture('single-project', async ({runJson}) => {
-		await expect(runJson(['build'])).resolves.toMatchObject({
+		matchObject(await runJson(['build']), {
 			project: 'fixture',
 			target: 'build',
 		});
-		await expect(runJson(['test'])).resolves.toMatchObject({
+		matchObject(await runJson(['test']), {
 			project: 'fixture',
 			target: 'test',
 		});
 
-		await expect(
-			runJson(['lint', '--configuration', 'foo']),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['lint', '--configuration', 'foo']), {
 			project: 'fixture',
 			target: 'lint',
 			configuration: 'foo',
@@ -52,17 +63,17 @@ test(
 test(
 	'it runs the correct target when a project is specified with multiple configured projects',
 	inFixture('multiple-projects', async ({runJson}) => {
-		await expect(runJson(['build', 'root'])).resolves.toMatchObject({
+		matchObject(await runJson(['build', 'root']), {
 			project: 'root',
 			target: 'build',
 		});
 
-		await expect(runJson(['test', 'one'])).resolves.toMatchObject({
+		matchObject(await runJson(['test', 'one']), {
 			project: 'one',
 			target: 'test',
 		});
 
-		await expect(runJson(['test', 'two'])).resolves.toMatchObject({
+		matchObject(await runJson(['test', 'two']), {
 			project: 'two',
 			target: 'test',
 		});
@@ -72,21 +83,17 @@ test(
 test(
 	'it runs the correct target if the current project has the target with multiple configured projects',
 	inFixture('multiple-projects', async ({runJson}) => {
-		await expect(runJson(['build'])).resolves.toMatchObject({
+		matchObject(await runJson(['build']), {
 			project: 'root',
 			target: 'build',
 		});
 
-		await expect(
-			runJson(['build'], {cwd: 'projects/one'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['build'], {cwd: 'projects/one'}), {
 			project: 'one',
 			target: 'build',
 		});
 
-		await expect(
-			runJson(['test'], {cwd: 'projects/two'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['test'], {cwd: 'projects/two'}), {
 			project: 'two',
 			target: 'test',
 		});
@@ -96,21 +103,17 @@ test(
 test(
 	'it runs the correct target if only one project has the specified target with multiple configured projects',
 	inFixture('multiple-projects', async ({runJson}) => {
-		await expect(runJson(['lint'])).resolves.toMatchObject({
+		matchObject(await runJson(['lint']), {
 			project: 'root',
 			target: 'lint',
 		});
 
-		await expect(
-			runJson(['lint'], {cwd: 'projects/one'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['lint'], {cwd: 'projects/one'}), {
 			project: 'root',
 			target: 'lint',
 		});
 
-		await expect(
-			runJson(['lint'], {cwd: 'projects/two'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['lint'], {cwd: 'projects/two'}), {
 			project: 'root',
 			target: 'lint',
 		});
@@ -120,21 +123,17 @@ test(
 test(
 	'it runs the correct target if the default project has the target with multiple configured projects',
 	inFixture('multiple-projects', async ({runJson}) => {
-		await expect(runJson(['build'])).resolves.toMatchObject({
+		matchObject(await runJson(['build']), {
 			project: 'root',
 			target: 'build',
 		});
 
-		await expect(
-			runJson(['build'], {cwd: 'projects/one'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['build'], {cwd: 'projects/one'}), {
 			project: 'one',
 			target: 'build',
 		});
 
-		await expect(
-			runJson(['build'], {cwd: 'projects/two'}),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['build'], {cwd: 'projects/two'}), {
 			project: 'root',
 			target: 'build',
 		});
@@ -144,17 +143,13 @@ test(
 test(
 	'it uses any passed in configuration with defaultConfiguration',
 	inFixture('single-project', async ({runJson}) => {
-		await expect(
-			runJson(['with-default--target', '-c', 'ipsum']),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['with-default--target', '-c', 'ipsum']), {
 			project: 'fixture',
 			target: 'with-default--target',
 			configuration: 'ipsum',
 		});
 
-		await expect(
-			runJson(['with-default--value', '-c', 'ipsum']),
-		).resolves.toMatchObject({
+		matchObject(await runJson(['with-default--value', '-c', 'ipsum']), {
 			configuration: 'ipsum',
 		});
 	}),
@@ -163,12 +158,12 @@ test(
 test(
 	'it uses the default configuration if no config is passed with defaultConfiguration',
 	inFixture('single-project', async ({runJson}) => {
-		await expect(runJson(['with-default--target'])).resolves.toMatchObject({
+		matchObject(await runJson(['with-default--target']), {
 			project: 'fixture',
 			target: 'with-default--target',
 		});
 
-		await expect(runJson(['with-default--value'])).resolves.toMatchObject({
+		matchObject(await runJson(['with-default--value']), {
 			configuration: 'lorem',
 		});
 	}),

@@ -14,7 +14,7 @@ import ajvAddFormats from 'ajv-formats';
 import http from 'node:http';
 import https from 'node:https';
 import {resolve as resolveUrl} from 'node:url';
-import {Observable, from, isObservable, throwError, defer, of} from 'rxjs';
+import {Observable, from, isObservable, throwError, firstValueFrom} from 'rxjs';
 
 export type UriHandler = (
 	uri: string,
@@ -64,6 +64,11 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		}
 	}
 
+	// cspell:ignore ɵflatten
+	ɵflatten(): Promise<JsonObject> {
+		throw new Error('Method not implemented.');
+	}
+
 	async #fetch(uri: string): Promise<JsonObject> {
 		const maybeSchema = this.#uriCache.get(uri);
 
@@ -79,7 +84,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 			}
 
 			if (isObservable(handlerResult)) {
-				handlerResult = handlerResult.toPromise();
+				handlerResult = firstValueFrom(handlerResult);
 			}
 
 			this.#uriCache.set(uri, handlerResult);
@@ -189,144 +194,150 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 	 * (using schema as a URI).
 	 * @returns An Observable of the Validation function.
 	 */
-	compile(schema: schema.JsonSchema): Observable<CompiledSchema> {
-		return defer(async () => {
-			if (typeof schema === 'boolean') {
-				return Object.assign((data: JsonValue) => of({success: schema, data}), {
+	async compile(schema: schema.JsonSchema): Promise<CompiledSchema> {
+		if (typeof schema === 'boolean') {
+			return Object.assign(
+				async (data: JsonValue) => ({success: schema, data}),
+				{
 					applyPreTransforms: async (data: JsonValue) => data,
-				});
+				},
+			);
+		}
+
+		while (this.#awaitCompilation != null) {
+			await this.#awaitCompilation;
+		}
+
+		const schemaInfo: SchemaInfo = {
+			smartDefaultRecord: new Map<string, JsonObject>(),
+			promptDefinitions: [],
+		};
+
+		let validator: ValidateFunction;
+
+		try {
+			this.#currentCompilationSchemaInfo = schemaInfo;
+			validator = this.#ajv.compile(schema);
+		} catch (e) {
+			// This should eventually be refactored so that we we handle race condition where the same schema is validated at the same time.
+			if (!(e instanceof Ajv.MissingRefError)) {
+				throw e;
 			}
 
-			while (this.#awaitCompilation != null) {
-				await this.#awaitCompilation;
-			}
+			validator = await (this.#awaitCompilation =
+				this.#ajv.compileAsync(schema));
+		} finally {
+			this.#currentCompilationSchemaInfo = undefined;
+		}
 
-			const schemaInfo: SchemaInfo = {
-				smartDefaultRecord: new Map<string, JsonObject>(),
-				promptDefinitions: [],
+		const validate = async (
+			data: JsonValue,
+			options?: schema.SchemaValidatorOptions,
+		) => {
+			const validationOptions: schema.SchemaValidatorOptions = {
+				withPrompts: true,
+				applyPostTransforms: true,
+				applyPreTransforms: true,
+				...options,
+			};
+			const validationContext = {
+				promptFieldsWithValue: new Set<string>(),
 			};
 
-			let validator: ValidateFunction;
-
-			try {
-				this.#currentCompilationSchemaInfo = schemaInfo;
-				validator = this.#ajv.compile(schema);
-			} catch (e) {
-				// This should eventually be refactored so that we we handle race condition where the same schema is validated at the same time.
-				if (!(e instanceof Ajv.MissingRefError)) {
-					throw e;
-				}
-
-				validator = await (this.#awaitCompilation =
-					this.#ajv.compileAsync(schema));
-			} finally {
-				this.#currentCompilationSchemaInfo = undefined;
-			}
-
-			const validate = (
-				data: JsonValue,
-				options?: schema.SchemaValidatorOptions,
-			) =>
-				defer(async () => {
-					const validationOptions: schema.SchemaValidatorOptions = {
-						withPrompts: true,
-						applyPostTransforms: true,
-						applyPreTransforms: true,
-						...options,
-					};
-					const validationContext = {
-						promptFieldsWithValue: new Set<string>(),
-					};
-
-					// Apply pre-validation transforms
-					if (validationOptions.applyPreTransforms) {
-						for (const visitor of this.#pre.values()) {
-							data = await visitJson(
-								data,
-								visitor,
-								schema,
-								this._resolver.bind(this),
-								validator,
-							).toPromise();
-						}
-					}
-
-					// Apply smart defaults
-					await this.#applySmartDefaults(data, schemaInfo.smartDefaultRecord);
-
-					// Apply prompts
-					if (validationOptions.withPrompts) {
-						const visitor: schema.JsonVisitor = (value, pointer) => {
-							if (value !== undefined) {
-								validationContext.promptFieldsWithValue.add(pointer);
-							}
-
-							return value;
-						};
-						if (typeof schema === 'object') {
-							await visitJson(
-								data,
-								visitor,
-								schema,
-								this._resolver.bind(this),
-								validator,
-							).toPromise();
-						}
-
-						const definitions = schemaInfo.promptDefinitions.filter(
-							def => !validationContext.promptFieldsWithValue.has(def.id),
-						);
-
-						if (definitions.length > 0) {
-							await this.#applyPrompts(data, definitions);
-						}
-					}
-
-					// Validate using ajv
-					try {
-						const success = validator.call(validationContext, data);
-
-						if (!success) {
-							return {data, success, errors: validator.errors ?? []};
-						}
-					} catch (error) {
-						if (error instanceof Ajv.ValidationError) {
-							return {data, success: false, errors: error.errors};
-						}
-
-						throw error;
-					}
-
-					// Apply post-validation transforms
-					if (validationOptions.applyPostTransforms) {
-						for (const visitor of this.#post.values()) {
-							data = await visitJson(
-								data,
-								visitor,
-								schema,
-								this._resolver.bind(this),
-								validator,
-							).toPromise();
-						}
-					}
-
-					return {data, success: true};
-				});
-
-			return Object.assign(validate, {
-				applyPreTransforms: async (data: JsonValue) => {
-					for (const visitor of this.#pre.values()) {
-						data = await visitJson(
+			// Apply pre-validation transforms
+			if (validationOptions.applyPreTransforms) {
+				for (const visitor of this.#pre.values()) {
+					data = await firstValueFrom(
+						visitJson(
 							data,
 							visitor,
 							schema,
 							this._resolver.bind(this),
 							validator,
-						).toPromise();
+						),
+					);
+				}
+			}
+
+			// Apply smart defaults
+			await this.#applySmartDefaults(data, schemaInfo.smartDefaultRecord);
+
+			// Apply prompts
+			if (validationOptions.withPrompts) {
+				const visitor: schema.JsonVisitor = (value, pointer) => {
+					if (value !== undefined) {
+						validationContext.promptFieldsWithValue.add(pointer);
 					}
-					return data;
-				},
-			});
+
+					return value;
+				};
+				if (typeof schema === 'object') {
+					await visitJson(
+						data,
+						visitor,
+						schema,
+						this._resolver.bind(this),
+						validator,
+					).toPromise();
+				}
+
+				const definitions = schemaInfo.promptDefinitions.filter(
+					def => !validationContext.promptFieldsWithValue.has(def.id),
+				);
+
+				if (definitions.length > 0) {
+					await this.#applyPrompts(data, definitions);
+				}
+			}
+
+			// Validate using ajv
+			try {
+				const success = validator.call(validationContext, data);
+
+				if (!success) {
+					return {data, success, errors: validator.errors ?? []};
+				}
+			} catch (error) {
+				if (error instanceof Ajv.ValidationError) {
+					return {data, success: false, errors: error.errors};
+				}
+
+				throw error;
+			}
+
+			// Apply post-validation transforms
+			if (validationOptions.applyPostTransforms) {
+				for (const visitor of this.#post.values()) {
+					data = await firstValueFrom(
+						visitJson(
+							data,
+							visitor,
+							schema,
+							this._resolver.bind(this),
+							validator,
+						),
+					);
+				}
+			}
+
+			return {data, success: true};
+		};
+
+		return Object.assign(validate, {
+			applyPreTransforms: async (data: JsonValue) => {
+				for (const visitor of this.#pre.values()) {
+					data = await firstValueFrom(
+						visitJson(
+							data,
+							visitor,
+							schema,
+							this._resolver.bind(this),
+							validator,
+						),
+					);
+				}
+				return data;
+			},
 		});
 	}
 
@@ -633,7 +644,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 
 			let value = source(schema);
 			if (isObservable(value)) {
-				value = await value.toPromise();
+				value = await firstValueFrom(value);
 			}
 
 			SchemaRegistry.#set(data, fragments, value);

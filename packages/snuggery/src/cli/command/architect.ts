@@ -30,9 +30,11 @@ export const configurationOption: Option = {
 export class BuilderFailedError extends AbstractError {}
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {
+	const {lastValueFrom} = await import('rxjs');
+
 	let result: BuilderOutput;
 	try {
-		result = await run.output.toPromise();
+		result = await lastValueFrom(run.output);
 
 		await run.stop();
 	} catch (e) {

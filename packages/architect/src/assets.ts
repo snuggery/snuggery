@@ -1,10 +1,7 @@
-import {join} from 'path';
-import {promisify} from 'util';
+import {join} from 'node:path';
 
 import {type BuilderContext, BuildFailureError} from './create-builder';
 import {getProjectPath, resolveWorkspacePath} from './resolve';
-
-const cache: import('glob').IOptions['cache'] = {};
 
 export interface AssetSpec {
 	/**
@@ -39,7 +36,7 @@ export async function copyAssets(
 	assets: string | string[] | AssetSpec[],
 ): Promise<void> {
 	const {copy} = await import('fs-extra');
-	const glob = promisify((await import('glob')).default);
+	const {glob} = await import('glob');
 
 	if (typeof assets === 'string') {
 		assets = [assets];
@@ -75,7 +72,6 @@ export async function copyAssets(
 			for (const relativeFile of files) {
 				await copy(join(from, relativeFile), join(to, relativeFile), {
 					errorOnExist: false,
-					recursive: true,
 				});
 			}
 		} catch (e) {
@@ -99,7 +95,6 @@ export async function copyAssets(
 				await Promise.all(
 					include.map(pattern =>
 						glob(pattern, {
-							cache,
 							cwd,
 							ignore: asset.exclude,
 							root: context.workspaceRoot,

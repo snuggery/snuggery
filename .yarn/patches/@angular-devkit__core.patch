@@ -1,10 +1,10 @@
 diff --git a/src/workspace/definitions.d.ts b/src/workspace/definitions.d.ts
-index e2d9a4bd412920b8ee22d28781721befb0d43a20..b638c508d35a64852301ebad0314c8e87f158bf5 100644
+index 044b33536a0ab9b49e0e4584fb775cd11b088ea1..eda0d5b85ed354ea0b8b8f8863179c3b85afdb4f 100755
 --- a/src/workspace/definitions.d.ts
 +++ b/src/workspace/definitions.d.ts
 @@ -25,8 +25,6 @@ export interface TargetDefinition {
  }
- export declare type DefinitionCollectionListener<V extends object> = (name: string, newValue: V | undefined, collection: DefinitionCollection<V>) => void;
+ export type DefinitionCollectionListener<V extends object> = (name: string, newValue: V | undefined, collection: DefinitionCollection<V>) => void;
  declare class DefinitionCollection<V extends object> implements ReadonlyMap<string, V> {
 -    private _listener?;
 -    private _map;

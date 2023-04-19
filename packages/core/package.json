@@ -14,19 +14,18 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@angular-devkit/core": "^15.0.0-rc.0",
-		"@bgotink/kdl": "^0.1.5",
-		"jsonc-parser": "3.0.0",
-		"micromatch": "4.0.2",
-		"typanion": "3.7.1",
-		"yaml": "2.0.0-9"
+		"@angular-devkit/core": "^16.0.0-rc.0",
+		"@bgotink/kdl": "^0.1.6",
+		"jsonc-parser": "^3.2.0",
+		"micromatch": "^4.0.5",
+		"typanion": "^3.12.1",
+		"yaml": "^2.2.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/micromatch": "^4",
+		"@types/micromatch": "^4.0.2",
 		"@types/node": "^16.11.35",
-		"expect": "^27.3.1",
-		"uvu": "^0.5.2"
+		"uvu": "^0.5.6"
 	},
 	"publishConfig": {
 		"exports": {

@@ -1,8 +1,8 @@
 /* cspell:ignore fesm rebeccapurple */
 
-import expect from 'expect';
-import {readFile, stat} from 'fs/promises';
-import {join} from 'path';
+import assert from 'node:assert';
+import {readFile, stat} from 'node:fs/promises';
+import {join} from 'node:path';
 import {suite} from 'uvu';
 
 import {inFixture} from './setup';
@@ -24,7 +24,7 @@ test(
 		);
 
 		// Expect exports to be defined correctly
-		expect(packageJson.exports['.']).toMatchObject({
+		assert.deepStrictEqual(packageJson.exports['.'], {
 			types: './index.d.ts',
 			esm2020: './esm2020/standalone.js',
 			es2020: './fesm2020/standalone.js',
@@ -32,7 +32,7 @@ test(
 			node: './fesm2015/standalone.js',
 			default: './fesm2020/standalone.js',
 		});
-		expect(packageJson.exports['./sub']).toMatchObject({
+		assert.deepStrictEqual(packageJson.exports['./sub'], {
 			types: './sub/index.d.ts',
 			esm2020: './sub/esm2020/sub.js',
 			es2020: './fesm2020/sub.js',
@@ -41,29 +41,30 @@ test(
 			default: './fesm2020/sub.js',
 		});
 
-		expect(packageJson.sideEffects).toBe(false);
+		assert.strictEqual(packageJson.sideEffects, false);
 
 		// expect the module and component to be defined
-		expect(fesm).toContain('MyComponent');
-		expect(fesm).toContain('StandaloneModule');
+		assert.match(fesm, /MyComponent/);
+		assert.match(fesm, /StandaloneModule/);
 
 		// expect the scss to be compiled
-		expect(fesm).not.toContain('@use');
-		expect(fesm).toMatch(/rebeccapurple|#639/);
+		assert.doesNotMatch(fesm, /@use/);
+		assert.match(fesm, /rebeccapurple|#639/);
 
 		// expect tslib to have been removed
-		await expect(
-			readFile(join(outputFolder, 'package.json'), 'utf8'),
-		).resolves.not.toContain('tslib');
+		assert.doesNotMatch(
+			await readFile(join(outputFolder, 'package.json'), 'utf8'),
+			/tslib/,
+		);
 
 		// Expect the .d.ts files not to be flattened
 		const subDts = await readFile(
 			join(outputFolder, 'sub', 'index.d.ts'),
 			'utf8',
 		);
-		expect(subDts).not.toContain('export declare class SubModule');
-		expect(subDts).toContain("export * from './types/sub.js';");
-		expect(stat(join(outputFolder, 'sub', 'types'))).resolves.toBeTruthy();
+		assert.doesNotMatch(subDts, /export declare class SubModule/);
+		assert.match(subDts, /export \* from '.\/types\/sub\.js';/);
+		assert.ok(await stat(join(outputFolder, 'sub', 'types')));
 
 		await expectSuccessfulRun([
 			'build',
@@ -73,12 +74,11 @@ test(
 		]);
 
 		// Expect the .d.ts files to be flattened
-		await expect(
-			readFile(join(outputFolder, 'sub', 'index.d.ts'), 'utf8'),
-		).resolves.toContain('export declare class SubModule');
-		expect(stat(join(outputFolder, 'sub', 'types'))).rejects.toThrowError(
-			/no such file or directory/,
+		assert.match(
+			await readFile(join(outputFolder, 'sub', 'index.d.ts'), 'utf8'),
+			/export declare class SubModule/,
 		);
+		await assert.rejects(stat(join(outputFolder, 'sub', 'types')));
 	}),
 );
 
@@ -94,17 +94,15 @@ test(
 		]);
 
 		// expect the compiler to have inserted valid imports
-		expect(component).toContain(
-			'import * as i1 from "@integration/standalone";',
-		);
+		assert.match(component, /import \* as i1 from "@integration\/standalone";/);
 
 		// expect the module and component to be defined
-		expect(fesm).toContain('OtherComponent');
-		expect(fesm).toContain('DependentModule');
+		assert.match(fesm, /OtherComponent/);
+		assert.match(fesm, /DependentModule/);
 
 		// expect the scss to be compiled
-		expect(fesm).not.toContain('@use');
-		expect(fesm).toMatch(/rebeccapurple|#639/);
+		assert.doesNotMatch(fesm, /@use/);
+		assert.match(fesm, /rebeccapurple|#639/);
 	}),
 );
 

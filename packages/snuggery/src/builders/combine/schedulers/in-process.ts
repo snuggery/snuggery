@@ -1,5 +1,8 @@
-import type {BuilderOutput} from '@snuggery/architect';
-import {scheduleTarget, type TargetSpecifier} from '@snuggery/architect';
+import {
+	type BuilderOutput,
+	scheduleTarget,
+	type TargetSpecifier,
+} from '@snuggery/architect';
 import type {JsonObject} from '@snuggery/core';
 import type {Observable} from 'rxjs';
 

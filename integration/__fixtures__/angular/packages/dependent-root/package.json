@@ -6,13 +6,13 @@
 		"tslib": "^2.4.0"
 	},
 	"peerDependencies": {
-		"@angular/core": "^15.0.0-rc.0",
+		"@angular/core": "^16.0.0-rc.0",
 		"@integration/standalone": "*"
 	},
 	"devDependencies": {
-		"@angular/core": "^15.0.0-rc.0",
+		"@angular/core": "^16.0.0-rc.0",
 		"@integration/standalone": "workspace:integration/__fixtures__/angular/packages/standalone",
-		"rxjs": "6.6.7",
-		"zone.js": "0.11.5"
+		"rxjs": "7.8.0",
+		"zone.js": "0.13.0"
 	}
 }

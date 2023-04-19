@@ -1,5 +1,8 @@
 {
 	"compilerOptions": {
+		// importsNotUsedAsValues is nice, verbatimModuleSyntax doesn't look to be...
+		"ignoreDeprecations": "5.0",
+
 		// Node 14.6 and up support ± all of the syntax of ES2022
 		// Notable exceptions are
 		// - logical assignment operators ||=, &&=, and ??=

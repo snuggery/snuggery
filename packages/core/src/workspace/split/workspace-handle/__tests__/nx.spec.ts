@@ -1,8 +1,8 @@
 import {workspaces} from '@angular-devkit/core';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
-import type {JsonObject} from '../../../types';
+import {isJsonObject, JsonObject} from '../../../types';
 import {NxWorkspaceHandle} from '../nx';
 
 import {itShouldHandleAngularConfiguration, TestFileHandle} from './utils';
@@ -42,21 +42,25 @@ test('should read nx configuration correctly', async () => {
 
 	const workspace = await handle.read();
 
-	expect(workspace.projects.size).toBe(1);
-	expect(workspace.projects.has('all')).toBe(true);
-	expect(workspace.projects.get('all')!.root).toBe('');
-	expect(workspace.projects.get('all')!.targets.get('build')!.options).toEqual({
-		include: '*',
-	});
-
-	expect(workspace.extensions.schematics).toEqual(expect.any(Object));
-	expect(
-		(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
-	).toEqual({
-		hook: {
-			'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+	assert.equal(workspace.projects.size, 1);
+	assert.equal(workspace.projects.has('all'), true);
+	assert.equal(workspace.projects.get('all')!.root, '');
+	assert.deepEqual(
+		workspace.projects.get('all')!.targets.get('build')!.options,
+		{
+			include: '*',
 		},
-	});
+	);
+
+	assert.ok(isJsonObject(workspace.extensions.schematics));
+	assert.deepEqual(
+		(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
+		{
+			hook: {
+				'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+			},
+		},
+	);
 });
 
 test('should write workspaces correctly to nx configuration', async () => {
@@ -91,7 +95,7 @@ test('should write workspaces correctly to nx configuration', async () => {
 		{},
 	);
 
-	expect(file.value).toEqual({
+	assert.deepEqual(file.value, {
 		version: 2,
 		projects: {
 			all: {
@@ -166,7 +170,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 
 	await handle.write(workspace, {});
 
-	expect(file.value).toEqual({
+	assert.deepEqual(file.value, {
 		version: 2,
 		projects: {
 			all: {
@@ -249,7 +253,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 		allProject.targets.get('build')!.options!.include = ['*'];
 	});
 
-	expect(file.value).toEqual({
+	assert.deepEqual(file.value, {
 		version: 2,
 		projects: {
 			all: {

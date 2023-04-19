@@ -1,9 +1,0 @@
-diff --git a/package.json b/package.json
-index c3f4a3796cbd0d6d002c98a3dc82c2a4b6189fc6..6c1831212d4b91d0d4b9f8b8e35daeae1671fee9 100644
---- a/package.json
-+++ b/package.json
-@@ -1 +1 @@
--{"name":"sass","description":"A pure JavaScript implementation of Sass.","license":"MIT","bugs":"https://github.com/sass/dart-sass/issues","homepage":"https://github.com/sass/dart-sass","repository":{"type":"git","url":"https://github.com/sass/dart-sass"},"author":{"name":"Natalie Weizenbaum","email":"nweiz@google.com","url":"https://github.com/nex3"},"engines":{"node":">=12.0.0"},"dependencies":{"chokidar":">=3.0.0 <4.0.0","immutable":"^4.0.0","source-map-js":">=0.6.2 <2.0.0"},"keywords":["style","scss","sass","preprocessor","css"],"types":"types/index.d.ts","version":"1.51.0","bin":{"sass":"sass.js"},"main":"sass.default.dart.js","exports":{"default":"./sass.default.dart.js"}}
-\ No newline at end of file
-+{"name":"sass","description":"A pure JavaScript implementation of Sass.","license":"MIT","bugs":"https://github.com/sass/dart-sass/issues","homepage":"https://github.com/sass/dart-sass","repository":{"type":"git","url":"https://github.com/sass/dart-sass"},"author":{"name":"Natalie Weizenbaum","email":"nweiz@google.com","url":"https://github.com/nex3"},"engines":{"node":">=12.0.0"},"dependencies":{"chokidar":">=3.0.0 <4.0.0","immutable":"^4.0.0","source-map-js":">=0.6.2 <2.0.0"},"keywords":["style","scss","sass","preprocessor","css"],"types":"types/index.d.ts","version":"1.51.0","bin":{"sass":"sass.js"},"main":"sass.default.dart.js","exports":{"types":"./types/index.d.ts","default":"./sass.default.dart.js"}}
-\ No newline at end of file

@@ -1,5 +1,5 @@
 import {clearFormat, Entry, Identifier, Node, parse} from '@bgotink/kdl';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {fromJsonObject, fromJsonValue} from '../jik/serialize';
@@ -8,13 +8,15 @@ import {serializeWorkspace} from '../serialize';
 const test = suite('kdl serialize');
 
 test('fromJsonValue should work for simple values', () => {
-	expect(fromJsonValue('lorem', 2)).toEqual(
+	assert.deepEqual(
+		fromJsonValue('lorem', 2),
 		new Node(new Identifier('lorem'), [Entry.createArgument(2)]),
 	);
 });
 
 test('fromJsonObject should work for objects', () => {
-	expect(fromJsonObject('parent', {node: 'lorem', is: {deep: true}})).toEqual(
+	assert.deepEqual(
+		fromJsonObject('parent', {node: 'lorem', is: {deep: true}}),
 		clearFormat(
 			parse(String.raw`parent node="lorem" { is deep=true; }`, {as: 'node'}),
 		),
@@ -22,7 +24,7 @@ test('fromJsonObject should work for objects', () => {
 });
 
 test('fromJsonObject should work for when passing arrays', () => {
-	expect(
+	assert.deepEqual(
 		fromJsonObject('parent', {
 			node: [
 				{
@@ -32,7 +34,6 @@ test('fromJsonObject should work for when passing arrays', () => {
 				'ipsum',
 			],
 		}),
-	).toEqual(
 		clearFormat(
 			parse(
 				String.raw`parent {
@@ -48,7 +49,7 @@ test('fromJsonObject should work for when passing arrays', () => {
 });
 
 test('serializeWorkspace should work', () => {
-	expect(
+	assert.deepEqual(
 		serializeWorkspace({
 			version: 1,
 			projects: {
@@ -115,7 +116,6 @@ test('serializeWorkspace should work', () => {
 				},
 			},
 		}),
-	).toEqual(
 		clearFormat(
 			parse(String.raw`
 				version 0

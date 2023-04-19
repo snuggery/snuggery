@@ -30,33 +30,32 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.1500.0-0 < 0.1600.0",
-		"@angular-devkit/core": "^15.0.0-rc.0",
-		"@angular-devkit/schematics": "^15.0.0-rc.0",
-		"@arcanis/slice-ansi": "1.0.2",
+		"@angular-devkit/architect": ">= 0.1600.0-rc.0 < 0.1700.0",
+		"@angular-devkit/core": "^16.0.0-rc.0",
+		"@angular-devkit/schematics": "^16.0.0-rc.0",
+		"@arcanis/slice-ansi": "1.1.1",
 		"@snuggery/architect": "^0.7.1",
 		"@snuggery/core": "^0.5.2",
-		"ajv": "8.11.0",
-		"ajv-formats": "2.1.1",
-		"clipanion": "3.2.0-rc.10",
-		"json5": "2.2.0",
-		"kleur": "4.1.4",
-		"prompts": "2.4.2",
-		"rxjs": "^6.6.7",
-		"semver": "^7.3.7",
-		"strip-ansi": "6.0.1",
-		"typanion": "3.7.1",
-		"which-pm-runs": "1.0.0"
+		"ajv": "^8.12.0",
+		"ajv-formats": "^2.1.1",
+		"clipanion": "3.2.0",
+		"json5": "^2.2.3",
+		"kleur": "^4.1.5",
+		"prompts": "^2.4.2",
+		"rxjs": "^7.8.0",
+		"semver": "^7.5.0",
+		"strip-ansi": "^6.0.1",
+		"typanion": "^3.12.1",
+		"which-pm-runs": "^1.1.0"
 	},
 	"devDependencies": {
 		"@nrwl/devkit": "^13.8.3",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/node": "^16.11.35",
-		"@types/prettier": "^2",
-		"@types/prompts": "^2",
-		"@types/semver": "^7",
+		"@types/prettier": "^2.7.2",
+		"@types/prompts": "^2.4.4",
+		"@types/semver": "^7.3.13",
 		"@types/which-pm-runs": "^1.0.0",
-		"expect": "^27.3.1",
-		"uvu": "^0.5.2"
+		"uvu": "^0.5.6"
 	}
 }

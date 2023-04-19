@@ -1,7 +1,7 @@
 // cspell:ignore edoc unexpand dnif ntuo t'nahs dlob
 
 import {tags} from '@angular-devkit/core';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import {suite} from 'uvu';
 
 import {formatMarkdownish} from '../format';
@@ -183,13 +183,14 @@ const texts = [
 
 test('it formats correctly', () => {
 	for (const {input, formatted} of texts) {
-		expect(formatMarkdownish(input)).toBe(formatted);
+		assert.equal(formatMarkdownish(input), formatted);
 	}
 });
 
 test('it formats correctly with infinite line length', () => {
 	for (const {input, formatted, formattedInfinite} of texts) {
-		expect(formatMarkdownish(input, {maxLineLength: Infinity})).toBe(
+		assert.equal(
+			formatMarkdownish(input, {maxLineLength: Infinity}),
 			formattedInfinite ?? formatted,
 		);
 	}
@@ -197,7 +198,8 @@ test('it formats correctly with infinite line length', () => {
 
 test('it formats correctly with indentation', () => {
 	for (const {input, formatted, formattedIndent20} of texts) {
-		expect(formatMarkdownish(input, {indentation: 20})).toBe(
+		assert.equal(
+			formatMarkdownish(input, {indentation: 20}),
 			formattedIndent20 ?? indent(20, formatted),
 		);
 	}
@@ -210,39 +212,42 @@ test('it formats correctly with format', () => {
 		formattedReverseCode,
 		formatted,
 	} of texts) {
-		expect(
+		assert.equal(
 			formatMarkdownish(input, {
 				format: {
 					bold: reverse,
 				},
 			}),
-		).toBe(formattedReverseBold ?? formatted);
+			formattedReverseBold ?? formatted,
+		);
 
-		expect(
+		assert.equal(
 			formatMarkdownish(input, {
 				format: {
 					code: reverse,
 				},
 			}),
-		).toBe(formattedReverseCode ?? formatted);
+			formattedReverseCode ?? formatted,
+		);
 	}
 });
 
 test('it handles lists properly', () => {
-	expect(
+	assert.equal(
 		formatMarkdownish(stripIndent`
 			- one
 
 			- two
 			- three
 		`),
-	).toBe(stripIndent`
-		- one
-		- two
-		- three
-	`);
+		stripIndent`
+			- one
+			- two
+			- three
+		`,
+	);
 
-	expect(
+	assert.equal(
 		formatMarkdownish(stripIndent`
 			test
 
@@ -254,15 +259,16 @@ test('it handles lists properly', () => {
 
 			test
 		`),
-	).toBe(stripIndent`
-		test
+		stripIndent`
+			test
 
-		- one
-		- two
-		- three
+			- one
+			- two
+			- three
 
-		test
-	`);
+			test
+		`,
+	);
 });
 
 test.run();

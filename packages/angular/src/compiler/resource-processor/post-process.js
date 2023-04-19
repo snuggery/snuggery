@@ -9,7 +9,6 @@ import {getBrowserslist} from './browserslist.js';
  * @returns {Promise<{css: string}>}
  */
 export async function postProcess(style, filename) {
-	// @ts-expect-error wtf?
 	return await postcss(
 		autoprefixer({
 			overrideBrowserslist: getBrowserslist(filename),

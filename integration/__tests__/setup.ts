@@ -1,8 +1,7 @@
 import type {JsonObject} from '@snuggery/core';
 import * as snuggery from '@snuggery/snuggery/cli';
-import expect from 'expect';
-import path from 'path';
-import {Readable, Writable} from 'stream';
+import path from 'node:path';
+import {Readable, Writable} from 'node:stream';
 import * as assert from 'uvu/assert';
 
 const fixtureRoot = path.resolve(__dirname, '../__fixtures__');
@@ -48,12 +47,10 @@ export function inFixture(
 			expectSuccessfulRun: async (args, options) => {
 				const result = await run(args, options);
 
-				if (result.exitCode === 0) {
-					expect(result).toMatchObject({exitCode: 0});
-				} else {
+				if (result.exitCode !== 0) {
 					// Use toEqual when the result is expected to fail, to ensure
 					// stderr and stdout are printed by expect
-					expect(result).toEqual({exitCode: 0});
+					assert.equal(result, {exitCode: 0});
 				}
 			},
 		});

@@ -1,11 +1,6 @@
 import type {JsonObject} from '@snuggery/core';
 import type SemVer from 'semver/classes/semver.js';
-import {
-	getPrintable,
-	makeValidator,
-	pushError,
-	type StrictValidator,
-} from 'typanion';
+import {makeValidator, type StrictValidator} from 'typanion';
 
 export {isNumber, type StrictValidator} from 'typanion';
 
@@ -27,10 +22,10 @@ export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
 
 				return true;
 			} catch {
-				return pushError(
-					state,
-					`Expected to be a valid JSON5 string (got ${getPrintable(value)})`,
+				state?.errors?.push(
+					`Expected to be a valid JSON5 string (got ${String(value)})`,
 				);
+				return false;
 			}
 		},
 	});
@@ -45,12 +40,12 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 		test: (value, state): value is T[number] => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			if (!allowedValues.has(value as any)) {
-				return pushError(
-					state,
+				state?.errors?.push(
 					`Expected one of ${allowedValuesArr
 						.map(value => JSON.stringify(value))
 						.join(', ')}; but got ${JSON.stringify(value)}`,
 				);
+				return false;
 			}
 
 			return true;
@@ -76,12 +71,12 @@ export const isSemVer = (): StrictValidator<unknown, SemVer> => {
 				return true;
 			}
 
-			return pushError(
-				state,
+			state?.errors?.push(
 				`Expected a valid SemVer version number but got ${JSON.stringify(
 					value,
 				)}`,
 			);
+			return false;
 		},
 	});
 };

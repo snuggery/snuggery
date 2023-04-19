@@ -72,7 +72,7 @@ const sassResolver = (url, prev) => {
 			resolve(manifest, `.${deepImport}`, {
 				conditions: ['sass', 'style'],
 				unsafe: true,
-			}) ?? deepImport,
+			})?.[0] ?? deepImport,
 		),
 	};
 };

@@ -1,8 +1,8 @@
 import {workspaces} from '@angular-devkit/core';
-import expect from 'expect';
+import assert from 'node:assert/strict';
 import type {Test} from 'uvu';
 
-import type {JsonObject} from '../../../types';
+import {JsonObject, isJsonObject} from '../../../types';
 import type {FileHandle} from '../../file';
 import type {WorkspaceHandleFactory} from '../types';
 
@@ -88,21 +88,23 @@ export function itShouldHandleAngularConfiguration(
 
 		const workspace = await handle.read();
 
-		expect(workspace.projects.size).toBe(1);
-		expect(workspace.projects.has('all')).toBe(true);
-		expect(workspace.projects.get('all')!.root).toBe('');
-		expect(
+		assert.equal(workspace.projects.size, 1);
+		assert.equal(workspace.projects.has('all'), true);
+		assert.equal(workspace.projects.get('all')!.root, '');
+		assert.deepEqual(
 			workspace.projects.get('all')!.targets.get('build')!.options,
-		).toEqual({include: '**'});
+			{include: '**'},
+		);
 
-		expect(workspace.extensions.schematics).toEqual(expect.any(Object));
-		expect(
+		assert.ok(isJsonObject(workspace.extensions.schematics));
+		assert.deepEqual(
 			(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
-		).toEqual({
-			hook: {
-				'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+			{
+				hook: {
+					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+				},
 			},
-		});
+		);
 	});
 
 	if (!skipWriteOnly) {
@@ -138,7 +140,7 @@ export function itShouldHandleAngularConfiguration(
 				{},
 			);
 
-			expect(file.value).toEqual({
+			assert.deepEqual(file.value, {
 				version: 1,
 				projects: {
 					all: {
@@ -214,7 +216,7 @@ export function itShouldHandleAngularConfiguration(
 
 		await handle.write(workspace, {});
 
-		expect(file.value).toEqual({
+		assert.deepEqual(file.value, {
 			version: 1,
 			projects: {
 				all: {
@@ -297,7 +299,7 @@ export function itShouldHandleAngularConfiguration(
 			allProject.targets.get('build')!.options!.include = ['**'];
 		});
 
-		expect(file.value).toEqual({
+		assert.deepEqual(file.value, {
 			version: 1,
 			projects: {
 				all: {
