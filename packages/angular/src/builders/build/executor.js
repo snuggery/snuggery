@@ -47,20 +47,17 @@ export async function executeBuild(
 	context,
 ) {
 	const configuration = await loadConfiguration(context);
-	// The ??= operator is only available in node 16+
-	tsconfig = tsconfig ?? configuration.tsconfig;
+	tsconfig ??= configuration.tsconfig;
 	if (plugins.length === 0 && configuration.plugins) {
 		plugins = configuration.plugins;
 	}
 
-	keepScripts = keepScripts ?? configuration.keepScripts;
-	keepDevDependencies =
-		keepDevDependencies ?? configuration.keepDevDependencies;
+	keepScripts ??= configuration.keepScripts;
+	keepDevDependencies ??= configuration.keepDevDependencies;
 
-	packager = packager ?? configuration.packager;
+	packager ??= configuration.packager;
 
-	inlineStyleLanguage =
-		inlineStyleLanguage ?? configuration.inlineStyleLanguage;
+	inlineStyleLanguage ??= configuration.inlineStyleLanguage;
 
 	flags = flags
 		? {

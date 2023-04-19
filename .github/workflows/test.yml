@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
 
       - name: Install
         shell: bash
@@ -65,7 +65,6 @@ jobs:
           - macos-latest
           - windows-latest
         node:
-          - 14.x
           - 16.x
           - 18.x
 

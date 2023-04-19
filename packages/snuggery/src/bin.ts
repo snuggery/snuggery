@@ -6,8 +6,8 @@ const [major, minor] = process.version.replace(/^v/, '').split('.') as [
 	string,
 ];
 
-if (parseInt(major) < 14 || (major === '14' && parseInt(minor) < 6)) {
-	process.stderr.write(`Snuggery requires at least node version 14.6\n`);
+if (parseInt(major) < 16 || (major === '16' && parseInt(minor) < 10)) {
+	process.stderr.write(`Snuggery requires at least node version 16.10\n`);
 	process.exit(1);
 }
 
