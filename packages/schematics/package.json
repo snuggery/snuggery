@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/schematics",
-	"version": "0.6.2",
+	"version": "0.7.0",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -25,7 +25,7 @@
 	},
 	"dependencies": {
 		"@angular-devkit/schematics": "^16.0.0-rc.0",
-		"@snuggery/core": "^0.5.2"
+		"@snuggery/core": "^0.6.0"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

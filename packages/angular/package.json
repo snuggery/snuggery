@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/angular",
-	"version": "0.3.2",
+	"version": "0.4.0",
 	"type": "module",
 	"private": true,
 	"license": "MIT",
@@ -36,8 +36,8 @@
 	},
 	"dependencies": {
 		"@microsoft/api-extractor": "7.24.1",
-		"@snuggery/architect": "^0.7.1",
-		"@snuggery/core": "^0.5.2",
+		"@snuggery/architect": "^0.8.0",
+		"@snuggery/core": "^0.6.0",
 		"autoprefixer": "^10.4.14",
 		"browserslist": "^4.21.5",
 		"esbuild": "^0.17.17",
