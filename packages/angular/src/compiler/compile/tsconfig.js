@@ -40,7 +40,6 @@ const defaultTsConfigFile = fileURLToPath(
  */
 export function isUsingNodeResolution(compilerOptions) {
 	return (
-		ts.versionMajorMinor >= '4.7' &&
 		compilerOptions.module != null &&
 		compilerOptions.module >= ts.ModuleKind.Node16 &&
 		compilerOptions.module <= ts.ModuleKind.NodeNext
@@ -93,7 +92,7 @@ export function parseConfiguration(input) {
 		}
 	} else {
 		throw new BuildFailureError(
-			`Expected tsconfig to have module set to "es2020" or "node16", but got ${JSON.stringify(
+			`Expected tsconfig to have module set to "es2022" or "node16", but got ${JSON.stringify(
 				ts.ModuleKind[compilerOptions.module],
 			)}`,
 		);

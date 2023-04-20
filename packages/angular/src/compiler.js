@@ -133,9 +133,8 @@ export {BuildFailureError, createCompileCache};
  * @param {string} mainOutputFolder
  * @param {string=} fallbackTsConfigFile
  * @returns {Promise<import('./compiler/context.js').PackageEntryPoint & {
- *   esm2020File: string;
- *   fesm2020File: string;
- *   fesm2015File: string;
+ *   esm2022File: string;
+ *   fesm2022File: string;
  *   typesFile: string;
  * }>}
  */
@@ -198,9 +197,8 @@ async function expandPackageEntryPoint(
  * @param {string} mainOutputFolder
  * @param {string=} tsConfigFile
  * @returns {import('./compiler/context.js').EntryPoint & {
- *   esm2020File: string;
- *   fesm2020File: string;
- *   fesm2015File: string;
+ *   esm2022File: string;
+ *   fesm2022File: string;
  *   typesFile: string;
  * }}
  */
@@ -219,9 +217,8 @@ function expandEntryPoint(
 		tsConfigFile,
 		outputFolder,
 
-		esm2020File: join(outputFolder, 'esm2020', outputBasename),
-		fesm2020File: join(mainOutputFolder, 'fesm2020', outputBasename),
-		fesm2015File: join(mainOutputFolder, 'fesm2015', outputBasename),
+		esm2022File: join(outputFolder, 'esm2022', outputBasename),
+		fesm2022File: join(mainOutputFolder, 'fesm2022', outputBasename),
 		typesFile: join(
 			outputFolder,
 			'types',
@@ -382,7 +379,7 @@ export async function build({
 		logger.info(`Building ${entryPoint.packageName}...`);
 		await compile(buildContext, entryPoint, {
 			declarationOutputFile: entryPoint.typesFile,
-			outputFile: entryPoint.esm2020File,
+			outputFile: entryPoint.esm2022File,
 			target: ScriptTarget.ES2020,
 			usePrivateApiAsImportIssueWorkaround,
 		});
@@ -397,19 +394,14 @@ export async function build({
 		/** @type {[import('./compiler/flatten/code.js').EntryPoint, ...import('./compiler/flatten/code.js').EntryPoint[]]}*/ (
 			buildContext.entryPoints.map(entryPoint => ({
 				packageName: entryPoint.packageName,
-				mainFile: entryPoint.esm2020File,
+				mainFile: entryPoint.esm2022File,
 			}))
 		);
 	await Promise.all([
 		flattenCode({
 			entryPoints: flattenEntryPoints,
-			target: 'es2020',
-			outputFolder: join(outputFolder, 'fesm2020'),
-		}),
-		flattenCode({
-			entryPoints: flattenEntryPoints,
-			target: 'es2015',
-			outputFolder: join(outputFolder, 'fesm2015'),
+			target: 'es2022',
+			outputFolder: join(outputFolder, 'fesm2022'),
 		}),
 	]);
 

@@ -36,9 +36,8 @@ function relative(from, to) {
  * @property {Record<string, string>} [dependencies]
  * @property {Record<string, string>} [peerDependencies]
  * @property {Record<string, Record<string, unknown> | string | string[]> | string | string[]} [exports]
- * @property {string} [fesm2020]
- * @property {string} [fesm2015]
- * @property {string} [esm2020]
+ * @property {string} [fesm2022]
+ * @property {string} [esm2022]
  * @property {string} [typings]
  * @property {string} [module]
  * @property {string} [es2020]
@@ -156,9 +155,8 @@ function findSnuggeryExport(exportValue) {
 /**
  * @typedef {object} EntryPoint
  * @property {string} packageName
- * @property {string} fesm2020File
- * @property {string} fesm2015File
- * @property {string} esm2020File
+ * @property {string} fesm2022File
+ * @property {string} esm2022File
  * @property {string} typesFile
  */
 
@@ -209,16 +207,8 @@ export async function writeManifest({
 	}
 
 	// Set the legacy properties that angular expects
-	manifest.esm2020 = relative(outputFolder, entryPoint.esm2020File);
 	manifest.typings = relative(outputFolder, entryPoint.typesFile);
-	manifest.fesm2020 = manifest.es2020 = relative(
-		outputFolder,
-		entryPoint.fesm2020File,
-	);
-	manifest.module = manifest.fesm2015 = relative(
-		outputFolder,
-		entryPoint.fesm2015File,
-	);
+	manifest.module = relative(outputFolder, entryPoint.fesm2022File);
 
 	if (exportedEntryPoints == null) {
 		if (manifest.exports != null) {
@@ -261,21 +251,17 @@ export async function writeManifest({
 			}
 
 			delete keyExports.types;
-			delete keyExports.esm2020;
-			delete keyExports.es2020;
-			delete keyExports.es2015;
-			delete keyExports.node;
+			delete keyExports.esm2022;
+			delete keyExports.es2022;
 
 			exports[key] = {
 				types: relative(outputFolder, ep.typesFile),
-				esm2020: relative(outputFolder, ep.esm2020File),
-				es2020: relative(outputFolder, ep.fesm2020File),
-				es2015: relative(outputFolder, ep.fesm2015File),
-				node: relative(outputFolder, ep.fesm2015File),
+				esm: relative(outputFolder, ep.esm2022File),
+				esm2022: relative(outputFolder, ep.esm2022File),
 
 				...keyExports,
 
-				default: relative(outputFolder, ep.fesm2020File),
+				default: relative(outputFolder, ep.fesm2022File),
 			};
 		}
 

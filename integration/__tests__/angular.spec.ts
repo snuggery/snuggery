@@ -19,26 +19,22 @@ test(
 			await readFile(join(outputFolder, 'package.json'), 'utf8'),
 		);
 		const fesm = await readFile(
-			join(outputFolder, 'fesm2020/standalone.js'),
+			join(outputFolder, 'fesm2022/standalone.js'),
 			'utf8',
 		);
 
 		// Expect exports to be defined correctly
 		assert.deepStrictEqual(packageJson.exports['.'], {
 			types: './index.d.ts',
-			esm2020: './esm2020/standalone.js',
-			es2020: './fesm2020/standalone.js',
-			es2015: './fesm2015/standalone.js',
-			node: './fesm2015/standalone.js',
-			default: './fesm2020/standalone.js',
+			esm: './esm2022/standalone.js',
+			esm2022: './esm2022/standalone.js',
+			default: './fesm2022/standalone.js',
 		});
 		assert.deepStrictEqual(packageJson.exports['./sub'], {
 			types: './sub/index.d.ts',
-			esm2020: './sub/esm2020/sub.js',
-			es2020: './fesm2020/sub.js',
-			es2015: './fesm2015/sub.js',
-			node: './fesm2015/sub.js',
-			default: './fesm2020/sub.js',
+			esm: './sub/esm2022/sub.js',
+			esm2022: './sub/esm2022/sub.js',
+			default: './fesm2022/sub.js',
 		});
 
 		assert.strictEqual(packageJson.sideEffects, false);
@@ -89,8 +85,8 @@ test(
 
 		const outputFolder = join(directory, 'packages/dependent/dist');
 		const [component, fesm] = await Promise.all([
-			readFile(join(outputFolder, 'esm2020/other.component.js'), 'utf-8'),
-			readFile(join(outputFolder, 'fesm2020/dependent.js'), 'utf8'),
+			readFile(join(outputFolder, 'esm2022/other.component.js'), 'utf-8'),
+			readFile(join(outputFolder, 'fesm2022/dependent.js'), 'utf8'),
 		]);
 
 		// expect the compiler to have inserted valid imports
