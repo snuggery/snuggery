@@ -1,7 +1,8 @@
 import {tags} from '@angular-devkit/core';
 import type {RuleFactory} from '@angular-devkit/schematics';
-import {journey} from '@snuggery/journey';
-import {mapImports} from '@snuggery/journey/trips/map-imports';
+
+import {journey} from '../../';
+import {mapImports} from '../map-imports';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const init: RuleFactory<{}> = () => tree => {
@@ -20,14 +21,13 @@ export const init: RuleFactory<{}> = () => tree => {
 	);
 };
 
-export const replaceLoremIpsum = () =>
-	journey(
-		mapImports('@lorem/ipsum', [
-			['renamed', {newName: 'newName'}],
-			['moved', {newFrom: '@dolor/sit'}],
-			['renamedAndMoved', {newFrom: '@dolor/sit', newName: 'amet'}],
-			['Renamed', {newName: 'NewName'}],
-			['Moved', {newFrom: '@dolor/sit'}],
-			['RenamedAndMoved', {newFrom: '@dolor/sit', newName: 'Amet'}],
-		]),
-	);
+export const replaceLoremIpsum = journey(
+	mapImports('@lorem/ipsum', [
+		['renamed', {newName: 'newName'}],
+		['moved', {newFrom: '@dolor/sit'}],
+		['renamedAndMoved', {newFrom: '@dolor/sit', newName: 'amet'}],
+		['Renamed', {newName: 'NewName'}],
+		['Moved', {newFrom: '@dolor/sit'}],
+		['RenamedAndMoved', {newFrom: '@dolor/sit', newName: 'Amet'}],
+	]),
+);

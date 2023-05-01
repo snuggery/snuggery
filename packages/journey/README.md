@@ -1,19 +1,26 @@
-# `@snuggery/yarn`
+# `@snuggery/journey`
 
-Builders and schematics to feel right at home in your snuggery yarn mono-repository
+Help developers using your libraries along the journey of (breaking) changes you make.
 
-## Builders
+## Creating journeys
 
-`@snuggery/yarn:pack` packages a package into a tarball.
+The `@snuggery/journey` package is built on top of [Angular CLI's Schematics](https://angular.io/guide/schematics) concept. Schematics and this journey package are not linked to the Angular framework itself in any way.
 
-Meanwhile, `@snuggery/yarn:deploy` creates versions using `yarn version apply --all`, then creates a version commit and a tag per release package, then builds all packages, if required and finally publishes all packages.
+A journey is a schematic `Rule`. This makes journeys available for regular schematics and migration schematics, either on their own or as part of a bigger whole.
 
-These two builders come in two flavours.
+The journey itself is a collection of trips. The trips do the heavy lifting, the journey itself is but a container that schedules and manages the trips.
+Create a journey by calling the `journey` function with one or more trips.
 
-- By default they'll use the regular `yarn pack` and `yarn npm publish` commands, perfect if you want to publish the actual package folder.
-- If you install the `@snuggery/yarn-plugin-snuggery-workspace` yarn plugin, the behavior changes. This plugin allows packaging any folder, not just the package folder, which is perfect if you build your package into a dist folder and want to publish that one. These commands do not trigger `prepack`, `postpack` or `prepublish` lifecycle scripts, unlike yarn's builtin counterparts.
+## Creating trips
 
-You can configure whether you want to use the `@snuggery/yarn-plugin-snuggery-workspace` yarn plugin via the `useWorkspacePlugin` option. If this option is not present, the default behavior is to use the plugin if it's installed.
+A trip is an object with a `configure` function that registers the actual work that has to be done.
+
+A trip can modify any file via a very low-level API. For javascript and typescript files there's a specific API that use the `typescript` package's API.
+
+## Built-in trips
+
+- `mapImports` (import from `@snuggery/journey/trip/map-imports`) creates a trip to track changed exports, e.g. if an export of your package moved to another module or if an import was renamed
+- That's it for now, more to come?
 
 ## License
 

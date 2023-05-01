@@ -8,6 +8,7 @@ import type {Journey, TravelAgent, TypescriptTransformFactory} from '../types';
 type TypescriptJourney = Journey['typescript'];
 
 export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
+	#configuring = true;
 	#transforms = new Map<TypescriptTransformFactory<unknown>, unknown[]>();
 	#program: {program: ts.Program; typeChecker: ts.TypeChecker} | undefined;
 
@@ -25,7 +26,14 @@ export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
 		this.#runner = createSimpleRunner(tree, context);
 	}
 
+	#assertIsConfiguring(operation: string & keyof this) {
+		if (!this.#configuring) {
+			throw new Error(`${operation} must be called during Trip#configure`);
+		}
+	}
+
 	addTransform(transform: ts.TransformerFactory<ts.SourceFile>): void {
+		this.#assertIsConfiguring('addTransform');
 		this.#transforms.set(() => transform, []);
 	}
 
@@ -37,6 +45,8 @@ export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
 		transform: TypescriptTransformFactory<unknown>,
 		input: unknown,
 	): void {
+		this.#assertIsConfiguring('addDeduplicatedTransform');
+
 		let inputs = this.#transforms.get(transform);
 		if (inputs == null) {
 			inputs = [];
@@ -47,6 +57,8 @@ export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
 	}
 
 	typeCheck(): {program: ts.Program; typeChecker: ts.TypeChecker} {
+		this.#assertIsConfiguring('addTransform');
+
 		if (this.#program == null) {
 			({runner: this.#runner, ...this.#program} = createTypeCheckedRunner(
 				this.#tree,
@@ -58,9 +70,11 @@ export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
 	}
 
 	async bookTrips(): Promise<void> {
+		this.#configuring = false;
+
 		await this.#runner(
 			Array.from(this.#transforms, ([transformFactory, input]) =>
-				transformFactory({input, tree: this.#tree, context: this.#context}),
+				transformFactory({input, context: this.#context}),
 			),
 		);
 	}

@@ -7,12 +7,18 @@ interface MapImportsInput {
 	imports: ReadonlyMap<string, {newName?: string; newFrom?: string}>;
 }
 
+/**
+ * Map imports from the given module onto new modules and/or new names
+ *
+ * @returns A trip to register in a `journey`
+ */
 export function mapImports(
 	moduleSpecifier: string,
-	imports: Iterable<[string, {newName?: string; newFrom?: string}]>,
+	imports: Iterable<
+		[exportName: string, opts: {newName?: string; newFrom?: string}]
+	>,
 ): Trip {
 	return {
-		name: 'mapImports',
 		configure(journey) {
 			journey.typescript.addDeduplicatedTransform(createTypescriptTransform, {
 				moduleSpecifier,
