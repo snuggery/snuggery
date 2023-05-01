@@ -1289,7 +1289,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["espree", "npm:9.5.1"],\
             ["globals", "npm:13.20.0"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["import-fresh", "npm:3.3.0"],\
             ["js-yaml", "npm:4.1.0"],\
             ["minimatch", "npm:3.1.2"],\
@@ -1611,7 +1611,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nrwl/devkit", "npm:13.8.3"],\
             ["@nrwl/tao", "npm:13.8.3"],\
             ["ejs", "npm:3.1.5"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["rxjs", "npm:6.6.7"],\
             ["semver", "npm:7.3.4"],\
             ["tslib", "npm:2.5.0"]\
@@ -1628,7 +1628,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["enquirer", "npm:2.3.6"],\
             ["fast-glob", "npm:3.2.7"],\
             ["fs-extra", "npm:9.1.0"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["jsonc-parser", "npm:3.0.0"],\
             ["nx", "npm:13.8.3"],\
             ["rxjs", "npm:6.6.7"],\
@@ -1897,9 +1897,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/schematics/",\
           "packageDependencies": [\
             ["@snuggery/schematics", "workspace:packages/schematics"],\
+            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
+            ["ignore", "npm:5.2.4"],\
             ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
           ],\
           "linkType": "SOFT"\
@@ -2273,7 +2275,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/utils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:5.41.0"],\
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["eslint", "npm:8.38.0"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["regexpp", "npm:3.2.0"],\
             ["semver", "npm:7.5.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
@@ -4676,7 +4678,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["glob-parent", "npm:6.0.2"],\
             ["globals", "npm:13.20.0"],\
             ["grapheme-splitter", "npm:1.0.4"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["import-fresh", "npm:3.3.0"],\
             ["imurmurhash", "npm:0.1.4"],\
             ["is-glob", "npm:4.0.3"],\
@@ -5476,7 +5478,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["array-union", "npm:2.1.0"],\
             ["dir-glob", "npm:3.0.1"],\
             ["fast-glob", "npm:3.2.11"],\
-            ["ignore", "npm:5.2.0"],\
+            ["ignore", "npm:5.2.4"],\
             ["merge2", "npm:1.4.1"],\
             ["slash", "npm:3.0.0"]\
           ],\
@@ -5713,10 +5715,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["ignore", [\
-        ["npm:5.2.0", {\
-          "packageLocation": "./.yarn/cache/ignore-npm-5.2.0-fc4b58a4f3-6b1f926792.zip/node_modules/ignore/",\
+        ["npm:5.2.4", {\
+          "packageLocation": "./.yarn/cache/ignore-npm-5.2.4-fbe6e989e5-3d4c309c60.zip/node_modules/ignore/",\
           "packageDependencies": [\
-            ["ignore", "npm:5.2.0"]\
+            ["ignore", "npm:5.2.4"]\
           ],\
           "linkType": "HARD"\
         }]\

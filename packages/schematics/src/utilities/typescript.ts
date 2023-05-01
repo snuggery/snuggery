@@ -49,6 +49,18 @@ export interface CreateProgramOptions {
 export const virtualFileSystemFolder = '/__workspace__';
 
 /**
+ * Return the path of the given source file
+ */
+export function getPath(sourceFile: ts.SourceFile): string;
+export function getPath({fileName}: ts.SourceFile): string {
+	if (fileName.startsWith(virtualFileSystemFolder)) {
+		return fileName.slice(virtualFileSystemFolder.length + 1);
+	} else {
+		return fileName;
+	}
+}
+
+/**
  * Create a typescript `System` that contains a root folder called `__workspace__` which contains the given Tree.
  *
  * The working directory is set to the workspace root.
@@ -245,7 +257,6 @@ export async function readProjectConfiguration({
 					allowJs: true,
 					noEmit: true,
 					skipLibCheck: true,
-					experimentalDecorators: true,
 					target: 'esnext',
 					module: 'esnext',
 					moduleResolution: 'node',
