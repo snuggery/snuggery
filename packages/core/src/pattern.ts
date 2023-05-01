@@ -24,3 +24,26 @@ export function filterByPatterns(
 
 	return match.not(included, exclude);
 }
+
+/**
+ * Check whether the given path matches the given inclusion and optional exclusion pattern(s)
+ *
+ * @param path The path to compare
+ * @param options The options
+ */
+export function matchesPatterns(
+	path: string,
+	{
+		include,
+		exclude,
+	}: {
+		include: string | readonly string[];
+		exclude?: string | readonly string[];
+	},
+): boolean {
+	const match = require('micromatch') as typeof import('micromatch');
+
+	return (
+		match.isMatch(path, include) && (!exclude || !match.isMatch(path, exclude))
+	);
+}
