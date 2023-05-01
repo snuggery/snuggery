@@ -1,0 +1,14 @@
+{
+	"schematics": {
+		"init": {
+			"description": "init for test",
+			"factory": "./factory#init",
+			"schema": "../../__tests__/accept-any-schema.json"
+		},
+		"replace-lorem-ipsum": {
+			"description": "test replacement",
+			"factory": "./factory#replaceLoremIpsum",
+			"schema": "../../__tests__/accept-any-schema.json"
+		}
+	}
+}

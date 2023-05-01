@@ -6,6 +6,7 @@
 		{"path": "./packages/architect"},
 		{"path": "./packages/core"},
 		{"path": "./packages/global"},
+		{"path": "./packages/journey"},
 		{"path": "./packages/node"},
 		{"path": "./packages/schematics"},
 		{"path": "./packages/snuggery"},

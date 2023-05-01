@@ -40,6 +40,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/global"\
       },\
       {\
+        "name": "@snuggery/journey",\
+        "reference": "workspace:packages/journey"\
+      },\
+      {\
         "name": "@snuggery/node",\
         "reference": "workspace:packages/node"\
       },\
@@ -108,8 +112,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/architect", ["workspace:packages/architect"]],\
       ["@snuggery/core", ["workspace:packages/core"]],\
       ["@snuggery/global", ["workspace:packages/global"]],\
+      ["@snuggery/journey", ["workspace:packages/journey"]],\
       ["@snuggery/node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", "workspace:packages/node"]],\
-      ["@snuggery/schematics", ["workspace:packages/schematics"]],\
+      ["@snuggery/schematics", ["virtual:a3c9bb713cef44aa576ecf5ac9a3d073a6ca3818982996174d80374fc562be51159bb5c55f3167a9276feb47696389dd9f6511e24a077fc1b858099c3fc61da7#workspace:packages/schematics", "workspace:packages/schematics"]],\
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],\
       ["@snuggery/yarn", ["workspace:packages/yarn"]],\
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],\
@@ -1848,6 +1853,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT"\
         }]\
       ]],\
+      ["@snuggery/journey", [\
+        ["workspace:packages/journey", {\
+          "packageLocation": "./packages/journey/",\
+          "packageDependencies": [\
+            ["@snuggery/journey", "workspace:packages/journey"],\
+            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@snuggery-workspace/scripts", "workspace:scripts"],\
+            ["@snuggery/core", "workspace:packages/core"],\
+            ["@snuggery/schematics", "virtual:a3c9bb713cef44aa576ecf5ac9a3d073a6ca3818982996174d80374fc562be51159bb5c55f3167a9276feb47696389dd9f6511e24a077fc1b858099c3fc61da7#workspace:packages/schematics"],\
+            ["@types/node", "npm:16.11.35"],\
+            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["uvu", "npm:0.5.6"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["@snuggery/node", [\
         ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", {\
           "packageLocation": "./.yarn/__virtual__/@snuggery-node-virtual-e44f2f7bc4/1/packages/node/",\
@@ -1893,6 +1915,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@snuggery/schematics", [\
+        ["virtual:a3c9bb713cef44aa576ecf5ac9a3d073a6ca3818982996174d80374fc562be51159bb5c55f3167a9276feb47696389dd9f6511e24a077fc1b858099c3fc61da7#workspace:packages/schematics", {\
+          "packageLocation": "./.yarn/__virtual__/@snuggery-schematics-virtual-ec0d45bf4d/1/packages/schematics/",\
+          "packageDependencies": [\
+            ["@snuggery/schematics", "virtual:a3c9bb713cef44aa576ecf5ac9a3d073a6ca3818982996174d80374fc562be51159bb5c55f3167a9276feb47696389dd9f6511e24a077fc1b858099c3fc61da7#workspace:packages/schematics"],\
+            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@snuggery-workspace/scripts", "workspace:scripts"],\
+            ["@snuggery/core", "workspace:packages/core"],\
+            ["@types/angular-devkit__core", null],\
+            ["@types/angular-devkit__schematics", null],\
+            ["@types/typescript", null],\
+            ["ignore", "npm:5.2.4"],\
+            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+          ],\
+          "packagePeers": [\
+            "@angular-devkit/core",\
+            "@angular-devkit/schematics",\
+            "@types/angular-devkit__core",\
+            "@types/angular-devkit__schematics",\
+            "@types/typescript",\
+            "typescript"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["workspace:packages/schematics", {\
           "packageLocation": "./packages/schematics/",\
           "packageDependencies": [\

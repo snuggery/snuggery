@@ -1,0 +1,43 @@
+{
+	"name": "@snuggery/journey",
+	"version": "0.0.0",
+	"private": true,
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/snuggery/snuggery.git",
+		"directory": "packages/journey"
+	},
+	"exports": {
+		".": "./src/index.ts",
+		"./trips/*": "./src/trips/*.ts",
+		"./package.json": "./package.json"
+	},
+	"schematics": "./collection.json",
+	"scripts": {
+		"build": "sn build",
+		"test": "sn test"
+	},
+	"peerDependencies": {
+		"typescript": "~5.0.4"
+	},
+	"dependencies": {
+		"@angular-devkit/schematics": "^16.0.0-rc.0",
+		"@snuggery/core": "^0.6.0",
+		"@snuggery/schematics": "^0.7.1"
+	},
+	"devDependencies": {
+		"@angular-devkit/core": "^16.0.0-rc.0",
+		"@snuggery-workspace/scripts": "workspace:scripts",
+		"@types/node": "^16.11.35",
+		"typescript": "~5.0.4",
+		"uvu": "^0.5.6"
+	},
+	"publishConfig": {
+		"exports": {
+			".": "./index.js",
+			"./trips/*": "./trips/*.js",
+			"./package.json": "./package.json"
+		}
+	}
+}
