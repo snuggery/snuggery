@@ -125,7 +125,16 @@ project "@snuggery/schematics" extends="parent" root="packages/schematics"
 
 project "@snuggery/yarn" extends="parent" root="packages/yarn"
 
-project "@snuggery/journey" extends="parent" root="packages/journey"
+project "@snuggery/journey" extends="parent" root="packages/journey" {
+	target "build" {
+		options {
+			assets {
+				super
+				- "**/*.mjs" from=(project-relative)"src"
+			}
+		}
+	}
+}
 
 project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
 	target "build" builder="@snuggery/snuggery:execute" {

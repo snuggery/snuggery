@@ -8,8 +8,10 @@
 		"url": "https://github.com/snuggery/snuggery.git",
 		"directory": "packages/journey"
 	},
+	"bin": "./bin.mjs",
 	"exports": {
 		".": "./src/index.ts",
+		"./bin": "./bin.mjs",
 		"./trips/*": "./src/trips/*.ts",
 		"./package.json": "./package.json"
 	},
@@ -23,13 +25,20 @@
 	},
 	"dependencies": {
 		"@angular-devkit/schematics": "^16.0.0-rc.0",
+		"@pkgjs/parseargs": "^0.11.0",
 		"@snuggery/core": "^0.6.0",
-		"@snuggery/schematics": "^0.7.1"
+		"@snuggery/schematics": "^0.7.1",
+		"kleur": "^4.1.5",
+		"prompts": "^2.4.2",
+		"semver": "^7.5.0"
 	},
 	"devDependencies": {
 		"@angular-devkit/core": "^16.0.0-rc.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/node": "^16.11.35",
+		"@types/pkgjs__parseargs": "^0.10.0",
+		"@types/prompts": "^2.4.4",
+		"@types/semver": "^7.3.13",
 		"typescript": "~5.0.4",
 		"uvu": "^0.5.6"
 	},

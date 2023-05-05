@@ -1,7 +1,11 @@
 {
 	"name": "test-schematics",
 	"schematics": "./collection.json",
+	"journey": "./journey.json",
 	"dependencies": {
-		"@angular-devkit/schematics": "^16.0.0-rc.0"
+		"@angular-devkit/schematics": "^16.0.0-rc.0",
+		"@snuggery-workspace/scripts": "workspace:scripts",
+		"@snuggery/journey": "workspace:packages/journey",
+		"typescript": "~5.0.4"
 	}
 }

@@ -352,6 +352,14 @@ const createTypescriptTransform: TypescriptTransformFactory<
 		renames?: Map<string, string>,
 	) {
 		const perModuleSpecifier = new Map<string, T['elements'][number][]>();
+		function getElements(specifier: string) {
+			let elements = perModuleSpecifier.get(specifier);
+			if (elements == null) {
+				elements = [];
+				perModuleSpecifier.set(specifier, elements);
+			}
+			return elements;
+		}
 
 		for (const specifier of namedBindings.elements) {
 			const exportName = (specifier.propertyName ?? specifier.name).text;
@@ -360,17 +368,14 @@ const createTypescriptTransform: TypescriptTransformFactory<
 				.get(exportName);
 
 			if (renameOptions == null) {
+				getElements(moduleSpecifier).push(specifier);
 				continue;
 			}
 
 			const newExportName = renameOptions.newName ?? exportName;
 			const newFrom = renameOptions.newFrom ?? moduleSpecifier;
 
-			let newElements = perModuleSpecifier.get(newFrom);
-			if (newElements == null) {
-				newElements = [];
-				perModuleSpecifier.set(newFrom, newElements);
-			}
+			const newElements = getElements(newFrom);
 
 			if (newExportName === exportName) {
 				// Import didn't change

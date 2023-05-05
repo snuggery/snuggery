@@ -15,14 +15,14 @@ test('it should map imports', async () => {
 	assert.equal(
 		tree.readContent('file.ts').trim(),
 		tags.stripIndent`
-			import { newName, NewName } from "@lorem/ipsum";
+			import { unchanged, newName, NewName } from "@lorem/ipsum";
 			import { moved, amet, Moved, Amet } from "@dolor/sit";
 			export { NewName, NewName as Renamed } from "@lorem/ipsum";
 			export { Moved, Moved as Alias } from "@dolor/sit";
 			export { moved, moved as alias, newName as renamed, newName };
 			export const var1: NewName<import("@dolor/sit").Moved>;
 			export const var2: import("@dolor/sit").Amet<Moved, NewName>;
-			export const var3 = newName(moved, amet);
+			export const var3 = newName(moved, amet, unchanged);
 		`,
 	);
 });

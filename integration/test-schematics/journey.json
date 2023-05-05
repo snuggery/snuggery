@@ -1,0 +1,17 @@
+{
+	"journey": {
+		"rename-lorem": {
+			"factory": "./schematic/journey.js#lorem",
+			"description": "Rename export `lorem` from mock package `@integration/test`"
+		},
+		"rename-ipsum": {
+			"factory": "./schematic/journey.js#ipsum",
+			"description": "Rename export `ipsum` from mock package `@integration/test`"
+		},
+		"rename-dolor": {
+			"version": "2.0.1",
+			"factory": "./schematic/journey.js#dolor",
+			"description": "Rename export `dolor` from mock package `@integration/test`"
+		}
+	}
+}

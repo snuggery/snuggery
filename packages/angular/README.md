@@ -20,7 +20,7 @@ This package supports building angular packages in a monorepository. The core id
 
 `@snuggery/angular:build` builds an angular library into a package that can be published to an npm registry.
 
-<!-- auto generate: yarn ./integration/__fixtures__/angular sn help builder @snuggery/angular:build -->
+<!-- auto generate: yarn ../../integration/__fixtures__/angular sn help builder @snuggery/angular:build -->
 
 ```
 Builder `build` of package `@snuggery/angular`

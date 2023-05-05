@@ -9,14 +9,14 @@ export const init: RuleFactory<{}> = () => tree => {
 	tree.create(
 		'file.ts',
 		tags.stripIndent`
-			import {renamed, moved, renamedAndMoved, Renamed, Moved, RenamedAndMoved} from '@lorem/ipsum';
+			import {unchanged, renamed, moved, renamedAndMoved, Renamed, Moved, RenamedAndMoved} from '@lorem/ipsum';
 
 			export {Renamed as NewName, Renamed, Moved, Moved as Alias} from '@lorem/ipsum';
 			export {moved, moved as alias, renamed, renamed as newName};
 
 			export const var1: Renamed<import('@lorem/ipsum').Moved>;
 			export const var2: import('@lorem/ipsum').RenamedAndMoved<Moved, Renamed>;
-			export const var3 = renamed(moved, renamedAndMoved);
+			export const var3 = renamed(moved, renamedAndMoved, unchanged);
 		`,
 	);
 };

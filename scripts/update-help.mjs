@@ -15,23 +15,25 @@ const validate = argv[2] === 'validate';
 
 /**
  * @param {string} command
+ * @param {string} cwd
  * @returns {Promise<string>}
  */
-function exec(command) {
+function exec(command, cwd) {
 	return new Promise((resolve, reject) => {
 		childProcess.exec(
 			command,
 			{
+				cwd,
 				env: {
 					...env,
 					FORCE_COLOR: '0',
 				},
 			},
-			(error, stdout) => {
+			(error, stdout, stderr) => {
 				if (error) {
 					reject(error);
 				} else {
-					resolve(stdout);
+					resolve(stdout.trim() ? stdout : stderr);
 				}
 			},
 		);
@@ -65,7 +67,7 @@ for (const dir of await readdir('packages')) {
 		modifiedIndices.add(commandIndex);
 
 		const command = lines[commandIndex].slice(19, -3).trim();
-		const output = await exec(command);
+		const output = await exec(command, dirname(readmeFile));
 
 		const startOfCodeBlock = lines.indexOf('```', commandIndex + 1);
 		const endOfCodeBlock = lines.indexOf('```', startOfCodeBlock + 1);

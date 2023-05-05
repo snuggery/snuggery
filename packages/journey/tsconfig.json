@@ -1,11 +1,13 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
 		"outDir": "dist",
 		"rootDir": "src",
 		"types": ["node"]
 	},
-	"include": ["src/**/*.ts"],
+	"include": ["src/**/*.ts", "src/bin.mjs"],
 	"exclude": ["**/__tests__/**"],
 	"references": [{"path": "../architect"}]
 }
