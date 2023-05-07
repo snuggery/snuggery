@@ -12,6 +12,9 @@ export function* walkTree(
 	}: {include?: string | string[]; exclude?: string | string[]} = {},
 ): Generator<string> {
 	const pattern = {include, exclude};
+	if (Array.isArray(pattern.exclude) && pattern.exclude.length === 0) {
+		pattern.exclude = undefined;
+	}
 
 	for (const path of walkDir(tree.root, () => false)) {
 		if (matchesPatterns(path, pattern)) {

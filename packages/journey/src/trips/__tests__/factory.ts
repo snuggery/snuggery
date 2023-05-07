@@ -1,12 +1,42 @@
+/* cspell:ignore jsons */
+
 import {tags} from '@angular-devkit/core';
 import type {RuleFactory} from '@angular-devkit/schematics';
 
 import {journey} from '../../';
 import {mapImports} from '../map-imports';
+import {updatePackageJsons} from '../update-package-jsons';
 import {updateWorkspace} from '../update-workspace';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const init: RuleFactory<{}> = () => tree => {
+	tree.create(
+		'.gitignore',
+		tags.stripIndent`
+			node_modules
+		`,
+	);
+
+	tree.create(
+		'package.json',
+		JSON.stringify(
+			{
+				name: 'test',
+				main: 'main.js',
+			},
+			null,
+			2,
+		) + '\n',
+	);
+
+	tree.create(
+		'node_modules/lorem/package.json',
+		JSON.stringify({
+			name: 'lorem',
+			main: './dist/index.cjs',
+		}),
+	);
+
 	tree.create(
 		'angular.json',
 		tags.stripIndent`
@@ -54,4 +84,13 @@ export const addPrefix = journey(
 			project.prefix = 'pref';
 		}),
 	),
+);
+
+export const mainToExport = journey(
+	updatePackageJsons(pkg => {
+		if (pkg.main) {
+			pkg.exports = pkg.main.startsWith('.') ? pkg.main : `./${pkg.main}`;
+			delete pkg.main;
+		}
+	}),
 );
