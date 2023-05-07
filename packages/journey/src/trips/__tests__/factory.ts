@@ -3,9 +3,25 @@ import type {RuleFactory} from '@angular-devkit/schematics';
 
 import {journey} from '../../';
 import {mapImports} from '../map-imports';
+import {updateWorkspace} from '../update-workspace';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const init: RuleFactory<{}> = () => tree => {
+	tree.create(
+		'angular.json',
+		tags.stripIndent`
+			{
+				"version": 1,
+				"projects": {
+					"app": {
+						"root": "",
+						"projectType": "application"
+					}
+				}
+			}
+		`,
+	);
+
 	tree.create(
 		'file.ts',
 		tags.stripIndent`
@@ -30,4 +46,12 @@ export const replaceLoremIpsum = journey(
 		['Moved', {newFrom: '@dolor/sit'}],
 		['RenamedAndMoved', {newFrom: '@dolor/sit', newName: 'Amet'}],
 	]),
+);
+
+export const addPrefix = journey(
+	updateWorkspace(workspace =>
+		workspace.projects.forEach(project => {
+			project.prefix = 'pref';
+		}),
+	),
 );

@@ -268,7 +268,7 @@ function createTypeCheckedRunner(tree: Tree, context: SchematicContext) {
 				currentTypeChecker = currentProgram.getTypeChecker();
 
 				for (const sourceFile of currentProgram.getSourceFiles()) {
-					if (sourceFile.fileName.includes('/node_modules/')) {
+					if (currentProgram.isSourceFileFromExternalLibrary(sourceFile)) {
 						continue;
 					}
 

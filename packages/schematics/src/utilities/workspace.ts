@@ -1,4 +1,4 @@
-import type {Rule, Tree} from '@angular-devkit/schematics';
+import type {Tree} from '@angular-devkit/schematics';
 import {
 	updateWorkspace as _updateWorkspace,
 	WorkspaceHost,
@@ -38,7 +38,7 @@ export function getWorkspace(tree: Tree): Promise<WorkspaceDefinition> {
 
 export function updateWorkspace(
 	updater: (workspace: WorkspaceDefinition) => void | Promise<void>,
-): Rule {
+): (tree: Tree) => Promise<void> {
 	return async tree => {
 		await _updateWorkspace('/', updater, {host: createHost(tree)});
 	};

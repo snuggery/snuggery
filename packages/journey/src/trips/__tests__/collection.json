@@ -9,6 +9,11 @@
 			"description": "test replacement",
 			"factory": "./factory#replaceLoremIpsum",
 			"schema": "../../__tests__/accept-any-schema.json"
+		},
+		"add-prefix": {
+			"description": "test replacement",
+			"factory": "./factory#addPrefix",
+			"schema": "../../__tests__/accept-any-schema.json"
 		}
 	}
 }

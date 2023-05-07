@@ -93,6 +93,7 @@ A trip can modify any file via a very low-level API. For javascript and typescri
 ## Built-in trips
 
 - `mapImports` (import from `@snuggery/journey/trip/map-imports`) creates a trip to track changed exports, e.g. if an export of your package moved to another module or if an import was renamed
+- `updateWorkspace` (import from `@snuggery/journey/trip/update-workspace`) creates a trip to update the workspace configuration, with support for the Angular CLI's `angular.json`, Nx's `workspace.json`, as well as snuggery's own `snuggery.kdl`.
 - That's it for now, more to come?
 
 ## License
