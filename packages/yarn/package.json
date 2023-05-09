@@ -18,7 +18,7 @@
 	"dependencies": {
 		"@angular-devkit/schematics": "^16.0.0-rc.0",
 		"@snuggery/architect": "^0.8.0",
-		"@snuggery/core": "^0.6.0",
+		"@snuggery/core": "^0.6.1",
 		"@yarnpkg/parsers": "^2.4.1"
 	},
 	"devDependencies": {

@@ -1,5 +1,0 @@
-releases:
-  "@snuggery/journey": patch
-
-declined:
-  - "@snuggery/schematics"

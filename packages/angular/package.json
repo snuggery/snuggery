@@ -37,7 +37,7 @@
 	"dependencies": {
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery/architect": "^0.8.0",
-		"@snuggery/core": "^0.6.0",
+		"@snuggery/core": "^0.6.1",
 		"autoprefixer": "^10.4.14",
 		"browserslist": "^4.21.5",
 		"esbuild": "^0.17.17",

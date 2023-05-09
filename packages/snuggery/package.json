@@ -35,7 +35,7 @@
 		"@angular-devkit/schematics": "^16.0.0-rc.0",
 		"@arcanis/slice-ansi": "1.1.1",
 		"@snuggery/architect": "^0.8.0",
-		"@snuggery/core": "^0.6.0",
+		"@snuggery/core": "^0.6.1",
 		"ajv": "^8.12.0",
 		"ajv-formats": "^2.1.1",
 		"clipanion": "3.2.0",
