@@ -12,6 +12,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./bin": "./bin.mjs",
+		"./agents/*": "./src/agents/*.ts",
 		"./trips/*": "./src/trips/*.ts",
 		"./package.json": "./package.json"
 	},
@@ -21,6 +22,8 @@
 		"test": "sn test"
 	},
 	"peerDependencies": {
+		"@snuggery/core": "^0.6.1",
+		"@snuggery/schematics": "^0.8.0",
 		"typescript": "~5.0.4"
 	},
 	"dependencies": {
@@ -45,6 +48,7 @@
 	"publishConfig": {
 		"exports": {
 			".": "./index.js",
+			"./agents/*": "./agents/*.js",
 			"./trips/*": "./trips/*.js",
 			"./package.json": "./package.json"
 		}

@@ -1,10 +1,16 @@
 import type {Rule, RuleFactory} from '@angular-devkit/schematics';
 
-import {GeneralTravelAgent} from './agents/general';
-import {TypescriptTravelAgent} from './agents/typescript';
-import type {TravelAgent, Trip} from './types';
+import {type Trip, createJourney} from './types';
 
-export type {Journey, Trip, TypescriptTransformFactory} from './types';
+export {
+	type Journey,
+	type Trip,
+	type Guide,
+	type UpdateRecorder,
+	registerGuide,
+	getContext,
+	getTree,
+} from './types';
 
 /**
  * Create a journey from the given trips
@@ -17,26 +23,19 @@ export function journey(
 	...trips: readonly Trip[]
 ): Rule & RuleFactory<Record<string, unknown>> {
 	return () => async (tree, context) => {
-		const general = new GeneralTravelAgent(tree, context);
-		const typescript = new TypescriptTravelAgent(tree, context);
+		const {journey, guides} = createJourney(tree, context);
 
-		const agents: TravelAgent[] = [general, typescript];
-
-		// Explicitly run through `Trip#configure` and `TravelAgent#bookTrips` one
+		// Explicitly run through `Trip#prepare` and registered `guide`s one
 		// by one instead of using `Promise.all` because determinism is important.
 		// If in `Promise.all` the order of operations becomes non-deterministic,
 		// who's to say what the impact might be on the actual journeys?
 
 		for (const trip of trips) {
-			await trip.configure({
-				context,
-				general,
-				typescript,
-			});
+			await trip.prepare(journey);
 		}
 
-		for (const agent of agents) {
-			await agent.bookTrips();
+		for (const guide of guides) {
+			await guide(journey);
 		}
 	};
 }

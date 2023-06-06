@@ -274,7 +274,8 @@ test('non-migration journey', async () => {
 				'1 file has changed',
 				'',
 				'** Rename export `lorem` from mock package `@integration/test`.',
-				'1 file has changed',
+				// nothing to do because the replace-lorem journey is already executed
+				'Nothing has changed',
 				'',
 				'🏁 Finished!',
 			].join('\n'),

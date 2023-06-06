@@ -1,8 +1,11 @@
 /* cspell:ignore jsons */
-import type {JsonObject} from '@snuggery/core';
+import {type JsonObject, matchesPatterns} from '@snuggery/core';
+import type {Trip} from '@snuggery/journey';
+import {
+	type TreeVisitorWithInput,
+	visitTree,
+} from '@snuggery/journey/agents/general';
 import {walkTree} from '@snuggery/schematics';
-
-import type {Trip, GeneralTransformFactory} from '../types';
 
 interface UpdatePackageJsonsInput {
 	exclude?: string | string[];
@@ -18,8 +21,9 @@ export function updatePackageJsons(
 	updater: UpdatePackageJsonsInput | UpdatePackageJsonsInput['update'],
 ): Trip {
 	return {
-		configure(journey) {
-			journey.general.addDeduplicatedTransform(
+		prepare(journey) {
+			visitTree(
+				journey,
 				updateWorkspaceTransform,
 				typeof updater === 'function' ? {update: updater} : updater,
 			);
@@ -27,33 +31,40 @@ export function updatePackageJsons(
 	};
 }
 
-const updateWorkspaceTransform: GeneralTransformFactory<
+const updateWorkspaceTransform: TreeVisitorWithInput<
 	UpdatePackageJsonsInput
-> =
-	({input}) =>
-	async tree => {
-		const exclude = input.flatMap(input => input.exclude || []);
-		for (const file of walkTree(tree, {include: '**/package.json', exclude})) {
-			const rawContent = tree.readText(file);
-			const content = JSON.parse(rawContent) as JsonObject;
+> = async (input, tree) => {
+	for (const file of walkTree(tree, {include: '**/package.json'})) {
+		const rawContent = tree.readText(file);
+		const content = JSON.parse(rawContent) as JsonObject;
+		let edited = false;
 
-			for (const {update} of input) {
-				await update(content, file);
+		for (const {update, exclude} of input) {
+			if (exclude && matchesPatterns(file, {include: exclude})) {
+				continue;
 			}
 
-			const leadingWhitespace = rawContent.slice(0, rawContent.indexOf('{'));
-			const trailingWhitespace = rawContent.slice(
-				rawContent.lastIndexOf('}') + 1,
-			);
-			const indentation = /(?<=\{[\r\n]+)[ \t]+/.exec(rawContent)?.[0];
-
-			tree.overwrite(
-				file,
-				`${leadingWhitespace}${JSON.stringify(
-					content,
-					null,
-					indentation,
-				)}${trailingWhitespace}`,
-			);
+			await update(content, file);
+			edited = true;
 		}
-	};
+
+		if (!edited) {
+			continue;
+		}
+
+		const leadingWhitespace = rawContent.slice(0, rawContent.indexOf('{'));
+		const trailingWhitespace = rawContent.slice(
+			rawContent.lastIndexOf('}') + 1,
+		);
+		const indentation = /(?<=\{[\r\n]+)[ \t]+/.exec(rawContent)?.[0];
+
+		tree.overwrite(
+			file,
+			`${leadingWhitespace}${JSON.stringify(
+				content,
+				null,
+				indentation,
+			)}${trailingWhitespace}`,
+		);
+	}
+};

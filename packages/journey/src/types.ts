@@ -1,95 +1,80 @@
-import type {SchematicContext, Tree} from '@angular-devkit/schematics';
-import type {ts} from '@snuggery/schematics/typescript';
+import type {
+	SchematicContext,
+	Tree,
+	UpdateRecorder,
+} from '@angular-devkit/schematics';
 
+export type {UpdateRecorder};
+
+const kJourney = Symbol('journey');
+
+/**
+ * Opaque type for a journey
+ */
 export interface Journey {
-	context: SchematicContext;
-
-	/**
-	 * Functions to register transformations
-	 *
-	 * These functions are low-level, they function on file content as text,
-	 * without any processing tied to the file type.
-	 */
-	general: {
-		/**
-		 * Register the given transform
-		 */
-		addTransform(transform: (tree: Tree) => void | Promise<void>): void;
-
-		/**
-		 * Register the given transform
-		 *
-		 * Contrary to `addTransform` this function will only run the given transform
-		 * once even if it has been registered multiple times. All passed inputs are
-		 * combined and given to the transform as an array.
-		 */
-		addDeduplicatedTransform<T>(
-			transform: GeneralTransformFactory<T>,
-			input: T,
-		): void;
-	};
-
-	/**
-	 * Utilities to register transformations via the typescript API
-	 *
-	 * These utilities loop over all javascript and typescript files throughout
-	 * the project, using one of two mechanisms:
-	 * - If no trip has requested the type checker, then simply loop over all
-	 *   files with the correct file extensions. The given AST objects will not
-	 *   have any type information available, and `Node#parent` will not be filled
-	 *   in.
-	 * - If any trip requested the type checker, then try to discover all
-	 *   `tsconfig` and `jsconfig` files and loop through all files in all of
-	 *   these `Program`s. Files are only processed once, even if they're present
-	 *   in multiple files.
-	 *
-	 * All registered typescript transforms are executed in a single pass, i.e.
-	 * the journey only loops over the typescript files once.
-	 */
-	typescript: {
-		/**
-		 * Register the given transform for all source files
-		 */
-		addTransform(transform: ts.TransformerFactory<ts.SourceFile>): void;
-
-		/**
-		 * Register the given transform for all source files
-		 *
-		 * Contrary to `addTransform` this function will only run the given transform
-		 * once even if it has been registered multiple times. All passed inputs are
-		 * combined and given to the transform as an array.
-		 */
-		addDeduplicatedTransform<T>(
-			transform: TypescriptTransformFactory<T>,
-			input: T,
-		): void;
-
-		/**
-		 * Get access to the `Program` and `TypeChecker`
-		 *
-		 * This method has to be called during `Trip#configure`, but the returned
-		 * program and type checker can only be used as part of a registered
-		 * transform.
-		 */
-		typeCheck(): {
-			program: ts.Program;
-			typeChecker: ts.TypeChecker;
-		};
-	};
+	[kJourney]: object;
 }
 
-export type GeneralTransformFactory<T> = (journey: {
-	input: T[];
-	context: SchematicContext;
-}) => (tree: Tree) => void | Promise<void>;
+export interface Guide {
+	(journey: Journey): void | Promise<void>;
+}
 
-export type TypescriptTransformFactory<T> = (journey: {
-	input: T[];
-	context: SchematicContext;
-}) => ts.TransformerFactory<ts.SourceFile>;
+const journeys = new WeakMap<
+	Journey,
+	{tree: Tree; context: SchematicContext; guides: Set<Guide>}
+>();
 
-export interface TravelAgent {
-	bookTrips(): void | Promise<void>;
+export function createJourney(
+	tree: Tree,
+	context: SchematicContext,
+): {journey: Journey; guides: Set<Guide>} {
+	const journey = {[kJourney]: {}};
+	Object.defineProperty(journey, kJourney, {enumerable: false});
+	Object.freeze(journey);
+
+	const guides = new Set<Guide>();
+
+	journeys.set(journey, {tree, context, guides});
+	return {journey, guides};
+}
+
+function getJourney(journey: Journey) {
+	const val = journeys.get(journey);
+
+	if (val == null) {
+		throw new TypeError(`Expected a journey`);
+	}
+
+	return val;
+}
+
+/**
+ * Access the `Tree` for the given journey
+ */
+export function getTree(journey: Journey): Tree {
+	return getJourney(journey).tree;
+}
+
+/**
+ * Access the context for the given journey
+ */
+export function getContext(journey: Journey): SchematicContext {
+	return getJourney(journey).context;
+}
+
+/**
+ * Registers the given guide for the given journey
+ *
+ * A guide can only be registered once per journey, registering a guide multiple
+ * times in a journey will have no effect.
+ *
+ * Guides are executed after all trips in the journey have been registered. This
+ * allows for guides to handle multiple trips at the same time. For example, if
+ * there are three trips that loop through typescript files, it is better to
+ * loop over all files once rather than three times.
+ */
+export function registerGuide(journey: Journey, guide: Guide): void {
+	getJourney(journey).guides.add(guide);
 }
 
 /**
@@ -97,11 +82,11 @@ export interface TravelAgent {
  */
 export interface Trip {
 	/**
-	 * Configure the given journey
+	 * Prepare this trip for the given journey
 	 *
-	 * All configuration should happen before the returned promise resolves (or
+	 * All preparation should happen before the returned promise resolves (or
 	 * before the function returns if the trip is synchronous).
-	 * Modifying the `journey` configuration afterwards is not supported.
+	 * Modifying the `journey` afterwards is not supported.
 	 */
-	configure(journey: Journey): void | Promise<void>;
+	prepare(journey: Journey): void | Promise<void>;
 }

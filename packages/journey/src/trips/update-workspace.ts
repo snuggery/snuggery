@@ -1,7 +1,10 @@
 import type {WorkspaceDefinition} from '@snuggery/core';
+import type {Trip} from '@snuggery/journey';
+import {
+	type TreeVisitorWithInput,
+	visitTree,
+} from '@snuggery/journey/agents/general';
 import {updateWorkspace as _updateWorkspace} from '@snuggery/schematics';
-
-import type {Trip, GeneralTransformFactory} from '../types';
 
 interface UpdateWorkspaceInput {
 	(workspace: WorkspaceDefinition): void | Promise<void>;
@@ -14,21 +17,17 @@ interface UpdateWorkspaceInput {
  */
 export function updateWorkspace(updater: UpdateWorkspaceInput): Trip {
 	return {
-		configure(journey) {
-			journey.general.addDeduplicatedTransform(
-				updateWorkspaceTransform,
-				updater,
-			);
+		prepare(journey) {
+			visitTree(journey, updateWorkspaceTransform, updater);
 		},
 	};
 }
 
-const updateWorkspaceTransform: GeneralTransformFactory<
+const updateWorkspaceTransform: TreeVisitorWithInput<
 	UpdateWorkspaceInput
-> = ({input}) => {
-	return _updateWorkspace(async workspace => {
+> = async (input, tree) =>
+	await _updateWorkspace(async workspace => {
 		for (const transform of input) {
 			await transform(workspace);
 		}
-	});
-};
+	})(tree);

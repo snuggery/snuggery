@@ -1,89 +1,214 @@
-import type {SchematicContext, Tree} from '@angular-devkit/schematics';
+import type {UpdateRecorder} from '@angular-devkit/schematics';
 import {getWorkspace, walkTree} from '@snuggery/schematics';
-import type {ts} from '@snuggery/schematics/typescript';
+import {
+	ts,
+	createSystem,
+	createProgram,
+	getPath,
+	formatDiagnosticsHost,
+} from '@snuggery/schematics/typescript';
 import {extname, join} from 'node:path/posix';
 
-import type {Journey, TravelAgent, TypescriptTransformFactory} from '../types';
+import {Journey, registerGuide, getContext, getTree} from '../types';
+import {Map, WeakMap} from '../utils';
 
-type TypescriptJourney = Journey['typescript'];
+export {ts, getPath};
 
-export class TypescriptTravelAgent implements TravelAgent, TypescriptJourney {
-	#configuring = true;
-	#transforms = new Map<TypescriptTransformFactory<unknown>, unknown[]>();
-	#program: {program: ts.Program; typeChecker: ts.TypeChecker} | undefined;
-
-	#runner: (
+interface Runner {
+	(
+		visitors: ((
+			sourceFile: ts.SourceFile,
+			recorder: TypescriptUpdateRecorder,
+		) => void)[],
 		transforms: ts.TransformerFactory<ts.SourceFile>[],
-	) => void | Promise<void>;
+	): void | Promise<void>;
+}
 
-	#tree: Tree;
-	#context: SchematicContext;
+export interface Visitor {
+	(sourceFile: ts.SourceFile, recorder: TypescriptUpdateRecorder): void;
+}
 
-	constructor(tree: Tree, context: SchematicContext) {
-		this.#tree = tree;
-		this.#context = context;
+export interface VisitorFactory<I> {
+	(input: I[], journey: Journey): Visitor;
+}
 
-		this.#runner = createSimpleRunner(tree, context);
-	}
+export type TransformerFactory = ts.TransformerFactory<ts.SourceFile>;
 
-	#assertIsConfiguring(operation: string & keyof this) {
-		if (!this.#configuring) {
-			throw new Error(`${operation} must be called during Trip#configure`);
+export interface TransformerFactoryFactory<I> {
+	(input: I[], journey: Journey): TransformerFactory;
+}
+
+const visitors = new WeakMap<Journey, Map<VisitorFactory<unknown>, unknown[]>>(
+	() => new Map(() => []),
+);
+
+const transforms = new WeakMap<
+	Journey,
+	Map<TransformerFactoryFactory<unknown>, unknown[]>
+>(() => new Map(() => []));
+
+const runners = new WeakMap<Journey, Runner>(createSimpleRunner);
+
+const programs = new globalThis.WeakMap<
+	Journey,
+	{program: ts.Program; typeChecker: ts.TypeChecker}
+>();
+
+export interface TypescriptUpdateRecorder extends UpdateRecorder {
+	replace(node: ts.Node, newNode: ts.Node | string): this;
+
+	insertLeft(index: number, content: ts.Node | Buffer | string): this;
+	insertRight(index: number, content: ts.Node | Buffer | string): this;
+
+	remove(node: ts.Node): this;
+	remove(index: number, length: number): this;
+}
+
+function createTypescriptUpdateRecorder(
+	sourceFile: ts.SourceFile,
+	updateRecorder: UpdateRecorder,
+): TypescriptUpdateRecorder {
+	let printer: ts.Printer | undefined;
+
+	function stringify(value: ts.Node | Buffer | string): string {
+		if (typeof value === 'string') {
+			return value;
 		}
-	}
 
-	addTransform(transform: ts.TransformerFactory<ts.SourceFile>): void {
-		this.#assertIsConfiguring('addTransform');
-		this.#transforms.set(() => transform, []);
-	}
-
-	addDeduplicatedTransform<T>(
-		transform: TypescriptTransformFactory<T>,
-		input: T,
-	): void;
-	addDeduplicatedTransform(
-		transform: TypescriptTransformFactory<unknown>,
-		input: unknown,
-	): void {
-		this.#assertIsConfiguring('addDeduplicatedTransform');
-
-		let inputs = this.#transforms.get(transform);
-		if (inputs == null) {
-			inputs = [];
-			this.#transforms.set(transform, inputs);
+		if (Buffer.isBuffer(value)) {
+			return value.toString('utf-8');
 		}
 
-		inputs.push(input);
-	}
-
-	typeCheck(): {program: ts.Program; typeChecker: ts.TypeChecker} {
-		this.#assertIsConfiguring('addTransform');
-
-		if (this.#program == null) {
-			({runner: this.#runner, ...this.#program} = createTypeCheckedRunner(
-				this.#tree,
-				this.#context,
-			));
-		}
-
-		return this.#program!;
-	}
-
-	async bookTrips(): Promise<void> {
-		this.#configuring = false;
-
-		await this.#runner(
-			Array.from(this.#transforms, ([transformFactory, input]) =>
-				transformFactory({input, context: this.#context}),
-			),
+		return (printer ??= ts.createPrinter()).printNode(
+			ts.EmitHint.Unspecified,
+			value,
+			sourceFile,
 		);
+	}
+
+	return {
+		insertLeft(index, content) {
+			updateRecorder.insertLeft(index, stringify(content));
+			return this;
+		},
+		insertRight(index, content) {
+			updateRecorder.insertRight(index, stringify(content));
+			return this;
+		},
+
+		remove(arg: ts.Node | number, length?: number) {
+			if (typeof arg === 'number') {
+				updateRecorder.remove(arg, length!);
+			} else {
+				updateRecorder.remove(
+					arg.getStart(sourceFile, true),
+					arg.getWidth(sourceFile),
+				);
+			}
+			return this;
+		},
+
+		replace(node, newNode) {
+			const start = node.getStart(sourceFile, false);
+			updateRecorder
+				.remove(start, node.getWidth(sourceFile))
+				.insertRight(start, stringify(newNode));
+
+			return this;
+		},
+	};
+}
+
+export function visitTypescriptFiles(journey: Journey, visitor: Visitor): void;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function visitTypescriptFiles<I extends {}>(
+	journey: Journey,
+	visitor: VisitorFactory<I>,
+	input: I,
+): void;
+export function visitTypescriptFiles(
+	journey: Journey,
+	visitor: Visitor | VisitorFactory<unknown>,
+	input?: unknown,
+): void {
+	registerGuide(journey, typescriptGuide);
+
+	if (input != null) {
+		visitors
+			.get(journey)
+			.get(visitor as VisitorFactory<unknown>)
+			.push(input);
+	} else {
+		visitors.get(journey).set(() => visitor as Visitor, []);
 	}
 }
 
-function createSimpleRunner(tree: Tree, context: SchematicContext) {
-	return (transforms: ts.TransformerFactory<ts.SourceFile>[]) => {
-		const {ts} =
-			require('@snuggery/schematics/typescript') as typeof import('@snuggery/schematics/typescript');
+export function typeCheck(journey: Journey): {
+	readonly program: ts.Program;
+	readonly typeChecker: ts.TypeChecker;
+} {
+	const existingProgram = programs.get(journey);
+	if (existingProgram != null) {
+		return existingProgram;
+	}
+
+	const {runner, ...program} = createTypeCheckedRunner(journey);
+	programs.set(journey, program);
+	runners.set(journey, runner);
+
+	return program;
+}
+
+export function transformTypescriptFiles(
+	journey: Journey,
+	transform: TransformerFactory,
+): void;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function transformTypescriptFiles<I extends {}>(
+	journey: Journey,
+	transform: TransformerFactoryFactory<I>,
+	input: I,
+): void;
+export function transformTypescriptFiles(
+	journey: Journey,
+	transform: TransformerFactory | TransformerFactoryFactory<unknown>,
+	input?: unknown,
+): void {
+	registerGuide(journey, typescriptGuide);
+
+	if (input != null) {
+		transforms
+			.get(journey)
+			.get(transform as TransformerFactoryFactory<unknown>)
+			.push(input);
+	} else {
+		transforms.get(journey).set(() => transform as TransformerFactory, []);
+	}
+}
+
+async function typescriptGuide(journey: Journey): Promise<void> {
+	const runner = runners.get(journey);
+
+	await runner(
+		Array.from(visitors.get(journey), ([visitor, input]) =>
+			visitor(input, journey),
+		),
+		Array.from(transforms.get(journey), ([transform, input]) =>
+			transform(input, journey),
+		),
+	);
+}
+
+function createSimpleRunner(journey: Journey) {
+	return (
+		visitors: ((
+			sourceFile: ts.SourceFile,
+			recorder: TypescriptUpdateRecorder,
+		) => void)[],
+		transforms: ts.TransformerFactory<ts.SourceFile>[],
+	) => {
+		const tree = getTree(journey);
+		const context = getContext(journey);
 		const printer = ts.createPrinter();
 
 		const formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
@@ -107,51 +232,75 @@ function createSimpleRunner(tree: Tree, context: SchematicContext) {
 		for (const path of walkTree(tree, {
 			include: ['**/*.{m,c,}{t,j}s', '**/*.{m,c,}{t,j}sx'],
 		})) {
-			const sourceFile = ts.createSourceFile(
+			let content = tree.readText(path);
+			let sourceFile = ts.createSourceFile(
 				path,
-				tree.readText(path),
+				content,
 				ts.ScriptTarget.ESNext,
 				false,
 				scriptKinds[extname(path)],
 			);
 
-			const result = ts.transform(sourceFile, transforms);
+			if (visitors.length) {
+				for (const visitor of visitors) {
+					const recorder = tree.beginUpdate(path);
 
-			if (result.diagnostics) {
-				for (const diagnostic of result.diagnostics) {
-					switch (diagnostic.category) {
-						case ts.DiagnosticCategory.Error:
-							context.logger.error(
-								ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-							);
-							break;
-						case ts.DiagnosticCategory.Warning:
-							context.logger.warn(
-								ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-							);
-							break;
-						default:
-							context.logger.info(
-								ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-							);
-							break;
-					}
+					visitor(
+						sourceFile,
+						createTypescriptUpdateRecorder(sourceFile, recorder),
+					);
+
+					tree.commitUpdate(recorder);
+
+					const newContent = tree.readText(path);
+					sourceFile = ts.updateSourceFile(
+						sourceFile,
+						newContent,
+						ts.createTextChangeRange(
+							ts.createTextSpan(0, content.length),
+							newContent.length,
+						),
+					);
+					content = newContent;
 				}
 			}
 
-			const transformedSourceFile = result.transformed[0]!;
+			if (transforms.length) {
+				const result = ts.transform(sourceFile, transforms);
 
-			if (transformedSourceFile === sourceFile) {
-				// nothing happened
-				return;
+				if (result.diagnostics) {
+					for (const diagnostic of result.diagnostics) {
+						switch (diagnostic.category) {
+							case ts.DiagnosticCategory.Error:
+								context.logger.error(
+									ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+								);
+								break;
+							case ts.DiagnosticCategory.Warning:
+								context.logger.warn(
+									ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+								);
+								break;
+							default:
+								context.logger.info(
+									ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+								);
+								break;
+						}
+					}
+				}
+
+				const transformedSourceFile = result.transformed[0]!;
+
+				if (transformedSourceFile !== sourceFile) {
+					tree.overwrite(path, printer.printFile(transformedSourceFile));
+				}
 			}
-
-			tree.overwrite(path, printer.printFile(transformedSourceFile));
 		}
 	};
 }
 
-function createTypeCheckedRunner(tree: Tree, context: SchematicContext) {
+function createTypeCheckedRunner(journey: Journey) {
 	let currentProgram: ts.Program | undefined = undefined;
 	let currentTypeChecker: ts.TypeChecker | undefined = undefined;
 
@@ -223,9 +372,15 @@ function createTypeCheckedRunner(tree: Tree, context: SchematicContext) {
 		},
 	});
 
-	const runner = async (transforms: ts.TransformerFactory<ts.SourceFile>[]) => {
-		const {ts, createSystem, createProgram, getPath, formatDiagnosticsHost} =
-			require('@snuggery/schematics/typescript') as typeof import('@snuggery/schematics/typescript');
+	const runner = async (
+		visitors: ((
+			sourceFile: ts.SourceFile,
+			recorder: TypescriptUpdateRecorder,
+		) => void)[],
+		transforms: ts.TransformerFactory<ts.SourceFile>[],
+	) => {
+		const tree = getTree(journey);
+		const context = getContext(journey);
 		const printer = ts.createPrinter();
 
 		const tsConfigs = new Set<string>();
@@ -267,7 +422,7 @@ function createTypeCheckedRunner(tree: Tree, context: SchematicContext) {
 				});
 				currentTypeChecker = currentProgram.getTypeChecker();
 
-				for (const sourceFile of currentProgram.getSourceFiles()) {
+				for (let sourceFile of currentProgram.getSourceFiles()) {
 					if (currentProgram.isSourceFileFromExternalLibrary(sourceFile)) {
 						continue;
 					}
@@ -278,38 +433,63 @@ function createTypeCheckedRunner(tree: Tree, context: SchematicContext) {
 					}
 					handledFiles.add(path);
 
-					const result = ts.transform(sourceFile, transforms);
+					if (visitors.length) {
+						let content = sourceFile.text;
 
-					if (result.diagnostics) {
-						for (const diagnostic of result.diagnostics) {
-							switch (diagnostic.category) {
-								case ts.DiagnosticCategory.Error:
-									context.logger.error(
-										ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-									);
-									break;
-								case ts.DiagnosticCategory.Warning:
-									context.logger.warn(
-										ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-									);
-									break;
-								default:
-									context.logger.info(
-										ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
-									);
-									break;
-							}
+						for (const visitor of visitors) {
+							const recorder = tree.beginUpdate(path);
+
+							visitor(
+								sourceFile,
+								createTypescriptUpdateRecorder(sourceFile, recorder),
+							);
+
+							tree.commitUpdate(recorder);
+
+							const newContent = tree.readText(path);
+							sourceFile = ts.updateSourceFile(
+								sourceFile,
+								newContent,
+								ts.createTextChangeRange(
+									ts.createTextSpan(0, content.length),
+									newContent.length,
+								),
+							);
+							content = newContent;
 						}
 					}
 
-					const transformedSourceFile = result.transformed[0]!;
+					if (transforms.length) {
+						const result = ts.transform(sourceFile, transforms);
 
-					if (transformedSourceFile === sourceFile) {
-						// nothing happened
-						return;
+						if (result.diagnostics) {
+							for (const diagnostic of result.diagnostics) {
+								switch (diagnostic.category) {
+									case ts.DiagnosticCategory.Error:
+										context.logger.error(
+											ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+										);
+										break;
+									case ts.DiagnosticCategory.Warning:
+										context.logger.warn(
+											ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+										);
+										break;
+									default:
+										context.logger.info(
+											ts.formatDiagnostic(diagnostic, formatDiagnosticsHost),
+										);
+										break;
+								}
+							}
+						}
+
+						const transformedSourceFile = result.transformed[0]!;
+
+						if (transformedSourceFile !== sourceFile) {
+							tree.overwrite(path, printer.printFile(transformedSourceFile));
+						}
 					}
-
-					tree.overwrite(path, printer.printFile(transformedSourceFile));
 				}
 			}
 		} finally {

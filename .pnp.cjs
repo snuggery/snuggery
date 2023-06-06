@@ -1868,6 +1868,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/pkgjs__parseargs", "npm:0.10.0"],\
             ["@types/prompts", "npm:2.4.4"],\
             ["@types/semver", "npm:7.3.13"],\
+            ["@types/snuggery__core", null],\
+            ["@types/snuggery__schematics", null],\
             ["@types/typescript", null],\
             ["kleur", "npm:4.1.5"],\
             ["prompts", "npm:2.4.2"],\
@@ -1876,6 +1878,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["uvu", "npm:0.5.6"]\
           ],\
           "packagePeers": [\
+            "@types/snuggery__core",\
+            "@types/snuggery__schematics",\
             "@types/typescript",\
             "typescript"\
           ],\

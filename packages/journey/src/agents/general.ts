@@ -1,55 +1,57 @@
-import type {Tree, SchematicContext} from '@angular-devkit/schematics';
+import type {SchematicContext, Tree} from '@angular-devkit/schematics';
 
-import type {GeneralTransformFactory, Journey, TravelAgent} from '../types';
+import {Journey, getTree, registerGuide, getContext} from '../types';
+import {Map, WeakMap} from '../utils';
 
-type GeneralJourney = Journey['general'];
+export interface TreeVisitor {
+	(tree: Tree, context: SchematicContext): void | Promise<void>;
+}
 
-export class GeneralTravelAgent implements TravelAgent, GeneralJourney {
-	#configuring = true;
-	#transforms = new Map<GeneralTransformFactory<unknown>, unknown[]>();
-	#tree: Tree;
-	#context: SchematicContext;
+export interface TreeVisitorWithInput<I> {
+	(input: I[], tree: Tree, context: SchematicContext): void | Promise<void>;
+}
 
-	constructor(tree: Tree, context: SchematicContext) {
-		this.#tree = tree;
-		this.#context = context;
+const visitors = new WeakMap<
+	Journey,
+	Map<TreeVisitorWithInput<unknown>, unknown[]>
+>(() => new Map(() => []));
+
+async function treeVisitorGuide(journey: Journey): Promise<void> {
+	const tree = getTree(journey);
+	const context = getContext(journey);
+	const registeredTransforms = visitors.get(journey);
+
+	if (!registeredTransforms?.size) {
+		return;
 	}
 
-	#assertIsConfiguring(operation: string & keyof this) {
-		if (!this.#configuring) {
-			throw new Error(`${operation} must be called during Trip#configure`);
-		}
+	for (const [visitor, inputs] of registeredTransforms) {
+		await visitor(inputs, tree, context);
 	}
+}
 
-	addTransform(transform: (tree: Tree) => void | Promise<void>): void {
-		this.#assertIsConfiguring('addTransform');
-		this.#transforms.set(() => transform, []);
-	}
+export function visitTree(journey: Journey, visitor: TreeVisitor): void;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function visitTree<I extends {}>(
+	journey: Journey,
+	visitor: TreeVisitorWithInput<I>,
+	input: I,
+): void;
+export function visitTree(
+	journey: Journey,
+	visitor: TreeVisitor | TreeVisitorWithInput<unknown>,
+	input?: unknown,
+): void {
+	registerGuide(journey, treeVisitorGuide);
 
-	addDeduplicatedTransform<T>(
-		transform: GeneralTransformFactory<T>,
-		input: T,
-	): void;
-	addDeduplicatedTransform(
-		transform: GeneralTransformFactory<unknown>,
-		input: unknown,
-	): void {
-		this.#assertIsConfiguring('addDeduplicatedTransform');
-
-		let inputs = this.#transforms.get(transform);
-		if (inputs == null) {
-			inputs = [];
-			this.#transforms.set(transform, inputs);
-		}
-
-		inputs.push(input);
-	}
-
-	async bookTrips(): Promise<void> {
-		this.#configuring = false;
-
-		for (const [factory, input] of this.#transforms) {
-			await factory({input, context: this.#context})(this.#tree);
-		}
+	if (input != null) {
+		visitors
+			.get(journey)
+			.get(visitor as TreeVisitorWithInput<unknown>)
+			.push(input);
+	} else {
+		visitors
+			.get(journey)
+			.set((_, tree, context) => (visitor as TreeVisitor)(tree, context), []);
 	}
 }
