@@ -82,6 +82,7 @@ project "all" root="" {
 				- "LICENSE.md" from="."
 				- allowEmpty=true from=(project-relative)"src" {
 					include "**/*.d.ts" "**/*.json"
+					exclude "**/__tests__/**"
 				}
 			}
 		}
