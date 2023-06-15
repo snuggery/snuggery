@@ -20,6 +20,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:integration"\
       },\
       {\
+        "name": "angular-1e2ed1",\
+        "reference": "workspace:integration/__fixtures__/angular"\
+      },\
+      {\
+        "name": "@integration/dependent",\
+        "reference": "workspace:integration/__fixtures__/angular/packages/dependent"\
+      },\
+      {\
+        "name": "@integration/dependent-root",\
+        "reference": "workspace:integration/__fixtures__/angular/packages/dependent-root"\
+      },\
+      {\
+        "name": "@integration/standalone",\
+        "reference": "workspace:integration/__fixtures__/angular/packages/standalone"\
+      },\
+      {\
+        "name": "multiple-projects-f84643",\
+        "reference": "workspace:integration/__fixtures__/multiple-projects"\
+      },\
+      {\
+        "name": "test-builders",\
+        "reference": "workspace:integration/test-builders"\
+      },\
+      {\
+        "name": "test-other-schematics",\
+        "reference": "workspace:integration/test-other-schematics"\
+      },\
+      {\
+        "name": "test-schematics",\
+        "reference": "workspace:integration/test-schematics"\
+      },\
+      {\
         "name": "@snuggery/affected",\
         "reference": "workspace:packages/affected"\
       },\
@@ -66,38 +98,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {\
         "name": "@snuggery-workspace/scripts",\
         "reference": "workspace:scripts"\
-      },\
-      {\
-        "name": "angular-1e2ed1",\
-        "reference": "workspace:integration/__fixtures__/angular"\
-      },\
-      {\
-        "name": "multiple-projects-f84643",\
-        "reference": "workspace:integration/__fixtures__/multiple-projects"\
-      },\
-      {\
-        "name": "test-builders",\
-        "reference": "workspace:integration/test-builders"\
-      },\
-      {\
-        "name": "test-other-schematics",\
-        "reference": "workspace:integration/test-other-schematics"\
-      },\
-      {\
-        "name": "test-schematics",\
-        "reference": "workspace:integration/test-schematics"\
-      },\
-      {\
-        "name": "@integration/dependent",\
-        "reference": "workspace:integration/__fixtures__/angular/packages/dependent"\
-      },\
-      {\
-        "name": "@integration/dependent-root",\
-        "reference": "workspace:integration/__fixtures__/angular/packages/dependent-root"\
-      },\
-      {\
-        "name": "@integration/standalone",\
-        "reference": "workspace:integration/__fixtures__/angular/packages/standalone"\
       }\
     ],\
     "enableTopLevelFallback": true,\
@@ -153,52 +153,52 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.8.7"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
         }]\
       ]],\
       ["@ampproject/remapping", [\
-        ["npm:2.2.0", {\
-          "packageLocation": "./.yarn/cache/@ampproject-remapping-npm-2.2.0-114878fa50-d74d170d06.zip/node_modules/@ampproject/remapping/",\
+        ["npm:2.2.1", {\
+          "packageLocation": "./.yarn/cache/@ampproject-remapping-npm-2.2.1-3da3d624be-03c04fd526.zip/node_modules/@ampproject/remapping/",\
           "packageDependencies": [\
-            ["@ampproject/remapping", "npm:2.2.0"],\
-            ["@jridgewell/gen-mapping", "npm:0.1.1"],\
+            ["@ampproject/remapping", "npm:2.2.1"],\
+            ["@jridgewell/gen-mapping", "npm:0.3.3"],\
             ["@jridgewell/trace-mapping", "npm:0.3.18"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@angular-devkit/architect", [\
-        ["npm:0.1600.0-rc.0", {\
-          "packageLocation": "./.yarn/cache/@angular-devkit-architect-npm-0.1600.0-rc.0-e1fff61502-1c40ebd628.zip/node_modules/@angular-devkit/architect/",\
+        ["npm:0.1601.0", {\
+          "packageLocation": "./.yarn/cache/@angular-devkit-architect-npm-0.1601.0-a32b546957-64119cf304.zip/node_modules/@angular-devkit/architect/",\
           "packageDependencies": [\
-            ["@angular-devkit/architect", "npm:0.1600.0-rc.0"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["rxjs", "npm:7.8.0"]\
+            ["@angular-devkit/architect", "npm:0.1601.0"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["rxjs", "npm:7.8.1"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@angular-devkit/core", [\
-        ["patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/@angular-devkit-core-patch-0174ea71df-cf1c8f284d.zip/node_modules/@angular-devkit/core/",\
+        ["patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@angular-devkit-core-patch-bab9e7aaf2-91065b60b9.zip/node_modules/@angular-devkit/core/",\
           "packageDependencies": [\
-            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."]\
+            ["@angular-devkit/core", "patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/__virtual__/@angular-devkit-core-virtual-7ebedfe7e3/0/cache/@angular-devkit-core-patch-0174ea71df-cf1c8f284d.zip/node_modules/@angular-devkit/core/",\
+        ["virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-devkit-core-virtual-c8ac8f5735/0/cache/@angular-devkit-core-patch-bab9e7aaf2-91065b60b9.zip/node_modules/@angular-devkit/core/",\
           "packageDependencies": [\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@types/chokidar", null],\
             ["ajv", "npm:8.12.0"],\
-            ["ajv-formats", "virtual:7ebedfe7e330fb042f97099b5ce59e236d863d0784b0d42c81cf896eb226ca9b66d9c78cd01182d3de64f10d9fcf8c9f0edd51e545f4c04297c853670ac9d0f7#npm:2.1.1"],\
+            ["ajv-formats", "virtual:c8ac8f5735765328d1f6f71d7bbb807233e02d66ca0d666ed1919ddf3479a132a47bfb8431db64ba8e153b1adf3567ceeb263ff90d27f56021cca0e4cf7f62e8#npm:2.1.1"],\
             ["chokidar", null],\
             ["jsonc-parser", "npm:3.2.0"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["source-map", "npm:0.7.4"]\
           ],\
           "packagePeers": [\
@@ -209,15 +209,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular-devkit/schematics", [\
-        ["patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/@angular-devkit-schematics-patch-061206b7de-0f5f7edb2f.zip/node_modules/@angular-devkit/schematics/",\
+        ["patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@angular-devkit-schematics-patch-afcdb1d6e9-7006ddd32c.zip/node_modules/@angular-devkit/schematics/",\
           "packageDependencies": [\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["jsonc-parser", "npm:3.2.0"],\
             ["magic-string", "npm:0.30.0"],\
             ["ora", "npm:5.4.1"],\
-            ["rxjs", "npm:7.8.0"]\
+            ["rxjs", "npm:7.8.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -238,7 +238,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/eslint", null],\
             ["@types/typescript", null],\
             ["eslint", "npm:8.38.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -250,17 +250,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular/compiler", [\
-        ["npm:16.0.0-rc.1", {\
-          "packageLocation": "./.yarn/cache/@angular-compiler-npm-16.0.0-rc.1-12e0a3e5d1-ad8f810347.zip/node_modules/@angular/compiler/",\
+        ["npm:16.1.1", {\
+          "packageLocation": "./.yarn/cache/@angular-compiler-npm-16.1.1-48b8707c96-f0029669f5.zip/node_modules/@angular/compiler/",\
           "packageDependencies": [\
-            ["@angular/compiler", "npm:16.0.0-rc.1"]\
+            ["@angular/compiler", "npm:16.1.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1", {\
-          "packageLocation": "./.yarn/__virtual__/@angular-compiler-virtual-ea485d4cf7/0/cache/@angular-compiler-npm-16.0.0-rc.1-12e0a3e5d1-ad8f810347.zip/node_modules/@angular/compiler/",\
+        ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-compiler-virtual-ff979f737a/0/cache/@angular-compiler-npm-16.1.1-48b8707c96-f0029669f5.zip/node_modules/@angular/compiler/",\
           "packageDependencies": [\
-            ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1"],\
+            ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1"],\
             ["@angular/core", null],\
             ["@types/angular__core", null],\
             ["tslib", "npm:2.5.0"]\
@@ -273,19 +273,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular/compiler-cli", [\
-        ["patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/cache/@angular-compiler-cli-patch-dae6c0b582-0390ad50c1.zip/node_modules/@angular/compiler-cli/",\
+        ["patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/cache/@angular-compiler-cli-patch-0e85d2b2d2-6569d14067.zip/node_modules/@angular/compiler-cli/",\
           "packageDependencies": [\
-            ["@angular/compiler-cli", "patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."]\
+            ["@angular/compiler-cli", "patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
-          "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-9e6f4e1a9c/0/cache/@angular-compiler-cli-patch-dae6c0b582-0390ad50c1.zip/node_modules/@angular/compiler-cli/",\
+        ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-dc4855f820/0/cache/@angular-compiler-cli-patch-0e85d2b2d2-6569d14067.zip/node_modules/@angular/compiler-cli/",\
           "packageDependencies": [\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1"],\
-            ["@babel/core", "npm:7.19.3"],\
+            ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1"],\
+            ["@babel/core", "npm:7.21.8"],\
             ["@jridgewell/sourcemap-codec", "npm:1.4.15"],\
             ["@types/angular__compiler", null],\
             ["@types/typescript", null],\
@@ -294,7 +294,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],\
             ["semver", "npm:7.5.0"],\
             ["tslib", "npm:2.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["yargs", "npm:17.4.1"]\
           ],\
           "packagePeers": [\
@@ -307,20 +307,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@angular/core", [\
-        ["npm:16.0.0-rc.1", {\
-          "packageLocation": "./.yarn/cache/@angular-core-npm-16.0.0-rc.1-2b197d819f-a79099641d.zip/node_modules/@angular/core/",\
+        ["npm:16.1.1", {\
+          "packageLocation": "./.yarn/cache/@angular-core-npm-16.1.1-9b42460181-d5b08f14d0.zip/node_modules/@angular/core/",\
           "packageDependencies": [\
-            ["@angular/core", "npm:16.0.0-rc.1"]\
+            ["@angular/core", "npm:16.1.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1", {\
-          "packageLocation": "./.yarn/__virtual__/@angular-core-virtual-77a2fbcbfd/0/cache/@angular-core-npm-16.0.0-rc.1-2b197d819f-a79099641d.zip/node_modules/@angular/core/",\
+        ["virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1", {\
+          "packageLocation": "./.yarn/__virtual__/@angular-core-virtual-1ad9889383/0/cache/@angular-core-npm-16.1.1-9b42460181-d5b08f14d0.zip/node_modules/@angular/core/",\
           "packageDependencies": [\
-            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1"],\
+            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1"],\
             ["@types/rxjs", null],\
             ["@types/zone.js", null],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"],\
             ["zone.js", "npm:0.13.0"]\
           ],\
@@ -344,39 +344,39 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/code-frame", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-code-frame-npm-7.21.4-5db83e65be-e5390e6ec1.zip/node_modules/@babel/code-frame/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-code-frame-npm-7.22.5-b36f88d6f9-cfe804f518.zip/node_modules/@babel/code-frame/",\
           "packageDependencies": [\
-            ["@babel/code-frame", "npm:7.21.4"],\
-            ["@babel/highlight", "npm:7.18.6"]\
+            ["@babel/code-frame", "npm:7.22.5"],\
+            ["@babel/highlight", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/compat-data", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-compat-data-npm-7.21.4-6e6abd0eab-5f8b98c66f.zip/node_modules/@babel/compat-data/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-compat-data-npm-7.22.5-282f002362-eb1a47ebf7.zip/node_modules/@babel/compat-data/",\
           "packageDependencies": [\
-            ["@babel/compat-data", "npm:7.21.4"]\
+            ["@babel/compat-data", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/core", [\
-        ["npm:7.19.3", {\
-          "packageLocation": "./.yarn/cache/@babel-core-npm-7.19.3-24bbc57b64-dd88331120.zip/node_modules/@babel/core/",\
+        ["npm:7.21.8", {\
+          "packageLocation": "./.yarn/cache/@babel-core-npm-7.21.8-236525e651-f281184473.zip/node_modules/@babel/core/",\
           "packageDependencies": [\
-            ["@babel/core", "npm:7.19.3"],\
-            ["@ampproject/remapping", "npm:2.2.0"],\
-            ["@babel/code-frame", "npm:7.21.4"],\
-            ["@babel/generator", "npm:7.21.4"],\
-            ["@babel/helper-compilation-targets", "virtual:24bbc57b6481f771b41afc2df2a6563f2ca4ce8c1b3e8da438e2eef58083f925d86ad50b349b86e8c89648c4068a3184a6b0e87b4c05e6718be834a1132707aa#npm:7.21.4"],\
-            ["@babel/helper-module-transforms", "npm:7.21.2"],\
-            ["@babel/helpers", "npm:7.21.0"],\
-            ["@babel/parser", "npm:7.21.4"],\
-            ["@babel/template", "npm:7.20.7"],\
-            ["@babel/traverse", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"],\
+            ["@babel/core", "npm:7.21.8"],\
+            ["@ampproject/remapping", "npm:2.2.1"],\
+            ["@babel/code-frame", "npm:7.22.5"],\
+            ["@babel/generator", "npm:7.22.5"],\
+            ["@babel/helper-compilation-targets", "virtual:236525e65171af5122d956afa7f1e21185d6a0eead38e7b3787a37c459cac573c1780a1c3350b46271bbc6a1baa02fae13a95688c5f51a63fa08d7ca7a6dd9a4#npm:7.22.5"],\
+            ["@babel/helper-module-transforms", "npm:7.22.5"],\
+            ["@babel/helpers", "npm:7.22.5"],\
+            ["@babel/parser", "npm:7.22.5"],\
+            ["@babel/template", "npm:7.22.5"],\
+            ["@babel/traverse", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"],\
             ["convert-source-map", "npm:1.8.0"],\
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["gensync", "npm:1.0.0-beta.2"],\
@@ -387,11 +387,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/generator", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-generator-npm-7.21.4-4ab6c9c2f0-9ffbb526a5.zip/node_modules/@babel/generator/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-generator-npm-7.22.5-0e87a1a822-efa64da70c.zip/node_modules/@babel/generator/",\
           "packageDependencies": [\
-            ["@babel/generator", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"],\
+            ["@babel/generator", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"],\
             ["@jridgewell/gen-mapping", "npm:0.3.3"],\
             ["@jridgewell/trace-mapping", "npm:0.3.18"],\
             ["jsesc", "npm:2.5.2"]\
@@ -400,20 +400,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/helper-compilation-targets", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-compilation-targets-npm-7.21.4-0264973d6a-bf9c7d3e7e.zip/node_modules/@babel/helper-compilation-targets/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-compilation-targets-npm-7.22.5-5e6d9af186-a479460615.zip/node_modules/@babel/helper-compilation-targets/",\
           "packageDependencies": [\
-            ["@babel/helper-compilation-targets", "npm:7.21.4"]\
+            ["@babel/helper-compilation-targets", "npm:7.22.5"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:24bbc57b6481f771b41afc2df2a6563f2ca4ce8c1b3e8da438e2eef58083f925d86ad50b349b86e8c89648c4068a3184a6b0e87b4c05e6718be834a1132707aa#npm:7.21.4", {\
-          "packageLocation": "./.yarn/__virtual__/@babel-helper-compilation-targets-virtual-f06cd1ea1e/0/cache/@babel-helper-compilation-targets-npm-7.21.4-0264973d6a-bf9c7d3e7e.zip/node_modules/@babel/helper-compilation-targets/",\
+        ["virtual:236525e65171af5122d956afa7f1e21185d6a0eead38e7b3787a37c459cac573c1780a1c3350b46271bbc6a1baa02fae13a95688c5f51a63fa08d7ca7a6dd9a4#npm:7.22.5", {\
+          "packageLocation": "./.yarn/__virtual__/@babel-helper-compilation-targets-virtual-df318fb644/0/cache/@babel-helper-compilation-targets-npm-7.22.5-5e6d9af186-a479460615.zip/node_modules/@babel/helper-compilation-targets/",\
           "packageDependencies": [\
-            ["@babel/helper-compilation-targets", "virtual:24bbc57b6481f771b41afc2df2a6563f2ca4ce8c1b3e8da438e2eef58083f925d86ad50b349b86e8c89648c4068a3184a6b0e87b4c05e6718be834a1132707aa#npm:7.21.4"],\
-            ["@babel/compat-data", "npm:7.21.4"],\
-            ["@babel/core", "npm:7.19.3"],\
-            ["@babel/helper-validator-option", "npm:7.21.0"],\
+            ["@babel/helper-compilation-targets", "virtual:236525e65171af5122d956afa7f1e21185d6a0eead38e7b3787a37c459cac573c1780a1c3350b46271bbc6a1baa02fae13a95688c5f51a63fa08d7ca7a6dd9a4#npm:7.22.5"],\
+            ["@babel/compat-data", "npm:7.22.5"],\
+            ["@babel/core", "npm:7.21.8"],\
+            ["@babel/helper-validator-option", "npm:7.22.5"],\
             ["@types/babel__core", null],\
             ["browserslist", "npm:4.21.5"],\
             ["lru-cache", "npm:5.1.1"],\
@@ -427,127 +427,127 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/helper-environment-visitor", [\
-        ["npm:7.18.9", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-environment-visitor-npm-7.18.9-9f5b3635a1-b25101f616.zip/node_modules/@babel/helper-environment-visitor/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-environment-visitor-npm-7.22.5-7bc52eec61-248532077d.zip/node_modules/@babel/helper-environment-visitor/",\
           "packageDependencies": [\
-            ["@babel/helper-environment-visitor", "npm:7.18.9"]\
+            ["@babel/helper-environment-visitor", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-function-name", [\
-        ["npm:7.21.0", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-function-name-npm-7.21.0-a17ce5a05a-d63e63c3e0.zip/node_modules/@babel/helper-function-name/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-function-name-npm-7.22.5-8a1a69b63d-6b1f6ce1b1.zip/node_modules/@babel/helper-function-name/",\
           "packageDependencies": [\
-            ["@babel/helper-function-name", "npm:7.21.0"],\
-            ["@babel/template", "npm:7.20.7"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-function-name", "npm:7.22.5"],\
+            ["@babel/template", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-hoist-variables", [\
-        ["npm:7.18.6", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-hoist-variables-npm-7.18.6-6eb061f405-fd9c35bb43.zip/node_modules/@babel/helper-hoist-variables/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-hoist-variables-npm-7.22.5-6db3192347-394ca191b4.zip/node_modules/@babel/helper-hoist-variables/",\
           "packageDependencies": [\
-            ["@babel/helper-hoist-variables", "npm:7.18.6"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-hoist-variables", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-module-imports", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-module-imports-npm-7.21.4-e4cd6b4e21-bd330a2eda.zip/node_modules/@babel/helper-module-imports/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-module-imports-npm-7.22.5-399b6063db-9ac2b0404f.zip/node_modules/@babel/helper-module-imports/",\
           "packageDependencies": [\
-            ["@babel/helper-module-imports", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-module-imports", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-module-transforms", [\
-        ["npm:7.21.2", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-module-transforms-npm-7.21.2-c33f2d2d0e-8a1c129a4f.zip/node_modules/@babel/helper-module-transforms/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-module-transforms-npm-7.22.5-c31751930e-8985dc0d97.zip/node_modules/@babel/helper-module-transforms/",\
           "packageDependencies": [\
-            ["@babel/helper-module-transforms", "npm:7.21.2"],\
-            ["@babel/helper-environment-visitor", "npm:7.18.9"],\
-            ["@babel/helper-module-imports", "npm:7.21.4"],\
-            ["@babel/helper-simple-access", "npm:7.20.2"],\
-            ["@babel/helper-split-export-declaration", "npm:7.18.6"],\
-            ["@babel/helper-validator-identifier", "npm:7.19.1"],\
-            ["@babel/template", "npm:7.20.7"],\
-            ["@babel/traverse", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-module-transforms", "npm:7.22.5"],\
+            ["@babel/helper-environment-visitor", "npm:7.22.5"],\
+            ["@babel/helper-module-imports", "npm:7.22.5"],\
+            ["@babel/helper-simple-access", "npm:7.22.5"],\
+            ["@babel/helper-split-export-declaration", "npm:7.22.5"],\
+            ["@babel/helper-validator-identifier", "npm:7.22.5"],\
+            ["@babel/template", "npm:7.22.5"],\
+            ["@babel/traverse", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-simple-access", [\
-        ["npm:7.20.2", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-simple-access-npm-7.20.2-842ec98fbb-ad1e96ee2e.zip/node_modules/@babel/helper-simple-access/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-simple-access-npm-7.22.5-0a3f578780-fe9686714c.zip/node_modules/@babel/helper-simple-access/",\
           "packageDependencies": [\
-            ["@babel/helper-simple-access", "npm:7.20.2"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-simple-access", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-split-export-declaration", [\
-        ["npm:7.18.6", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-split-export-declaration-npm-7.18.6-53ebf8ad4c-c6d3dede53.zip/node_modules/@babel/helper-split-export-declaration/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-split-export-declaration-npm-7.22.5-5e708abd3e-d10e05a02f.zip/node_modules/@babel/helper-split-export-declaration/",\
           "packageDependencies": [\
-            ["@babel/helper-split-export-declaration", "npm:7.18.6"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helper-split-export-declaration", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-string-parser", [\
-        ["npm:7.19.4", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-7.19.4-0db110dc3a-b2f8a3920b.zip/node_modules/@babel/helper-string-parser/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-string-parser-npm-7.22.5-448ff0e489-836851ca5e.zip/node_modules/@babel/helper-string-parser/",\
           "packageDependencies": [\
-            ["@babel/helper-string-parser", "npm:7.19.4"]\
+            ["@babel/helper-string-parser", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-validator-identifier", [\
-        ["npm:7.19.1", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-7.19.1-d84f19e1dc-0eca5e86a7.zip/node_modules/@babel/helper-validator-identifier/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-validator-identifier-npm-7.22.5-4536624779-7f0f301134.zip/node_modules/@babel/helper-validator-identifier/",\
           "packageDependencies": [\
-            ["@babel/helper-validator-identifier", "npm:7.19.1"]\
+            ["@babel/helper-validator-identifier", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helper-validator-option", [\
-        ["npm:7.21.0", {\
-          "packageLocation": "./.yarn/cache/@babel-helper-validator-option-npm-7.21.0-fbe86866e3-8ece4c78ff.zip/node_modules/@babel/helper-validator-option/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helper-validator-option-npm-7.22.5-eaf22b24ab-bbeca8a85e.zip/node_modules/@babel/helper-validator-option/",\
           "packageDependencies": [\
-            ["@babel/helper-validator-option", "npm:7.21.0"]\
+            ["@babel/helper-validator-option", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/helpers", [\
-        ["npm:7.21.0", {\
-          "packageLocation": "./.yarn/cache/@babel-helpers-npm-7.21.0-083aef3af1-9370dad2bb.zip/node_modules/@babel/helpers/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-helpers-npm-7.22.5-b98bfa9936-a96e785029.zip/node_modules/@babel/helpers/",\
           "packageDependencies": [\
-            ["@babel/helpers", "npm:7.21.0"],\
-            ["@babel/template", "npm:7.20.7"],\
-            ["@babel/traverse", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/helpers", "npm:7.22.5"],\
+            ["@babel/template", "npm:7.22.5"],\
+            ["@babel/traverse", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/highlight", [\
-        ["npm:7.18.6", {\
-          "packageLocation": "./.yarn/cache/@babel-highlight-npm-7.18.6-9d35ad2e27-92d8ee6154.zip/node_modules/@babel/highlight/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-highlight-npm-7.22.5-3182ccc1fe-f61ae6de6e.zip/node_modules/@babel/highlight/",\
           "packageDependencies": [\
-            ["@babel/highlight", "npm:7.18.6"],\
-            ["@babel/helper-validator-identifier", "npm:7.19.1"],\
+            ["@babel/highlight", "npm:7.22.5"],\
+            ["@babel/helper-validator-identifier", "npm:7.22.5"],\
             ["chalk", "npm:2.4.2"],\
             ["js-tokens", "npm:4.0.0"]\
           ],\
@@ -555,11 +555,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/parser", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-parser-npm-7.21.4-edab9c197b-de610ecd1b.zip/node_modules/@babel/parser/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-parser-npm-7.22.5-6f8647af64-470ebba516.zip/node_modules/@babel/parser/",\
           "packageDependencies": [\
-            ["@babel/parser", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/parser", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -575,30 +575,30 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/template", [\
-        ["npm:7.20.7", {\
-          "packageLocation": "./.yarn/cache/@babel-template-npm-7.20.7-c157fc5838-2eb1a0ab8d.zip/node_modules/@babel/template/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-template-npm-7.22.5-358c44dc9d-c574641016.zip/node_modules/@babel/template/",\
           "packageDependencies": [\
-            ["@babel/template", "npm:7.20.7"],\
-            ["@babel/code-frame", "npm:7.21.4"],\
-            ["@babel/parser", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"]\
+            ["@babel/template", "npm:7.22.5"],\
+            ["@babel/code-frame", "npm:7.22.5"],\
+            ["@babel/parser", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@babel/traverse", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-traverse-npm-7.21.4-0fc91c1e5e-f22f067c2d.zip/node_modules/@babel/traverse/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-traverse-npm-7.22.5-071d471ccd-560931422d.zip/node_modules/@babel/traverse/",\
           "packageDependencies": [\
-            ["@babel/traverse", "npm:7.21.4"],\
-            ["@babel/code-frame", "npm:7.21.4"],\
-            ["@babel/generator", "npm:7.21.4"],\
-            ["@babel/helper-environment-visitor", "npm:7.18.9"],\
-            ["@babel/helper-function-name", "npm:7.21.0"],\
-            ["@babel/helper-hoist-variables", "npm:7.18.6"],\
-            ["@babel/helper-split-export-declaration", "npm:7.18.6"],\
-            ["@babel/parser", "npm:7.21.4"],\
-            ["@babel/types", "npm:7.21.4"],\
+            ["@babel/traverse", "npm:7.22.5"],\
+            ["@babel/code-frame", "npm:7.22.5"],\
+            ["@babel/generator", "npm:7.22.5"],\
+            ["@babel/helper-environment-visitor", "npm:7.22.5"],\
+            ["@babel/helper-function-name", "npm:7.22.5"],\
+            ["@babel/helper-hoist-variables", "npm:7.22.5"],\
+            ["@babel/helper-split-export-declaration", "npm:7.22.5"],\
+            ["@babel/parser", "npm:7.22.5"],\
+            ["@babel/types", "npm:7.22.5"],\
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["globals", "npm:11.12.0"]\
           ],\
@@ -606,12 +606,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@babel/types", [\
-        ["npm:7.21.4", {\
-          "packageLocation": "./.yarn/cache/@babel-types-npm-7.21.4-ee756f419d-587bc55a91.zip/node_modules/@babel/types/",\
+        ["npm:7.22.5", {\
+          "packageLocation": "./.yarn/cache/@babel-types-npm-7.22.5-d1e4264bef-c13a9c1dc7.zip/node_modules/@babel/types/",\
           "packageDependencies": [\
-            ["@babel/types", "npm:7.21.4"],\
-            ["@babel/helper-string-parser", "npm:7.19.4"],\
-            ["@babel/helper-validator-identifier", "npm:7.19.1"],\
+            ["@babel/types", "npm:7.22.5"],\
+            ["@babel/helper-string-parser", "npm:7.22.5"],\
+            ["@babel/helper-validator-identifier", "npm:7.22.5"],\
             ["to-fast-properties", "npm:2.0.0"]\
           ],\
           "linkType": "HARD"\
@@ -1356,9 +1356,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/__fixtures__/angular/packages/dependent/",\
           "packageDependencies": [\
             ["@integration/dependent", "workspace:integration/__fixtures__/angular/packages/dependent"],\
-            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1"],\
+            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1"],\
             ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"],\
             ["zone.js", "npm:0.13.0"]\
           ],\
@@ -1370,9 +1370,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/__fixtures__/angular/packages/dependent-root/",\
           "packageDependencies": [\
             ["@integration/dependent-root", "workspace:integration/__fixtures__/angular/packages/dependent-root"],\
-            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1"],\
+            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1"],\
             ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"],\
             ["zone.js", "npm:0.13.0"]\
           ],\
@@ -1384,9 +1384,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@integration-standalone-virtual-25d706809d/1/integration/__fixtures__/angular/packages/standalone/",\
           "packageDependencies": [\
             ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
-            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1"],\
+            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1"],\
             ["@types/angular__core", null],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"],\
             ["zone.js", "npm:0.13.0"]\
           ],\
@@ -1400,8 +1400,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/__fixtures__/angular/packages/standalone/",\
           "packageDependencies": [\
             ["@integration/standalone", "workspace:integration/__fixtures__/angular/packages/standalone"],\
-            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.0.0-rc.1"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:16.1.1"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"],\
             ["zone.js", "npm:0.13.0"]\
           ],\
@@ -1409,15 +1409,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@jridgewell/gen-mapping", [\
-        ["npm:0.1.1", {\
-          "packageLocation": "./.yarn/cache/@jridgewell-gen-mapping-npm-0.1.1-3bad172ac6-3bcc21fe78.zip/node_modules/@jridgewell/gen-mapping/",\
-          "packageDependencies": [\
-            ["@jridgewell/gen-mapping", "npm:0.1.1"],\
-            ["@jridgewell/set-array", "npm:1.1.2"],\
-            ["@jridgewell/sourcemap-codec", "npm:1.4.15"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:0.3.3", {\
           "packageLocation": "./.yarn/cache/@jridgewell-gen-mapping-npm-0.3.3-1815eba94c-4a74944bd3.zip/node_modules/@jridgewell/gen-mapping/",\
           "packageDependencies": [\
@@ -1714,7 +1705,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["esbuild", "npm:0.17.17"],\
             ["esbuild-register", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:3.4.2"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1732,7 +1723,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"],\
             ["@types/semver", "npm:7.3.13"],\
             ["glob", "npm:7.2.0"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["semver", "npm:7.5.0"],\
             ["typanion", "npm:3.12.1"],\
             ["uvu", "npm:0.5.6"]\
@@ -1745,8 +1736,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@snuggery-angular-virtual-1ecfcff454/1/packages/angular/",\
           "packageDependencies": [\
             ["@snuggery/angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular"],\
-            ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1"],\
+            ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
             ["@microsoft/api-extractor", "npm:7.24.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
@@ -1756,7 +1747,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["@types/sass", null],\
             ["@types/typescript", null],\
-            ["autoprefixer", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:10.4.14"],\
+            ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
             ["browserslist", "npm:4.21.5"],\
             ["esbuild", "npm:0.17.17"],\
             ["less", "npm:4.1.3"],\
@@ -1764,7 +1755,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["resolve.exports", "npm:2.0.2"],\
             ["sass", "npm:1.62.0"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@angular/compiler-cli",\
@@ -1780,15 +1771,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/angular/",\
           "packageDependencies": [\
             ["@snuggery/angular", "workspace:packages/angular"],\
-            ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1"],\
+            ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
             ["@microsoft/api-extractor", "npm:7.24.1"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@types/less", "npm:3.0.3"],\
             ["@types/node", "npm:16.11.35"],\
-            ["autoprefixer", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:10.4.14"],\
+            ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
             ["browserslist", "npm:4.21.5"],\
             ["esbuild", "npm:0.17.17"],\
             ["less", "npm:4.1.3"],\
@@ -1796,7 +1787,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["resolve.exports", "npm:2.0.2"],\
             ["sass", "npm:1.62.0"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1806,8 +1797,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/architect/",\
           "packageDependencies": [\
             ["@snuggery/architect", "workspace:packages/architect"],\
-            ["@angular-devkit/architect", "npm:0.1600.0-rc.0"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/architect", "npm:0.1601.0"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@types/fs-extra", "npm:11.0.1"],\
@@ -1815,7 +1806,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:14.14.35"],\
             ["fs-extra", "npm:11.1.1"],\
             ["glob", "npm:10.2.1"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -1826,7 +1817,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/core/",\
           "packageDependencies": [\
             ["@snuggery/core", "workspace:packages/core"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@bgotink/kdl", "npm:0.1.6"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@types/micromatch", "npm:4.0.2"],\
@@ -1858,8 +1849,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@snuggery-journey-virtual-068a6e44f3/1/packages/journey/",\
           "packageDependencies": [\
             ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@pkgjs/parseargs", "npm:0.11.0"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
@@ -1874,7 +1865,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["kleur", "npm:4.1.5"],\
             ["prompts", "npm:2.4.2"],\
             ["semver", "npm:7.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "packagePeers": [\
@@ -1889,8 +1880,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/journey/",\
           "packageDependencies": [\
             ["@snuggery/journey", "workspace:packages/journey"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@pkgjs/parseargs", "npm:0.11.0"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
@@ -1902,7 +1893,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["kleur", "npm:4.1.5"],\
             ["prompts", "npm:2.4.2"],\
             ["semver", "npm:7.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -1913,7 +1904,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@snuggery-node-virtual-e44f2f7bc4/1/packages/node/",\
           "packageDependencies": [\
             ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
@@ -1921,9 +1912,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["@types/typescript", null],\
             ["@types/uvu", null],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "packagePeers": [\
@@ -1938,15 +1929,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/node/",\
           "packageDependencies": [\
             ["@snuggery/node", "workspace:packages/node"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/node", "npm:16.11.35"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -1957,15 +1948,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@snuggery-schematics-virtual-62f7ca25c4/1/packages/schematics/",\
           "packageDependencies": [\
             ["@snuggery/schematics", "virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@types/angular-devkit__core", null],\
             ["@types/angular-devkit__schematics", null],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/typescript", null],\
             ["ignore", "npm:5.2.4"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@angular-devkit/core",\
@@ -1981,12 +1973,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/schematics/",\
           "packageDependencies": [\
             ["@snuggery/schematics", "workspace:packages/schematics"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
+            ["@types/node", "npm:16.11.35"],\
             ["ignore", "npm:5.2.4"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1996,9 +1989,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/snuggery/",\
           "packageDependencies": [\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-            ["@angular-devkit/architect", "npm:0.1600.0-rc.0"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/architect", "npm:0.1601.0"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@arcanis/slice-ansi", "npm:1.1.1"],\
             ["@nrwl/devkit", "npm:13.8.3"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
@@ -2010,12 +2003,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/semver", "npm:7.3.13"],\
             ["@types/which-pm-runs", "npm:1.0.0"],\
             ["ajv", "npm:8.12.0"],\
-            ["ajv-formats", "virtual:7ebedfe7e330fb042f97099b5ce59e236d863d0784b0d42c81cf896eb226ca9b66d9c78cd01182d3de64f10d9fcf8c9f0edd51e545f4c04297c853670ac9d0f7#npm:2.1.1"],\
+            ["ajv-formats", "virtual:c8ac8f5735765328d1f6f71d7bbb807233e02d66ca0d666ed1919ddf3479a132a47bfb8431db64ba8e153b1adf3567ceeb263ff90d27f56021cca0e4cf7f62e8#npm:2.1.1"],\
             ["clipanion", "virtual:1b5f3a8cc92e088429aafe895a3055122bfdc377fcef765772de194a5580a906bac7455b21d3504c7794ee6f1c2a1b0b9795c6ba59ead9c75b48fa0d8a761e14#npm:3.2.0"],\
             ["json5", "npm:2.2.3"],\
             ["kleur", "npm:4.1.5"],\
             ["prompts", "npm:2.4.2"],\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["semver", "npm:7.5.0"],\
             ["strip-ansi", "npm:6.0.1"],\
             ["typanion", "npm:3.12.1"],\
@@ -2030,7 +2023,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/yarn/",\
           "packageDependencies": [\
             ["@snuggery/yarn", "workspace:packages/yarn"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
@@ -2056,7 +2049,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/plugin-pack", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:3.1.1"],\
             ["clipanion", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:3.2.0-rc.10"],\
             ["semver", "npm:7.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2372,7 +2365,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["regexpp", "npm:3.2.0"],\
             ["semver", "npm:7.5.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2404,7 +2397,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/typescript-estree", "virtual:29fd4dd66215b471122f239e33e0420944226d60e04ef1cf44df348dff21814f73d4df3d6dbc3f8eda6efbed9d8cac0b54f275aff8fa4a30cfaf3a4f0a0032e3#npm:5.41.0"],\
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["eslint", "npm:8.38.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2445,7 +2438,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["eslint", "npm:8.38.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2485,7 +2478,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-glob", "npm:4.0.3"],\
             ["semver", "npm:7.5.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -3410,10 +3403,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:7ebedfe7e330fb042f97099b5ce59e236d863d0784b0d42c81cf896eb226ca9b66d9c78cd01182d3de64f10d9fcf8c9f0edd51e545f4c04297c853670ac9d0f7#npm:2.1.1", {\
-          "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-825c081903/0/cache/ajv-formats-npm-2.1.1-3cec02eae9-4a287d937f.zip/node_modules/ajv-formats/",\
+        ["virtual:c8ac8f5735765328d1f6f71d7bbb807233e02d66ca0d666ed1919ddf3479a132a47bfb8431db64ba8e153b1adf3567ceeb263ff90d27f56021cca0e4cf7f62e8#npm:2.1.1", {\
+          "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-a5c58abe0c/0/cache/ajv-formats-npm-2.1.1-3cec02eae9-4a287d937f.zip/node_modules/ajv-formats/",\
           "packageDependencies": [\
-            ["ajv-formats", "virtual:7ebedfe7e330fb042f97099b5ce59e236d863d0784b0d42c81cf896eb226ca9b66d9c78cd01182d3de64f10d9fcf8c9f0edd51e545f4c04297c853670ac9d0f7#npm:2.1.1"],\
+            ["ajv-formats", "virtual:c8ac8f5735765328d1f6f71d7bbb807233e02d66ca0d666ed1919ddf3479a132a47bfb8431db64ba8e153b1adf3567ceeb263ff90d27f56021cca0e4cf7f62e8#npm:2.1.1"],\
             ["@types/ajv", null],\
             ["ajv", "npm:8.12.0"]\
           ],\
@@ -3429,13 +3422,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/__fixtures__/angular/",\
           "packageDependencies": [\
             ["angular-1e2ed1", "workspace:integration/__fixtures__/angular"],\
-            ["@angular/compiler", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:16.0.0-rc.1"],\
-            ["@angular/compiler-cli", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#patch:@angular/compiler-cli@npm%3A16.0.0-rc.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.0.0-rc.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:16.1.1"],\
+            ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A16.1.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=16.1.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery/angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@snuggery/yarn", "workspace:packages/yarn"],\
             ["sass", "npm:1.62.0"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3655,10 +3648,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:10.4.14", {\
-          "packageLocation": "./.yarn/__virtual__/autoprefixer-virtual-ea4dd3756b/0/cache/autoprefixer-npm-10.4.14-1e0b8c34fb-e9f18e664a.zip/node_modules/autoprefixer/",\
+        ["virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14", {\
+          "packageLocation": "./.yarn/__virtual__/autoprefixer-virtual-15eafa801c/0/cache/autoprefixer-npm-10.4.14-1e0b8c34fb-e9f18e664a.zip/node_modules/autoprefixer/",\
           "packageDependencies": [\
-            ["autoprefixer", "virtual:0051f968ec6a6e17cf1b79414cd7e234e218f8d95e5ab3c23a039a505488565779723b7be49ab87c87257a76b2fa0db5495104c761c01860cec4783ed5ab7276#npm:10.4.14"],\
+            ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
             ["@types/postcss", null],\
             ["browserslist", "npm:4.21.5"],\
             ["caniuse-lite", "npm:1.0.30001480"],\
@@ -5915,8 +5908,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/",\
           "packageDependencies": [\
             ["integration-aa38c3", "workspace:integration"],\
-            ["@angular-devkit/architect", "npm:0.1600.0-rc.0"],\
-            ["@angular-devkit/core", "virtual:e1fff61502d645db5c84228add259c503557781d969aedc3a57b8e610ebf5949980db6d60642d664f0e4cb2c8a85264559494d1c42c8175276b588d43aa24de1#patch:@angular-devkit/core@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch::version=16.0.0-rc.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/architect", "npm:0.1601.0"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery/core", "workspace:packages/core"],\
             ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
@@ -7286,7 +7279,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/parse-json-npm-5.1.0-a83e3ab0f2-0c0c299347.zip/node_modules/parse-json/",\
           "packageDependencies": [\
             ["parse-json", "npm:5.1.0"],\
-            ["@babel/code-frame", "npm:7.21.4"],\
+            ["@babel/code-frame", "npm:7.22.5"],\
             ["error-ex", "npm:1.3.2"],\
             ["json-parse-even-better-errors", "npm:2.3.1"],\
             ["lines-and-columns", "npm:1.1.6"]\
@@ -7859,10 +7852,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:7.8.0", {\
-          "packageLocation": "./.yarn/cache/rxjs-npm-7.8.0-722f1c7172-61b4d4fd32.zip/node_modules/rxjs/",\
+        ["npm:7.8.1", {\
+          "packageLocation": "./.yarn/cache/rxjs-npm-7.8.1-41c443a75b-de4b53db10.zip/node_modules/rxjs/",\
           "packageDependencies": [\
-            ["rxjs", "npm:7.8.0"],\
+            ["rxjs", "npm:7.8.1"],\
             ["tslib", "npm:2.5.0"]\
           ],\
           "linkType": "HARD"\
@@ -8106,7 +8099,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.8.7"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"],\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -8401,7 +8394,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/test-builders/",\
           "packageDependencies": [\
             ["test-builders", "workspace:integration/test-builders"],\
-            ["@angular-devkit/architect", "npm:0.1600.0-rc.0"]\
+            ["@angular-devkit/architect", "npm:0.1601.0"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8411,7 +8404,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/test-other-schematics/",\
           "packageDependencies": [\
             ["test-other-schematics", "workspace:integration/test-other-schematics"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."]\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8421,10 +8414,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./integration/test-schematics/",\
           "packageDependencies": [\
             ["test-schematics", "workspace:integration/test-schematics"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.0.0-rc.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8547,7 +8540,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
             ["@types/typescript", null],\
             ["tslib", "npm:1.14.1"],\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -8637,10 +8630,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82", {\
-          "packageLocation": "./.yarn/cache/typescript-patch-260000abbe-bb309d320c.zip/node_modules/typescript/",\
+        ["patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-8d03db133e-6f0a9dca6b.zip/node_modules/typescript/",\
           "packageDependencies": [\
-            ["typescript", "patch:typescript@npm%3A5.0.4#~builtin<compat/typescript>::version=5.0.4&hash=85af82"]\
+            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -18020,118 +18013,6 @@ function hydrateRuntimeState(data, { basePath }) {
   };
 }
 
-/**
- * @param {object} exports
- * @param {Set<string>} keys
- */
-function loop(exports, keys) {
-	if (typeof exports === 'string') {
-		return exports;
-	}
-
-	if (exports) {
-		let idx, tmp;
-		if (Array.isArray(exports)) {
-			for (idx=0; idx < exports.length; idx++) {
-				if (tmp = loop(exports[idx], keys)) return tmp;
-			}
-		} else {
-			for (idx in exports) {
-				if (keys.has(idx)) {
-					return loop(exports[idx], keys);
-				}
-			}
-		}
-	}
-}
-
-/**
- * @param {string} name The package name
- * @param {string} entry The target entry, eg "."
- * @param {number} [condition] Unmatched condition?
- */
-function bail(name, entry, condition) {
-	throw new Error(
-		condition
-		? `No known conditions for "${entry}" entry in "${name}" package`
-		: `Missing "${entry}" export in "${name}" package`
-	);
-}
-
-/**
- * @param {string} name the package name
- * @param {string} entry the target path/import
- */
-function toName(name, entry) {
-	return entry === name ? '.'
-		: entry[0] === '.' ? entry
-		: entry.replace(new RegExp('^' + name + '\/'), './');
-}
-
-/**
- * @param {object} pkg package.json contents
- * @param {string} [entry] entry name or import path
- * @param {object} [options]
- * @param {boolean} [options.browser]
- * @param {boolean} [options.require]
- * @param {string[]} [options.conditions]
- * @param {boolean} [options.unsafe]
- */
-function resolve(pkg, entry='.', options={}) {
-	let { name, exports } = pkg;
-
-	if (exports) {
-		let { browser, require, unsafe, conditions=[] } = options;
-
-		let target = toName(name, entry);
-		if (target[0] !== '.') target = './' + target;
-
-		if (typeof exports === 'string') {
-			return target === '.' ? exports : bail(name, target);
-		}
-
-		let allows = new Set(['default', ...conditions]);
-		unsafe || allows.add(require ? 'require' : 'import');
-		unsafe || allows.add(browser ? 'browser' : 'node');
-
-		let key, tmp, isSingle=false;
-
-		for (key in exports) {
-			isSingle = key[0] !== '.';
-			break;
-		}
-
-		if (isSingle) {
-			return target === '.'
-				? loop(exports, allows) || bail(name, target, 1)
-				: bail(name, target);
-		}
-
-		if (tmp = exports[target]) {
-			return loop(tmp, allows) || bail(name, target, 1);
-		}
-
-		for (key in exports) {
-			tmp = key[key.length - 1];
-			if (tmp === '/' && target.startsWith(key)) {
-				return (tmp = loop(exports[key], allows))
-					? (tmp + target.substring(key.length))
-					: bail(name, target, 1);
-			}
-			if (tmp === '*' && target.startsWith(key.slice(0, -1))) {
-				// do not trigger if no *content* to inject
-				if (target.substring(key.length - 1).length > 0) {
-					return (tmp = loop(exports[key], allows))
-						? tmp.replace('*', target.substring(key.length - 1))
-						: bail(name, target, 1);
-				}
-			}
-		}
-
-		return bail(name, target);
-	}
-}
-
 const ArrayIsArray = Array.isArray;
 const JSONStringify = JSON.stringify;
 const ObjectGetOwnPropertyNames = Object.getOwnPropertyNames;
@@ -18189,6 +18070,15 @@ const ERR_INVALID_PACKAGE_CONFIG = createErrorType(
   `ERR_INVALID_PACKAGE_CONFIG`,
   (path, base, message) => {
     return `Invalid package config ${path}${base ? ` while importing ${base}` : ``}${message ? `. ${message}` : ``}`;
+  },
+  Error
+);
+const ERR_PACKAGE_PATH_NOT_EXPORTED = createErrorType(
+  "ERR_PACKAGE_PATH_NOT_EXPORTED",
+  (pkgPath, subpath, base = void 0) => {
+    if (subpath === ".")
+      return `No "exports" main defined in ${pkgPath}package.json${base ? ` imported from ${base}` : ""}`;
+    return `Package subpath '${subpath}' is not defined by "exports" in ${pkgPath}package.json${base ? ` imported from ${base}` : ""}`;
   },
   Error
 );
@@ -18511,12 +18401,121 @@ function patternKeyCompare(a, b) {
     return 1;
   return 0;
 }
-function packageImportsResolve({
-  name,
+function isConditionalExportsMainSugar(exports, packageJSONUrl, base) {
+  if (typeof exports === "string" || ArrayIsArray(exports))
+    return true;
+  if (typeof exports !== "object" || exports === null)
+    return false;
+  const keys = ObjectGetOwnPropertyNames(exports);
+  let isConditionalSugar = false;
+  let i = 0;
+  for (let j = 0; j < keys.length; j++) {
+    const key = keys[j];
+    const curIsConditionalSugar = key === "" || key[0] !== ".";
+    if (i++ === 0) {
+      isConditionalSugar = curIsConditionalSugar;
+    } else if (isConditionalSugar !== curIsConditionalSugar) {
+      throw new ERR_INVALID_PACKAGE_CONFIG(
+        url.fileURLToPath(packageJSONUrl),
+        base,
+        `"exports" cannot contain some keys starting with '.' and some not. The exports object must either be an object of package subpath keys or an object of main entry condition name keys only.`
+      );
+    }
+  }
+  return isConditionalSugar;
+}
+function throwExportsNotFound(subpath, packageJSONUrl, base) {
+  throw new ERR_PACKAGE_PATH_NOT_EXPORTED(
+    url.fileURLToPath(new URL(".", packageJSONUrl)),
+    subpath,
+    base && url.fileURLToPath(base)
+  );
+}
+const emittedPackageWarnings = /* @__PURE__ */ new Set();
+function emitTrailingSlashPatternDeprecation(match, pjsonUrl, base) {
+  const pjsonPath = url.fileURLToPath(pjsonUrl);
+  if (emittedPackageWarnings.has(pjsonPath + "|" + match))
+    return;
+  emittedPackageWarnings.add(pjsonPath + "|" + match);
+  process.emitWarning(
+    `Use of deprecated trailing slash pattern mapping "${match}" in the "exports" field module resolution of the package at ${pjsonPath}${base ? ` imported from ${url.fileURLToPath(base)}` : ""}. Mapping specifiers ending in "/" is no longer supported.`,
+    "DeprecationWarning",
+    "DEP0155"
+  );
+}
+function packageExportsResolve({
+  packageJSONUrl,
+  packageSubpath,
+  exports,
   base,
-  conditions,
-  readFileSyncFn
+  conditions
 }) {
+  if (isConditionalExportsMainSugar(exports, packageJSONUrl, base))
+    exports = { ".": exports };
+  if (ObjectPrototypeHasOwnProperty(exports, packageSubpath) && !StringPrototypeIncludes(packageSubpath, "*") && !StringPrototypeEndsWith(packageSubpath, "/")) {
+    const target = exports[packageSubpath];
+    const resolveResult = resolvePackageTarget(
+      packageJSONUrl,
+      target,
+      "",
+      packageSubpath,
+      base,
+      false,
+      false,
+      conditions
+    );
+    if (resolveResult == null) {
+      throwExportsNotFound(packageSubpath, packageJSONUrl, base);
+    }
+    return resolveResult;
+  }
+  let bestMatch = "";
+  let bestMatchSubpath;
+  const keys = ObjectGetOwnPropertyNames(exports);
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    const patternIndex = StringPrototypeIndexOf(key, "*");
+    if (patternIndex !== -1 && StringPrototypeStartsWith(
+      packageSubpath,
+      StringPrototypeSlice(key, 0, patternIndex)
+    )) {
+      if (StringPrototypeEndsWith(packageSubpath, "/"))
+        emitTrailingSlashPatternDeprecation(
+          packageSubpath,
+          packageJSONUrl,
+          base
+        );
+      const patternTrailer = StringPrototypeSlice(key, patternIndex + 1);
+      if (packageSubpath.length >= key.length && StringPrototypeEndsWith(packageSubpath, patternTrailer) && patternKeyCompare(bestMatch, key) === 1 && StringPrototypeLastIndexOf(key, "*") === patternIndex) {
+        bestMatch = key;
+        bestMatchSubpath = StringPrototypeSlice(
+          packageSubpath,
+          patternIndex,
+          packageSubpath.length - patternTrailer.length
+        );
+      }
+    }
+  }
+  if (bestMatch) {
+    const target = exports[bestMatch];
+    const resolveResult = resolvePackageTarget(
+      packageJSONUrl,
+      target,
+      bestMatchSubpath,
+      bestMatch,
+      base,
+      true,
+      false,
+      conditions
+    );
+    if (resolveResult == null) {
+      throwExportsNotFound(packageSubpath, packageJSONUrl, base);
+    }
+    return resolveResult;
+  }
+  throwExportsNotFound(packageSubpath, packageJSONUrl, base);
+}
+function packageImportsResolve({ name, base, conditions, readFileSyncFn }) {
   if (name === "#" || StringPrototypeStartsWith(name, "#/") || StringPrototypeEndsWith(name, "/")) {
     const reason = "is not a valid internal imports specifier name";
     throw new ERR_INVALID_MODULE_SPECIFIER(name, reason, url.fileURLToPath(base));
@@ -18984,12 +18983,11 @@ function makeApi(runtimeState, opts) {
     return false;
   }
   const defaultExportsConditions = /* @__PURE__ */ new Set([
-    `default`,
     `node`,
     `require`,
     ...getOptionValue(`--conditions`)
   ]);
-  function applyNodeExportsResolution(unqualifiedPath, conditions = defaultExportsConditions) {
+  function applyNodeExportsResolution(unqualifiedPath, conditions = defaultExportsConditions, issuer) {
     const locator = findPackageLocator(ppath.join(unqualifiedPath, `internal.js`), {
       resolveIgnored: true,
       includeDiscardFromLookup: true
@@ -19005,6 +19003,8 @@ function makeApi(runtimeState, opts) {
     if (!opts.fakeFs.existsSync(manifestPath))
       return null;
     const pkgJson = JSON.parse(opts.fakeFs.readFileSync(manifestPath, `utf8`));
+    if (pkgJson.exports == null)
+      return null;
     let subpath = ppath.contains(packageLocation, unqualifiedPath);
     if (subpath === null) {
       throw makeError(
@@ -19012,25 +19012,25 @@ function makeApi(runtimeState, opts) {
         `unqualifiedPath doesn't contain the packageLocation (this is probably an internal error)`
       );
     }
-    if (!isRelativeRegexp.test(subpath))
+    if (subpath !== `.` && !isRelativeRegexp.test(subpath))
       subpath = `./${subpath}`;
-    let resolvedExport;
     try {
-      resolvedExport = resolve(pkgJson, ppath.normalize(subpath), {
-        conditions,
-        unsafe: true
+      const resolvedExport = packageExportsResolve({
+        packageJSONUrl: url.pathToFileURL(npath.fromPortablePath(manifestPath)),
+        packageSubpath: subpath,
+        exports: pkgJson.exports,
+        base: issuer ? url.pathToFileURL(npath.fromPortablePath(issuer)) : null,
+        conditions
       });
+      return npath.toPortablePath(url.fileURLToPath(resolvedExport));
     } catch (error) {
       throw makeError(
         ErrorCode.EXPORTS_RESOLUTION_FAILED,
         error.message,
         { unqualifiedPath: getPathForDisplay(unqualifiedPath), locator, pkgJson, subpath: getPathForDisplay(subpath), conditions },
-        `ERR_PACKAGE_PATH_NOT_EXPORTED`
+        error.code
       );
     }
-    if (typeof resolvedExport === `string`)
-      return ppath.join(packageLocation, resolvedExport);
-    return null;
   }
   function applyNodeExtensionResolution(unqualifiedPath, candidates, { extensions }) {
     let stat;
@@ -19407,10 +19407,10 @@ Required by: ${issuerLocator.name}@${issuerLocator.reference} (via ${issuerForDi
     }
     return ppath.normalize(unqualifiedPath);
   }
-  function resolveUnqualifiedExport(request, unqualifiedPath, conditions = defaultExportsConditions) {
+  function resolveUnqualifiedExport(request, unqualifiedPath, conditions = defaultExportsConditions, issuer) {
     if (isStrictRegExp.test(request))
       return unqualifiedPath;
-    const unqualifiedExportPath = applyNodeExportsResolution(unqualifiedPath, conditions);
+    const unqualifiedExportPath = applyNodeExportsResolution(unqualifiedPath, conditions, issuer);
     if (unqualifiedExportPath) {
       return ppath.normalize(unqualifiedExportPath);
     } else {
@@ -19497,7 +19497,7 @@ ${candidates.map((candidate) => `Not found: ${getPathForDisplay(candidate)}
       if (unqualifiedPath === null)
         return null;
       const isIssuerIgnored = () => issuer !== null ? isPathIgnored(issuer) : false;
-      const remappedPath = (!considerBuiltins || !isBuiltinModule(request)) && !isIssuerIgnored() ? resolveUnqualifiedExport(request, unqualifiedPath, conditions) : unqualifiedPath;
+      const remappedPath = (!considerBuiltins || !isBuiltinModule(request)) && !isIssuerIgnored() ? resolveUnqualifiedExport(request, unqualifiedPath, conditions, issuer) : unqualifiedPath;
       return resolveUnqualified(remappedPath, { extensions });
     } catch (error) {
       if (Object.prototype.hasOwnProperty.call(error, `pnpCode`))
