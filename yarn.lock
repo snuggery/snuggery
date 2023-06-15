@@ -1416,7 +1416,7 @@ __metadata:
     "@pkgjs/parseargs": ^0.11.0
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": ^0.6.1
-    "@snuggery/schematics": ^0.8.0
+    "@snuggery/schematics": ^0.8.1
     "@types/node": ^16.11.35
     "@types/pkgjs__parseargs": ^0.10.0
     "@types/prompts": ^2.4.4
@@ -1428,7 +1428,7 @@ __metadata:
     uvu: ^0.5.6
   peerDependencies:
     "@snuggery/core": ^0.6.1
-    "@snuggery/schematics": ^0.8.0
+    "@snuggery/schematics": ^0.8.1
     typescript: ">= 5.0.4 < 5.2.0"
   bin:
     journey: ./bin.mjs
@@ -1460,7 +1460,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/schematics@^0.8.0, @snuggery/schematics@workspace:packages/schematics":
+"@snuggery/schematics@^0.8.1, @snuggery/schematics@workspace:packages/schematics":
   version: 0.0.0-use.local
   resolution: "@snuggery/schematics@workspace:packages/schematics"
   dependencies:
