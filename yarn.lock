@@ -1430,6 +1430,9 @@ __metadata:
     "@snuggery/core": ^0.6.1
     "@snuggery/schematics": ^0.8.1
     typescript: ">= 5.0.4 < 5.2.0"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
   bin:
     journey: ./bin.mjs
   languageName: unknown
