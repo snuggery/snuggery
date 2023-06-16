@@ -378,8 +378,8 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 							// If the alias is the new name, we can remove the alias
 							specifier.name.text === newExportName
 								? undefined
-								: specifier.name,
-							ts.factory.createIdentifier(newExportName),
+								: ts.factory.createIdentifier(newExportName),
+							specifier.name,
 						),
 					);
 				}
