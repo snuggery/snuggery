@@ -26,6 +26,11 @@
 		"@snuggery/schematics": "^0.8.1",
 		"typescript": ">= 5.0.4 < 5.2.0"
 	},
+	"peerDependenciesMeta": {
+		"typescript": {
+			"optional": true
+		}
+	},
 	"dependencies": {
 		"@angular-devkit/schematics": "^16.0.0-rc.0",
 		"@pkgjs/parseargs": "^0.11.0",
