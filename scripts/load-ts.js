@@ -2,7 +2,7 @@ const jsLoader = require.extensions['.js'];
 
 require('esbuild-register/dist/node').register({
 	format: 'cjs',
-	target: ['node14'],
+	target: ['node18'],
 });
 
 // remove esbuild-register's javascript loader

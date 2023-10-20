@@ -112,9 +112,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@snuggery/architect", ["workspace:packages/architect"]],\
       ["@snuggery/core", ["workspace:packages/core"]],\
       ["@snuggery/global", ["workspace:packages/global"]],\
-      ["@snuggery/journey", ["virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey", "workspace:packages/journey"]],\
+      ["@snuggery/journey", ["virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey", "virtual:7018fb1db9132aaf34d12deedbc8081665b8311aad114f561451cbdd75f8b6cf7f215c32c67f84d977c57353404a8672b429f4649efadfbf7647af8d8bd93a59#workspace:packages/journey", "workspace:packages/journey"]],\
       ["@snuggery/node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", "workspace:packages/node"]],\
-      ["@snuggery/schematics", ["virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics", "workspace:packages/schematics"]],\
+      ["@snuggery/schematics", ["virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics", "virtual:3e079f6fad35b9045a6fc9cfc3b6116219dc51c4deae8743c3004c63c8743041fa0917ab4cd416a666515eed3de1d31b5e6dd099c9d36d9d5f611463238a286b#workspace:packages/schematics", "workspace:packages/schematics"]],\
       ["@snuggery/snuggery", ["workspace:packages/snuggery"]],\
       ["@snuggery/yarn", ["workspace:packages/yarn"]],\
       ["@snuggery/yarn-plugin-snuggery", ["workspace:packages/yarn-plugin-snuggery"]],\
@@ -153,7 +153,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.8.7"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -238,7 +238,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/eslint", null],\
             ["@types/typescript", null],\
             ["eslint", "npm:8.38.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -1702,10 +1702,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./scripts/",\
           "packageDependencies": [\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
-            ["@types/node", "npm:16.11.35"],\
             ["esbuild", "npm:0.17.17"],\
-            ["esbuild-register", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:3.4.2"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["esbuild-register", "virtual:37723ece62465b6c2af3a55381ec47337a9014c26e6ec72a4acb9f35a1d4bd9e46d66f157e3953b852ceb8c99616a97fbd3fb2888e2554da36956f240f9bff54#npm:3.4.2"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -1720,7 +1718,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/core", "workspace:packages/core"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/glob", "npm:7.1.3"],\
-            ["@types/node", "npm:14.14.35"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/semver", "npm:7.3.13"],\
             ["glob", "npm:7.2.0"],\
             ["rxjs", "npm:7.8.1"],\
@@ -1876,6 +1874,37 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["virtual:7018fb1db9132aaf34d12deedbc8081665b8311aad114f561451cbdd75f8b6cf7f215c32c67f84d977c57353404a8672b429f4649efadfbf7647af8d8bd93a59#workspace:packages/journey", {\
+          "packageLocation": "./.yarn/__virtual__/@snuggery-journey-virtual-3e079f6fad/1/packages/journey/",\
+          "packageDependencies": [\
+            ["@snuggery/journey", "virtual:7018fb1db9132aaf34d12deedbc8081665b8311aad114f561451cbdd75f8b6cf7f215c32c67f84d977c57353404a8672b429f4649efadfbf7647af8d8bd93a59#workspace:packages/journey"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@pkgjs/parseargs", "npm:0.11.0"],\
+            ["@snuggery-workspace/scripts", "workspace:scripts"],\
+            ["@snuggery/core", "workspace:packages/core"],\
+            ["@snuggery/schematics", "virtual:3e079f6fad35b9045a6fc9cfc3b6116219dc51c4deae8743c3004c63c8743041fa0917ab4cd416a666515eed3de1d31b5e6dd099c9d36d9d5f611463238a286b#workspace:packages/schematics"],\
+            ["@types/node", "npm:16.11.35"],\
+            ["@types/pkgjs__parseargs", "npm:0.10.0"],\
+            ["@types/prompts", "npm:2.4.4"],\
+            ["@types/semver", "npm:7.3.13"],\
+            ["@types/snuggery__core", null],\
+            ["@types/snuggery__schematics", null],\
+            ["@types/typescript", null],\
+            ["kleur", "npm:4.1.5"],\
+            ["prompts", "npm:2.4.2"],\
+            ["semver", "npm:7.5.0"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+            ["uvu", "npm:0.5.6"]\
+          ],\
+          "packagePeers": [\
+            "@snuggery/core",\
+            "@types/snuggery__core",\
+            "@types/snuggery__schematics",\
+            "@types/typescript"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["workspace:packages/journey", {\
           "packageLocation": "./packages/journey/",\
           "packageDependencies": [\
@@ -1885,7 +1914,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@pkgjs/parseargs", "npm:0.11.0"],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/core", "workspace:packages/core"],\
-            ["@snuggery/schematics", "virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics"],\
+            ["@snuggery/schematics", "virtual:3e079f6fad35b9045a6fc9cfc3b6116219dc51c4deae8743c3004c63c8743041fa0917ab4cd416a666515eed3de1d31b5e6dd099c9d36d9d5f611463238a286b#workspace:packages/schematics"],\
             ["@types/node", "npm:16.11.35"],\
             ["@types/pkgjs__parseargs", "npm:0.10.0"],\
             ["@types/prompts", "npm:2.4.4"],\
@@ -1893,7 +1922,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["kleur", "npm:4.1.5"],\
             ["prompts", "npm:2.4.2"],\
             ["semver", "npm:7.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -1914,7 +1943,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/uvu", null],\
             ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "packagePeers": [\
@@ -1937,7 +1966,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:16.11.35"],\
             ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -1969,6 +1998,31 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
+        ["virtual:3e079f6fad35b9045a6fc9cfc3b6116219dc51c4deae8743c3004c63c8743041fa0917ab4cd416a666515eed3de1d31b5e6dd099c9d36d9d5f611463238a286b#workspace:packages/schematics", {\
+          "packageLocation": "./.yarn/__virtual__/@snuggery-schematics-virtual-562f5bc0ae/1/packages/schematics/",\
+          "packageDependencies": [\
+            ["@snuggery/schematics", "virtual:3e079f6fad35b9045a6fc9cfc3b6116219dc51c4deae8743c3004c63c8743041fa0917ab4cd416a666515eed3de1d31b5e6dd099c9d36d9d5f611463238a286b#workspace:packages/schematics"],\
+            ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
+            ["@snuggery-workspace/scripts", "workspace:scripts"],\
+            ["@snuggery/core", "workspace:packages/core"],\
+            ["@types/angular-devkit__core", null],\
+            ["@types/angular-devkit__schematics", null],\
+            ["@types/node", "npm:16.11.35"],\
+            ["@types/typescript", null],\
+            ["ignore", "npm:5.2.4"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ],\
+          "packagePeers": [\
+            "@angular-devkit/core",\
+            "@angular-devkit/schematics",\
+            "@types/angular-devkit__core",\
+            "@types/angular-devkit__schematics",\
+            "@types/typescript",\
+            "typescript"\
+          ],\
+          "linkType": "SOFT"\
+        }],\
         ["workspace:packages/schematics", {\
           "packageLocation": "./packages/schematics/",\
           "packageDependencies": [\
@@ -1979,7 +2033,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@snuggery/core", "workspace:packages/core"],\
             ["@types/node", "npm:16.11.35"],\
             ["ignore", "npm:5.2.4"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2038,6 +2092,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/yarn-plugin-snuggery/",\
           "packageDependencies": [\
             ["@snuggery/yarn-plugin-snuggery", "workspace:packages/yarn-plugin-snuggery"],\
+            ["@types/node", "npm:16.11.35"],\
             ["@types/semver", "npm:7.3.13"],\
             ["@yarnpkg/builder", "npm:3.2.0"],\
             ["@yarnpkg/cli", "virtual:eba9d4adf8581509681da63d65826b21b3b9a89a5de6d11c1cd9bad75758091420de0a284b3923b6d935b514f90f2491dca4f77a7cd326d80be2360e25fa1bb0#npm:3.2.0"],\
@@ -2049,7 +2104,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/plugin-pack", "virtual:cb4ab4bbc3a3da4942d7b53811e3571b1b931131991391f068b15233e176bc3da2411a0ce8682885f4ccd3d34d45c1e346d1dae9ac057a581560d179f5b27d76#npm:3.1.1"],\
             ["clipanion", "virtual:b9c77e4ff91a467f934b73229cc9544e38ec10fd463d0d651b2dfbeef7e4884f1bc453859e7dc34aa2e36aecb4779021d4c9c0d0231fc4e2724b9b2ceae420e2#npm:3.2.0-rc.10"],\
             ["semver", "npm:7.5.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2365,7 +2420,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["regexpp", "npm:3.2.0"],\
             ["semver", "npm:7.5.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2397,7 +2452,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/typescript-estree", "virtual:29fd4dd66215b471122f239e33e0420944226d60e04ef1cf44df348dff21814f73d4df3d6dbc3f8eda6efbed9d8cac0b54f275aff8fa4a30cfaf3a4f0a0032e3#npm:5.41.0"],\
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["eslint", "npm:8.38.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2438,7 +2493,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
             ["eslint", "npm:8.38.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/eslint",\
@@ -2478,7 +2533,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["is-glob", "npm:4.0.3"],\
             ["semver", "npm:7.5.0"],\
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -5911,7 +5966,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@angular-devkit/architect", "npm:0.1601.0"],\
             ["@angular-devkit/core", "virtual:a32b546957f8174b8e4e9efec74cc2c4c0d94197aa6e35ebaf6a49ac928323e96ab39b68a7c645e99f52a571b27c341de8511e1c6929d7707108748709418349#patch:@angular-devkit/core@npm%3A16.1.0#.yarn/patches/@angular-devkit__core.patch::version=16.1.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery/core", "workspace:packages/core"],\
-            ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
+            ["@snuggery/journey", "virtual:7018fb1db9132aaf34d12deedbc8081665b8311aad114f561451cbdd75f8b6cf7f215c32c67f84d977c57353404a8672b429f4649efadfbf7647af8d8bd93a59#workspace:packages/journey"],\
             ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/node", "npm:16.11.35"],\
             ["test-builders", "workspace:integration/test-builders"],\
@@ -8099,7 +8154,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["husky", "npm:8.0.3"],\
             ["is-ci", "npm:3.0.1"],\
             ["prettier", "npm:2.8.7"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"],\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
           ],\
           "linkType": "SOFT"\
@@ -8540,7 +8595,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tsutils", "virtual:7ebe701d73c0b5d715f147c9f6170ad2fa1040c6364f77a022dc6e730b8b1dd5eab6feee571c7543766de406f1fcd1d4bf069a9084737abd1cd05c11ff40f4ab#npm:3.21.0"],\
             ["@types/typescript", null],\
             ["tslib", "npm:1.14.1"],\
-            ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "packagePeers": [\
             "@types/typescript",\
@@ -8634,6 +8689,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/typescript-patch-8d03db133e-6f0a9dca6b.zip/node_modules/typescript/",\
           "packageDependencies": [\
             ["typescript", "patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=5da071"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441", {\
+          "packageLocation": "./.yarn/cache/typescript-patch-2e8dbfb8ab-0f4da2f15e.zip/node_modules/typescript/",\
+          "packageDependencies": [\
+            ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -17711,7 +17773,6 @@ function reportRequiredFilesToWatchMode(files) {
 }
 
 function applyPatch(pnpapi, opts) {
-  const defaultCache = {};
   let enableNativeHooks = true;
   process.versions.pnp = String(pnpapi.VERSIONS.std);
   const moduleExports = require$$0__default.default;
@@ -17731,62 +17792,13 @@ function applyPatch(pnpapi, opts) {
   }
   const originalModuleLoad = require$$0.Module._load;
   require$$0.Module._load = function(request, parent, isMain) {
-    if (!enableNativeHooks)
-      return originalModuleLoad.call(require$$0.Module, request, parent, isMain);
-    if (isBuiltinModule(request)) {
-      try {
-        enableNativeHooks = false;
-        return originalModuleLoad.call(require$$0.Module, request, parent, isMain);
-      } finally {
-        enableNativeHooks = true;
+    if (request === `pnpapi`) {
+      const parentApiPath = opts.manager.getApiPathFromParent(parent);
+      if (parentApiPath) {
+        return opts.manager.getApiEntry(parentApiPath, true).instance;
       }
     }
-    const parentApiPath = opts.manager.getApiPathFromParent(parent);
-    const parentApi = parentApiPath !== null ? opts.manager.getApiEntry(parentApiPath, true).instance : null;
-    if (parentApi === null)
-      return originalModuleLoad(request, parent, isMain);
-    if (request === `pnpapi`)
-      return parentApi;
-    const modulePath = require$$0.Module._resolveFilename(request, parent, isMain);
-    const isOwnedByRuntime = parentApi !== null ? parentApi.findPackageLocator(modulePath) !== null : false;
-    const moduleApiPath = isOwnedByRuntime ? parentApiPath : opts.manager.findApiPathFor(npath.dirname(modulePath));
-    const entry = moduleApiPath !== null ? opts.manager.getApiEntry(moduleApiPath) : { instance: null, cache: defaultCache };
-    const cacheEntry = entry.cache[modulePath];
-    if (cacheEntry) {
-      if (cacheEntry.loaded === false && cacheEntry.isLoading !== true) {
-        try {
-          cacheEntry.isLoading = true;
-          if (isMain) {
-            process.mainModule = cacheEntry;
-            cacheEntry.id = `.`;
-          }
-          cacheEntry.load(modulePath);
-        } finally {
-          cacheEntry.isLoading = false;
-        }
-      }
-      return cacheEntry.exports;
-    }
-    const module = new require$$0.Module(modulePath, parent != null ? parent : void 0);
-    module.pnpApiPath = moduleApiPath;
-    reportRequiredFilesToWatchMode([modulePath]);
-    entry.cache[modulePath] = module;
-    if (isMain) {
-      process.mainModule = module;
-      module.id = `.`;
-    }
-    let hasThrown = true;
-    try {
-      module.isLoading = true;
-      module.load(modulePath);
-      hasThrown = false;
-    } finally {
-      module.isLoading = false;
-      if (hasThrown) {
-        delete require$$0.Module._cache[modulePath];
-      }
-    }
-    return module.exports;
+    return originalModuleLoad.call(require$$0.Module, request, parent, isMain);
   };
   function getIssuerSpecsFromPaths(paths) {
     return paths.map((path) => ({
@@ -17854,7 +17866,7 @@ function applyPatch(pnpapi, opts) {
       const parentDirectory = (parent == null ? void 0 : parent.filename) != null ? npath.dirname(parent.filename) : null;
       const absoluteRequest = npath.isAbsolute(request) ? request : parentDirectory !== null ? npath.resolve(parentDirectory, request) : null;
       if (absoluteRequest !== null) {
-        const apiPath = parentDirectory === npath.dirname(absoluteRequest) && (parent == null ? void 0 : parent.pnpApiPath) ? parent.pnpApiPath : opts.manager.findApiPathFor(absoluteRequest);
+        const apiPath = parent && parentDirectory === npath.dirname(absoluteRequest) ? opts.manager.getApiPathFromParent(parent) : opts.manager.findApiPathFor(absoluteRequest);
         if (apiPath !== null) {
           issuerSpecs.unshift({
             apiPath,
@@ -19575,7 +19587,6 @@ function makeManager(pnpapi, opts) {
   const initialApiStats = opts.fakeFs.statSync(npath.toPortablePath(initialApiPath));
   const apiMetadata = /* @__PURE__ */ new Map([
     [initialApiPath, {
-      cache: require$$0.Module._cache,
       instance: pnpapi,
       stats: initialApiStats,
       lastRefreshCheck: Date.now()
@@ -19607,7 +19618,6 @@ function makeManager(pnpapi, opts) {
       }
     } else {
       apiMetadata.set(pnpApiPath, apiEntry = {
-        cache: {},
         instance: loadApiInstance(pnpApiPath),
         stats: opts.fakeFs.statSync(pnpApiPath),
         lastRefreshCheck: Date.now()
@@ -19677,19 +19687,16 @@ ${controlSegment}
     } while (curr !== PortablePath.root);
     return addToCacheAndReturn(start, curr, null);
   }
+  const moduleToApiPathCache = /* @__PURE__ */ new WeakMap();
   function getApiPathFromParent(parent) {
     if (parent == null)
       return initialApiPath;
-    if (typeof parent.pnpApiPath === `undefined`) {
-      if (parent.filename !== null) {
-        return parent.pnpApiPath = findApiPathFor(parent.filename);
-      } else {
-        return initialApiPath;
-      }
-    }
-    if (parent.pnpApiPath !== null)
-      return parent.pnpApiPath;
-    return null;
+    let apiPath = moduleToApiPathCache.get(parent);
+    if (typeof apiPath !== `undefined`)
+      return apiPath;
+    apiPath = parent.filename ? findApiPathFor(parent.filename) : null;
+    moduleToApiPathCache.set(parent, apiPath);
+    return apiPath;
   }
   return {
     getApiPathFromParent,
