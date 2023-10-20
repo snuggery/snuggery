@@ -1,8 +1,0 @@
-releases:
-  "@snuggery/angular": patch
-  "@snuggery/journey": patch
-  "@snuggery/node": patch
-  "@snuggery/schematics": patch
-
-declined:
-  - "@snuggery/affected"
