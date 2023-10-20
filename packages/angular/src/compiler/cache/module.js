@@ -11,16 +11,16 @@ import {memoize} from '../utils.js';
 /**
  * @param {string} moduleName
  */
-const isBareModuleSpecifier = memoize(function isBareModuleSpecifier(
-	moduleName,
-) {
-	return (
-		!moduleName.startsWith('./') &&
-		!moduleName.startsWith('../') &&
-		!posix.isAbsolute(moduleName) &&
-		(path === posix || !path.isAbsolute(moduleName))
-	);
-});
+const isBareModuleSpecifier = memoize(
+	function isBareModuleSpecifier(moduleName) {
+		return (
+			!moduleName.startsWith('./') &&
+			!moduleName.startsWith('../') &&
+			!posix.isAbsolute(moduleName) &&
+			(path === posix || !path.isAbsolute(moduleName))
+		);
+	},
+);
 
 export class ModuleCache {
 	/** @type {Map<string, Module>} */

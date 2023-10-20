@@ -731,9 +731,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 								}
 
 								if (collectionOrName.includes(':')) {
-									const [compiledSchema] = await getCompiledSchematicSchemas(
-										collectionOrName,
-									);
+									const [compiledSchema] =
+										await getCompiledSchematicSchemas(collectionOrName);
 									if (compiledSchema == null) {
 										report.reportError(
 											`Failed to resolve schematic ${JSON.stringify(
@@ -815,9 +814,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 					}
 
 					if (collectionOrName.includes(':')) {
-						const [, compiledSchema] = await getCompiledSchematicSchemas(
-							collectionOrName,
-						);
+						const [, compiledSchema] =
+							await getCompiledSchematicSchemas(collectionOrName);
 
 						appliedAliases.clear();
 						const processedTargetOptions = compiledSchema

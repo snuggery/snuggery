@@ -183,7 +183,10 @@ export function makeExecutorIntoBuilder(
 class MappedTree implements NxTree {
 	readonly #tree: NgTree;
 
-	constructor(tree: NgTree, readonly root: string) {
+	constructor(
+		tree: NgTree,
+		readonly root: string,
+	) {
 		this.#tree = tree;
 	}
 	changePermissions(): void {

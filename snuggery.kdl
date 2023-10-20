@@ -68,8 +68,7 @@ project "all" root="" {
 		options {
 			target "lint"
 			optionName "lintFilePatterns"
-			include "**/*.{,m,c}ts" \
-			        "**/*.{,m,c}js"
+			include "**/*.{,m,c}ts" "**/*.{,m,c}js"
 		}
 	}
 }

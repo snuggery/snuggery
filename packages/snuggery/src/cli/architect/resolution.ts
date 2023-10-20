@@ -49,9 +49,8 @@ export class Resolver implements ResolverFacade {
 	): Promise<
 		[builderPath: string, builderInfo: JsonValue, isNx: boolean | null]
 	> {
-		const [builderPath, builderJson, executorsJson] = await this.loadBuilders(
-			packageName,
-		);
+		const [builderPath, builderJson, executorsJson] =
+			await this.loadBuilders(packageName);
 
 		let builderInfo: JsonValue;
 		let isNx: boolean | null = null;

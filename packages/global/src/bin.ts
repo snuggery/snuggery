@@ -18,9 +18,7 @@ if (parseInt(major) < 16 || (major === '16' && parseInt(minor) < 10)) {
 const startCwd = process.cwd();
 
 import('@snuggery/snuggery/cli')
-	.then(async function (
-		globalSnuggery,
-	): Promise<
+	.then(async function (globalSnuggery): Promise<
 		Pick<typeof import('@snuggery/snuggery/cli'), 'findWorkspace' | 'run'>
 	> {
 		const workspace = (await globalSnuggery.findWorkspace(startCwd))?.path;

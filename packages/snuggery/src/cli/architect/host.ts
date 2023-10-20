@@ -181,9 +181,8 @@ export class SnuggeryArchitectHost
 	async listBuilders(
 		packageName: string,
 	): Promise<{name: string; description?: string}[]> {
-		const [, builderJson, executorsJson] = await this.#resolver.loadBuilders(
-			packageName,
-		);
+		const [, builderJson, executorsJson] =
+			await this.#resolver.loadBuilders(packageName);
 
 		const names = new Set([
 			...Object.keys(builderJson),
@@ -220,9 +219,8 @@ export class SnuggeryArchitectHost
 		let isNx: boolean | null = null;
 
 		if (packageName === '$direct') {
-			[builderPath, builderInfo] = await this.#resolver.resolveDirectBuilder(
-				builderName,
-			);
+			[builderPath, builderInfo] =
+				await this.#resolver.resolveDirectBuilder(builderName);
 		} else {
 			[builderPath, builderInfo, isNx] = await this.#resolver.resolveBuilder(
 				packageName,

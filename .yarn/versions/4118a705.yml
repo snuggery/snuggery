@@ -1,0 +1,5 @@
+declined:
+  - "@snuggery/angular"
+  - "@snuggery/architect"
+  - "@snuggery/global"
+  - "@snuggery/snuggery"
