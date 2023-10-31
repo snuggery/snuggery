@@ -31,7 +31,14 @@ export class SnCommand extends BaseCommand {
 		}
 
 		for (const [i, workspace] of workspacesToLook.entries()) {
-			if (!workspace.dependencies.has(snuggeryIdentHash)) {
+			// We'd have to use
+			//   workspace.dependencies in Yarn 3
+			//   workspace.anchoredPackage.dependencies in Yarn 4
+			// so use something that works in both:
+			const workspacePkg = project.storedPackages.get(
+				workspace.anchoredLocator.locatorHash,
+			);
+			if (!workspacePkg?.dependencies.has(snuggeryIdentHash)) {
 				continue;
 			}
 
