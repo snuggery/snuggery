@@ -1933,15 +1933,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@snuggery-node-virtual-e44f2f7bc4/1/packages/node/",\
           "packageDependencies": [\
             ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
-            ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/node", "npm:16.11.35"],\
             ["@types/typescript", null],\
             ["@types/uvu", null],\
-            ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\
@@ -1958,13 +1955,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/node/",\
           "packageDependencies": [\
             ["@snuggery/node", "workspace:packages/node"],\
-            ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A16.1.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=16.1.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
             ["@snuggery-workspace/scripts", "workspace:scripts"],\
             ["@snuggery/architect", "workspace:packages/architect"],\
             ["@snuggery/core", "workspace:packages/core"],\
-            ["@snuggery/snuggery", "workspace:packages/snuggery"],\
             ["@types/node", "npm:16.11.35"],\
-            ["rxjs", "npm:7.8.1"],\
             ["typanion", "npm:3.12.1"],\
             ["typescript", "patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
             ["uvu", "npm:0.5.6"]\

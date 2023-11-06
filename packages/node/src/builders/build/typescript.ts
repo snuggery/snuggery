@@ -8,14 +8,13 @@ import {
 import fs from 'node:fs/promises';
 import ts from 'typescript';
 
-import type {WrappedPlugin} from './plugin';
 import type {Schema} from './schema';
 
 export async function tsc(
 	context: BuilderContext,
 	input: Pick<Schema, 'tsconfig' | 'compile'>,
 	outputFolder: string,
-	plugins: readonly WrappedPlugin[],
+	transformers?: ts.CustomTransformers | readonly ts.CustomTransformers[],
 ): Promise<void> {
 	if (input.compile === false) {
 		context.logger.debug('Typescript compilation was disabled explicitly');
@@ -42,9 +41,10 @@ export async function tsc(
 	const tsconfig = ts.readConfigFile(tsconfigPath, path =>
 		ts.sys.readFile(path),
 	);
-	const customTransformers = plugins
-		.map(plugin => plugin.typescriptTransformers)
-		.reduce(combineCustomTransformers, {});
+	const customTransformers = (transformers ? [transformers].flat() : []).reduce(
+		combineCustomTransformers,
+		{},
+	);
 
 	if (tsconfig.error) {
 		processResult(context, undefined, [tsconfig.error]);

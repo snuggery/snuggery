@@ -6,7 +6,7 @@ import {
 	resolveWorkspacePath,
 	runPackager,
 } from '@snuggery/architect';
-import {isJsonObject, type JsonObject} from '@snuggery/core';
+import type {JsonObject} from '@snuggery/core';
 import fs from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import {join} from 'node:path';
@@ -91,7 +91,12 @@ export async function executeBuild(
 	await fs.mkdir(outputFolder, {recursive: true});
 
 	if (compile || hasTypescript) {
-		await tsc(context, {compile, tsconfig}, outputFolder, loadedPlugins);
+		await tsc(
+			context,
+			{compile, tsconfig},
+			outputFolder,
+			loadedPlugins.map(plugin => plugin.typescriptTransformers),
+		);
 	}
 
 	try {
@@ -133,7 +138,11 @@ async function writeManifest(
 	outputFolder: string,
 	plugins: readonly WrappedPlugin[],
 ) {
-	if (isJsonObject(manifest.publishConfig)) {
+	if (
+		manifest.publishConfig != null &&
+		typeof manifest.publishConfig === 'object' &&
+		!Array.isArray(manifest.publishConfig)
+	) {
 		if (manifest.publishConfig.main !== undefined) {
 			manifest.main = manifest.publishConfig.main;
 			delete manifest.publishConfig.main;
