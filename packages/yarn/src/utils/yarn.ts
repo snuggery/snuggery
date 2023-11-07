@@ -139,43 +139,49 @@ class Yarn {
 			);
 
 			child.addListener('close', (code, signal) => {
+				let rejectOrCall: (fn: () => void) => void;
 				if (signal) {
-					reject(new BuildFailureError(`Yarn exited with signal ${signal}`));
+					rejectOrCall = () =>
+						reject(new BuildFailureError(`Yarn exited with signal ${signal}`));
 				} else if (code) {
-					reject(new BuildFailureError(`Yarn exited with exit code ${code}`));
+					rejectOrCall = () =>
+						reject(new BuildFailureError(`Yarn exited with exit code ${code}`));
 				} else {
-					if (output) {
-						output.then(
-							buff => {
-								const lines = buff
-									.toString('utf8')
-									.split('\n')
-									.filter(line => line.trim())
-									.map(line => {
-										try {
-											return JSON.parse(line) as JsonValue;
-										} catch {
-											return null;
-										}
-									})
-									.filter((value): value is JsonObject => isJsonObject(value));
-
-								if (!quiet) {
-									for (const {data, type} of lines.filter(isLogLine)) {
-										this.#context.logger[type === 'warning' ? 'warn' : type]?.(
-											data,
-										);
-									}
-								}
-
-								resolve(lines);
-							},
-							err => reject(err),
-						);
-					} else {
-						resolve();
-					}
+					rejectOrCall = fn => fn();
 				}
+
+				if (!output) {
+					rejectOrCall(resolve);
+					return;
+				}
+
+				output.then(
+					buff => {
+						const lines = buff
+							.toString('utf8')
+							.split('\n')
+							.filter(line => line.trim())
+							.map(line => {
+								try {
+									return JSON.parse(line) as JsonValue;
+								} catch {
+									return null;
+								}
+							})
+							.filter(isJsonObject);
+
+						if (!quiet) {
+							for (const {data, type} of lines.filter(isLogLine)) {
+								this.#context.logger[type === 'warning' ? 'warn' : type]?.(
+									data,
+								);
+							}
+						}
+
+						rejectOrCall(() => resolve(lines));
+					},
+					err => rejectOrCall(() => reject(err)),
+				);
 			});
 
 			this.#context.addTeardown(() => {
