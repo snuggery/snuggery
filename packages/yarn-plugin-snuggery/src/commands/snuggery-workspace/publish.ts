@@ -1,7 +1,6 @@
 import {BaseCommand} from '@yarnpkg/cli';
 import {
 	Configuration,
-	FormatType,
 	formatUtils,
 	MessageName,
 	Project,
@@ -74,7 +73,7 @@ export class PublishCommand extends BaseCommand {
 						`Pack package ${formatUtils.pretty(
 							configuration,
 							ident,
-							FormatType.IDENT,
+							formatUtils.Type.IDENT,
 						)} first`,
 					);
 					return;
@@ -91,11 +90,15 @@ export class PublishCommand extends BaseCommand {
 						MessageName.UNNAMED,
 						`Tarball for package ${
 							manifest.name &&
-							formatUtils.pretty(configuration, manifest.name, FormatType.IDENT)
+							formatUtils.pretty(
+								configuration,
+								manifest.name,
+								formatUtils.Type.IDENT,
+							)
 						} cannot be published in workspace for ${formatUtils.pretty(
 							configuration,
 							ident,
-							FormatType.IDENT,
+							formatUtils.Type.IDENT,
 						)}`,
 					);
 					return;
@@ -142,7 +145,7 @@ export class PublishCommand extends BaseCommand {
 						`Published ${formatUtils.pretty(
 							configuration,
 							structUtils.makeDescriptor(ident, manifest.version!),
-							FormatType.DESCRIPTOR,
+							formatUtils.Type.DESCRIPTOR,
 						)}`,
 					);
 				}

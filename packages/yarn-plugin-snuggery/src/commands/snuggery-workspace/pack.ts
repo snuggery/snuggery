@@ -1,7 +1,6 @@
 import {BaseCommand} from '@yarnpkg/cli';
 import {
 	Configuration,
-	FormatType,
 	formatUtils,
 	MessageName,
 	miscUtils,
@@ -53,7 +52,7 @@ export class PackCommand extends BaseCommand {
 						`Package at ${formatUtils.pretty(
 							configuration,
 							workspace.relativeCwd,
-							FormatType.PATH,
+							formatUtils.Type.PATH,
 						)} doesn't have a name`,
 					);
 					return;
@@ -81,7 +80,7 @@ export class PackCommand extends BaseCommand {
 						`Build package ${formatUtils.pretty(
 							configuration,
 							workspace.manifest.name,
-							FormatType.IDENT,
+							formatUtils.Type.IDENT,
 						)} first`,
 					);
 					return;
@@ -98,11 +97,11 @@ export class PackCommand extends BaseCommand {
 						`Invalid distribution folder: found package ${formatUtils.pretty(
 							configuration,
 							ident,
-							FormatType.IDENT,
+							formatUtils.Type.IDENT,
 						)} but expected ${formatUtils.pretty(
 							configuration,
 							workspace.anchoredDescriptor,
-							FormatType.IDENT,
+							formatUtils.Type.IDENT,
 						)}`,
 					);
 					return;
@@ -126,11 +125,11 @@ export class PackCommand extends BaseCommand {
 					`Packed ${formatUtils.pretty(
 						configuration,
 						ident,
-						FormatType.IDENT,
+						formatUtils.Type.IDENT,
 					)} into ${formatUtils.pretty(
 						configuration,
 						target,
-						FormatType.PATH,
+						formatUtils.Type.PATH,
 					)}`,
 				);
 			},

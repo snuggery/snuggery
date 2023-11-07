@@ -10,7 +10,6 @@ import {
 	LightReport,
 	MessageName,
 	formatUtils,
-	FormatType,
 	InstallMode,
 	DescriptorHash,
 	Package,
@@ -131,6 +130,7 @@ export class UpCommand extends BaseCommand {
 									target,
 									modifier: getModifier(descriptor),
 									strategies,
+									fixed: true,
 								}),
 							] as const;
 						}),
@@ -150,7 +150,7 @@ export class UpCommand extends BaseCommand {
 				`Patterns ${formatUtils.prettyList(
 					configuration,
 					unreferencedPatterns,
-					FormatType.CODE,
+					formatUtils.Type.CODE,
 				)} don't match any packages referenced by any workspace`,
 			);
 		}
@@ -159,7 +159,7 @@ export class UpCommand extends BaseCommand {
 				`Pattern ${formatUtils.prettyList(
 					configuration,
 					unreferencedPatterns,
-					FormatType.CODE,
+					formatUtils.Type.CODE,
 				)} doesn't match any packages referenced by any workspace`,
 			);
 		}
@@ -298,7 +298,7 @@ export class UpCommand extends BaseCommand {
 					if (updateGroup == null) {
 						const candidates = await resolver.getCandidates(
 							selected,
-							new Map(),
+							{},
 							{
 								project,
 								report,
