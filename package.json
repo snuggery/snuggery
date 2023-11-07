@@ -49,5 +49,5 @@
 		"@angular-devkit/schematics@^16.0.0-rc.0": "patch:@angular-devkit/schematics@npm:^16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch",
 		"@angular/compiler-cli@^16.1.0": "patch:@angular/compiler-cli@npm%3A^16.1.0#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch"
 	},
-	"packageManager": "yarn@3.6.4"
+	"packageManager": "yarn@4.0.1"
 }
