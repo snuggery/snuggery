@@ -10,15 +10,80 @@ import ts from 'typescript';
 
 import type {Schema} from './schema';
 
+export interface TscInput {
+	/**
+	 * Path to a `tsconfig.json` or `jsconfig.json`
+	 *
+	 * Defaults to `<project path>/tsconfig.json` if it exists
+	 */
+	tsconfig?: string;
+
+	/**
+	 * Whether to enable typescript compilation
+	 *
+	 * This defaults to `true` if a tsconfig is present, otherwise it defaults to
+	 * false.
+	 */
+	compile?: boolean;
+
+	/**
+	 * Folder to output compiled files
+	 *
+	 * If the tsconfig points towards a composite project, this folder must match
+	 * with the output folder configured in the tsconfig file.
+	 */
+	outputFolder: string;
+
+	/**
+	 * Custom transformer(s) to run the program through
+	 */
+	transformers?: ts.CustomTransformers | readonly ts.CustomTransformers[];
+
+	/**
+	 * Function that validates the tsconfig file
+	 *
+	 * This can be used to e.g. check whether `declarations: true` is set if your
+	 * builder expects types to be built.
+	 */
+	validateConfiguration?: (
+		compilerOptions: ts.CompilerOptions,
+	) => void | Promise<void>;
+}
+
+export interface TscDisabledOutput {
+	built: false;
+}
+
+export interface TscEnabledOutput {
+	built: true;
+
+	/**
+	 * The typescript project that was just built
+	 */
+	project: ts.ParsedCommandLine;
+}
+
+export type TscOutput = TscDisabledOutput | TscEnabledOutput;
+
 export async function tsc(
 	context: BuilderContext,
-	input: Pick<Schema, 'tsconfig' | 'compile'>,
-	outputFolder: string,
-	transformers?: ts.CustomTransformers | readonly ts.CustomTransformers[],
-): Promise<void> {
+	input: TscInput & {compile: false},
+): Promise<TscDisabledOutput>;
+export async function tsc(
+	context: BuilderContext,
+	input: TscInput & {compile: true},
+): Promise<TscEnabledOutput>;
+export async function tsc(
+	context: BuilderContext,
+	input: TscInput,
+): Promise<TscOutput>;
+export async function tsc(
+	context: BuilderContext,
+	input: TscInput,
+): Promise<TscOutput> {
 	if (input.compile === false) {
 		context.logger.debug('Typescript compilation was disabled explicitly');
-		return;
+		return {built: false};
 	}
 
 	const tsconfigPath = await getTsConfigPath(context, input);
@@ -33,7 +98,7 @@ export async function tsc(
 		context.logger.info(
 			'No typescript configuration found, skipping compilation',
 		);
-		return;
+		return {built: false};
 	}
 
 	context.logger.debug('Compiling typescript...');
@@ -41,10 +106,9 @@ export async function tsc(
 	const tsconfig = ts.readConfigFile(tsconfigPath, path =>
 		ts.sys.readFile(path),
 	);
-	const customTransformers = (transformers ? [transformers].flat() : []).reduce(
-		combineCustomTransformers,
-		{},
-	);
+	const customTransformers = (
+		input.transformers ? [input.transformers].flat() : []
+	).reduce(combineCustomTransformers, {});
 
 	if (tsconfig.error) {
 		processResult(context, undefined, [tsconfig.error]);
@@ -64,9 +128,9 @@ export async function tsc(
 	// object that we pass into typescript's non-build API.
 
 	if (parsedConfig.options.composite) {
-		if (parsedConfig.options.outDir !== outputFolder) {
+		if (input.outputFolder !== parsedConfig.options.outDir) {
 			throw new BuildFailureError(
-				`Expected outDir in ${tsconfigPath} to point towards ${outputFolder}`,
+				`Expected outDir in ${tsconfigPath} to point towards ${input.outputFolder}`,
 			);
 		}
 
@@ -104,7 +168,7 @@ export async function tsc(
 			throw new BuildFailureError('Compilation failed');
 		}
 	} else {
-		parsedConfig.options.outDir = outputFolder;
+		parsedConfig.options.outDir = input.outputFolder;
 
 		const host = (
 			parsedConfig.options.incremental
@@ -133,8 +197,10 @@ export async function tsc(
 			customTransformers,
 		);
 
-		return processResult(context, parsedConfig.options, diagnostics);
+		processResult(context, parsedConfig.options, diagnostics);
 	}
+
+	return {built: true, project: parsedConfig};
 }
 
 function combineCustomTransformers(

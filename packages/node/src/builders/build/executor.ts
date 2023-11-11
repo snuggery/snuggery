@@ -91,12 +91,12 @@ export async function executeBuild(
 	await fs.mkdir(outputFolder, {recursive: true});
 
 	if (compile || hasTypescript) {
-		await tsc(
-			context,
-			{compile, tsconfig},
+		await tsc(context, {
+			compile,
+			tsconfig,
 			outputFolder,
-			loadedPlugins.map(plugin => plugin.typescriptTransformers),
-		);
+			transformers: loadedPlugins.map(plugin => plugin.typescriptTransformers),
+		});
 	}
 
 	try {
