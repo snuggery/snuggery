@@ -5,8 +5,8 @@
 		"__fixtures__/*"
 	],
 	"devDependencies": {
-		"@angular-devkit/architect": ">= 0.1600.0-rc.0 < 0.1700.0",
-		"@angular-devkit/core": "^16.0.0-rc.0",
+		"@angular-devkit/architect": ">= 0.1700.0 < 0.1800.0",
+		"@angular-devkit/core": "^17.0.0",
 		"@snuggery/core": "workspace:packages/core",
 		"@snuggery/journey": "workspace:packages/journey",
 		"@snuggery/snuggery": "workspace:packages/snuggery",

@@ -30,9 +30,9 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.1600.0-rc.0 < 0.1700.0",
-		"@angular-devkit/core": "^16.0.0-rc.0",
-		"@angular-devkit/schematics": "^16.0.0-rc.0",
+		"@angular-devkit/architect": ">= 0.1700.0 < 0.1800.0",
+		"@angular-devkit/core": "^17.0.0",
+		"@angular-devkit/schematics": "^17.0.0",
 		"@arcanis/slice-ansi": "1.1.1",
 		"@snuggery/architect": "^0.8.0",
 		"@snuggery/core": "^0.6.1",

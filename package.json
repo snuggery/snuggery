@@ -44,10 +44,10 @@
 		}
 	},
 	"resolutions": {
-		"@angular-devkit/core": "patch:@angular-devkit/core@^16.0.0-rc.0#.yarn/patches/@angular-devkit__core.patch",
+		"@angular-devkit/core": "patch:@angular-devkit/core@^17.0.0#.yarn/patches/@angular-devkit__core.patch",
 		"@nrwl/devkit@13.1.3": "npm:13.8.3",
-		"@angular-devkit/schematics@^16.0.0-rc.0": "patch:@angular-devkit/schematics@npm:^16.0.0-rc.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch",
-		"@angular/compiler-cli@^16.1.0": "patch:@angular/compiler-cli@npm%3A^16.1.0#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch"
+		"@angular-devkit/schematics@^17.0.0": "patch:@angular-devkit/schematics@npm:^17.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch",
+		"@angular/compiler-cli@^17.0.0": "patch:@angular/compiler-cli@npm%3A^17.0.0#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch"
 	},
 	"packageManager": "yarn@4.0.1"
 }
