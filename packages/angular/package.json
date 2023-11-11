@@ -40,7 +40,7 @@
 		"@snuggery/core": "^0.6.1",
 		"autoprefixer": "^10.4.14",
 		"browserslist": "^4.21.5",
-		"esbuild": "^0.17.17",
+		"esbuild": "^0.19.5",
 		"postcss": "^8.4.22",
 		"resolve.exports": "^2.0.2",
 		"typanion": "^3.12.1"
