@@ -1418,9 +1418,9 @@ __metadata:
   resolution: "@snuggery/affected@workspace:packages/affected"
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/architect": "npm:^0.8.0"
-    "@snuggery/core": "npm:^0.6.1"
-    "@snuggery/snuggery": "npm:^0.10.0"
+    "@snuggery/architect": "npm:^0.9.0"
+    "@snuggery/core": "npm:^0.7.0"
+    "@snuggery/snuggery": "npm:^0.11.0"
     "@types/glob": "npm:7.1.3"
     "@types/node": "npm:^16.11.35"
     "@types/semver": "npm:^7"
@@ -1440,8 +1440,8 @@ __metadata:
     "@angular/compiler-cli": "npm:^17.0.0"
     "@microsoft/api-extractor": "npm:7.24.1"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/architect": "npm:^0.8.0"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/architect": "npm:^0.9.0"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/less": "npm:^3.0.3"
     "@types/node": "npm:^16.11.35"
     autoprefixer: "npm:^10.4.14"
@@ -1466,14 +1466,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/architect@npm:^0.8.0, @snuggery/architect@workspace:packages/architect":
+"@snuggery/architect@npm:^0.9.0, @snuggery/architect@workspace:packages/architect":
   version: 0.0.0-use.local
   resolution: "@snuggery/architect@workspace:packages/architect"
   dependencies:
     "@angular-devkit/architect": "npm:>= 0.1700.0 < 0.1800.0"
     "@angular-devkit/core": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/fs-extra": "npm:11.0.1"
     "@types/glob": "npm:8.1.0"
     "@types/node": "npm:^14.14.7"
@@ -1484,7 +1484,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/core@npm:^0.6.1, @snuggery/core@workspace:packages/core":
+"@snuggery/core@npm:^0.7.0, @snuggery/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
@@ -1506,7 +1506,7 @@ __metadata:
   resolution: "@snuggery/global@workspace:packages/global"
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/snuggery": "npm:^0.10.0"
+    "@snuggery/snuggery": "npm:^0.11.0"
     "@types/node": "npm:^16.11.35"
     "@yarnpkg/pnp": "npm:3.2.0"
   bin:
@@ -1522,8 +1522,8 @@ __metadata:
     "@angular-devkit/schematics": "npm:^17.0.0"
     "@pkgjs/parseargs": "npm:^0.11.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": "npm:^0.6.1"
-    "@snuggery/schematics": "npm:^0.8.2"
+    "@snuggery/core": "npm:^0.7.0"
+    "@snuggery/schematics": "npm:^0.9.0"
     "@types/node": "npm:^16.11.35"
     "@types/pkgjs__parseargs": "npm:^0.10.0"
     "@types/prompts": "npm:^2.4.4"
@@ -1534,8 +1534,8 @@ __metadata:
     typescript: "npm:5.2.2"
     uvu: "npm:^0.5.6"
   peerDependencies:
-    "@snuggery/core": ^0.6.1
-    "@snuggery/schematics": ^0.8.2
+    "@snuggery/core": ^0.7.0
+    "@snuggery/schematics": ^0.9.0
     typescript: ">= 5.0.4 < 5.3.0"
   peerDependenciesMeta:
     typescript:
@@ -1550,8 +1550,8 @@ __metadata:
   resolution: "@snuggery/node@workspace:packages/node"
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/architect": "npm:^0.8.0"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/architect": "npm:^0.9.0"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^16.11.35"
     typanion: "npm:^3.12.1"
     typescript: "npm:5.2.2"
@@ -1567,14 +1567,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/schematics@npm:^0.8.2, @snuggery/schematics@workspace:packages/schematics":
+"@snuggery/schematics@npm:^0.9.0, @snuggery/schematics@workspace:packages/schematics":
   version: 0.0.0-use.local
   resolution: "@snuggery/schematics@workspace:packages/schematics"
   dependencies:
     "@angular-devkit/core": "npm:^17.0.0"
     "@angular-devkit/schematics": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^16.11.35"
     ignore: "npm:^5.2.4"
     typescript: "npm:5.2.2"
@@ -1588,7 +1588,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/snuggery@npm:^0.10.0, @snuggery/snuggery@workspace:packages/snuggery":
+"@snuggery/snuggery@npm:^0.11.0, @snuggery/snuggery@workspace:packages/snuggery":
   version: 0.0.0-use.local
   resolution: "@snuggery/snuggery@workspace:packages/snuggery"
   dependencies:
@@ -1598,8 +1598,8 @@ __metadata:
     "@arcanis/slice-ansi": "npm:1.1.1"
     "@nrwl/devkit": "npm:^13.8.3"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/architect": "npm:^0.8.0"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/architect": "npm:^0.9.0"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^16.11.35"
     "@types/prettier": "npm:^2.7.2"
     "@types/prompts": "npm:^2.4.4"
@@ -1657,8 +1657,8 @@ __metadata:
   dependencies:
     "@angular-devkit/schematics": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/architect": "npm:^0.8.0"
-    "@snuggery/core": "npm:^0.6.1"
+    "@snuggery/architect": "npm:^0.9.0"
+    "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^16.11.35"
     "@yarnpkg/parsers": "npm:^2.4.1"
   languageName: unknown
