@@ -1,9 +1,9 @@
 {
 	"builders": {
-		"build": {
-			"implementation": "./src/builders/build/index.js",
-			"schema": "./src/builders/build/schema.json",
-			"description": "Build an angular package"
+		"library": {
+			"implementation": "./src/builders/library/index.js",
+			"schema": "./src/builders/library/schema.json",
+			"description": "Build an angular library"
 		}
 	}
 }

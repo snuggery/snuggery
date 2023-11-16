@@ -13,19 +13,19 @@ This package supports building angular packages in a monorepository. The core id
 
 - The `main` property of the `package.json` points towards the source code of your package.
   - This allows typescript to use your package without requiring any `paths` mapping.
-  - This also allows the `@snuggery/build-angular:build` to build an angular package without first having to build its dependencies.
+  - This also allows the `@snuggery/build-angular:library` to build an angular package without first having to build its dependencies.
 - There is extensive caching within a single process when building packages. This makes building all angular packages in your workspace using a single process, e.g. using `@snuggery/snuggery:glob` to run the `build` target on all packages, a lot faster than running every package's build in a separate process.
 
 ## Builder
 
-`@snuggery/build-angular:build` builds an angular library into a package that can be published to an npm registry.
+`@snuggery/build-angular:library` builds an angular library into a package that can be published to an npm registry.
 
-<!-- auto generate: yarn ../../integration/__fixtures__/angular sn help builder @snuggery/build-angular:build -->
+<!-- auto generate: yarn ../../integration/__fixtures__/angular sn help builder @snuggery/build-angular:library -->
 
 ```
-Builder `build` of package `@snuggery/build-angular`
+Builder `library` of package `@snuggery/build-angular`
 
-Build an angular package
+Build an angular library
 
 Properties:
 
@@ -231,7 +231,7 @@ This plugin validates that the package declares all necessary dependencies, and 
 
 ## API
 
-The easiest way to get up and running using this package is by using the `@snuggery/build-angular:build` in a CLI compatible with Angular builders (Angular's own CLI `ng`, Nrwl's `nx` or `@snuggery/snuggery`'s own `sn`).
+The easiest way to get up and running using this package is by using the `@snuggery/build-angular:library` in a CLI compatible with Angular builders (Angular's own CLI `ng`, Nrwl's `nx` or `@snuggery/snuggery`'s own `sn`).
 The main functionality of this builder is also exposed as an API. This includes the building of the angular library to the APF requirements, but does not include extras such as copying over assets or packaging the library into a tarball that can be uploaded to an npm package registry.
 
 The `@snuggery/build-angular` package exposes:
