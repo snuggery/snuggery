@@ -40,7 +40,7 @@ function createConfig(
 				overrideTsconfig: {
 					files: [mainDefinitionFile],
 					compilerOptions: {
-						lib: ['es2020', 'dom', 'dom.iterable'],
+						lib: ['es2022', 'dom', 'dom.iterable'],
 					},
 				},
 			},

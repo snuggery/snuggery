@@ -40,7 +40,7 @@ function relative(from, to) {
  * @property {string} [esm2022]
  * @property {string} [typings]
  * @property {string} [module]
- * @property {string} [es2020]
+ * @property {string} [es2022]
  * @property {{exports?: Manifest['exports']}} [publishConfig]
  */
 

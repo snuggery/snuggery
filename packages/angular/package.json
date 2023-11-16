@@ -12,6 +12,7 @@
 	"exports": {
 		"./compiler": "./src/compiler.js",
 		"./plugins": "./src/plugins.js",
+		"./tsconfig": "./tsconfig.base.json",
 		"./package.json": "./package.json"
 	},
 	"builders": "./builders.json",
@@ -59,6 +60,7 @@
 		"exports": {
 			"./compiler": "./compiler.js",
 			"./plugins": "./plugins.js",
+			"./tsconfig": "./tsconfig.base.json",
 			"./package.json": "./package.json"
 		}
 	}

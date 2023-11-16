@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // @ts-check
-/// <reference lib="es2020" />
+/// <reference lib="es2022" />
 /// <reference types="node" />
 
 import childProcess from 'node:child_process';

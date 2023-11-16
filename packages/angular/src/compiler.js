@@ -380,7 +380,7 @@ export async function build({
 		await compile(buildContext, entryPoint, {
 			declarationOutputFile: entryPoint.typesFile,
 			outputFile: entryPoint.esm2022File,
-			target: ScriptTarget.ES2020,
+			target: ScriptTarget.ES2022,
 			usePrivateApiAsImportIssueWorkaround,
 		});
 	}
