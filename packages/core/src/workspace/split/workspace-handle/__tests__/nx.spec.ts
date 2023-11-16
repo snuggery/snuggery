@@ -33,7 +33,7 @@ test('should read nx configuration correctly', async () => {
 			generators: {
 				'@snuggery/schematics': {
 					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 					},
 				},
 			},
@@ -57,7 +57,7 @@ test('should read nx configuration correctly', async () => {
 		(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
 		{
 			hook: {
-				'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+				'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 			},
 		},
 	);
@@ -72,7 +72,7 @@ test('should write workspaces correctly to nx configuration', async () => {
 				schematics: {
 					'@snuggery/schematics': {
 						hook: {
-							'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+							'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 						},
 					},
 				},
@@ -113,7 +113,7 @@ test('should write workspaces correctly to nx configuration', async () => {
 		generators: {
 			'@snuggery/schematics': {
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		},
@@ -142,7 +142,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 		generators: {
 			'@snuggery/schematics': {
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		},
@@ -157,7 +157,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 	});
 	testProject.targets.add({
 		name: 'build',
-		builder: '@snuggery/node:build',
+		builder: '@snuggery/build-node:build',
 	}).options = {
 		packager: '@snuggery/yarn',
 	};
@@ -188,7 +188,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 				root: 'packages/test',
 				targets: {
 					build: {
-						executor: '@snuggery/node:build',
+						executor: '@snuggery/build-node:build',
 						options: {
 							packager: '@snuggery/yarn',
 						},
@@ -199,7 +199,7 @@ test('should update workspaces correctly via read + write as nx configuration', 
 		generators: {
 			'@snuggery/schematics': {
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		},
@@ -228,7 +228,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 		generators: {
 			'@snuggery/schematics': {
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		},
@@ -241,7 +241,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 		});
 		testProject.targets.add({
 			name: 'build',
-			builder: '@snuggery/node:build',
+			builder: '@snuggery/build-node:build',
 		}).options = {
 			packager: '@snuggery/yarn',
 		};
@@ -271,7 +271,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 				root: 'packages/test',
 				targets: {
 					build: {
-						executor: '@snuggery/node:build',
+						executor: '@snuggery/build-node:build',
 						options: {
 							packager: '@snuggery/yarn',
 						},
@@ -282,7 +282,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 		generators: {
 			'@snuggery/schematics': {
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		},

@@ -29,7 +29,7 @@ project "all" root="" {
 		}
 	}
 
-	target "test" builder="@snuggery/node:uvu" {
+	target "test" builder="@snuggery/build-node:uvu" {
 		options {
 			require "@snuggery-workspace/scripts/load-ts"
 			ignore "integration"
@@ -74,7 +74,7 @@ project "all" root="" {
 }
 
 (abstract)project "parent" {
-	target "build" builder="@snuggery/node:build" {
+	target "build" builder="@snuggery/build-node:build" {
 		options {
 			assets {
 				- "README.md" "NOTICE.md"
@@ -119,7 +119,7 @@ project "@snuggery/angular" extends="parent" root="packages/angular" {
 	}
 }
 
-project "@snuggery/node" extends="parent" root="packages/node"
+project "@snuggery/build-node" extends="parent" root="packages/build-node"
 
 project "@snuggery/schematics" extends="parent" root="packages/schematics"
 
@@ -150,7 +150,7 @@ project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
 }
 
 project "integration" root="integration" {
-	target "test" builder="@snuggery/node:uvu" {
+	target "test" builder="@snuggery/build-node:uvu" {
 		options {
 			require "@snuggery-workspace/scripts/load-ts"
 		}

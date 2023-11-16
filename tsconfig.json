@@ -1,16 +1,38 @@
 {
 	"include": [],
 	"references": [
-		{"path": "./packages/affected"},
-		{"path": "./packages/angular"},
-		{"path": "./packages/architect"},
-		{"path": "./packages/core"},
-		{"path": "./packages/global"},
-		{"path": "./packages/journey"},
-		{"path": "./packages/node"},
-		{"path": "./packages/schematics"},
-		{"path": "./packages/snuggery"},
-		{"path": "./packages/yarn"},
-		{"path": "./packages/yarn-plugin-snuggery"}
+		{
+			"path": "./packages/affected"
+		},
+		{
+			"path": "./packages/angular"
+		},
+		{
+			"path": "./packages/architect"
+		},
+		{
+			"path": "./packages/core"
+		},
+		{
+			"path": "./packages/global"
+		},
+		{
+			"path": "./packages/journey"
+		},
+		{
+			"path": "./packages/build-node"
+		},
+		{
+			"path": "./packages/schematics"
+		},
+		{
+			"path": "./packages/snuggery"
+		},
+		{
+			"path": "./packages/yarn"
+		},
+		{
+			"path": "./packages/yarn-plugin-snuggery"
+		}
 	]
 }

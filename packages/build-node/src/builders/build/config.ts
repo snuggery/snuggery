@@ -19,7 +19,7 @@ export async function loadConfiguration(
 ): Promise<t.InferType<typeof testConfiguration>> {
 	const configs = await extractExtraConfiguration(
 		{
-			key: '@snuggery/node',
+			key: '@snuggery/build-node',
 			test: testConfiguration,
 		},
 		context,

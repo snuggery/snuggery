@@ -20,7 +20,7 @@
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/affected": "workspace:packages/affected",
-		"@snuggery/node": "workspace:packages/node",
+		"@snuggery/build-node": "workspace:packages/build-node",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",
 		"@types/node": "^16.11.35",

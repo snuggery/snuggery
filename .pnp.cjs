@@ -62,6 +62,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/architect"\
     },\
     {\
+      "name": "@snuggery/build-node",\
+      "reference": "workspace:packages/build-node"\
+    },\
+    {\
       "name": "@snuggery/core",\
       "reference": "workspace:packages/core"\
     },\
@@ -72,10 +76,6 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@snuggery/journey",\
       "reference": "workspace:packages/journey"\
-    },\
-    {\
-      "name": "@snuggery/node",\
-      "reference": "workspace:packages/node"\
     },\
     {\
       "name": "@snuggery/schematics",\
@@ -108,10 +108,10 @@ const RAW_RUNTIME_STATE =
     ["@snuggery/affected", ["workspace:packages/affected"]],\
     ["@snuggery/angular", ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular", "workspace:packages/angular"]],\
     ["@snuggery/architect", ["workspace:packages/architect"]],\
+    ["@snuggery/build-node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node", "workspace:packages/build-node"]],\
     ["@snuggery/core", ["workspace:packages/core"]],\
     ["@snuggery/global", ["workspace:packages/global"]],\
     ["@snuggery/journey", ["virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey", "workspace:packages/journey"]],\
-    ["@snuggery/node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", "workspace:packages/node"]],\
     ["@snuggery/schematics", ["virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics", "workspace:packages/schematics"]],\
     ["@snuggery/snuggery", ["workspace:packages/snuggery"]],\
     ["@snuggery/yarn", ["workspace:packages/yarn"]],\
@@ -136,7 +136,7 @@ const RAW_RUNTIME_STATE =
           ["@microsoft/eslint-formatter-sarif", "npm:3.0.0"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/affected", "workspace:packages/affected"],\
-          ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
+          ["@snuggery/build-node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
           ["@types/node", "npm:16.11.35"],\
@@ -1860,6 +1860,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/angular__compiler-cli", null],\
           ["@types/less", "npm:3.0.3"],\
+          ["@types/microsoft__api-extractor", null],\
           ["@types/node", "npm:16.11.35"],\
           ["@types/sass", null],\
           ["@types/typescript", null],\
@@ -1876,6 +1877,7 @@ const RAW_RUNTIME_STATE =
         "packagePeers": [\
           "@angular/compiler-cli",\
           "@types/angular__compiler-cli",\
+          "@types/microsoft__api-extractor",\
           "@types/sass",\
           "@types/typescript",\
           "sass",\
@@ -1923,6 +1925,44 @@ const RAW_RUNTIME_STATE =
           ["fs-extra", "npm:11.1.1"],\
           ["glob", "npm:10.2.1"],\
           ["rxjs", "npm:7.8.1"],\
+          ["uvu", "npm:0.5.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@snuggery/build-node", [\
+      ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node", {\
+        "packageLocation": "./.yarn/__virtual__/@snuggery-build-node-virtual-f377879212/1/packages/build-node/",\
+        "packageDependencies": [\
+          ["@snuggery/build-node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node"],\
+          ["@snuggery-workspace/scripts", "workspace:scripts"],\
+          ["@snuggery/architect", "workspace:packages/architect"],\
+          ["@snuggery/core", "workspace:packages/core"],\
+          ["@types/node", "npm:16.11.35"],\
+          ["@types/typescript", null],\
+          ["@types/uvu", null],\
+          ["typanion", "npm:3.14.0"],\
+          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["uvu", "npm:0.5.6"]\
+        ],\
+        "packagePeers": [\
+          "@types/typescript",\
+          "@types/uvu",\
+          "typescript",\
+          "uvu"\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["workspace:packages/build-node", {\
+        "packageLocation": "./packages/build-node/",\
+        "packageDependencies": [\
+          ["@snuggery/build-node", "workspace:packages/build-node"],\
+          ["@snuggery-workspace/scripts", "workspace:scripts"],\
+          ["@snuggery/architect", "workspace:packages/architect"],\
+          ["@snuggery/core", "workspace:packages/core"],\
+          ["@types/node", "npm:16.11.35"],\
+          ["typanion", "npm:3.14.0"],\
+          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
@@ -2009,44 +2049,6 @@ const RAW_RUNTIME_STATE =
           ["kleur", "npm:4.1.5"],\
           ["prompts", "npm:2.4.2"],\
           ["semver", "npm:7.5.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
-          ["uvu", "npm:0.5.6"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@snuggery/node", [\
-      ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node", {\
-        "packageLocation": "./.yarn/__virtual__/@snuggery-node-virtual-e44f2f7bc4/1/packages/node/",\
-        "packageDependencies": [\
-          ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
-          ["@snuggery-workspace/scripts", "workspace:scripts"],\
-          ["@snuggery/architect", "workspace:packages/architect"],\
-          ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
-          ["@types/typescript", null],\
-          ["@types/uvu", null],\
-          ["typanion", "npm:3.14.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
-          ["uvu", "npm:0.5.6"]\
-        ],\
-        "packagePeers": [\
-          "@types/typescript",\
-          "@types/uvu",\
-          "typescript",\
-          "uvu"\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["workspace:packages/node", {\
-        "packageLocation": "./packages/node/",\
-        "packageDependencies": [\
-          ["@snuggery/node", "workspace:packages/node"],\
-          ["@snuggery-workspace/scripts", "workspace:scripts"],\
-          ["@snuggery/architect", "workspace:packages/architect"],\
-          ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
-          ["typanion", "npm:3.14.0"],\
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
           ["uvu", "npm:0.5.6"]\
         ],\
@@ -8595,7 +8597,7 @@ const RAW_RUNTIME_STATE =
           ["@microsoft/eslint-formatter-sarif", "npm:3.0.0"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/affected", "workspace:packages/affected"],\
-          ["@snuggery/node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/node"],\
+          ["@snuggery/build-node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
           ["@types/node", "npm:16.11.35"],\

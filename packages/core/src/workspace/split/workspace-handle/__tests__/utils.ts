@@ -79,7 +79,7 @@ export function itShouldHandleAngularConfiguration(
 				schematics: {
 					'@snuggery/schematics': {
 						hook: {
-							'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+							'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 						},
 					},
 				},
@@ -101,7 +101,7 @@ export function itShouldHandleAngularConfiguration(
 			(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
 			{
 				hook: {
-					'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 				},
 			},
 		);
@@ -117,7 +117,9 @@ export function itShouldHandleAngularConfiguration(
 						schematics: {
 							'@snuggery/schematics': {
 								hook: {
-									'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+									'@snuggery/build-node:package': [
+										'@snuggery/yarn:post-package',
+									],
 								},
 							},
 						},
@@ -158,7 +160,7 @@ export function itShouldHandleAngularConfiguration(
 				schematics: {
 					'@snuggery/schematics': {
 						hook: {
-							'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+							'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 						},
 					},
 				},
@@ -188,7 +190,7 @@ export function itShouldHandleAngularConfiguration(
 			schematics: {
 				'@snuggery/schematics': {
 					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 					},
 				},
 			},
@@ -203,7 +205,7 @@ export function itShouldHandleAngularConfiguration(
 		});
 		testProject.targets.add({
 			name: 'build',
-			builder: '@snuggery/node:build',
+			builder: '@snuggery/build-node:build',
 		}).options = {
 			packager: '@snuggery/yarn',
 		};
@@ -234,7 +236,7 @@ export function itShouldHandleAngularConfiguration(
 					root: 'packages/test',
 					targets: {
 						build: {
-							builder: '@snuggery/node:build',
+							builder: '@snuggery/build-node:build',
 							options: {
 								packager: '@snuggery/yarn',
 							},
@@ -245,7 +247,7 @@ export function itShouldHandleAngularConfiguration(
 			schematics: {
 				'@snuggery/schematics': {
 					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 					},
 				},
 			},
@@ -274,7 +276,7 @@ export function itShouldHandleAngularConfiguration(
 			schematics: {
 				'@snuggery/schematics': {
 					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 					},
 				},
 			},
@@ -287,7 +289,7 @@ export function itShouldHandleAngularConfiguration(
 			});
 			testProject.targets.add({
 				name: 'build',
-				builder: '@snuggery/node:build',
+				builder: '@snuggery/build-node:build',
 			}).options = {
 				packager: '@snuggery/yarn',
 			};
@@ -317,7 +319,7 @@ export function itShouldHandleAngularConfiguration(
 					root: 'packages/test',
 					targets: {
 						build: {
-							builder: '@snuggery/node:build',
+							builder: '@snuggery/build-node:build',
 							options: {
 								packager: '@snuggery/yarn',
 							},
@@ -328,7 +330,7 @@ export function itShouldHandleAngularConfiguration(
 			schematics: {
 				'@snuggery/schematics': {
 					hook: {
-						'@snuggery/node:package': ['@snuggery/yarn:post-package'],
+						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
 					},
 				},
 			},

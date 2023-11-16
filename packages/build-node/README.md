@@ -1,10 +1,10 @@
-# `@snuggery/node`
+# `@snuggery/build-node`
 
 Builders to feel right at home creating node.js packages
 
 ## Builders
 
-`@snuggery/node:build` builds a node.js package using typescript (or not).
+`@snuggery/build-node:build` builds a node.js package using typescript (or not).
 
 ## License
 
