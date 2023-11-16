@@ -1,6 +1,5 @@
 /* cspell:word tsdoc */
 
-import apiExtractor from '@microsoft/api-extractor';
 import {rm, writeFile} from 'node:fs/promises';
 import {dirname, join, relative} from 'node:path';
 
@@ -16,10 +15,12 @@ import {ensureUnixPath} from '../utils.js';
  */
 
 /**
+ * @param {typeof import('@microsoft/api-extractor')} apiExtractor
  * @param {import('../context.js').BuildContext} context
  * @param {FlattenTypesInput} input
  */
 function createConfig(
+	apiExtractor,
 	context,
 	{mainDefinitionFile, definitionFolder, outputFile},
 ) {
@@ -87,8 +88,10 @@ export async function flattenTypes(context, input) {
 		return;
 	}
 
+	const apiExtractor = await import('@microsoft/api-extractor');
+
 	const {succeeded} = apiExtractor.Extractor.invoke(
-		createConfig(context, input),
+		createConfig(apiExtractor, context, input),
 		{
 			messageCallback(message) {
 				message.handled = true;
