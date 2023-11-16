@@ -39,7 +39,7 @@ overrides:
     parserOptions:
       ecmaVersion: 2022
       sourceType: module
-  - files: ['packages/angular/src/**/*.js']
+  - files: ['packages/build-angular/src/**/*.js']
     parserOptions:
       ecmaVersion: 2022
       sourceType: module

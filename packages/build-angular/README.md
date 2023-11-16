@@ -1,4 +1,4 @@
-# `@snuggery/angular`
+# `@snuggery/build-angular`
 
 This package supports building angular packages in a monorepository. The core idea behind this package is that you want to focus on writing code, not lose time in running builds.
 
@@ -8,22 +8,22 @@ This package supports building angular packages in a monorepository. The core id
   - This package provides the basic configuration for a strict angular project, so your tsconfig could be as small as
 
     ```json
-    {"extends": "@snuggery/angular"}
+    {"extends": "@snuggery/build-angular/tsconfig"}
     ```
 
 - The `main` property of the `package.json` points towards the source code of your package.
   - This allows typescript to use your package without requiring any `paths` mapping.
-  - This also allows the `@snuggery/angular:build` to build an angular package without first having to build its dependencies.
+  - This also allows the `@snuggery/build-angular:build` to build an angular package without first having to build its dependencies.
 - There is extensive caching within a single process when building packages. This makes building all angular packages in your workspace using a single process, e.g. using `@snuggery/snuggery:glob` to run the `build` target on all packages, a lot faster than running every package's build in a separate process.
 
 ## Builder
 
-`@snuggery/angular:build` builds an angular library into a package that can be published to an npm registry.
+`@snuggery/build-angular:build` builds an angular library into a package that can be published to an npm registry.
 
-<!-- auto generate: yarn ../../integration/__fixtures__/angular sn help builder @snuggery/angular:build -->
+<!-- auto generate: yarn ../../integration/__fixtures__/angular sn help builder @snuggery/build-angular:build -->
 
 ```
-Builder `build` of package `@snuggery/angular`
+Builder `build` of package `@snuggery/build-angular`
 
 Build an angular package
 
@@ -176,7 +176,7 @@ None of the inputs are required, and some can be configured globally in your wor
 - `keepDevDependencies`
 - `inlineStyleLanguage`
 
-These can be configured for the entire workspace by placing them inside a `@snuggery/angular` section in the configuration.
+These can be configured for the entire workspace by placing them inside a `@snuggery/build-angular` section in the configuration.
 
 ```jsonc
 {
@@ -184,7 +184,7 @@ These can be configured for the entire workspace by placing them inside a `@snug
 	"projects": {
 		/* ... */
 	},
-	"@snuggery/angular": {
+	"@snuggery/build-angular": {
 		"tsconfig": "./tsconfig.json",
 		"inlineStyleLanguage": "scss"
 	}
@@ -193,7 +193,7 @@ These can be configured for the entire workspace by placing them inside a `@snug
 
 ## Plugins
 
-Plugins allows for extension of the `@snuggery/angular` compiler. These are the current extension points:
+Plugins allows for extension of the `@snuggery/build-angular` compiler. These are the current extension points:
 
 - `styleProcessor`, which allows it to e.g. provide support for Stylus or to override the built-in SASS loader.
 - `typescriptTransformers`, which are passed as `customTransformers` to typescript. This allows you to hook into the compilation itself, e.g. to modify generated javascript or generated types.
@@ -204,7 +204,7 @@ The plugin API is considered experimental.
 
 This package itself defines a few plugins:
 
-### Plugin `@snuggery/angular/plugins#tslib`
+### Plugin `@snuggery/build-angular/plugins#tslib`
 
 This plugin ensures that `tslib` is a dependency of the package if and only if it is necessary. It has one optional parameter, the version of tslib to write to the `package.json`.
 
@@ -213,15 +213,15 @@ This plugin ensures that `tslib` is a dependency of the package if and only if i
 	/* ... */
 	"plugins": [
 		// Use the default version of tslib provided in the plugin
-		"@snuggery/angular/plugins#tslib",
+		"@snuggery/build-angular/plugins#tslib",
 		// Or define the version to use:
-		["@snuggery/angular/plugins#tslib", {"version": "^2.3.1"}]
+		["@snuggery/build-angular/plugins#tslib", {"version": "^2.3.1"}]
 	]
 	/* ... */
 }
 ```
 
-### Plugin `@snuggery/angular/plugins#validateDependencies`
+### Plugin `@snuggery/build-angular/plugins#validateDependencies`
 
 This plugin validates that the package declares all necessary dependencies, and that the package doesn't contain superfluous dependencies. It accepts two optional parameters:
 
@@ -231,10 +231,10 @@ This plugin validates that the package declares all necessary dependencies, and 
 
 ## API
 
-The easiest way to get up and running using this package is by using the `@snuggery/angular:build` in a CLI compatible with Angular builders (Angular's own CLI `ng`, Nrwl's `nx` or `@snuggery/snuggery`'s own `sn`).
+The easiest way to get up and running using this package is by using the `@snuggery/build-angular:build` in a CLI compatible with Angular builders (Angular's own CLI `ng`, Nrwl's `nx` or `@snuggery/snuggery`'s own `sn`).
 The main functionality of this builder is also exposed as an API. This includes the building of the angular library to the APF requirements, but does not include extras such as copying over assets or packaging the library into a tarball that can be uploaded to an npm package registry.
 
-The `@snuggery/angular` package exposes:
+The `@snuggery/build-angular` package exposes:
 
 - `build`  
   The function that does all of the heavy lifting. Only one input is required: the primary entry point, all other inputs have sane defaults

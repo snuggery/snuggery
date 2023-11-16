@@ -16,7 +16,7 @@
 			"root": "packages/standalone",
 			"architect": {
 				"build": {
-					"builder": "@snuggery/angular:build",
+					"builder": "@snuggery/build-angular:build",
 					"options": {},
 					"configurations": {
 						"enable-api-extractor": {
@@ -49,7 +49,7 @@
 			"root": "packages/dependent",
 			"architect": {
 				"build": {
-					"builder": "@snuggery/angular:build"
+					"builder": "@snuggery/build-angular:build"
 				}
 			}
 		},
@@ -57,7 +57,7 @@
 			"root": "packages/dependent-root",
 			"architect": {
 				"build": {
-					"builder": "@snuggery/angular:build",
+					"builder": "@snuggery/build-angular:build",
 					"options": {
 						"packager": "@snuggery/yarn"
 					}
@@ -65,12 +65,12 @@
 			}
 		}
 	},
-	"@snuggery/angular": {
+	"@snuggery/build-angular": {
 		"tsconfig": "tsconfig.json",
 		"inlineStyleLanguage": "scss",
 		"plugins": [
-			"@snuggery/angular/plugins#tslib",
-			"@snuggery/angular/plugins#validateDependencies"
+			"@snuggery/build-angular/plugins#tslib",
+			"@snuggery/build-angular/plugins#validateDependencies"
 		]
 	}
 }

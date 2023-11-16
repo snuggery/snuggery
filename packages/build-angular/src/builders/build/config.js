@@ -28,7 +28,7 @@ const testConfiguration = t.isObject({
 export async function loadConfiguration(context) {
 	const configs = await extractExtraConfiguration(
 		{
-			key: '@snuggery/angular',
+			key: '@snuggery/build-angular',
 			test: testConfiguration,
 		},
 		context,

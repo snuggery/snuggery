@@ -5,7 +5,7 @@
 			"path": "./packages/affected"
 		},
 		{
-			"path": "./packages/angular"
+			"path": "./packages/build-angular"
 		},
 		{
 			"path": "./packages/architect"

@@ -54,12 +54,12 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/affected"\
     },\
     {\
-      "name": "@snuggery/angular",\
-      "reference": "workspace:packages/angular"\
-    },\
-    {\
       "name": "@snuggery/architect",\
       "reference": "workspace:packages/architect"\
+    },\
+    {\
+      "name": "@snuggery/build-angular",\
+      "reference": "workspace:packages/build-angular"\
     },\
     {\
       "name": "@snuggery/build-node",\
@@ -106,8 +106,8 @@ const RAW_RUNTIME_STATE =
     ["@integration/standalone", ["virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone", "workspace:integration/__fixtures__/angular/packages/standalone"]],\
     ["@snuggery-workspace/scripts", ["workspace:scripts"]],\
     ["@snuggery/affected", ["workspace:packages/affected"]],\
-    ["@snuggery/angular", ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular", "workspace:packages/angular"]],\
     ["@snuggery/architect", ["workspace:packages/architect"]],\
+    ["@snuggery/build-angular", ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular", "workspace:packages/build-angular"]],\
     ["@snuggery/build-node", ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node", "workspace:packages/build-node"]],\
     ["@snuggery/core", ["workspace:packages/core"]],\
     ["@snuggery/global", ["workspace:packages/global"]],\
@@ -1847,11 +1847,31 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@snuggery/angular", [\
-      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular", {\
-        "packageLocation": "./.yarn/__virtual__/@snuggery-angular-virtual-1ecfcff454/1/packages/angular/",\
+    ["@snuggery/architect", [\
+      ["workspace:packages/architect", {\
+        "packageLocation": "./packages/architect/",\
         "packageDependencies": [\
-          ["@snuggery/angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular"],\
+          ["@snuggery/architect", "workspace:packages/architect"],\
+          ["@angular-devkit/architect", "npm:0.1700.0"],\
+          ["@angular-devkit/core", "virtual:befa90195aa1f67dcb1a62dfa58bd5f42ab6cc4597230292165087f88af5704aae66a5fc3e76c354a586430a9d918886f268f024b94a07be497739eaa717b077#patch:@angular-devkit/core@npm%3A17.0.0#.yarn/patches/@angular-devkit__core.patch::version=17.0.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
+          ["@snuggery-workspace/scripts", "workspace:scripts"],\
+          ["@snuggery/core", "workspace:packages/core"],\
+          ["@types/fs-extra", "npm:11.0.1"],\
+          ["@types/glob", "npm:8.1.0"],\
+          ["@types/node", "npm:14.14.35"],\
+          ["fs-extra", "npm:11.1.1"],\
+          ["glob", "npm:10.2.1"],\
+          ["rxjs", "npm:7.8.1"],\
+          ["uvu", "npm:0.5.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@snuggery/build-angular", [\
+      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular", {\
+        "packageLocation": "./.yarn/__virtual__/@snuggery-build-angular-virtual-686e72384d/1/packages/build-angular/",\
+        "packageDependencies": [\
+          ["@snuggery/build-angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular"],\
           ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
           ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
           ["@microsoft/api-extractor", "npm:7.24.1"],\
@@ -1864,7 +1884,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:16.11.35"],\
           ["@types/sass", null],\
           ["@types/typescript", null],\
-          ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
+          ["autoprefixer", "virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14"],\
           ["browserslist", "npm:4.22.1"],\
           ["esbuild", "npm:0.19.5"],\
           ["less", "npm:4.1.3"],\
@@ -1885,10 +1905,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["workspace:packages/angular", {\
-        "packageLocation": "./packages/angular/",\
+      ["workspace:packages/build-angular", {\
+        "packageLocation": "./packages/build-angular/",\
         "packageDependencies": [\
-          ["@snuggery/angular", "workspace:packages/angular"],\
+          ["@snuggery/build-angular", "workspace:packages/build-angular"],\
           ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
           ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
           ["@microsoft/api-extractor", "npm:7.24.1"],\
@@ -1897,7 +1917,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/less", "npm:3.0.3"],\
           ["@types/node", "npm:16.11.35"],\
-          ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
+          ["autoprefixer", "virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14"],\
           ["browserslist", "npm:4.22.1"],\
           ["esbuild", "npm:0.19.5"],\
           ["less", "npm:4.1.3"],\
@@ -1906,26 +1926,6 @@ const RAW_RUNTIME_STATE =
           ["sass", "npm:1.62.0"],\
           ["typanion", "npm:3.14.0"],\
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@snuggery/architect", [\
-      ["workspace:packages/architect", {\
-        "packageLocation": "./packages/architect/",\
-        "packageDependencies": [\
-          ["@snuggery/architect", "workspace:packages/architect"],\
-          ["@angular-devkit/architect", "npm:0.1700.0"],\
-          ["@angular-devkit/core", "virtual:befa90195aa1f67dcb1a62dfa58bd5f42ab6cc4597230292165087f88af5704aae66a5fc3e76c354a586430a9d918886f268f024b94a07be497739eaa717b077#patch:@angular-devkit/core@npm%3A17.0.0#.yarn/patches/@angular-devkit__core.patch::version=17.0.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-          ["@snuggery-workspace/scripts", "workspace:scripts"],\
-          ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/fs-extra", "npm:11.0.1"],\
-          ["@types/glob", "npm:8.1.0"],\
-          ["@types/node", "npm:14.14.35"],\
-          ["fs-extra", "npm:11.1.1"],\
-          ["glob", "npm:10.2.1"],\
-          ["rxjs", "npm:7.8.1"],\
-          ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3830,7 +3830,7 @@ const RAW_RUNTIME_STATE =
           ["angular-1e2ed1", "workspace:integration/__fixtures__/angular"],\
           ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
           ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
-          ["@snuggery/angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/angular"],\
+          ["@snuggery/build-angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
           ["sass", "npm:1.62.0"],\
@@ -4062,10 +4062,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14", {\
-        "packageLocation": "./.yarn/__virtual__/autoprefixer-virtual-15eafa801c/0/cache/autoprefixer-npm-10.4.14-1e0b8c34fb-66ce961b86.zip/node_modules/autoprefixer/",\
+      ["virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14", {\
+        "packageLocation": "./.yarn/__virtual__/autoprefixer-virtual-378d17fc9f/0/cache/autoprefixer-npm-10.4.14-1e0b8c34fb-66ce961b86.zip/node_modules/autoprefixer/",\
         "packageDependencies": [\
-          ["autoprefixer", "virtual:1ecfcff454c903ab1d16203c7331af5951a904146a4adbce6269876023a68265c307572c0f54930c797a9646becb5f6de6e9f96816c39a939c0e968184061768#npm:10.4.14"],\
+          ["autoprefixer", "virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14"],\
           ["@types/postcss", null],\
           ["browserslist", "npm:4.22.1"],\
           ["caniuse-lite", "npm:1.0.30001561"],\

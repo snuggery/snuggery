@@ -107,7 +107,7 @@ project "@snuggery/architect" extends="parent" root="packages/architect"
 
 project "@snuggery/core" extends="parent" root="packages/core"
 
-project "@snuggery/angular" extends="parent" root="packages/angular" {
+project "@snuggery/build-angular" extends="parent" root="packages/build-angular" {
 	target "build" {
 		options {
 			assets {

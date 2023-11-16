@@ -1,7 +1,7 @@
 import {BuildFailureError} from './error.js';
 
 /**
- * A plugin for the `@snuggery/angular` library compiler
+ * A plugin for the `@snuggery/build-angular` library compiler
  *
  * Plugins can provide several extension points, all of which are optional.
  * The timing in which these extension points are called or used is not defined, except for the `finalize` hook which is guaranteed to be called once at the end of the compilation.

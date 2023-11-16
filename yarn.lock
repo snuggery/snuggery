@@ -1432,9 +1432,27 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/angular@workspace:packages/angular":
+"@snuggery/architect@npm:^0.9.0, @snuggery/architect@workspace:packages/architect":
   version: 0.0.0-use.local
-  resolution: "@snuggery/angular@workspace:packages/angular"
+  resolution: "@snuggery/architect@workspace:packages/architect"
+  dependencies:
+    "@angular-devkit/architect": "npm:>= 0.1700.0 < 0.1800.0"
+    "@angular-devkit/core": "npm:^17.0.0"
+    "@snuggery-workspace/scripts": "workspace:scripts"
+    "@snuggery/core": "npm:^0.7.0"
+    "@types/fs-extra": "npm:11.0.1"
+    "@types/glob": "npm:8.1.0"
+    "@types/node": "npm:^14.14.7"
+    fs-extra: "npm:11.1.1"
+    glob: "npm:10.2.1"
+    rxjs: "npm:^7.8.0"
+    uvu: "npm:^0.5.6"
+  languageName: unknown
+  linkType: soft
+
+"@snuggery/build-angular@workspace:packages/build-angular":
+  version: 0.0.0-use.local
+  resolution: "@snuggery/build-angular@workspace:packages/build-angular"
   dependencies:
     "@angular/compiler": "npm:^17.0.0"
     "@angular/compiler-cli": "npm:^17.0.0"
@@ -1466,24 +1484,6 @@ __metadata:
       optional: true
     sass:
       optional: true
-  languageName: unknown
-  linkType: soft
-
-"@snuggery/architect@npm:^0.9.0, @snuggery/architect@workspace:packages/architect":
-  version: 0.0.0-use.local
-  resolution: "@snuggery/architect@workspace:packages/architect"
-  dependencies:
-    "@angular-devkit/architect": "npm:>= 0.1700.0 < 0.1800.0"
-    "@angular-devkit/core": "npm:^17.0.0"
-    "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/core": "npm:^0.7.0"
-    "@types/fs-extra": "npm:11.0.1"
-    "@types/glob": "npm:8.1.0"
-    "@types/node": "npm:^14.14.7"
-    fs-extra: "npm:11.1.1"
-    glob: "npm:10.2.1"
-    rxjs: "npm:^7.8.0"
-    uvu: "npm:^0.5.6"
   languageName: unknown
   linkType: soft
 
@@ -2768,7 +2768,7 @@ __metadata:
   dependencies:
     "@angular/compiler": "npm:^17.0.0"
     "@angular/compiler-cli": "npm:^17.0.0"
-    "@snuggery/angular": "workspace:packages/angular"
+    "@snuggery/build-angular": "workspace:packages/build-angular"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@snuggery/yarn": "workspace:packages/yarn"
     sass: "npm:^1.62.0"

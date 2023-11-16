@@ -1,5 +1,5 @@
 {
-	"name": "@snuggery/angular",
+	"name": "@snuggery/build-angular",
 	"version": "0.5.0",
 	"type": "module",
 	"private": true,
