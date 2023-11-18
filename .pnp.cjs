@@ -139,7 +139,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/build-node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:6.8.0"],\
           ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:6.8.0"],\
           ["cspell-lib", "npm:5.12.6"],\
@@ -1836,7 +1836,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@types/glob", "npm:7.1.3"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/semver", "npm:7.5.4"],\
           ["glob", "npm:7.2.0"],\
           ["rxjs", "npm:7.8.1"],\
@@ -1858,7 +1858,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/fs-extra", "npm:11.0.1"],\
           ["@types/glob", "npm:8.1.0"],\
-          ["@types/node", "npm:14.14.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["fs-extra", "npm:11.1.1"],\
           ["glob", "npm:10.2.1"],\
           ["rxjs", "npm:7.8.1"],\
@@ -1881,7 +1881,7 @@ const RAW_RUNTIME_STATE =
           ["@types/angular__compiler-cli", null],\
           ["@types/less", "npm:3.0.3"],\
           ["@types/microsoft__api-extractor", null],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/sass", null],\
           ["@types/typescript", null],\
           ["autoprefixer", "virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14"],\
@@ -1916,7 +1916,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/less", "npm:3.0.3"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["autoprefixer", "virtual:686e72384d9c429fb492c8ff9a85a7055d1190614142d139669d2eafee24cfcfdcd8e1556f02512197f19561503943a99db7cc7b848d5a9385f208402a79fcb8#npm:10.4.14"],\
           ["browserslist", "npm:4.22.1"],\
           ["esbuild", "npm:0.19.5"],\
@@ -1938,7 +1938,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/typescript", null],\
           ["@types/uvu", null],\
           ["typanion", "npm:3.14.0"],\
@@ -1960,7 +1960,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["typanion", "npm:3.14.0"],\
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
           ["uvu", "npm:0.5.6"]\
@@ -1977,7 +1977,7 @@ const RAW_RUNTIME_STATE =
           ["@bgotink/kdl", "npm:0.1.6"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@types/micromatch", "npm:4.0.2"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["jsonc-parser", "npm:3.2.0"],\
           ["micromatch", "npm:4.0.5"],\
           ["typanion", "npm:3.14.0"],\
@@ -1994,7 +1994,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/global", "workspace:packages/global"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@yarnpkg/pnp", "npm:3.2.0"]\
         ],\
         "linkType": "SOFT"\
@@ -2011,7 +2011,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/core", "workspace:packages/core"],\
           ["@snuggery/schematics", "virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/pkgjs__parseargs", "npm:0.10.0"],\
           ["@types/prompts", "npm:2.4.4"],\
           ["@types/semver", "npm:7.5.4"],\
@@ -2042,7 +2042,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/core", "workspace:packages/core"],\
           ["@snuggery/schematics", "virtual:068a6e44f30ba8387b7a49f77de5e72007d5cf6b78b6631b34e06e305b33f980348fd4432079abbcda9eb11f6d5d71ed3d0f84579cf35afde9752a6e58bbc3ff#workspace:packages/schematics"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/pkgjs__parseargs", "npm:0.10.0"],\
           ["@types/prompts", "npm:2.4.4"],\
           ["@types/semver", "npm:7.5.4"],\
@@ -2066,7 +2066,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/angular-devkit__core", null],\
           ["@types/angular-devkit__schematics", null],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/typescript", null],\
           ["ignore", "npm:5.2.4"],\
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
@@ -2089,7 +2089,7 @@ const RAW_RUNTIME_STATE =
           ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A17.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=17.0.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["ignore", "npm:5.2.4"],\
           ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
         ],\
@@ -2109,7 +2109,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/prettier", "npm:2.7.2"],\
           ["@types/prompts", "npm:2.4.4"],\
           ["@types/semver", "npm:7.5.4"],\
@@ -2139,7 +2139,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@yarnpkg/parsers", "npm:2.5.0"]\
         ],\
         "linkType": "SOFT"\
@@ -2150,7 +2150,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/yarn-plugin-snuggery/",\
         "packageDependencies": [\
           ["@snuggery/yarn-plugin-snuggery", "workspace:packages/yarn-plugin-snuggery"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@types/semver", "npm:7.5.4"],\
           ["@yarnpkg/builder", "npm:4.0.0"],\
           ["@yarnpkg/cli", "virtual:1be968e10e852021717e39be5362e9ef161555fe60a16adbabe5315cf3f3fee6f4ee855a1f13adfbd9e1da4db65f29388d88e3b4b0a9cf0f1d12dbfcd8a1fa19#npm:4.0.1"],\
@@ -2351,20 +2351,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-13.13.38-4b102efd9c-b1afb5ba49.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:13.13.38"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:14.14.35", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-14.14.35-c55176fef6-6f62d0f671.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:14.14.35"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:16.11.35", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-16.11.35-d7356bc420-528459656d.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:16.11.35"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -6419,7 +6405,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["test-builders", "workspace:integration/test-builders"],\
           ["test-schematics", "workspace:integration/test-schematics"],\
           ["uvu", "npm:0.5.6"]\
@@ -8600,7 +8586,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/build-node", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#workspace:packages/build-node"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
-          ["@types/node", "npm:16.11.35"],\
+          ["@types/node", "npm:18.18.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:6.8.0"],\
           ["@typescript-eslint/parser", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:6.8.0"],\
           ["cspell-lib", "npm:5.12.6"],\

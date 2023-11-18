@@ -23,7 +23,7 @@
 		"@snuggery/build-node": "workspace:packages/build-node",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",
-		"@types/node": "^16.11.35",
+		"@types/node": "^18.17.15",
 		"@typescript-eslint/eslint-plugin": "^6.8.0",
 		"@typescript-eslint/parser": "^6.8.0",
 		"cspell-lib": "^5.12.6",

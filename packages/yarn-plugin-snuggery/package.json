@@ -12,7 +12,7 @@
 		"semver": "^7.3.1"
 	},
 	"devDependencies": {
-		"@types/node": "^16.11.35",
+		"@types/node": "^18.17.15",
 		"@types/semver": "^7.3.8",
 		"@yarnpkg/builder": "4.0.0",
 		"@yarnpkg/cli": "4.0.1",

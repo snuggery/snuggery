@@ -4,7 +4,6 @@ import {
 } from 'node:perf_hooks';
 import process from 'node:process';
 
-/** @type {Pick<import('node:perf_hooks').Performance, 'mark' | 'measure' | 'clearMarks'>} */
 export const performance = process.env.SNUGGERY_PERF
 	? _realPerformance
 	: {

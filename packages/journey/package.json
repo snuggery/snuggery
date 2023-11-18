@@ -43,7 +43,7 @@
 	"devDependencies": {
 		"@angular-devkit/core": "^17.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/node": "^16.11.35",
+		"@types/node": "^18.17.15",
 		"@types/pkgjs__parseargs": "^0.10.0",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",

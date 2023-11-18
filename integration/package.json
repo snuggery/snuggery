@@ -10,7 +10,7 @@
 		"@snuggery/core": "workspace:packages/core",
 		"@snuggery/journey": "workspace:packages/journey",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
-		"@types/node": "^16.11.35",
+		"@types/node": "^18.17.15",
 		"test-builders": "workspace:*",
 		"test-schematics": "workspace:*",
 		"uvu": "^0.5.6"

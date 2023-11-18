@@ -23,6 +23,6 @@
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/node": "^16.11.35"
+		"@types/node": "^18.17.15"
 	}
 }

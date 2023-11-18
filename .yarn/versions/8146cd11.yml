@@ -1,0 +1,13 @@
+releases:
+  "@snuggery/build-angular": patch
+
+declined:
+  - "@snuggery/affected"
+  - "@snuggery/architect"
+  - "@snuggery/build-node"
+  - "@snuggery/core"
+  - "@snuggery/global"
+  - "@snuggery/journey"
+  - "@snuggery/schematics"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn"

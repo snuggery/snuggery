@@ -34,7 +34,7 @@
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/core": "^0.7.0",
-		"@types/node": "^16.11.35",
+		"@types/node": "^18.17.15",
 		"typescript": "5.2.2",
 		"uvu": "^0.5.6"
 	}

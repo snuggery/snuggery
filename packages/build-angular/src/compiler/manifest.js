@@ -7,16 +7,6 @@ import {BuildFailureError} from './error.js';
 import {ensureUnixPath} from './utils.js';
 
 /**
- * @type {<T>(value: T) => T}
- */
-const clone =
-	// @ts-expect-error typescript doesn't have types for structuredClone yet
-	typeof structuredClone === 'function'
-		? // @ts-expect-error typescript doesn't have types for structuredClone yet
-		  structuredClone
-		: value => JSON.parse(JSON.stringify(value));
-
-/**
  * @param {string} from
  * @param {string} to
  * @returns {string}
@@ -188,9 +178,10 @@ export async function writeManifest({
 	keepScripts,
 }) {
 	const manifest =
-		/** @type {import('@snuggery/core').JsonObject & Manifest} */ ({
-			...originalManifest,
-		});
+		/** @type {Manifest & import('@snuggery/core').JsonObject} */ (
+			structuredClone(originalManifest)
+		);
+	delete manifest.private;
 
 	delete manifest.main;
 	if (!keepDevDependencies) {
@@ -217,7 +208,7 @@ export async function writeManifest({
 			);
 		}
 	} else {
-		let exports = clone(
+		let exports = structuredClone(
 			manifest.publishConfig?.exports ?? manifest.exports ?? {},
 		);
 
