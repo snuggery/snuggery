@@ -103,6 +103,7 @@ export async function flattenCode(input) {
 			),
 
 			bundle: true,
+			splitting: true,
 			write: true,
 			target: [input.target],
 			format: 'esm',
