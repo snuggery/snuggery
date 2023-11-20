@@ -4,15 +4,13 @@
 	"description": "Build an angular library package",
 	"type": "object",
 	"properties": {
-		"primaryEntryPoint": {
-			"$ref": "#/$definitions/entryPoint",
-			"description": "Primary entry point to build, defaults to the package in the project root"
+		"manifest": {
+			"type": "string",
+			"description": "Path to the `package.json` file, defaults to the `package.json` file in the project folder"
 		},
-		"secondaryEntryPoints": {
-			"type": "array",
-			"items": {"$ref": "#/$definitions/entryPoint"},
-			"default": [],
-			"description": "Secondary entry points to build, defaults to not building any secondary entry points"
+		"main": {
+			"type": "string",
+			"description": "Main file, defaults to the `main` or `exports` property of the manifest"
 		},
 		"tsconfig": {
 			"type": "string",
@@ -121,31 +119,5 @@
 			"additionalProperties": false
 		}
 	},
-	"additionalProperties": false,
-	"$definitions": {
-		"entryPoint": {
-			"oneOf": [
-				{"type": "string"},
-				{
-					"type": "object",
-					"properties": {
-						"manifest": {
-							"type": "string",
-							"description": "Path to the `package.json` of this entry point"
-						},
-						"main": {
-							"type": "string",
-							"description": "The main file of this entry point, defaults to the `main` property of this entry point's manifest"
-						},
-						"tsconfig": {
-							"type": "string",
-							"description": "TypeScript configuration to use for this entry point instead of the `tsconfig` in the options"
-						}
-					},
-					"required": ["manifest"],
-					"additionalProperties": false
-				}
-			]
-		}
-	}
+	"additionalProperties": false
 }

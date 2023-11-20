@@ -15,7 +15,7 @@ import {BuildFailureError} from '../compiler.js';
  */
 export const validateDependencies = {
 	name: 'validateDependencies',
-	create({logger, primaryEntryPoint}, options = {}) {
+	create({logger, manifestFile}, options = {}) {
 		/** @type {Set<string>} */
 		const usedDependencies = new Set();
 		/** @type {Set<string>} */
@@ -26,7 +26,7 @@ export const validateDependencies = {
 			options.allowedUnusedDependencies,
 		);
 
-		const require = createRequire(primaryEntryPoint.manifestFile);
+		const require = createRequire(manifestFile);
 
 		/** @type {ts.CustomTransformerFactory} */
 		const collectUsedDependencies = context => {

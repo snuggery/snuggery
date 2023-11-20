@@ -26,14 +26,14 @@ test(
 		// Expect exports to be defined correctly
 		assert.deepStrictEqual(packageJson.exports['.'], {
 			types: './index.d.ts',
-			esm: './esm2022/standalone.js',
-			esm2022: './esm2022/standalone.js',
+			esm: './esm2022/index.js',
+			esm2022: './esm2022/index.js',
 			default: './fesm2022/standalone.js',
 		});
 		assert.deepStrictEqual(packageJson.exports['./sub'], {
-			types: './sub/index.d.ts',
-			esm: './sub/esm2022/sub.js',
-			esm2022: './sub/esm2022/sub.js',
+			types: './sub.d.ts',
+			esm: './esm2022/sub.js',
+			esm2022: './esm2022/sub.js',
 			default: './fesm2022/sub.js',
 		});
 
@@ -54,13 +54,10 @@ test(
 		);
 
 		// Expect the .d.ts files not to be flattened
-		const subDts = await readFile(
-			join(outputFolder, 'sub', 'index.d.ts'),
-			'utf8',
-		);
+		const subDts = await readFile(join(outputFolder, 'sub.d.ts'), 'utf8');
 		assert.doesNotMatch(subDts, /export declare class SubModule/);
 		assert.match(subDts, /export \* from '.\/types\/sub\.js';/);
-		assert.ok(await stat(join(outputFolder, 'sub', 'types')));
+		assert.ok(await stat(join(outputFolder, 'types')));
 
 		await expectSuccessfulRun([
 			'build',
@@ -71,10 +68,10 @@ test(
 
 		// Expect the .d.ts files to be flattened
 		assert.match(
-			await readFile(join(outputFolder, 'sub', 'index.d.ts'), 'utf8'),
+			await readFile(join(outputFolder, 'sub.d.ts'), 'utf8'),
 			/export declare class SubModule/,
 		);
-		await assert.rejects(stat(join(outputFolder, 'sub', 'types')));
+		await assert.rejects(stat(join(outputFolder, 'types')));
 	}),
 );
 

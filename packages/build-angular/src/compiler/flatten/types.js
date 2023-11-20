@@ -8,27 +8,30 @@ import {ensureUnixPath} from '../utils.js';
 
 /**
  * @typedef {object} FlattenTypesInput
- * @property {string} definitionFolder
- * @property {string} mainDefinitionFile
- * @property {string} outputFile
+ * @property {string} outputFolder
+ * @property {string} declarationOutputFolder
  * @property {boolean} enableApiExtractor
  */
 
 /**
  * @param {typeof import('@microsoft/api-extractor')} apiExtractor
- * @param {import('../context.js').BuildContext} context
- * @param {FlattenTypesInput} input
+ * @param {import('../context.js').BuildContext<string>} context
+ * @param {import('../context.js').EntryPoint<string>} entryPoint
+ * @param {string} declarationOutputFolder
+ * @param {string} flattenedDeclarationFile
  */
 function createConfig(
 	apiExtractor,
 	context,
-	{mainDefinitionFile, definitionFolder, outputFile},
+	entryPoint,
+	declarationOutputFolder,
+	flattenedDeclarationFile,
 ) {
 	return apiExtractor.ExtractorConfig.prepare({
 		configObject: {
 			dtsRollup: {
 				enabled: true,
-				publicTrimmedFilePath: outputFile,
+				publicTrimmedFilePath: flattenedDeclarationFile,
 			},
 			docModel: {
 				enabled: false,
@@ -39,7 +42,7 @@ function createConfig(
 
 			compiler: {
 				overrideTsconfig: {
-					files: [mainDefinitionFile],
+					files: [entryPoint.declarationFile],
 					compilerOptions: {
 						lib: ['es2022', 'dom', 'dom.iterable'],
 					},
@@ -51,82 +54,107 @@ function createConfig(
 				reportFileName: 'this property is required but not used',
 			},
 
-			projectFolder: definitionFolder,
-			mainEntryPointFilePath: mainDefinitionFile,
+			projectFolder: declarationOutputFolder,
+			mainEntryPointFilePath: entryPoint.declarationFile,
 		},
 		configObjectFullPath: undefined,
 		// file doesn't exist, but we need to pass it in order for API Extractor
 		// to recognize the packageJson value we pass
-		packageJsonFullPath: join(definitionFolder, 'package.json'),
+		packageJsonFullPath: join(declarationOutputFolder, 'package.json'),
 		// API Extractor expects valid NPM package names, so use the main package name
-		packageJson: {name: context.primaryEntryPoint.packageName},
+		packageJson: {name: context.manifest.name},
 	});
 }
 
 /**
+ * @param {import('../context.js').BuildContext<string>} context
  * @param {FlattenTypesInput} input
  */
-async function reExportTypes(input) {
-	await writeFile(
-		input.outputFile,
-		`export * from './${ensureUnixPath(
-			relative(
-				dirname(input.outputFile),
-				input.mainDefinitionFile.replace(/\.d\.([mc]?)ts$/, '.$1js'),
-			),
-		)}';\n`,
-	);
+async function reExportTypes(context, input) {
+	for (const entryPoint of context.entryPoints) {
+		const newDeclarationFile = join(
+			input.outputFolder,
+			`${entryPoint.exportName === '.' ? 'index' : entryPoint.exportName}.d.ts`,
+		);
+
+		await writeFile(
+			newDeclarationFile,
+			`export * from './${ensureUnixPath(
+				relative(
+					dirname(newDeclarationFile),
+					entryPoint.declarationFile.replace(/\.d\.([mc]?)ts$/, '.$1js'),
+				),
+			)}';\n`,
+		);
+
+		entryPoint.declarationFile = newDeclarationFile;
+	}
 }
 
 /**
- * @param {import('../context.js').BuildContext} context
+ * @param {import('../context.js').BuildContext<string>} context
  * @param {FlattenTypesInput} input
  */
 export async function flattenTypes(context, input) {
 	if (!input.enableApiExtractor) {
-		await reExportTypes(input);
+		await reExportTypes(context, input);
 		return;
 	}
 
 	const apiExtractor = await import('@microsoft/api-extractor');
 
-	const {succeeded} = apiExtractor.Extractor.invoke(
-		createConfig(apiExtractor, context, input),
-		{
-			messageCallback(message) {
-				message.handled = true;
+	for (const entryPoint of context.entryPoints) {
+		const flattenedDeclarationFile = join(
+			input.outputFolder,
+			`${entryPoint.exportName === '.' ? 'index' : entryPoint.exportName}.d.ts`,
+		);
 
-				if (
-					message.messageId === 'console-compiler-version-notice' ||
-					message.messageId === 'console-preamble'
-				) {
-					return;
-				}
+		const {succeeded} = apiExtractor.Extractor.invoke(
+			createConfig(
+				apiExtractor,
+				context,
+				entryPoint,
+				input.declarationOutputFolder,
+				flattenedDeclarationFile,
+			),
+			{
+				messageCallback(message) {
+					message.handled = true;
 
-				switch (message.logLevel) {
-					case 'none':
-						break;
-					case 'verbose':
-						context.logger.debug(message.text);
-						break;
-					case 'warning':
-						context.logger.warn(message.text);
-						break;
-					case 'error':
-						context.logger.error(message.text);
-						break;
-					case 'info':
-					default:
-						context.logger.info(message.text);
-						break;
-				}
+					if (
+						message.messageId === 'console-compiler-version-notice' ||
+						message.messageId === 'console-preamble'
+					) {
+						return;
+					}
+
+					switch (message.logLevel) {
+						case 'none':
+							break;
+						case 'verbose':
+							context.logger.debug(message.text);
+							break;
+						case 'warning':
+							context.logger.warn(message.text);
+							break;
+						case 'error':
+							context.logger.error(message.text);
+							break;
+						case 'info':
+						default:
+							context.logger.info(message.text);
+							break;
+					}
+				},
 			},
-		},
-	);
+		);
 
-	if (!succeeded) {
-		throw new BuildFailureError(`Bundling .d.ts files failed`);
+		if (!succeeded) {
+			throw new BuildFailureError(`Bundling .d.ts files failed`);
+		}
+
+		entryPoint.declarationFile = flattenedDeclarationFile;
 	}
 
-	await rm(input.definitionFolder, {recursive: true});
+	await rm(input.declarationOutputFolder, {recursive: true});
 }

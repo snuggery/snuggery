@@ -3,7 +3,7 @@
 import {build} from 'esbuild';
 import {writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
-import {basename, extname, join} from 'node:path';
+import {relative, extname, join} from 'node:path';
 
 import {BuildFailureError} from '../error.js';
 
@@ -11,6 +11,7 @@ import {BuildFailureError} from '../error.js';
  * @typedef {object} EntryPoint
  * @property {string} packageName
  * @property {string} mainFile
+ * @property {string} outputFile
  */
 
 /**
@@ -97,7 +98,10 @@ export async function flattenCode(input) {
 		await build({
 			entryPoints: Object.fromEntries(
 				input.entryPoints.map(entryPoint => [
-					basename(entryPoint.mainFile, extname(entryPoint.mainFile)),
+					relative(input.outputFolder, entryPoint.outputFile).slice(
+						0,
+						-extname(entryPoint.outputFile).length,
+					),
 					entryPoint.mainFile,
 				]),
 			),

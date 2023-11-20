@@ -3,7 +3,7 @@
 	"type": "module",
 	"exports": {
 		".": "./src/index.ts",
-		"./sub": "./sub/src/index.ts",
+		"./sub": "./src/sub.ts",
 		"./variables": {
 			"sass": "./_variables.scss"
 		},

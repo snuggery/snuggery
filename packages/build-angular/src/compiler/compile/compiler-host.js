@@ -15,9 +15,7 @@ import {disallowCjsWriteFileFactory} from './writer.js';
  * @property {import('@angular/compiler-cli').CompilerOptions} compilerOptions
  * @property {import('typescript').ModuleResolutionCache} moduleResolutionCache
  * @property {import('../cache/file.js').FileCache} fileCache
- * @property {import('../resource-processor.js').ResourceProcessor} resourceProcessor
- * @property {import('../manifest.js').Manifest} primaryManifest
- * @property {string} outputFile
+ * @property {(writtenFilename: string, sourceFile: ts.SourceFile) => void} markWrittenFile
  */
 
 /**
@@ -47,21 +45,22 @@ function relativeToRootDir(compilerOptions, path) {
 
 /**
  *
+ * @param {import('../context.js').BuildContext} context
  * @param {CreateCompilerHostInput} options
  * @returns {import('../type-utils.js').RequiredProperties<import('@angular/compiler-cli').CompilerHost, 'fileNameToModuleName'>}
  */
-export function createCompilerHost({
-	compilerOptions,
-	moduleResolutionCache,
-	fileCache,
-	resourceProcessor,
-	primaryManifest,
-	outputFile,
-}) {
+export function createCompilerHost(
+	context,
+	{compilerOptions, moduleResolutionCache, fileCache, markWrittenFile},
+) {
 	const moduleCache = new ModuleCache();
 	const compilerHost = _createCompilerHost({
 		options: compilerOptions,
 	});
+
+	const writeFile = isUsingNodeResolution(compilerOptions)
+		? disallowCjsWriteFileFactory(context, compilerHost)
+		: compilerHost.writeFile.bind(compilerHost);
 
 	return {
 		...compilerHost,
@@ -178,22 +177,25 @@ export function createCompilerHost({
 
 		// Process resources (e.g. support SASS, optimize CSS)
 
-		async transformResource(data, context) {
+		async transformResource(data, resourceContext) {
 			performance.mark('cache: transformResource');
 			const cache = fileCache.get(
-				context.resourceFile || context.containingFile,
+				resourceContext.resourceFile || resourceContext.containingFile,
 			);
 
 			if (cache.processedResource == null) {
 				cache.processedResource = new Map();
 			}
 
-			const cacheKey = context.resourceFile ? '.' : data;
+			const cacheKey = resourceContext.resourceFile ? '.' : data;
 			let result = cache.processedResource.get(cacheKey);
 
 			if (result == null) {
 				performance.mark('cache miss: transformResource');
-				result = await resourceProcessor.getProcessedResource(data, context);
+				result = await context.resourceProcessor.getProcessedResource(
+					data,
+					resourceContext,
+				);
 				// cache.processedResource.set(cacheKey, result);
 			}
 
@@ -212,7 +214,7 @@ export function createCompilerHost({
 			// The cache didn't yield a bare specifier as module name,
 			// so this file was never imported via a bare specifier.
 			// => it was always imported as relative file, which implies
-			//    it is part of the entrypoint itself
+			//    it is part of the entry point itself
 			//    -> deduce relative import path
 
 			const relativeImportedFile = relativeToRootDir(
@@ -238,8 +240,29 @@ export function createCompilerHost({
 		// We should actually always disallow CJS, but in typescript's other module resolution
 		// settings that's ± impossible to validate
 
-		writeFile: isUsingNodeResolution(compilerOptions)
-			? disallowCjsWriteFileFactory({compilerHost, primaryManifest, outputFile})
-			: compilerHost.writeFile,
+		writeFile: (
+			fileName,
+			text,
+			writeByteOrderMark,
+			onError,
+			sourceFiles,
+			data,
+		) => {
+			if (sourceFiles?.length === 1) {
+				markWrittenFile(
+					fileName,
+					/** @type {ts.SourceFile} */ (sourceFiles[0]),
+				);
+			}
+
+			return writeFile(
+				fileName,
+				text,
+				writeByteOrderMark,
+				onError,
+				sourceFiles,
+				data,
+			);
+		},
 	};
 }

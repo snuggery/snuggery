@@ -1,7 +1,6 @@
 /* cspell:ignore ngfactory bazel */
 
 import {readConfiguration} from '@angular/compiler-cli';
-import {basename, dirname} from 'node:path';
 import {fileURLToPath, URL} from 'node:url';
 import ts from 'typescript';
 
@@ -12,22 +11,7 @@ const defaultTsConfigFile = fileURLToPath(
 );
 
 /**
- * @typedef {object} ConfigurationInput
- * @property {string | undefined} tsConfigFile
- * @property {string}	rootFolder
- * @property {readonly EntryPoint[]} entryPoints
- * @property {string}	packageName
- * @property {string}	mainFile
- * @property {string}	outputFile
- * @property {string}	declarationOutputFile
- * @property {ts.ScriptTarget} target
- * @property {boolean} usePrivateApiAsImportIssueWorkaround
- * @property {import('../manifest.js').Manifest} primaryManifest
- * @property {import('../manifest.js').Manifest} closestManifest
- */
-
-/**
- * @typedef {object} EntryPoint
+ * @typedef {object} FlatEntryPoint
  * @property {string} packageName
  * @property {string} outputFolder
  */
@@ -47,11 +31,26 @@ export function isUsingNodeResolution(compilerOptions) {
 }
 
 /**
- *
+ * @typedef {object} EntryPoint
+ * @property {string} packageName
+ * @property {string} mainFile
+ */
+
+/**
+ * @typedef {object} ConfigurationInput
+ * @property {string | undefined} tsConfigFile
+ * @property {string}	outputFolder
+ * @property {string}	declarationOutputFolder
+ * @property {ts.ScriptTarget} target
+ * @property {boolean} usePrivateApiAsImportIssueWorkaround
+ */
+
+/**
+ * @param {import('../context.js').BuildContext} context
  * @param {ConfigurationInput} input
  * @returns {import('@angular/compiler-cli').ParsedConfiguration}
  */
-export function parseConfiguration(input) {
+export function parseConfiguration(context, input) {
 	const defaultConfiguration = readConfiguration(defaultTsConfigFile);
 	const configuration = input.tsConfigFile
 		? readConfiguration(input.tsConfigFile)
@@ -66,28 +65,17 @@ export function parseConfiguration(input) {
 		compilerOptions.module <= ts.ModuleKind.ESNext
 	) {
 		compilerOptions.moduleResolution =
-			compilerOptions.moduleResolution ?? ts.ModuleResolutionKind.NodeJs;
+			compilerOptions.moduleResolution ?? ts.ModuleResolutionKind.Node10;
 	} else if (isUsingNodeResolution(compilerOptions)) {
-		const primaryType = input.primaryManifest.type ?? 'commonjs';
-		const closestType = input.closestManifest.type ?? 'commonjs';
+		const primaryType = context.manifest.type ?? 'commonjs';
 
 		if (primaryType !== 'module') {
 			throw new BuildFailureError(
 				`Compiling angular libraries with TypeScript compiler option "module": "${
 					ts.ModuleKind[compilerOptions.module]
 				}" currently requires "type": "module" in the package.json for ${
-					input.primaryManifest.name
+					context.manifest.name
 				}`,
-			);
-		}
-
-		if (closestType !== primaryType) {
-			throw new BuildFailureError(
-				`Library entrypoint has type set to ${JSON.stringify(
-					input.closestManifest.type,
-				)}, which doesn't match the primary entrypoint's ${JSON.stringify(
-					input.primaryManifest.type,
-				)}`,
 			);
 		}
 	} else {
@@ -100,29 +88,15 @@ export function parseConfiguration(input) {
 
 	configuration.emitFlags = defaultConfiguration.emitFlags;
 
-	if (input.usePrivateApiAsImportIssueWorkaround) {
-		compilerOptions.rootDir = dirname(input.mainFile);
-	}
-	compilerOptions.outDir = dirname(input.outputFile);
-	compilerOptions.sourceRoot = `file:///vendor/${input.packageName}`;
+	compilerOptions.outDir = input.outputFolder;
+	compilerOptions.sourceRoot = `file:///vendor/${context.manifest.name}`;
 
-	compilerOptions.flatModuleId = input.packageName;
-	compilerOptions.flatModuleOutFile = basename(input.outputFile);
+	compilerOptions.flatModuleId = undefined;
+	compilerOptions.flatModuleOutFile = undefined;
 
-	compilerOptions.enableIvy = true;
 	compilerOptions.compilationMode = 'partial';
 
-	compilerOptions.basePath = input.rootFolder;
-
-	compilerOptions.paths = {
-		...compilerOptions.paths,
-		...Object.fromEntries(
-			input.entryPoints.map(({packageName, outputFolder: targetFolder}) => [
-				packageName,
-				[targetFolder],
-			]),
-		),
-	};
+	compilerOptions.basePath = context.rootFolder;
 
 	// Not emitting on errors means we don't emit when angular code contains errors caused by
 	// stricter settings. Especially the `noUnusedLocals` setting causes issues in generated
@@ -135,7 +109,7 @@ export function parseConfiguration(input) {
 
 	compilerOptions.target = input.target;
 	compilerOptions.declaration = true;
-	compilerOptions.declarationDir = dirname(input.declarationOutputFile);
+	compilerOptions.declarationDir = input.declarationOutputFolder;
 	compilerOptions.emitDeclarationOnly = false;
 
 	compilerOptions.inlineSourceMap = false;
@@ -143,7 +117,9 @@ export function parseConfiguration(input) {
 	compilerOptions.declarationMap = true;
 	compilerOptions.inlineSources = true;
 
-	configuration.rootNames = [input.mainFile];
+	configuration.rootNames = context.entryPoints.map(
+		entryPoint => entryPoint.mainFile,
+	);
 	if (input.usePrivateApiAsImportIssueWorkaround) {
 		// Uh oh, a private property: "This option is internal and is used by the ng_module.bzl rule to switch behavior between Bazel and Blaze."
 		compilerOptions._useHostForImportGeneration = true;

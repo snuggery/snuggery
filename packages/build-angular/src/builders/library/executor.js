@@ -30,8 +30,8 @@ const emoji = ['✨', '🚢', '🎉', '💯', '✅', '🏁', '🌈', '🦄'];
 export async function executeBuild(
 	{
 		assets = [],
-		primaryEntryPoint,
-		secondaryEntryPoints = [],
+		manifest,
+		main,
 
 		packager,
 		tsconfig,
@@ -74,45 +74,20 @@ export async function executeBuild(
 		configuration.flags?.useCentralOutputFolder ??
 		process.versions.pnp == null;
 
+	manifest =
+		resolveWorkspacePath(context, manifest) ??
+		(await resolveProjectPath(context, manifestFilename));
+	main = resolveWorkspacePath(context, main);
 	tsconfig =
 		resolveWorkspacePath(context, tsconfig) ??
 		(await resolveProjectPath(context, 'tsconfig.json'));
-
-	/**
-	 * @param {string | import('./schema.js').EntryPoint} input
-	 * @returns {import('../../compiler.js').EntryPoint}
-	 */
-	function resolveEntryPoint(input) {
-		if (typeof input === 'string') {
-			return {
-				manifestFile: resolveWorkspacePath(context, input),
-				tsConfigFile: tsconfig,
-			};
-		}
-
-		let manifestFile = resolveWorkspacePath(context, input.manifest);
-		let mainFile = resolveWorkspacePath(context, input.main);
-		let tsConfigFile =
-			resolveWorkspacePath(context, input.tsconfig) ?? tsconfig;
-
-		return {manifestFile, mainFile, tsConfigFile};
-	}
-
-	const primaryCompilerEntryPoint = resolveEntryPoint(
-		primaryEntryPoint ?? (await resolveProjectPath(context, manifestFilename)),
-	);
 
 	outputFolder =
 		resolveWorkspacePath(context, outputFolder) ??
 		(useCentralOutputFolder
 			? resolveWorkspacePath(
 					context,
-					join(
-						'dist',
-						JSON.parse(
-							await readFile(primaryCompilerEntryPoint.manifestFile, 'utf8'),
-						).name,
-					),
+					join('dist', JSON.parse(await readFile(manifest, 'utf8')).name),
 			  )
 			: await resolveProjectPath(context, 'dist'));
 
@@ -169,15 +144,10 @@ export async function executeBuild(
 			rootFolder: context.workspaceRoot,
 			logger: context.logger,
 
-			primaryEntryPoint: resolveEntryPoint(
-				primaryEntryPoint ??
-					(await resolveProjectPath(context, manifestFilename)),
-			),
-			secondaryEntryPoints:
-				// The angular architect fills in empty arrays by default
-				secondaryEntryPoints?.length > 0
-					? secondaryEntryPoints.map(resolveEntryPoint)
-					: undefined,
+			manifestFile: manifest,
+			mainFile: main,
+			tsConfigFile: tsconfig,
+
 			keepDevDependencies,
 			keepScripts,
 			outputFolder,

@@ -21,43 +21,46 @@ import {combineTransformers} from './plugin.js';
  * @typedef {object} CompileInput
  * @property {Cache} cache
  * @property {import('@angular/compiler-cli').ParsedConfiguration} config
- * @property {import('../logger.js').Logger} logger
- * @property {string} outputFile
- * @property {readonly import('../plugin.js').WrappedPlugin[]} plugins
- * @property {import('../manifest.js').Manifest} primaryManifest
- * @property {import('../resource-processor.js').ResourceProcessor} resourceProcessor
  * @property {boolean} usePrivateApiAsImportIssueWorkaround
  */
 
 /**
+ * @param {import('../context.js').BuildContext} context
  * @param {CompileInput} input
- * @returns {Promise<void>}
+ * @returns {Promise<{
+ *   writtenFiles: Map<string, string>;
+ *   writtenDeclarationFiles: Map<string, string>;
+ * }>}
  */
-export async function compile({
-	cache,
-	config,
-	logger,
-	outputFile,
-	plugins,
-	primaryManifest,
-	resourceProcessor,
-	usePrivateApiAsImportIssueWorkaround,
-}) {
+export async function compile(
+	context,
+	{cache, config, usePrivateApiAsImportIssueWorkaround},
+) {
 	const {rootNames, options, errors: configErrors, emitFlags} = config;
 	if (configErrors.length) {
-		reportErrorsAndExit(configErrors, logger);
+		reportErrorsAndExit(configErrors, context.logger);
 	}
 
 	try {
 		const oldProgram = cache.program;
 
-		const host = createCompilerHost({
+		/** @type {Map<string, string>} */
+		const writtenFiles = new Map();
+		/** @type {Map<string, string>} */
+		const writtenDeclarationFiles = new Map();
+
+		const host = createCompilerHost(context, {
 			compilerOptions: config.options,
 			moduleResolutionCache: cache.moduleResolution,
 			fileCache: cache.files,
-			resourceProcessor,
-			primaryManifest,
-			outputFile,
+			markWrittenFile: (writtenFile, sourceFile) => {
+				if (!writtenFile.endsWith('.map')) {
+					(/\.d\.[cm]?ts$/.test(writtenFile)
+						? writtenDeclarationFiles
+						: writtenFiles
+					).set(sourceFile.fileName, writtenFile);
+				}
+			},
 		});
 
 		const program = createProgram({
@@ -71,7 +74,8 @@ export async function compile({
 
 		const diagnostics = collectDiagnostics(program);
 
-		const {diagnostics: emitDiagnostics} = program.emit({
+		const emitResult = program.emit({
+			forceEmit: true,
 			emitFlags,
 			emitCallback: ({
 				program,
@@ -89,7 +93,7 @@ export async function compile({
 					combineTransformers(
 						customTransformers,
 						fixBrokenImports(host, usePrivateApiAsImportIssueWorkaround),
-						plugins,
+						context.plugins,
 					),
 				);
 			},
@@ -97,7 +101,15 @@ export async function compile({
 
 		cache.program = program;
 
-		reportErrorsAndExit([...diagnostics, ...emitDiagnostics], logger);
+		reportErrorsAndExit(
+			[...diagnostics, ...emitResult.diagnostics],
+			context.logger,
+		);
+
+		return {
+			writtenFiles,
+			writtenDeclarationFiles,
+		};
 	} catch (e) {
 		// In certain scenarios the angular compiler throws a FatalDiagnosticError,
 		// a non-error that can be converted into a diagnostic
@@ -109,7 +121,7 @@ export async function compile({
 						e
 					).toDiagnostic(),
 				],
-				logger,
+				context.logger,
 			);
 			throw new BuildFailureError('Fatal diagnostic encountered');
 		}

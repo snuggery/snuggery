@@ -4,6 +4,7 @@ import ts from 'typescript';
 import {FileCache} from './cache/file.js';
 import {compile as performCompilation} from './compile/compile.js';
 import {parseConfiguration} from './compile/tsconfig.js';
+import {BuildFailureError} from './error.js';
 
 /**
  * @typedef {import('./compile/compile.js').Cache} CompileCache
@@ -86,8 +87,9 @@ export const ScriptTarget = ts.ScriptTarget;
 
 /**
  * @typedef {object} CompileInput
- * @property {string} outputFile
- * @property {string} declarationOutputFile
+ * @property {string} tsConfigFile
+ * @property {string} outputFolder
+ * @property {string} declarationOutputFolder
  * @property {ts.ScriptTarget} target
  * @property {boolean} usePrivateApiAsImportIssueWorkaround
  */
@@ -95,16 +97,15 @@ export const ScriptTarget = ts.ScriptTarget;
 /**
  *
  * @param {import('./context.js').BuildContext} context
- * @param {import('./context.js').EntryPoint} currentEntryPoint
  * @param {CompileInput} input
- * @returns {Promise<void>}
+ * @returns {Promise<Awaited<ReturnType<typeof performCompilation>>>}
  */
 export async function compile(
 	context,
-	currentEntryPoint,
 	{
-		outputFile,
-		declarationOutputFile,
+		tsConfigFile,
+		outputFolder,
+		declarationOutputFolder,
 		target,
 		usePrivateApiAsImportIssueWorkaround,
 	},
@@ -113,29 +114,45 @@ export async function compile(
 
 	const safeCache = excludeSelfFromModuleCache(context.compileCache, context);
 
-	await performCompilation({
+	const result = await performCompilation(context, {
 		cache: safeCache,
-		config: parseConfiguration({
-			closestManifest: context.getManifest(currentEntryPoint),
-			declarationOutputFile,
-			entryPoints: context.entryPoints,
-			mainFile: currentEntryPoint.mainFile,
-			outputFile,
-			packageName: currentEntryPoint.packageName,
-			primaryManifest: context.primaryEntryPoint.manifest,
-			rootFolder: context.rootFolder,
+		config: parseConfiguration(context, {
+			tsConfigFile,
+			declarationOutputFolder,
+			outputFolder,
 			target,
-			tsConfigFile: currentEntryPoint.tsConfigFile,
 			usePrivateApiAsImportIssueWorkaround,
 		}),
-		logger: context.logger,
-		outputFile,
-		plugins: context.plugins,
-		primaryManifest: context.primaryEntryPoint.manifest,
-		resourceProcessor: context.resourceProcessor,
 		usePrivateApiAsImportIssueWorkaround,
 	});
 	context.logger.debug('Compilation succeeded.');
 
 	context.compileCache.program = safeCache.program;
+
+	return result;
+}
+
+/**
+ *
+ * @param {import('./context.js').BuildContext<unknown>} context
+ * @param {Awaited<ReturnType<typeof performCompilation>>} compilationResult
+ * @returns {asserts context is import('./context.js').BuildContext<string>}
+ */
+export function fillInCompilerOutput(
+	context,
+	{writtenDeclarationFiles, writtenFiles},
+) {
+	for (const entryPoint of context.entryPoints) {
+		const esmFile = writtenFiles.get(entryPoint.mainFile);
+		const declarationFile = writtenDeclarationFiles.get(entryPoint.mainFile);
+
+		if (esmFile == null || declarationFile == null) {
+			throw new BuildFailureError(
+				`Can't find compilation output of entry point ${entryPoint.packageName}`,
+			);
+		}
+
+		entryPoint.esmFile = esmFile;
+		entryPoint.declarationFile = declarationFile;
+	}
 }

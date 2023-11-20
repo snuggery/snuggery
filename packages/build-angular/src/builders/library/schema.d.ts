@@ -1,38 +1,19 @@
 import {AssetSpec} from '@snuggery/architect';
 
-export interface EntryPoint {
+export interface Schema {
 	/**
 	 * Path to the `package.json` file
+	 *
+	 * Defaults to the `package.json` file in the project folder
 	 */
-	manifest: string;
+	manifest?: string;
 
 	/**
 	 * Main file
 	 *
-	 * Defaults to the `main` property of the manifest
+	 * Defaults to the `main` or `exports` property of the manifest
 	 */
 	main?: string;
-
-	/**
-	 * Typescript configuration to use for this entry point rather than the
-	 * configuration file configured in the schema
-	 */
-	tsconfig?: string;
-}
-
-export interface Schema {
-	/**
-	 * The main entry point
-	 *
-	 * You can also only pass the path to a `package.json`.
-	 * If absent, the `package.json` inside the project's folder will be used
-	 */
-	primaryEntryPoint?: EntryPoint | string;
-
-	/**
-	 * Secondary entry points, if any
-	 */
-	secondaryEntryPoints?: (EntryPoint | string)[];
 
 	/**
 	 * Typescript configuration file, defaults to `tsconfig.json` in the project root

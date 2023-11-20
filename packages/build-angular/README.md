@@ -11,7 +11,7 @@ This package supports building angular packages in a monorepository. The core id
     {"extends": "@snuggery/build-angular/tsconfig"}
     ```
 
-- The `main` property of the `package.json` points towards the source code of your package.
+- The `exports` property of the `package.json` points towards the source code of your package.
   - This allows typescript to use your package without requiring any `paths` mapping.
   - This also allows the `@snuggery/build-angular:library` to build an angular package without first having to build its dependencies.
 - There is extensive caching within a single process when building packages. This makes building all angular packages in your workspace using a single process, e.g. using `@snuggery/snuggery:glob` to run the `build` target on all packages, a lot faster than running every package's build in a separate process.
@@ -29,53 +29,14 @@ Build an angular library
 
 Properties:
 
-- `primaryEntryPoint`
-  Primary entry point to build, defaults to the package in the project root
-  Type: one of
-  - `string`
-  - or an object:
+- `manifest`
+  Path to the `package.json` file, defaults to the `package.json` file in the
+  project folder
+  Type: `string`
 
-    Properties:
-
-    - `manifest` (required)
-      Path to the `package.json` of this entry point
-      Type: `string`
-
-    - `main`
-      The main file of this entry point, defaults to the `main` property of this
-      entry point's manifest
-      Type: `string`
-
-    - `tsconfig`
-      TypeScript configuration to use for this entry point instead of the
-      `tsconfig` in the options
-      Type: `string`
-
-
-- `secondaryEntryPoints`
-  Secondary entry points to build, defaults to not building any secondary entry
-  points
-  Default value is `[]`
-  Type: an array with items of type
-  - `string`
-  - or an object:
-
-    Properties:
-
-    - `manifest` (required)
-      Path to the `package.json` of this entry point
-      Type: `string`
-
-    - `main`
-      The main file of this entry point, defaults to the `main` property of this
-      entry point's manifest
-      Type: `string`
-
-    - `tsconfig`
-      TypeScript configuration to use for this entry point instead of the
-      `tsconfig` in the options
-      Type: `string`
-
+- `main`
+  Main file, defaults to the `main` or `exports` property of the manifest
+  Type: `string`
 
 - `tsconfig`
   Path to the tsconfig.json file, defaults to `<projectFolder>/tsconfig.json`
