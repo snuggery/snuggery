@@ -26,11 +26,6 @@ function relative(from, to) {
  * @property {Record<string, string>} [dependencies]
  * @property {Record<string, string>} [peerDependencies]
  * @property {Record<string, Record<string, unknown> | string | string[]> | string | string[]} [exports]
- * @property {string} [fesm2022]
- * @property {string} [esm2022]
- * @property {string} [typings]
- * @property {string} [module]
- * @property {string} [es2022]
  * @property {{exports?: Manifest['exports']}} [publishConfig]
  */
 
@@ -156,6 +151,7 @@ function findSnuggeryExport(exportValue) {
  * @property {string} outputFolder
  * @property {boolean} keepDevDependencies
  * @property {boolean} keepScripts
+ * @property {number} targetLanguageLevel
  */
 
 /**
@@ -166,7 +162,13 @@ function findSnuggeryExport(exportValue) {
  */
 export async function writeManifest(
 	context,
-	{plugins, outputFolder, keepDevDependencies, keepScripts},
+	{
+		plugins,
+		outputFolder,
+		keepDevDependencies,
+		keepScripts,
+		targetLanguageLevel,
+	},
 ) {
 	const manifest =
 		/** @type {Manifest & import('@snuggery/core').JsonObject} */ (
@@ -175,6 +177,9 @@ export async function writeManifest(
 	delete manifest.private;
 
 	delete manifest.main;
+	delete manifest.types;
+	delete manifest.typings;
+
 	if (!keepDevDependencies) {
 		delete manifest.devDependencies;
 	}
@@ -187,9 +192,7 @@ export async function writeManifest(
 		manifest.sideEffects = manifest.sideEffects === true;
 	}
 
-	let exports = structuredClone(
-		manifest.publishConfig?.exports ?? manifest.exports ?? {},
-	);
+	let exports = manifest.publishConfig?.exports ?? manifest.exports ?? {};
 
 	if (manifest.publishConfig) {
 		// Delete the exports key from publishConfig, because we already moved the
@@ -210,13 +213,13 @@ export async function writeManifest(
 		}
 
 		delete keyExports.types;
-		delete keyExports.esm2022;
-		delete keyExports.es2022;
+		delete keyExports[`esm${targetLanguageLevel}`];
+		delete keyExports[`es${targetLanguageLevel}`];
 
 		exports[entryPoint.exportName] = {
 			types: relative(outputFolder, entryPoint.declarationFile),
 			esm: relative(outputFolder, entryPoint.esmFile),
-			esm2022: relative(outputFolder, entryPoint.esmFile),
+			[`esm${targetLanguageLevel}`]: relative(outputFolder, entryPoint.esmFile),
 
 			...keyExports,
 

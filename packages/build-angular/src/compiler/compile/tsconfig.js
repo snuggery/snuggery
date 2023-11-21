@@ -58,7 +58,7 @@ export function parseConfiguration(context, input) {
 
 	const compilerOptions = configuration.options;
 
-	compilerOptions.module = compilerOptions.module ?? ts.ModuleKind.ES2022;
+	compilerOptions.module = compilerOptions.module ?? ts.ModuleKind.ESNext;
 
 	if (
 		compilerOptions.module >= ts.ModuleKind.ES2015 &&
@@ -80,7 +80,7 @@ export function parseConfiguration(context, input) {
 		}
 	} else {
 		throw new BuildFailureError(
-			`Expected tsconfig to have module set to "es2022" or "node16", but got ${JSON.stringify(
+			`Expected tsconfig to have module set to "esXXXX" or "node16", but got ${JSON.stringify(
 				ts.ModuleKind[compilerOptions.module],
 			)}`,
 		);

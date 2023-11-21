@@ -117,6 +117,8 @@ export {BuildFailureError, createCompileCache};
 
 const globalCache = createCompileCache();
 
+const targetLanguageLevel = 2022;
+
 /**
  * Build an angular library
  *
@@ -143,6 +145,10 @@ export async function build({
 }) {
 	rootFolder = resolve(rootFolder);
 	outputFolder = resolve(rootFolder, outputFolder);
+
+	const esmOutputFolder = join(outputFolder, `esm${targetLanguageLevel}`);
+	const fesmOutputFolder = join(outputFolder, `fesm${targetLanguageLevel}`);
+	const declarationOutputFolder = join(outputFolder, 'types');
 
 	performance.mark('start');
 
@@ -172,11 +178,7 @@ export async function build({
 				mainFile,
 
 				esmFile: null,
-				fesmFile: join(
-					outputFolder,
-					'fesm2022',
-					`${getUnscopedName(packageName)}.js`,
-				),
+				fesmFile: join(fesmOutputFolder, `${getUnscopedName(packageName)}.js`),
 				declarationFile: null,
 			};
 		},
@@ -252,9 +254,6 @@ export async function build({
 	performance.mark('cleaned');
 	performance.measure('clean', 'prepared', 'cleaned');
 
-	const esmOutputFolder = join(outputFolder, 'esm2022');
-	const declarationOutputFolder = join(outputFolder, 'types');
-
 	tsConfigFile = tsConfigFile
 		? resolve(rootFolder, tsConfigFile)
 		: join(dirname(manifestFile), 'tsconfig.json');
@@ -265,7 +264,7 @@ export async function build({
 		tsConfigFile,
 		outputFolder: esmOutputFolder,
 		declarationOutputFolder,
-		target: ScriptTarget.ES2022,
+		target: ScriptTarget[`ES${targetLanguageLevel}`],
 		usePrivateApiAsImportIssueWorkaround,
 	});
 
@@ -286,8 +285,8 @@ export async function build({
 		);
 	await flattenCode({
 		entryPoints: flattenEntryPoints,
-		target: 'es2022',
-		outputFolder: join(outputFolder),
+		target: `es${targetLanguageLevel}`,
+		outputFolder: fesmOutputFolder,
 	});
 
 	performance.mark('code-flattened');
@@ -309,6 +308,7 @@ export async function build({
 		outputFolder,
 		keepDevDependencies,
 		keepScripts,
+		targetLanguageLevel,
 	});
 
 	for (const plugin of plugins) {

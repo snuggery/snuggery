@@ -44,7 +44,7 @@ function createConfig(
 				overrideTsconfig: {
 					files: [entryPoint.declarationFile],
 					compilerOptions: {
-						lib: ['es2022', 'dom', 'dom.iterable'],
+						lib: ['esnext', 'dom', 'dom.iterable'],
 					},
 				},
 			},
