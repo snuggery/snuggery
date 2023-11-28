@@ -11,7 +11,7 @@ import ts from 'typescript';
  */
 export const tslib = {
 	name: 'tslib',
-	create({logger}, {version = '^2.4.0'} = {}) {
+	create({logger}, {version = '^2.6.2'} = {}) {
 		let isTslibUsed = false;
 
 		/** @type {ts.TransformerFactory<ts.SourceFile>} */

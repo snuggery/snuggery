@@ -12,7 +12,7 @@
 		"@integration/standalone": "*"
 	},
 	"devDependencies": {
-		"@angular/core": "^17.0.0",
+		"@angular/core": "^17.1.0-next",
 		"@integration/standalone": "workspace:integration/__fixtures__/angular/packages/standalone",
 		"rxjs": "^7.8.0",
 		"zone.js": "0.14.0"

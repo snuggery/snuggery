@@ -233,9 +233,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler-cli@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "@angular/compiler-cli@npm:17.0.2"
+"@angular/compiler-cli@npm:^17.1.0-next":
+  version: 17.1.0-next.1
+  resolution: "@angular/compiler-cli@npm:17.1.0-next.1"
   dependencies:
     "@babel/core": "npm:7.23.2"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
@@ -246,19 +246,19 @@ __metadata:
     tslib: "npm:^2.3.0"
     yargs: "npm:^17.2.1"
   peerDependencies:
-    "@angular/compiler": 17.0.2
-    typescript: ">=5.2 <5.3"
+    "@angular/compiler": 17.1.0-next.1
+    typescript: ">=5.2 <5.4"
   bin:
     ng-xi18n: bundles/src/bin/ng_xi18n.js
     ngc: bundles/src/bin/ngc.js
     ngcc: bundles/ngcc/index.js
-  checksum: e83071696748bbf8d26ca6a6969aebf9e449a1839d6afdeef12a0cdad84e306c770fbccf8d7aeb64cf3d47ad05cbfe6a72f1497fdd9255c107395c1471e58375
+  checksum: d97e020799b756068f83982200ba9fa74ea2c269f6bdbe4f8eecda520cd5008ed8dc12712dcc87122b64cfcb6651598c08c4526f147e120710e05626898df7a0
   languageName: node
   linkType: hard
 
-"@angular/compiler-cli@patch:@angular/compiler-cli@npm%3A^17.0.0#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::locator=snuggery-workspace%40workspace%3A.":
-  version: 17.0.2
-  resolution: "@angular/compiler-cli@patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."
+"@angular/compiler-cli@patch:@angular/compiler-cli@npm%3A^17.1.0-next#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 17.1.0-next.1
+  resolution: "@angular/compiler-cli@patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."
   dependencies:
     "@babel/core": "npm:7.23.2"
     "@jridgewell/sourcemap-codec": "npm:^1.4.14"
@@ -269,39 +269,39 @@ __metadata:
     tslib: "npm:^2.3.0"
     yargs: "npm:^17.2.1"
   peerDependencies:
-    "@angular/compiler": 17.0.2
-    typescript: ">=5.2 <5.3"
+    "@angular/compiler": 17.1.0-next.1
+    typescript: ">=5.2 <5.4"
   bin:
     ng-xi18n: bundles/src/bin/ng_xi18n.js
     ngc: bundles/src/bin/ngc.js
     ngcc: bundles/ngcc/index.js
-  checksum: 9d7d0cec1a98b88312258772a8e270678da1b7671fe1d5a05ff5e45dc71c4708cd99b854964b2bb907e9086668beae238bef4802921fbe9a5056010e334eb69a
+  checksum: cff2acffc79798e9d4e79c8a264c46e5f9683ae78fb1829f11b6efda8833732ebe2371b36fb08f945ca2e802ce24877f4649e4420618d7ebe11fbc0b10cf25bd
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "@angular/compiler@npm:17.0.2"
+"@angular/compiler@npm:^17.1.0-next":
+  version: 17.1.0-next.1
+  resolution: "@angular/compiler@npm:17.1.0-next.1"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 17.0.2
+    "@angular/core": 17.1.0-next.1
   peerDependenciesMeta:
     "@angular/core":
       optional: true
-  checksum: 35ee74c1e24c7c09f9ac7e49b9efbe2cdd044c65b26c0447673e01e29e2c618fddb64753d43a0ff97f6d47d533459a6faf6e29be1b6c863967703f3af043b977
+  checksum: 86b9c081c8bfe5db0b4cd88027f04fd6610e9c17c56610dbdf20d82d2ddf3335ea5f35595d3a3f64fddf8de9965700f067174859a6a9bf48586a15ef84e52666
   languageName: node
   linkType: hard
 
-"@angular/core@npm:^17.0.0":
-  version: 17.0.2
-  resolution: "@angular/core@npm:17.0.2"
+"@angular/core@npm:^17.1.0-next":
+  version: 17.1.0-next.1
+  resolution: "@angular/core@npm:17.1.0-next.1"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.14.0
-  checksum: cff07c9318643749f6374c810d5384df0be4e600865a756e18f80364bf18f029518ea8ca749a488dd8bb8e0a59241892cf0ff8d3d0205cd1ecf96879cc03ea8f
+  checksum: 2bb5224372fc983066faacda1ec6f9d07c8ea45b932835e99db02ec12304ca3c9879382f64ca8db8bfad03a12eb469ffc6cf888211f3cb673db1e2b6727bfd4e
   languageName: node
   linkType: hard
 
@@ -1100,7 +1100,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration/dependent-root@workspace:integration/__fixtures__/angular/packages/dependent-root"
   dependencies:
-    "@angular/core": "npm:^17.0.0"
+    "@angular/core": "npm:^17.1.0-next"
     "@integration/standalone": "workspace:integration/__fixtures__/angular/packages/standalone"
     rxjs: "npm:^7.8.0"
     tslib: "npm:^2.4.0"
@@ -1115,7 +1115,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration/dependent@workspace:integration/__fixtures__/angular/packages/dependent"
   dependencies:
-    "@angular/core": "npm:^17.0.0"
+    "@angular/core": "npm:^17.1.0-next"
     "@integration/standalone": "workspace:integration/__fixtures__/angular/packages/standalone"
     rxjs: "npm:^7.8.0"
     tslib: "npm:^2.4.0"
@@ -1130,7 +1130,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration/standalone@workspace:integration/__fixtures__/angular/packages/standalone"
   dependencies:
-    "@angular/core": "npm:^17.0.0"
+    "@angular/core": "npm:^17.1.0-next"
     rxjs: "npm:^7.8.0"
     tslib: "npm:^2.4.0"
     zone.js: "npm:0.14.0"
@@ -1454,8 +1454,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/build-angular@workspace:packages/build-angular"
   dependencies:
-    "@angular/compiler": "npm:^17.0.0"
-    "@angular/compiler-cli": "npm:^17.0.0"
+    "@angular/compiler": "npm:^17.1.0-next"
+    "@angular/compiler-cli": "npm:^17.1.0-next"
     "@microsoft/api-extractor": "npm:7.24.1"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.0"
@@ -1470,13 +1470,13 @@ __metadata:
     resolve.exports: "npm:^2.0.2"
     sass: "npm:^1.62.0"
     typanion: "npm:^3.12.1"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   peerDependencies:
     "@angular/compiler-cli": ^17.0.0
     "@microsoft/api-extractor": ^7.24.1
     less: ^4.1.3
     sass: ^1.62.0
-    typescript: ">=4.9.3 <5.3.0"
+    typescript: ">=4.9.3 <5.4.0"
   peerDependenciesMeta:
     "@microsoft/api-extractor":
       optional: true
@@ -1496,10 +1496,10 @@ __metadata:
     "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^18.17.15"
     typanion: "npm:^3.12.1"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
     uvu: "npm:^0.5.6"
   peerDependencies:
-    typescript: ">= 4.0.0 < 5.3.0"
+    typescript: ">= 4.0.0 < 5.4.0"
     uvu: ^0.5.6
   peerDependenciesMeta:
     typescript:
@@ -1556,12 +1556,12 @@ __metadata:
     kleur: "npm:^4.1.5"
     prompts: "npm:^2.4.2"
     semver: "npm:^7.5.0"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
     uvu: "npm:^0.5.6"
   peerDependencies:
     "@snuggery/core": ^0.7.0
     "@snuggery/schematics": ^0.9.0
-    typescript: ">= 5.0.4 < 5.3.0"
+    typescript: ">= 5.0.4 < 5.4.0"
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -1580,11 +1580,11 @@ __metadata:
     "@snuggery/core": "npm:^0.7.0"
     "@types/node": "npm:^18.17.15"
     ignore: "npm:^5.2.4"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   peerDependencies:
     "@angular-devkit/core": ^17.0.0
     "@angular-devkit/schematics": ^17.0.0
-    typescript: ">= 4.0.0 < 5.3.0"
+    typescript: ">= 4.0.0 < 5.4.0"
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -1641,7 +1641,7 @@ __metadata:
     "@yarnpkg/plugin-pack": "npm:4.0.0"
     clipanion: "npm:4.0.0-rc.2"
     semver: "npm:^7.3.1"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   peerDependencies:
     "@yarnpkg/cli": ^4.0.1
     "@yarnpkg/core": ^4.0.1
@@ -2752,13 +2752,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "angular-1e2ed1@workspace:integration/__fixtures__/angular"
   dependencies:
-    "@angular/compiler": "npm:^17.0.0"
-    "@angular/compiler-cli": "npm:^17.0.0"
+    "@angular/compiler": "npm:^17.1.0-next"
+    "@angular/compiler-cli": "npm:^17.1.0-next"
     "@snuggery/build-angular": "workspace:packages/build-angular"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@snuggery/yarn": "workspace:packages/yarn"
     sass: "npm:^1.62.0"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7012,7 +7012,7 @@ __metadata:
     husky: "npm:^8.0.3"
     is-ci: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
     uvu: "npm:^0.5.6"
   dependenciesMeta:
     esbuild:
@@ -7271,7 +7271,7 @@ __metadata:
     "@angular-devkit/schematics": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/journey": "workspace:packages/journey"
-    typescript: "npm:5.2.2"
+    typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
 
@@ -7444,13 +7444,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.2.2":
-  version: 5.2.2
-  resolution: "typescript@npm:5.2.2"
+"typescript@npm:5.3.2":
+  version: 5.3.2
+  resolution: "typescript@npm:5.3.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 91ae3e6193d0ddb8656d4c418a033f0f75dec5e077ebbc2bd6d76439b93f35683936ee1bdc0e9cf94ec76863aa49f27159b5788219b50e1cd0cd6d110aa34b07
+  checksum: d7dbe1fbe19039e36a65468ea64b5d338c976550394ba576b7af9c68ed40c0bc5d12ecce390e4b94b287a09a71bd3229f19c2d5680611f35b7c53a3898791159
   languageName: node
   linkType: hard
 
@@ -7464,13 +7464,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>":
-  version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+"typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
+  version: 5.3.2
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 062c1cee1990e6b9419ce8a55162b8dc917eb87f807e4de0327dbc1c2fa4e5f61bc0dd4e034d38ff541d1ed0479b53bcee8e4de3a4075c51a1724eb6216cb6f5
+  checksum: 73c8bad74e732d93211c9d77f28b03307e2f5fc6a0afc73f4b783261ab567686a16d6ae958bdaef383a00be1b0b8c8b6741dd6ca3d13af4963fa7e47456d49c7
   languageName: node
   linkType: hard
 

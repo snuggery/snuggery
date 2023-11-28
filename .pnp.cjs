@@ -151,7 +151,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:8.0.3"],\
           ["is-ci", "npm:3.0.1"],\
           ["prettier", "npm:3.0.3"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
@@ -386,7 +386,7 @@ const RAW_RUNTIME_STATE =
           ["@types/eslint", null],\
           ["@types/typescript", null],\
           ["eslint", "npm:8.38.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\
@@ -398,17 +398,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@angular/compiler", [\
-      ["npm:17.0.2", {\
-        "packageLocation": "./.yarn/cache/@angular-compiler-npm-17.0.2-f161739ea4-35ee74c1e2.zip/node_modules/@angular/compiler/",\
+      ["npm:17.1.0-next.1", {\
+        "packageLocation": "./.yarn/cache/@angular-compiler-npm-17.1.0-next.1-9c3773e3c1-86b9c081c8.zip/node_modules/@angular/compiler/",\
         "packageDependencies": [\
-          ["@angular/compiler", "npm:17.0.2"]\
+          ["@angular/compiler", "npm:17.1.0-next.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2", {\
-        "packageLocation": "./.yarn/__virtual__/@angular-compiler-virtual-1d6fecd61f/0/cache/@angular-compiler-npm-17.0.2-f161739ea4-35ee74c1e2.zip/node_modules/@angular/compiler/",\
+      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1", {\
+        "packageLocation": "./.yarn/__virtual__/@angular-compiler-virtual-efeb5131ea/0/cache/@angular-compiler-npm-17.1.0-next.1-9c3773e3c1-86b9c081c8.zip/node_modules/@angular/compiler/",\
         "packageDependencies": [\
-          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
+          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1"],\
           ["@angular/core", null],\
           ["@types/angular__core", null],\
           ["tslib", "npm:2.5.0"]\
@@ -421,18 +421,18 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@angular/compiler-cli", [\
-      ["patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
-        "packageLocation": "./.yarn/cache/@angular-compiler-cli-patch-28d3177b7e-9d7d0cec1a.zip/node_modules/@angular/compiler-cli/",\
+      ["patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
+        "packageLocation": "./.yarn/cache/@angular-compiler-cli-patch-c39659ebaa-cff2acffc7.zip/node_modules/@angular/compiler-cli/",\
         "packageDependencies": [\
-          ["@angular/compiler-cli", "patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."]\
+          ["@angular/compiler-cli", "patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
-        "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-67921f8c02/0/cache/@angular-compiler-cli-patch-28d3177b7e-9d7d0cec1a.zip/node_modules/@angular/compiler-cli/",\
+      ["virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A.", {\
+        "packageLocation": "./.yarn/__virtual__/@angular-compiler-cli-virtual-e9e0815333/0/cache/@angular-compiler-cli-patch-c39659ebaa-cff2acffc7.zip/node_modules/@angular/compiler-cli/",\
         "packageDependencies": [\
-          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
-          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
+          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1"],\
           ["@babel/core", "npm:7.23.2"],\
           ["@jridgewell/sourcemap-codec", "npm:1.4.15"],\
           ["@types/angular__compiler", null],\
@@ -442,7 +442,7 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"],\
           ["semver", "npm:7.5.4"],\
           ["tslib", "npm:2.5.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["yargs", "npm:17.4.1"]\
         ],\
         "packagePeers": [\
@@ -455,17 +455,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@angular/core", [\
-      ["npm:17.0.2", {\
-        "packageLocation": "./.yarn/cache/@angular-core-npm-17.0.2-5dab1eefd2-cff07c9318.zip/node_modules/@angular/core/",\
+      ["npm:17.1.0-next.1", {\
+        "packageLocation": "./.yarn/cache/@angular-core-npm-17.1.0-next.1-50d4833e56-2bb5224372.zip/node_modules/@angular/core/",\
         "packageDependencies": [\
-          ["@angular/core", "npm:17.0.2"]\
+          ["@angular/core", "npm:17.1.0-next.1"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2", {\
-        "packageLocation": "./.yarn/__virtual__/@angular-core-virtual-d36ad1043a/0/cache/@angular-core-npm-17.0.2-5dab1eefd2-cff07c9318.zip/node_modules/@angular/core/",\
+      ["virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1", {\
+        "packageLocation": "./.yarn/__virtual__/@angular-core-virtual-c1e1142701/0/cache/@angular-core-npm-17.1.0-next.1-50d4833e56-2bb5224372.zip/node_modules/@angular/core/",\
         "packageDependencies": [\
-          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2"],\
+          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1"],\
           ["@types/rxjs", null],\
           ["@types/zone.js", null],\
           ["rxjs", "npm:7.8.1"],\
@@ -1474,7 +1474,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./integration/__fixtures__/angular/packages/dependent/",\
         "packageDependencies": [\
           ["@integration/dependent", "workspace:integration/__fixtures__/angular/packages/dependent"],\
-          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2"],\
+          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1"],\
           ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
           ["rxjs", "npm:7.8.1"],\
           ["tslib", "npm:2.5.0"],\
@@ -1488,7 +1488,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./integration/__fixtures__/angular/packages/dependent-root/",\
         "packageDependencies": [\
           ["@integration/dependent-root", "workspace:integration/__fixtures__/angular/packages/dependent-root"],\
-          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2"],\
+          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1"],\
           ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
           ["rxjs", "npm:7.8.1"],\
           ["tslib", "npm:2.5.0"],\
@@ -1502,7 +1502,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@integration-standalone-virtual-25d706809d/1/integration/__fixtures__/angular/packages/standalone/",\
         "packageDependencies": [\
           ["@integration/standalone", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#workspace:integration/__fixtures__/angular/packages/standalone"],\
-          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2"],\
+          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1"],\
           ["@types/angular__core", null],\
           ["rxjs", "npm:7.8.1"],\
           ["tslib", "npm:2.5.0"],\
@@ -1518,7 +1518,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./integration/__fixtures__/angular/packages/standalone/",\
         "packageDependencies": [\
           ["@integration/standalone", "workspace:integration/__fixtures__/angular/packages/standalone"],\
-          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.0.2"],\
+          ["@angular/core", "virtual:bf0c2da84303752e560116d78b34a1acf32a4f4abb3f5ca51d0366fa1d4d319664191dc27eadf570e9a0fc753f99ae33f11c2af13ef3e672b722b0e83ebd367e#npm:17.1.0-next.1"],\
           ["rxjs", "npm:7.8.1"],\
           ["tslib", "npm:2.5.0"],\
           ["zone.js", "npm:0.14.0"]\
@@ -1872,8 +1872,8 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@snuggery-build-angular-virtual-686e72384d/1/packages/build-angular/",\
         "packageDependencies": [\
           ["@snuggery/build-angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular"],\
-          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
-          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1"],\
+          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
           ["@microsoft/api-extractor", "npm:7.24.1"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
@@ -1892,7 +1892,7 @@ const RAW_RUNTIME_STATE =
           ["resolve.exports", "npm:2.0.2"],\
           ["sass", "npm:1.62.0"],\
           ["typanion", "npm:3.14.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@angular/compiler-cli",\
@@ -1909,8 +1909,8 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/build-angular/",\
         "packageDependencies": [\
           ["@snuggery/build-angular", "workspace:packages/build-angular"],\
-          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
-          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1"],\
+          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
           ["@microsoft/api-extractor", "npm:7.24.1"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
@@ -1925,7 +1925,7 @@ const RAW_RUNTIME_STATE =
           ["resolve.exports", "npm:2.0.2"],\
           ["sass", "npm:1.62.0"],\
           ["typanion", "npm:3.14.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -1942,7 +1942,7 @@ const RAW_RUNTIME_STATE =
           ["@types/typescript", null],\
           ["@types/uvu", null],\
           ["typanion", "npm:3.14.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "packagePeers": [\
@@ -1962,7 +1962,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/node", "npm:18.18.9"],\
           ["typanion", "npm:3.14.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
@@ -2021,7 +2021,7 @@ const RAW_RUNTIME_STATE =
           ["kleur", "npm:4.1.5"],\
           ["prompts", "npm:2.4.2"],\
           ["semver", "npm:7.5.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "packagePeers": [\
@@ -2049,7 +2049,7 @@ const RAW_RUNTIME_STATE =
           ["kleur", "npm:4.1.5"],\
           ["prompts", "npm:2.4.2"],\
           ["semver", "npm:7.5.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
@@ -2069,7 +2069,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.18.9"],\
           ["@types/typescript", null],\
           ["ignore", "npm:5.2.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@angular-devkit/core",\
@@ -2091,7 +2091,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/core", "workspace:packages/core"],\
           ["@types/node", "npm:18.18.9"],\
           ["ignore", "npm:5.2.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2162,7 +2162,7 @@ const RAW_RUNTIME_STATE =
           ["@yarnpkg/plugin-pack", "virtual:8f29073f25892517dcb8683ed519304945c63ffff0b252c0359ff793ca7b2536258cff5a0f71b1c6c01257b10971848c3be538105daccc3afd263848b642fdad#npm:4.0.0"],\
           ["clipanion", "virtual:3927f33f2ff9948e582ae9e8d30cfb49feeaf368768e392b4f7a246df7df71d786084a0dfaec6b657deb3805ec8ae2f049eca7e85d34cc96fe0c51239ba5e24c#npm:4.0.0-rc.2"],\
           ["semver", "npm:7.5.4"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2475,7 +2475,7 @@ const RAW_RUNTIME_STATE =
           ["natural-compare", "npm:1.4.0"],\
           ["semver", "npm:7.5.4"],\
           ["ts-api-utils", "virtual:485b0e27fc66d3214010cf6a357d966b407996f10586ef48df79346bf73265e7269de950535120246a6f4e87f85dea571eb194bb286354238fb3c54541a09b9a#npm:1.0.3"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\
@@ -2508,7 +2508,7 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/visitor-keys", "npm:6.8.0"],\
           ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
           ["eslint", "npm:8.38.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\
@@ -2549,7 +2549,7 @@ const RAW_RUNTIME_STATE =
           ["debug", "virtual:d308674d86394045a3178d86fc0909ad49c0ac9801ba12776e517bdaf3dfe3537e24a9c79fd8f2bd15e4a7d8be7fae6252874fd98e2dbd2728333f46ec685014#npm:4.3.4"],\
           ["eslint", "npm:8.38.0"],\
           ["ts-api-utils", "virtual:485b0e27fc66d3214010cf6a357d966b407996f10586ef48df79346bf73265e7269de950535120246a6f4e87f85dea571eb194bb286354238fb3c54541a09b9a#npm:1.0.3"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\
@@ -2609,7 +2609,7 @@ const RAW_RUNTIME_STATE =
           ["is-glob", "npm:4.0.3"],\
           ["semver", "npm:7.5.4"],\
           ["ts-api-utils", "virtual:485b0e27fc66d3214010cf6a357d966b407996f10586ef48df79346bf73265e7269de950535120246a6f4e87f85dea571eb194bb286354238fb3c54541a09b9a#npm:1.0.3"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/typescript",\
@@ -3814,13 +3814,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./integration/__fixtures__/angular/",\
         "packageDependencies": [\
           ["angular-1e2ed1", "workspace:integration/__fixtures__/angular"],\
-          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.0.2"],\
-          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.0.2#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.0.2&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
+          ["@angular/compiler", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#npm:17.1.0-next.1"],\
+          ["@angular/compiler-cli", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#patch:@angular/compiler-cli@npm%3A17.1.0-next.1#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch::version=17.1.0-next.1&hash=8134cf&locator=snuggery-workspace%40workspace%3A."],\
           ["@snuggery/build-angular", "virtual:968701c921ac5e9c87aaeda0203a2443902c35bbd730584e3ad54c06f6f996a05d7aaecdbcd69b36c109583d7966b2b39b1462cf044003bd90b109b30aa6575c#workspace:packages/build-angular"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
           ["@snuggery/yarn", "workspace:packages/yarn"],\
           ["sass", "npm:1.62.0"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -8598,7 +8598,7 @@ const RAW_RUNTIME_STATE =
           ["husky", "npm:8.0.3"],\
           ["is-ci", "npm:3.0.1"],\
           ["prettier", "npm:3.0.3"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"],\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"],\
           ["uvu", "npm:0.5.6"]\
         ],\
         "linkType": "SOFT"\
@@ -8888,7 +8888,7 @@ const RAW_RUNTIME_STATE =
           ["@angular-devkit/schematics", "patch:@angular-devkit/schematics@npm%3A17.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch::version=17.0.0&hash=2b9645&locator=snuggery-workspace%40workspace%3A."],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/journey", "virtual:18a0f80755a9c96571cb637e549540666f0a7f4f757c32153e28d3580a73cc6a05c4796dd78b3c47edddd2e22574085c43cd44005c7fee9a81b53c4747816c6c#workspace:packages/journey"],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -8982,7 +8982,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["ts-api-utils", "virtual:485b0e27fc66d3214010cf6a357d966b407996f10586ef48df79346bf73265e7269de950535120246a6f4e87f85dea571eb194bb286354238fb3c54541a09b9a#npm:1.0.3"],\
           ["@types/typescript", null],\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "packagePeers": [\
           "@types/typescript",\
@@ -9121,10 +9121,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441", {\
-        "packageLocation": "./.yarn/cache/typescript-patch-3914634c3a-062c1cee19.zip/node_modules/typescript/",\
+      ["patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7", {\
+        "packageLocation": "./.yarn/cache/typescript-patch-71fdfda6a2-73c8bad74e.zip/node_modules/typescript/",\
         "packageDependencies": [\
-          ["typescript", "patch:typescript@npm%3A5.2.2#optional!builtin<compat/typescript>::version=5.2.2&hash=f3b441"]\
+          ["typescript", "patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10967,6 +10967,12 @@ class ProxiedFS extends FakeFS {
   }
 }
 
+function direntToPortable(dirent) {
+  const portableDirent = dirent;
+  if (typeof dirent.path === `string`)
+    portableDirent.path = npath.toPortablePath(dirent.path);
+  return portableDirent;
+}
 class NodeFS extends BasePortableFakeFS {
   constructor(realFs = fs__default.default) {
     super();
@@ -11293,15 +11299,31 @@ class NodeFS extends BasePortableFakeFS {
   async readdirPromise(p, opts) {
     return await new Promise((resolve, reject) => {
       if (opts) {
-        this.realFs.readdir(npath.fromPortablePath(p), opts, this.makeCallback(resolve, reject));
+        if (opts.recursive && process.platform === `win32`) {
+          if (opts.withFileTypes) {
+            this.realFs.readdir(npath.fromPortablePath(p), opts, this.makeCallback((results) => resolve(results.map(direntToPortable)), reject));
+          } else {
+            this.realFs.readdir(npath.fromPortablePath(p), opts, this.makeCallback((results) => resolve(results.map(npath.toPortablePath)), reject));
+          }
+        } else {
+          this.realFs.readdir(npath.fromPortablePath(p), opts, this.makeCallback(resolve, reject));
+        }
       } else {
-        this.realFs.readdir(npath.fromPortablePath(p), this.makeCallback((value) => resolve(value), reject));
+        this.realFs.readdir(npath.fromPortablePath(p), this.makeCallback(resolve, reject));
       }
     });
   }
   readdirSync(p, opts) {
     if (opts) {
-      return this.realFs.readdirSync(npath.fromPortablePath(p), opts);
+      if (opts.recursive && process.platform === `win32`) {
+        if (opts.withFileTypes) {
+          return this.realFs.readdirSync(npath.fromPortablePath(p), opts).map(direntToPortable);
+        } else {
+          return this.realFs.readdirSync(npath.fromPortablePath(p), opts).map(npath.toPortablePath);
+        }
+      } else {
+        return this.realFs.readdirSync(npath.fromPortablePath(p), opts);
+      }
     } else {
       return this.realFs.readdirSync(npath.fromPortablePath(p));
     }

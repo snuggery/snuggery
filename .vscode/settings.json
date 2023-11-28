@@ -6,7 +6,7 @@
 	},
 	"typescript.tsdk": ".yarn/sdks/typescript/lib",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"prettier.prettierPath": ".yarn/sdks/prettier/index.js",
+	"prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"[json]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"

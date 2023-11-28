@@ -3,12 +3,12 @@
 		"packages/*"
 	],
 	"dependencies": {
-		"@angular/compiler": "^17.0.0",
-		"@angular/compiler-cli": "^17.0.0",
+		"@angular/compiler": "^17.1.0-next",
+		"@angular/compiler-cli": "^17.1.0-next",
 		"@snuggery/build-angular": "workspace:packages/build-angular",
 		"@snuggery/snuggery": "workspace:packages/snuggery",
 		"@snuggery/yarn": "workspace:packages/yarn",
 		"sass": "^1.62.0",
-		"typescript": "5.2.2"
+		"typescript": "5.3.2"
 	}
 }
