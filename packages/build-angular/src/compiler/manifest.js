@@ -1,5 +1,3 @@
-/* cspell:ignore fesm */
-
 import {writeFile} from 'node:fs/promises';
 import {dirname, join, posix, relative as _relative} from 'node:path';
 

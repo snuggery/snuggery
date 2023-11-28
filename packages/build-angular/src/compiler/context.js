@@ -1,5 +1,3 @@
-/* cspell:ignore fesm */
-
 import {createCompileCache} from './compile.js';
 
 const globalCompileCache = createCompileCache();

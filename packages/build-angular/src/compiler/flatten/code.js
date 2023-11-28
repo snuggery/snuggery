@@ -8,29 +8,18 @@ import {relative, extname, join} from 'node:path';
 import {BuildFailureError} from '../error.js';
 
 /**
- * @typedef {object} EntryPoint
- * @property {string} packageName
- * @property {string} mainFile
- * @property {string} outputFile
- */
-
-/**
  * @typedef {object} FlattenCodeInput
- * @property {readonly [EntryPoint, ...EntryPoint[]]} entryPoints
  * @property {string} outputFolder
  * @property {string} target
  */
 
 /**
- * @param {readonly EntryPoint[]} entryPoints
+ * @param {readonly import('../context.js').EntryPoint<string>[]} entryPoints
  * @returns {import('esbuild').Plugin}
  */
 function resolveOnlySelf(entryPoints) {
 	const ownImports = new Map(
-		entryPoints.map(entryPoint => [
-			entryPoint.packageName,
-			entryPoint.mainFile,
-		]),
+		entryPoints.map(entryPoint => [entryPoint.packageName, entryPoint.esmFile]),
 	);
 
 	return {
@@ -85,10 +74,11 @@ function resolveOnlySelf(entryPoints) {
 let fakeTsConfig;
 
 /**
+ * @param {import('../context.js').BuildContext<string>} context
  * @param {FlattenCodeInput} input
  * @returns {Promise<void>}
  */
-export async function flattenCode(input) {
+export async function flattenCode(context, input) {
 	try {
 		if (fakeTsConfig == null) {
 			const tmpPath = join(tmpdir(), 'tsconfig.empty.json');
@@ -97,12 +87,12 @@ export async function flattenCode(input) {
 
 		await build({
 			entryPoints: Object.fromEntries(
-				input.entryPoints.map(entryPoint => [
-					relative(input.outputFolder, entryPoint.outputFile).slice(
+				context.entryPoints.map(entryPoint => [
+					relative(input.outputFolder, entryPoint.fesmFile).slice(
 						0,
-						-extname(entryPoint.outputFile).length,
+						-extname(entryPoint.fesmFile).length,
 					),
-					entryPoint.mainFile,
+					entryPoint.esmFile,
 				]),
 			),
 
@@ -111,7 +101,10 @@ export async function flattenCode(input) {
 			write: true,
 			target: [input.target],
 			format: 'esm',
-			plugins: [resolveOnlySelf(input.entryPoints)],
+			plugins: [
+				resolveOnlySelf(context.entryPoints),
+				...context.plugins.map(plugin => plugin.esbuildPlugin),
+			],
 			sourcemap: 'linked',
 			outdir: input.outputFolder,
 

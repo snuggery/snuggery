@@ -274,17 +274,7 @@ export async function build({
 	performance.measure('compile', 'cleaned', 'compiled');
 
 	// Then flatten the code
-	const flattenEntryPoints =
-		// It would be nice if typescript knew calling map() on [T, ...T[]] returns [U, ...U[]] and not U[]
-		/** @type {[import('./compiler/flatten/code.js').EntryPoint, ...import('./compiler/flatten/code.js').EntryPoint[]]}*/ (
-			buildContext.entryPoints.map(entryPoint => ({
-				packageName: entryPoint.packageName,
-				mainFile: entryPoint.esmFile,
-				outputFile: entryPoint.fesmFile,
-			}))
-		);
-	await flattenCode({
-		entryPoints: flattenEntryPoints,
+	await flattenCode(buildContext, {
 		target: `es${targetLanguageLevel}`,
 		outputFolder: fesmOutputFolder,
 	});

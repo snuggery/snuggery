@@ -158,6 +158,7 @@ Plugins allows for extension of the `@snuggery/build-angular` compiler. These ar
 
 - `styleProcessor`, which allows it to e.g. provide support for Stylus or to override the built-in SASS loader.
 - `typescriptTransformers`, which are passed as `customTransformers` to typescript. This allows you to hook into the compilation itself, e.g. to modify generated javascript or generated types.
+- `esbuildPlugin`, the `setup` function for an `esbuild` plugin which will be used when bundling the compiled JavaScript files. Take special care with what you do in these plugins, as it's easy for these plugins to break the built package.
 - `processManifest`, a function that is called with the `package.json` before it is written in the output folder.
 - `finalize` is called after the package build is complete, before the build function returns
 

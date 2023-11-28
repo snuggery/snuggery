@@ -22,7 +22,11 @@ import {BuildFailureError} from './error.js';
  *
  * @property {import('typescript').CustomTransformers} [typescriptTransformers] `CustomTransformers` to be passed to the typescript compiler
  *
- * The `typescriptTransformers` of all plugins are combined in the order the plugins are configured in.
+ * The `typescriptTransformers` of all plugins are combined in the order in which the plugins are configured.
+ *
+ * @property {import('esbuild').Plugin['setup']} [esbuildPlugin] Plugin setup function to pass into esbuild when flattening code
+ *
+ * The `esbuildPlugin`s of all plugins are passed into esbuild in the order in which the plugins are configured.
  *
  * @property {(manifest: import('@snuggery/core').JsonObject) => void} [processManifest] Function called with the manifest
  *
@@ -50,6 +54,7 @@ function isArray(value) {
  * @property {() => void} finalize
  * @property {readonly import('./resource-processor.js').StyleProcessor[]} styleProcessor
  * @property {import('typescript').CustomTransformers} typescriptTransformers
+ * @property {import('esbuild').Plugin} esbuildPlugin
  * @property {(manifest: import('@snuggery/core').JsonObject) => void} processManifest
  */
 
@@ -99,7 +104,15 @@ export function createPlugin(logger, name, factory, ...input) {
 		? wrap(plugin.processManifest, plugin)
 		: noop;
 
-	return {finalize, styleProcessor, typescriptTransformers, processManifest};
+	const esbuildPlugin = {name, setup: plugin.esbuildPlugin ?? noop};
+
+	return {
+		finalize,
+		styleProcessor,
+		typescriptTransformers,
+		processManifest,
+		esbuildPlugin,
+	};
 
 	/**
 	 * @template {unknown[]} A
