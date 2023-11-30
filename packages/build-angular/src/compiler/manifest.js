@@ -95,7 +95,7 @@ function normalizeExports(exports) {
 	}
 
 	const exportedNames = Object.keys(exports);
-	if (exportedNames.some(name => name !== '.' && !name.startsWith('./'))) {
+	if (exportedNames.some((name) => name !== '.' && !name.startsWith('./'))) {
 		return {'.': exports};
 	}
 

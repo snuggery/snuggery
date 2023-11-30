@@ -24,7 +24,7 @@ export default function ({
 	}
 
 	return chain(
-		schematicHook.map(hook => {
+		schematicHook.map((hook) => {
 			let options: JsonObject | undefined;
 			let schematic: string;
 

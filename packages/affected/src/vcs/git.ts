@@ -8,10 +8,10 @@ function collectStream(stream: Readable): Promise<Buffer> {
 	return new Promise((resolve, reject) => {
 		const buffers: Buffer[] = [];
 
-		stream.on('data', b => buffers.push(b));
+		stream.on('data', (b) => buffers.push(b));
 
 		stream.on('close', () => resolve(Buffer.concat(buffers)));
-		stream.on('error', e => reject(e));
+		stream.on('error', (e) => reject(e));
 	});
 }
 
@@ -36,7 +36,7 @@ async function git(cwd: string, ...args: string[]) {
 				}
 			});
 
-			child.on('error', e => reject(e));
+			child.on('error', (e) => reject(e));
 		});
 	} catch (e) {
 		if (!(e instanceof Error)) {
@@ -112,7 +112,7 @@ export class GitRepository implements VersionControlSystem {
 					'ls-files',
 					'--others',
 					'--exclude-standard',
-					...exclude.map(f => `--exclude=/${f}`),
+					...exclude.map((f) => `--exclude=/${f}`),
 				),
 				addFilesFrom(
 					'diff',
@@ -121,7 +121,7 @@ export class GitRepository implements VersionControlSystem {
 					'HEAD',
 					'--',
 					':/',
-					...exclude.map(f => `:^${f}`),
+					...exclude.map((f) => `:^${f}`),
 				),
 			]);
 		}
@@ -133,7 +133,7 @@ export class GitRepository implements VersionControlSystem {
 			`${from}...${to ?? ''}`,
 			'--',
 			':/',
-			...exclude.map(f => `:^${f}`),
+			...exclude.map((f) => `:^${f}`),
 		);
 
 		return files;

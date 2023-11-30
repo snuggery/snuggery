@@ -79,7 +79,7 @@ export class RunSchematicCommand extends SchematicCommand {
 				pathSuffix: [this.schematic],
 				values: this.args,
 			},
-			options =>
+			(options) =>
 				this.runSchematic({
 					schematic,
 					options: {

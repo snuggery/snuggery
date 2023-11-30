@@ -246,7 +246,9 @@ export abstract class SchematicCommand extends AbstractCommand {
 							)} in the configured ${
 								configuredCollections.length > 1 ? 'collections' : 'collection'
 							}: ${configuredCollections
-								.map(collection => JSON.stringify(collection.description.name))
+								.map((collection) =>
+									JSON.stringify(collection.description.name),
+								)
 								.join(', ')}`,
 						);
 					} else {
@@ -318,7 +320,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		return await Promise.all(
 			configuredCollections
 				.filter((value): value is string => typeof value === 'string')
-				.map(collectionName => this.getCollection(collectionName)),
+				.map((collectionName) => this.getCollection(collectionName)),
 		);
 	}
 
@@ -422,10 +424,12 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 		if (shouldPrintFileChanges) {
 			subscription.add(
-				workflow.lifeCycle.subscribe(event => {
+				workflow.lifeCycle.subscribe((event) => {
 					if (event.kind == 'end' || event.kind == 'post-tasks-start') {
 						if (!hasError) {
-							loggingQueue.forEach(log => this.context.report.reportInfo(log));
+							loggingQueue.forEach((log) =>
+								this.context.report.reportInfo(log),
+							);
 						}
 
 						loggingQueue.length = 0;

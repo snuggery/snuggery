@@ -9,5 +9,5 @@ export function isPrimitive(value: JsonValue): value is JsonPrimitive {
 export function isArrayOfPrimitives(
 	value: JsonValue,
 ): value is JsonPrimitive[] {
-	return isJsonArray(value) && value.every(item => isPrimitive(item));
+	return isJsonArray(value) && value.every((item) => isPrimitive(item));
 }

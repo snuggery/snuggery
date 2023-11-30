@@ -43,7 +43,7 @@ parentPort!.on('message', (message: Message) => {
 			throw new Error(`Invalid message type: "${(message as Message).type}"`);
 	}
 
-	logger.subscribe(logMessage => {
+	logger.subscribe((logMessage) => {
 		message.port.postMessage({
 			type: ChildMessageType.Logging,
 			message: logMessage,
@@ -51,7 +51,7 @@ parentPort!.on('message', (message: Message) => {
 	});
 
 	obs.subscribe({
-		next: output =>
+		next: (output) =>
 			message.port.postMessage({
 				type: ChildMessageType.Output,
 				output,

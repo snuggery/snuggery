@@ -42,7 +42,7 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 			if (!allowedValues.has(value as any)) {
 				state?.errors?.push(
 					`Expected one of ${allowedValuesArr
-						.map(value => JSON.stringify(value))
+						.map((value) => JSON.stringify(value))
 						.join(', ')}; but got ${JSON.stringify(value)}`,
 				);
 				return false;

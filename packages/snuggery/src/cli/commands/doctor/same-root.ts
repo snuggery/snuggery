@@ -14,7 +14,7 @@ export function checkProjectsWithSameRoot({workspace, report}: DoctorContext) {
 	for (const [path, names] of projectPathToName) {
 		if (names.size !== 1) {
 			report.reportError(
-				`Projects ${Array.from(names, name => JSON.stringify(name)).join(
+				`Projects ${Array.from(names, (name) => JSON.stringify(name)).join(
 					', ',
 				)} have the same root: ${JSON.stringify(path)}`,
 			);

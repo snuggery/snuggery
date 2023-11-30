@@ -30,10 +30,10 @@ function exec(
 
 		child.addListener('exit', (code, signal) => {
 			if (signal) {
-				stderr.then(msg => console.error(msg));
+				stderr.then((msg) => console.error(msg));
 				reject(new Error(`Command exited with signal ${signal}`));
 			} else if (code) {
-				stderr.then(msg => console.error(msg));
+				stderr.then((msg) => console.error(msg));
 				reject(new Error(`Command exited with code ${code}`));
 			} else {
 				Promise.all([stdout, stderr]).then(([stdout, stderr]) =>
@@ -44,9 +44,9 @@ function exec(
 	});
 
 	function collect(stream: Readable) {
-		return new Promise<string>(resolve => {
+		return new Promise<string>((resolve) => {
 			const chunks: Buffer[] = [];
-			stream.addListener('data', chunk => chunks.push(chunk));
+			stream.addListener('data', (chunk) => chunks.push(chunk));
 
 			stream.addListener('end', () =>
 				resolve(Buffer.concat(chunks).toString('utf-8').trim()),

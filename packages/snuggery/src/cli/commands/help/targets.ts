@@ -72,7 +72,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 				this.context.report.reportSeparator();
 			} else {
 				const availableTargets = Array.from(project.targets.keys()).filter(
-					target => !printedTargets.has(target),
+					(target) => !printedTargets.has(target),
 				);
 
 				report.reportInfo(
@@ -117,7 +117,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 			report.reportInfo('There are no unique targets in this workspace.\n');
 		} else {
 			const leftOverUniqueTargets = Array.from(uniqueTargets.keys()).filter(
-				target => !printedTargets.has(target),
+				(target) => !printedTargets.has(target),
 			);
 
 			if (leftOverUniqueTargets.length === 0) {

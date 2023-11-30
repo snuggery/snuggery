@@ -122,7 +122,7 @@ export function createPlugin<T = unknown>(
 		// @ts-expect-error Typescript doesn't seem to like passing in union types to wrap
 		const wrappedFn: F = wrap(fn, undefined);
 
-		return (context => {
+		return ((context) => {
 			const result = wrappedFn(context);
 
 			if (typeof result === 'function') {

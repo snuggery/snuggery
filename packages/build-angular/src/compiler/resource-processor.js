@@ -61,18 +61,18 @@ export class ResourceProcessor {
 			...sassProcessors,
 			lessProcessor,
 
-			...configuredPlugins.flatMap(plugin => plugin.styleProcessor),
+			...configuredPlugins.flatMap((plugin) => plugin.styleProcessor),
 		];
 
 		this.#inlineStyleLanguage = inlineStyleLanguage;
 
 		this.#pluginsByLanguageName = new Map(
-			plugins.map(plugin => [plugin.languageName, plugin]),
+			plugins.map((plugin) => [plugin.languageName, plugin]),
 		);
 
 		this.#pluginByFileExtension = new Map(
-			plugins.flatMap(plugin =>
-				(plugin.fileExtensions ?? []).map(extension => [
+			plugins.flatMap((plugin) =>
+				(plugin.fileExtensions ?? []).map((extension) => [
 					extension.startsWith('.') ? extension : `.${extension}`,
 					plugin,
 				]),
@@ -117,7 +117,7 @@ export class ResourceProcessor {
 						extname(context.resourceFile),
 					)}, supported extensions are ${Array.from(
 						this.#pluginByFileExtension.keys(),
-						v => JSON.stringify(v),
+						(v) => JSON.stringify(v),
 					).join(', ')}`,
 				);
 			}

@@ -121,8 +121,8 @@ export async function findMiniWorkspace(
 	workspace(): Promise<ConvertibleWorkspaceDefinition>;
 } | null> {
 	const path = await findUp(
-		Array.from(basename).flatMap(base =>
-			workspaceExtensions.map(ext => `${base}${ext}`),
+		Array.from(basename).flatMap((base) =>
+			workspaceExtensions.map((ext) => `${base}${ext}`),
 		),
 		directory,
 		{host},

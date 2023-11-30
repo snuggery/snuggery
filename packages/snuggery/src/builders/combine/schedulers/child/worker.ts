@@ -27,7 +27,7 @@ function messagesToObservable(
 	logger: logging.Logger,
 	createPort: () => MessagePort,
 ): Observable<BuilderOutput> {
-	return new Observable(observer => {
+	return new Observable((observer) => {
 		const port = createPort();
 
 		port.on('close', () => observer.complete());

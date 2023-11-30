@@ -24,8 +24,8 @@ import('./cli/index.js')
 			workspace,
 		});
 	})
-	.catch(e => {
+	.catch((e) => {
 		process.stderr.write(`Failed to start Snuggery:\n\n${e?.stack ?? e}\n`);
 		return 1;
 	})
-	.then(returnCode => process.exit(returnCode));
+	.then((returnCode) => process.exit(returnCode));

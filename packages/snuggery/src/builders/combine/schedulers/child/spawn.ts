@@ -55,7 +55,7 @@ export class SpawnChild extends Child {
 			}
 		});
 
-		child.on('error', err => {
+		child.on('error', (err) => {
 			this.#currentObserver?.error(err);
 		});
 
@@ -87,7 +87,7 @@ export class SpawnChild extends Child {
 	}
 
 	#start(message: Message) {
-		return new Observable<BuilderOutput>(observer => {
+		return new Observable<BuilderOutput>((observer) => {
 			if (this.#currentObserver != null) {
 				observer.error(new Error('Child is already working'));
 				return;

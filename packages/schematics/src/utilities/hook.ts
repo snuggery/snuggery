@@ -32,7 +32,7 @@ export function runHooks(
  * @param hook The hook to register for the schematic
  */
 export function registerHook(schematic: string, hook: Hook): Rule {
-	return updateWorkspace(workspace => {
+	return updateWorkspace((workspace) => {
 		if (workspace.extensions.schematics == null) {
 			workspace.extensions.schematics = Object.create(null) as JsonObject;
 		}

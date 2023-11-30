@@ -3,8 +3,8 @@ import {BuildFailureError} from '../error.js';
 /** @return {Promise<import('less')>} */
 let getLess = () => {
 	const less = import('less')
-		.then(mod => mod.default ?? mod)
-		.catch(e => {
+		.then((mod) => mod.default ?? mod)
+		.catch((e) => {
 			if (
 				!e ||
 				/** @type {NodeJS.ErrnoException} */ (e).code !== 'ERR_MODULE_NOT_FOUND'

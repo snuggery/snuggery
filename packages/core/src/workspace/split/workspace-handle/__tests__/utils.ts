@@ -282,7 +282,7 @@ export function itShouldHandleAngularConfiguration(
 			},
 		});
 
-		await new Factory(file).update(workspace => {
+		await new Factory(file).update((workspace) => {
 			const testProject = workspace.projects.add({
 				name: 'test',
 				root: 'packages/test',

@@ -31,7 +31,7 @@ export async function commitAndTag(
 				appliedVersions.length > 1 ? 's' : ''
 			}\n\n${appliedVersions
 				.map(
-					line => `- ${line.ident}: ${line.oldVersion} -> ${line.newVersion}`,
+					(line) => `- ${line.ident}: ${line.oldVersion} -> ${line.newVersion}`,
 				)
 				.join('\n')}\n`,
 		],

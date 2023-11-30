@@ -143,7 +143,7 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 	/**
 	 * @type {ts.CustomTransformerFactory}
 	 */
-	let transformerFactory = context => {
+	let transformerFactory = (context) => {
 		/**
 		 * @param {ts.SourceFile} sourceFile
 		 * @returns {ts.SourceFile}
@@ -151,7 +151,7 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 		function transformSourceFile(sourceFile) {
 			return ts.visitEachChild(
 				sourceFile,
-				node => {
+				(node) => {
 					if (
 						// We're looking for imports only
 						ts.isImportDeclaration(node) &&
@@ -194,7 +194,7 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 
 		return {
 			transformSourceFile,
-			transformBundle: bundle =>
+			transformBundle: (bundle) =>
 				context.factory.updateBundle(
 					bundle,
 					bundle.sourceFiles.map(transformSourceFile),

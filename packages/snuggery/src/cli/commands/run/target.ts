@@ -42,7 +42,7 @@ export class RunTargetCommand extends ArchitectCommand {
 				pathSuffix: [this.specifier],
 				values: this.args,
 			},
-			options => this.runTarget({target, options}),
+			(options) => this.runTarget({target, options}),
 		);
 	}
 }

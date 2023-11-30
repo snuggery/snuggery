@@ -15,7 +15,7 @@ import {Type} from './types';
 
 function throwIfFailed(): MonoTypeOperatorFunction<BuilderOutput> {
 	return pipe(
-		map(result => {
+		map((result) => {
 			if (result.success) {
 				return result;
 			} else {

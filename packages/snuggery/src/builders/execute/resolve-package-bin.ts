@@ -50,7 +50,9 @@ export async function resolvePackageBin(
 	} else if (typeof resolveFrom === 'string') {
 		resolveFrom = [resolveWorkspacePath(context, resolveFrom)];
 	} else {
-		resolveFrom = resolveFrom.map(path => resolveWorkspacePath(context, path));
+		resolveFrom = resolveFrom.map((path) =>
+			resolveWorkspacePath(context, path),
+		);
 	}
 
 	let manifestPath: string | undefined;

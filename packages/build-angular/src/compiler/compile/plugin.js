@@ -5,7 +5,7 @@
  */
 function combine(...arrays) {
 	const flattened = /** @type {T[][]} */ (
-		arrays.filter(value => value != null)
+		arrays.filter((value) => value != null)
 	).flat();
 
 	return flattened.length > 0 ? flattened : undefined;
@@ -27,17 +27,19 @@ export function combineTransformers(
 		after: combine(
 			angularTransformers.after,
 			ownTransformers.after,
-			...plugins.map(plugin => plugin.typescriptTransformers.after),
+			...plugins.map((plugin) => plugin.typescriptTransformers.after),
 		),
 		afterDeclarations: combine(
 			angularTransformers.afterDeclarations,
 			ownTransformers.afterDeclarations,
-			...plugins.map(plugin => plugin.typescriptTransformers.afterDeclarations),
+			...plugins.map(
+				(plugin) => plugin.typescriptTransformers.afterDeclarations,
+			),
 		),
 		before: combine(
 			angularTransformers.before,
 			ownTransformers.before,
-			...plugins.map(plugin => plugin.typescriptTransformers.before),
+			...plugins.map((plugin) => plugin.typescriptTransformers.before),
 		),
 	};
 }

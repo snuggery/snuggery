@@ -9,8 +9,8 @@ import {getPackageName} from '../utils.js';
 /** @return {Promise<import('sass')>} */
 let getSass = () => {
 	const sass = import('sass')
-		.then(mod => mod.default ?? mod)
-		.catch(e => {
+		.then((mod) => mod.default ?? mod)
+		.catch((e) => {
 			if (
 				!e ||
 				/** @type {NodeJS.ErrnoException} */ (e).code !== 'ERR_MODULE_NOT_FOUND'
@@ -105,7 +105,7 @@ export const sassProcessors = [
 	{
 		languageName: 'sass',
 		fileExtensions: ['.sass'],
-		process: input =>
+		process: (input) =>
 			compile(
 				input.context.resourceFile ?? input.context.containingFile,
 				input.content,
@@ -115,7 +115,7 @@ export const sassProcessors = [
 	{
 		languageName: 'scss',
 		fileExtensions: ['.scss'],
-		process: input =>
+		process: (input) =>
 			compile(
 				input.context.resourceFile ?? input.context.containingFile,
 				input.content,

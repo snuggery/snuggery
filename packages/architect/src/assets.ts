@@ -93,7 +93,7 @@ export async function copyAssets(
 		return new Set(
 			(
 				await Promise.all(
-					include.map(pattern =>
+					include.map((pattern) =>
 						glob(pattern, {
 							cwd,
 							ignore: asset.exclude,

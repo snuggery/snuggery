@@ -91,7 +91,7 @@ export abstract class AbstractCommand extends Command<Context> {
 		const {workspace, startCwd} = this.context;
 
 		return (
-			workspace?.tryGetProjectNameByCwd(startCwd, message =>
+			workspace?.tryGetProjectNameByCwd(startCwd, (message) =>
 				this.context.report.reportWarning(message),
 			) ?? null
 		);
@@ -116,7 +116,7 @@ export abstract class AbstractCommand extends Command<Context> {
 				fatal: report.reportError,
 			} as const;
 
-			logger.subscribe(entry => {
+			logger.subscribe((entry) => {
 				(method[entry.level] ?? method.info).call(report, entry.message);
 			});
 
@@ -143,7 +143,7 @@ export abstract class AbstractCommand extends Command<Context> {
 		}
 
 		registry.addPostTransform(schema.transforms.addUndefinedDefaults);
-		registry.useXDeprecatedProvider(msg => this.report.reportWarning(msg));
+		registry.useXDeprecatedProvider((msg) => this.report.reportWarning(msg));
 
 		return registry;
 	}
@@ -386,8 +386,8 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		if (error.name === 'SchemaValidationException') {
 			const errors = (error as schema.SchemaValidationException).errors
-				.filter(error => error.message)
-				.map(error =>
+				.filter((error) => error.message)
+				.map((error) =>
 					error.instancePath
 						? `  - Input property ${error.instancePath} ${error.message}`
 						: `  - Input ${error.message}`,

@@ -4,7 +4,7 @@ import type prompts from 'prompts';
 function extractChoices({
 	items,
 }: json.schema.PromptDefinition): prompts.Choice[] | undefined {
-	return items?.map(item => {
+	return items?.map((item) => {
 		return typeof item == 'string'
 			? {title: item, value: item}
 			: {
@@ -17,9 +17,9 @@ function extractChoices({
 export async function createPromptProvider(): Promise<json.schema.PromptProvider> {
 	const {default: prompts} = await import('prompts');
 
-	return definitions => {
+	return (definitions) => {
 		return prompts(
-			definitions.map(definition => {
+			definitions.map((definition) => {
 				const question: prompts.PromptObject = {
 					name: definition.id,
 					type: 'text',
@@ -31,7 +31,7 @@ export async function createPromptProvider(): Promise<json.schema.PromptProvider
 
 				const validator = definition.validator;
 				if (validator != null) {
-					question.validate = input => validator(input);
+					question.validate = (input) => validator(input);
 				}
 
 				switch (definition.type) {

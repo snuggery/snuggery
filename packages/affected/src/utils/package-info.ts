@@ -71,13 +71,13 @@ export async function getPackageInformation(
 	const allWorkspacePaths = new Set(
 		(
 			await Promise.all(
-				rootManifest.workspaces.map(path =>
+				rootManifest.workspaces.map((path) =>
 					glob(`${path}/package.json`, {cwd: root}),
 				),
 			)
 		)
 			.flat()
-			.map(p => resolve(root, p)),
+			.map((p) => resolve(root, p)),
 	);
 
 	// Start by reading all package manifests and adding the workspaces to the info object
@@ -107,7 +107,7 @@ export async function getPackageInformation(
 		if (Array.isArray(manifest.workspaces)) {
 			for (const newWorkspaceLocation of (
 				await Promise.all(
-					manifest.workspaces.map(path =>
+					manifest.workspaces.map((path) =>
 						glob(`${path}/package.json`, {cwd: location}),
 					),
 				)

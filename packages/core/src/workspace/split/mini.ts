@@ -14,8 +14,8 @@ export async function createSplitMiniWorkspaceHandle(
 		await createTextFileHandle(
 			source,
 			path,
-			Array.from(options.basename).flatMap(basename =>
-				knownExtensions.map(ext => `${basename}${ext}`),
+			Array.from(options.basename).flatMap((basename) =>
+				knownExtensions.map((ext) => `${basename}${ext}`),
 			),
 		),
 		path,

@@ -15,7 +15,7 @@ export async function applyVersion(
 	const yarn = await loadYarn(context);
 	const plugins = await yarn.listPlugins();
 
-	if (!plugins.find(plugin => plugin.name === versionPluginName)) {
+	if (!plugins.find((plugin) => plugin.name === versionPluginName)) {
 		throw new BuildFailureError(
 			`Yarn plugin ${versionPluginName} is required for the @snuggery/yarn:version command but it wasn't found`,
 		);

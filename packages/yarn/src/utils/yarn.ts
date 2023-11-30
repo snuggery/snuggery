@@ -123,12 +123,12 @@ class Yarn {
 				new Promise<Buffer>((resolve, reject) => {
 					const output: Buffer[] = [];
 
-					stdout.on('data', buffer => output.push(buffer));
+					stdout.on('data', (buffer) => output.push(buffer));
 					stdout.on('close', () => resolve(Buffer.concat(output)));
 					stdout.on('error', reject);
 				});
 
-			child.addListener('error', err =>
+			child.addListener('error', (err) =>
 				reject(
 					new BuildFailureError(
 						`Failed to start yarn: ${
@@ -147,7 +147,7 @@ class Yarn {
 					rejectOrCall = () =>
 						reject(new BuildFailureError(`Yarn exited with exit code ${code}`));
 				} else {
-					rejectOrCall = fn => fn();
+					rejectOrCall = (fn) => fn();
 				}
 
 				if (!output) {
@@ -156,12 +156,12 @@ class Yarn {
 				}
 
 				output.then(
-					buff => {
+					(buff) => {
 						const lines = buff
 							.toString('utf8')
 							.split('\n')
-							.filter(line => line.trim())
-							.map(line => {
+							.filter((line) => line.trim())
+							.map((line) => {
 								try {
 									return JSON.parse(line) as JsonValue;
 								} catch {
@@ -180,7 +180,7 @@ class Yarn {
 
 						rejectOrCall(() => resolve(lines));
 					},
-					err => rejectOrCall(() => reject(err)),
+					(err) => rejectOrCall(() => reject(err)),
 				);
 			});
 
@@ -203,11 +203,11 @@ class Yarn {
 	async hasPlugin(): Promise<boolean> {
 		const plugins = await this.listPlugins();
 
-		if (plugins.some(plugin => plugin.name === oldSnuggeryPluginName)) {
+		if (plugins.some((plugin) => plugin.name === oldSnuggeryPluginName)) {
 			throw new OutdatedYarnPluginError();
 		}
 
-		return plugins.some(plugin => plugin.name === snuggeryPluginName);
+		return plugins.some((plugin) => plugin.name === snuggeryPluginName);
 	}
 
 	async applyVersion(): Promise<AppliedVersion[]> {

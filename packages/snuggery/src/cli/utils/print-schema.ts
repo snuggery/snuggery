@@ -297,7 +297,7 @@ function getTypesSimple(
 				return [`any[]`];
 			}
 
-			const items = property.prefixItems.flatMap(item =>
+			const items = property.prefixItems.flatMap((item) =>
 				getTypesSimple(item, schema),
 			);
 			if (items.includes(null)) {
@@ -337,7 +337,7 @@ function getTypesSimple(
 		return null;
 	}
 
-	const types = alternatives.flatMap(alt => getTypesSimple(alt, schema));
+	const types = alternatives.flatMap((alt) => getTypesSimple(alt, schema));
 
 	if (types.includes(null)) {
 		return null;
@@ -401,7 +401,7 @@ function getTypesComplex(
 		return null; // probably something with allOf
 	}
 
-	const types = alternatives.map(alt =>
+	const types = alternatives.map((alt) =>
 		isJsonObject(alt)
 			? getTypesComplex(tryDereference(alt, schema), schema)
 			: null,

@@ -113,10 +113,10 @@ export function scheduleTarget(
 				),
 			).pipe(
 				switchMap(
-					run =>
-						new Observable<BuilderOutput>(observer => {
+					(run) =>
+						new Observable<BuilderOutput>((observer) => {
 							let resolve: () => void | undefined;
-							const promise = new Promise<void>(r => (resolve = r));
+							const promise = new Promise<void>((r) => (resolve = r));
 							context.addTeardown(() => promise);
 
 							observer.add(run.output.subscribe(observer));

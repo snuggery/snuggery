@@ -7,7 +7,7 @@ const {posix} = require('path');
  */
 function createRuleFactory(name) {
 	return ({path}) =>
-		tree =>
+		(tree) =>
 			tree.create(
 				posix.join(path, name),
 				`File created by schematic test-other-schematics:${name}`,

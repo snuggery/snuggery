@@ -31,7 +31,7 @@ export function createPublishWorkspace(
 }
 
 export function getManifestFromTarball(buffer: Buffer): Promise<Manifest> {
-	return xfs.mktempPromise(async folder => {
+	return xfs.mktempPromise(async (folder) => {
 		const fs = new CwdFS(folder);
 		await tgzUtils.extractArchiveTo(buffer, fs, {stripComponents: 1});
 

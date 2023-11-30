@@ -51,7 +51,7 @@ export class DoctorCommand extends AbstractCommand {
 		]);
 
 		// Override X-Deprecated warning provide to end up in the doctor sub report so it counts as warning
-		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
+		registry.useXDeprecatedProvider((msg) => report.reportWarning(msg));
 
 		return {host, registry};
 	}
@@ -60,7 +60,7 @@ export class DoctorCommand extends AbstractCommand {
 		const registry = await this.schematicsSchemaRegistry;
 
 		// Override X-Deprecated warning provide to end up in the doctor sub report so it counts as warning
-		registry.useXDeprecatedProvider(msg => report.reportWarning(msg));
+		registry.useXDeprecatedProvider((msg) => report.reportWarning(msg));
 
 		const engineHost = await this.createEngineHost(
 			this.workspace.workspaceFolder,

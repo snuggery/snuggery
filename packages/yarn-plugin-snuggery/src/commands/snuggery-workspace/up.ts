@@ -172,7 +172,7 @@ export class UpCommand extends BaseCommand {
 				stdout: this.context.stdout,
 				suggestInstall: false,
 			},
-			async report => {
+			async (report) => {
 				for (const [
 					,
 					,
@@ -181,7 +181,7 @@ export class UpCommand extends BaseCommand {
 					existing,
 					{suggestions, rejections},
 				] of allSuggestions) {
-					const nonNullSuggestions = suggestions.filter(suggestion => {
+					const nonNullSuggestions = suggestions.filter((suggestion) => {
 						return suggestion.descriptor !== null;
 					});
 
@@ -272,7 +272,7 @@ export class UpCommand extends BaseCommand {
 				stdout: this.context.stdout,
 				suggestInstall: false,
 			},
-			async report => {
+			async (report) => {
 				for (const [
 					workspace,
 					target /*existing*/,
@@ -280,7 +280,7 @@ export class UpCommand extends BaseCommand {
 					{suggestions},
 				] of allSuggestions) {
 					const selected = suggestions.find(
-						suggestion => suggestion.descriptor != null,
+						(suggestion) => suggestion.descriptor != null,
 					)!.descriptor!;
 					const current = workspace.manifest[target].get(selected.identHash);
 
@@ -314,7 +314,7 @@ export class UpCommand extends BaseCommand {
 						const rawUpdateGroup = manifest['ng-update']?.packageGroup;
 
 						if (Array.isArray(rawUpdateGroup)) {
-							updateGroup = rawUpdateGroup.map(ident =>
+							updateGroup = rawUpdateGroup.map((ident) =>
 								structUtils.makeDescriptor(
 									structUtils.parseIdent(ident),
 									selected.range,
@@ -388,7 +388,7 @@ export class UpCommand extends BaseCommand {
 				configuration,
 				stdout: this.context.stdout,
 			},
-			async report => {
+			async (report) => {
 				await project.install({
 					cache,
 					report,

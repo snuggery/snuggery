@@ -234,7 +234,7 @@ test('should update workspaces correctly via update as nx configuration', async 
 		},
 	});
 
-	await new NxWorkspaceHandle(file).update(workspace => {
+	await new NxWorkspaceHandle(file).update((workspace) => {
 		const testProject = workspace.projects.add({
 			name: 'test',
 			root: 'packages/test',

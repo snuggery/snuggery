@@ -34,8 +34,8 @@ export class SnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 
 		const versionValues =
 			document.nodes
-				.find(node => node.name.name === 'version')
-				?.entries.filter(entry => entry.name == null) || [];
+				.find((node) => node.name.name === 'version')
+				?.entries.filter((entry) => entry.name == null) || [];
 		if (
 			versionValues == null ||
 			versionValues.length !== 1 ||
@@ -117,8 +117,8 @@ export class MiniSnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 
 		const versionValues =
 			document.nodes
-				.find(node => node.name.name === 'version')
-				?.entries.filter(entry => entry.name == null) ?? [];
+				.find((node) => node.name.name === 'version')
+				?.entries.filter((entry) => entry.name == null) ?? [];
 		if (
 			versionValues.length > 0 &&
 			typeof versionValues[0]!.value.value !== 'number'

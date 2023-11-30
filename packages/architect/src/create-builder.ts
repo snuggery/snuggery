@@ -48,8 +48,8 @@ export function createBuilder<OptT = JsonObject>(
 				return {success: true, ...output} as BuilderOutput;
 			} else if (isPromiseLike(output)) {
 				return Promise.resolve(output).then(
-					result => ({success: true, ...result}) as BuilderOutput,
-					e => handleError(e),
+					(result) => ({success: true, ...result}) as BuilderOutput,
+					(e) => handleError(e),
 				);
 			} else if (Symbol.asyncIterator in output) {
 				return wrapOutputIterable(output);

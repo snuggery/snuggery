@@ -37,7 +37,7 @@ export class PublishCommand extends BaseCommand {
 				json: this.json,
 				includeInfos: true,
 			},
-			async report => {
+			async (report) => {
 				const {project, workspace} = await Project.find(
 					configuration,
 					this.context.cwd,

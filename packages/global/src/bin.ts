@@ -84,11 +84,11 @@ import('@snuggery/snuggery/cli')
 			globalManifest: require.resolve('@snuggery/global/package.json'),
 		}),
 	)
-	.catch(e => {
+	.catch((e) => {
 		process.stderr.write(`Failed to start Snuggery:\n\n${e?.stack ?? e}`);
 		return 1;
 	})
-	.then(returnCode => process.exit(returnCode));
+	.then((returnCode) => process.exit(returnCode));
 
 async function findUp(
 	names: string | string[],

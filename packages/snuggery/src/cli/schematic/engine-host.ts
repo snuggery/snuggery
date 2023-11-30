@@ -88,7 +88,7 @@ function createAliasMap(object?: JsonValue): Map<string, string> {
 		return new Map();
 	}
 
-	const aliasMap = new Map(Object.keys(object).map(name => [name, name]));
+	const aliasMap = new Map(Object.keys(object).map((name) => [name, name]));
 
 	for (const [name, {aliases = []}] of Object.entries(
 		object as Record<string, JsonObject>,
@@ -216,7 +216,8 @@ export class SnuggeryEngineHost
 					generators as unknown as SnuggeryCollectionDescription['generators'],
 				schematicAliasMap,
 				generatorAliasMap,
-				has: name => schematicAliasMap.has(name) || generatorAliasMap.has(name),
+				has: (name) =>
+					schematicAliasMap.has(name) || generatorAliasMap.has(name),
 			};
 
 		return collectionDescription;
@@ -309,14 +310,14 @@ export class SnuggeryEngineHost
 		// eslint-disable-next-line @typescript-eslint/ban-types
 		const realFactoryFn: Promise<RuleFactory<{}>> = dynamicImport(
 			factoryPath,
-		).then(module => {
+		).then((module) => {
 			return factoryExport != null
 				? module[factoryExport!]
 				: module.default ?? module;
 		});
 		// eslint-disable-next-line @typescript-eslint/ban-types
-		const factoryFn: RuleFactory<{}> = options => () =>
-			realFactoryFn.then(factory => factory(options));
+		const factoryFn: RuleFactory<{}> = (options) => () =>
+			realFactoryFn.then((factory) => factory(options));
 
 		if (!partialSchematic.description) {
 			throw new SchematicMissingFieldsException(name);
@@ -360,7 +361,7 @@ export class SnuggeryEngineHost
 			return null;
 		}
 
-		return context => {
+		return (context) => {
 			const description = context.schematic
 				.description as SnuggerySchematicDescription;
 			if (description.path === undefined) {

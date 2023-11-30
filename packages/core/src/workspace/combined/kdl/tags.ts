@@ -18,7 +18,7 @@ export function parseTaggedValue(
 	value: Entry | Entry[],
 ): JsonValue {
 	if (Array.isArray(value)) {
-		return value.map(v => parseTaggedValue(context, v));
+		return value.map((v) => parseTaggedValue(context, v));
 	}
 
 	const tag = context.tags.get(value.getTag()!);

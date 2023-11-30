@@ -95,7 +95,7 @@ export async function executeBuild(
 		resolveWorkspacePath(context, '<workspace>'),
 	);
 	const loadedPlugins = await Promise.all(
-		plugins.map(async pluginPossiblyWithConfig => {
+		plugins.map(async (pluginPossiblyWithConfig) => {
 			/** @type {string} */
 			let plugin;
 			/** @type {import('@snuggery/core').JsonObject=} */

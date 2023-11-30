@@ -12,7 +12,7 @@ function stripIndent(text: string): string {
 		return text;
 	}
 
-	const indent = Math.min(...match.map(el => el.length));
+	const indent = Math.min(...match.map((el) => el.length));
 
 	return (
 		indent > 0
@@ -68,14 +68,14 @@ export function formatMarkdownish(
 
 		text = text
 			.split(/\n/)
-			.map(paragraph => {
+			.map((paragraph) => {
 				// Does the paragraph starts with a list?
 				const bulletMatch = paragraph.match(/^[*-][\t ]+(.*)/);
 
 				if (!bulletMatch)
 					// No, cut the paragraphs into segments of 80 characters
 					return splitLines(maxLineLength - indentation, paragraph)
-						.map(line => line.trimEnd())
+						.map((line) => line.trimEnd())
 						.join('\n');
 
 				// Yes, cut the paragraphs into segments of 78 characters (to account for the prefix)

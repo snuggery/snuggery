@@ -62,7 +62,7 @@ test('updating without changes', async () => {
 
 test('updating should support adding properties', async () => {
 	assert.deepEqual(
-		await update({}, obj => {
+		await update({}, (obj) => {
 			obj.foo = 2;
 		}),
 		{foo: 2},
@@ -80,7 +80,7 @@ test('updating should support adding properties', async () => {
 
 test('updating should support removing properties', async () => {
 	assert.deepEqual(
-		await update({foo: 2, bar: 4}, obj => {
+		await update({foo: 2, bar: 4}, (obj) => {
 			delete obj.foo;
 		}),
 		{bar: 4},

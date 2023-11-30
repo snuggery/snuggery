@@ -120,7 +120,7 @@ export function createCompilerHost(
 		) {
 			containingFile = ensureUnixPath(containingFile);
 
-			return moduleNames.map(moduleName => {
+			return moduleNames.map((moduleName) => {
 				const {resolvedModule} = ts.resolveModuleName(
 					moduleName,
 					containingFile,

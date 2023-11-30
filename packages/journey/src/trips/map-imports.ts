@@ -46,7 +46,7 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 
 	return (sourceFile, recorder) => {
 		if (
-			!allSpecifiersArray.some(moduleSpecifier =>
+			!allSpecifiersArray.some((moduleSpecifier) =>
 				sourceFile.text.includes(moduleSpecifier),
 			)
 		) {
@@ -255,7 +255,7 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 					recorder.replace(qualifier, info.newName);
 				}
 
-				node.typeArguments?.forEach(arg => visit(arg));
+				node.typeArguments?.forEach((arg) => visit(arg));
 
 				return;
 			}
@@ -396,9 +396,9 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 				}
 				first = false;
 
-				const isTypeOnly = specifiers.every(is => is.isTypeOnly);
+				const isTypeOnly = specifiers.every((is) => is.isTypeOnly);
 				if (isTypeOnly) {
-					specifiers = specifiers.map(is =>
+					specifiers = specifiers.map((is) =>
 						updateElement(is, false, is.propertyName, is.name),
 					);
 				}

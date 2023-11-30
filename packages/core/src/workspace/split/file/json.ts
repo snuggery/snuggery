@@ -20,7 +20,7 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 			throw new InvalidConfigurationError(
 				`Errors while parsing JSON file:\n- ${errors
 					.map(
-						error =>
+						(error) =>
 							`${this.#jsonc.printParseErrorCode(error.error)} at ${
 								error.offset
 							}`,

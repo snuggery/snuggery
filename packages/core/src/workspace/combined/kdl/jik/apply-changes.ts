@@ -96,7 +96,7 @@ function updateInObject(
 
 	const nodesToDelete = new Set(existingNodes);
 	node.children!.nodes = node.children!.nodes.filter(
-		n => !nodesToDelete.has(n),
+		(n) => !nodesToDelete.has(n),
 	);
 }
 
@@ -171,7 +171,7 @@ function _applyChangeToArray(
 		if (before.type === 'entry' && node.entries.includes(before)) {
 			const {value} = change;
 			if (isPrimitive(value)) {
-				node.entries = node.entries.flatMap(entry =>
+				node.entries = node.entries.flatMap((entry) =>
 					entry === before ? [entry, Entry.createArgument(value)] : entry,
 				);
 
@@ -180,7 +180,7 @@ function _applyChangeToArray(
 
 			const newNodes = [
 				fromJsonValue(namelessName, change.value),
-				...node.entries.slice(index).map(entry => {
+				...node.entries.slice(index).map((entry) => {
 					const newNode = Node.create(namelessName);
 					newNode.entries.push(entry);
 					return newNode;
@@ -212,7 +212,7 @@ function _applyChangeToArray(
 
 		if (existing.node.type === 'entry') {
 			if (node.entries.includes(existing.node)) {
-				node.entries = node.entries.filter(entry => entry !== existing.node);
+				node.entries = node.entries.filter((entry) => entry !== existing.node);
 				return;
 			}
 		} else {
@@ -233,7 +233,7 @@ function _applyChangeToArray(
 
 				const newNodes = [
 					fromJsonValue(namelessName, change.value),
-					...node.entries.slice(index + 1).map(entry => {
+					...node.entries.slice(index + 1).map((entry) => {
 						const newNode = Node.create(namelessName);
 						newNode.entries.push(entry);
 						return newNode;

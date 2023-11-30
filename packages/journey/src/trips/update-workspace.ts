@@ -26,7 +26,7 @@ export function updateWorkspace(updater: UpdateWorkspaceInput): Trip {
 const updateWorkspaceTransform: TreeVisitorWithInput<
 	UpdateWorkspaceInput
 > = async (input, tree) =>
-	await _updateWorkspace(async workspace => {
+	await _updateWorkspace(async (workspace) => {
 		for (const transform of input) {
 			await transform(workspace);
 		}

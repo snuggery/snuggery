@@ -642,7 +642,7 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 		// ensure updates are written to disk. Unlike `write` where we do not have
 		// the link between FileHandle and the content of the file that's being
 		// written, we do not have to track anything extra here.
-		await this.#file.update(async data =>
+		await this.#file.update(async (data) =>
 			updater(
 				data.version === 1
 					? AngularWorkspaceDefinition.fromConfiguration(data)

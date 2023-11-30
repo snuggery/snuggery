@@ -608,7 +608,7 @@ export class AngularWorkspaceHandle implements WorkspaceHandle {
 	async update(
 		updater: (value: ConvertibleWorkspaceDefinition) => void | Promise<void>,
 	): Promise<void> {
-		await this.#file.update(data =>
+		await this.#file.update((data) =>
 			updater(AngularWorkspaceDefinition.fromConfiguration(data)),
 		);
 	}

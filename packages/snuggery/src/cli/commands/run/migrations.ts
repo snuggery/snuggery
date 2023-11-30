@@ -230,10 +230,10 @@ export class RunMigrationsCommand extends MigrationCommand {
 			}
 
 			const migrationNames = new Set(
-				includedSchematics.map(mig => mig.schematic.description.name),
+				includedSchematics.map((mig) => mig.schematic.description.name),
 			);
 
-			migration.skippedMigrations = migration.skippedMigrations.filter(name =>
+			migration.skippedMigrations = migration.skippedMigrations.filter((name) =>
 				migrationNames.has(name),
 			);
 
@@ -381,7 +381,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 				// Add the executed schematics to skippedMigrations to make the command resumable
 				migration.skippedMigrations = migrationsInRange
 					.map(({schematic}) => schematic.description.name)
-					.filter(name => executed.has(name) || skippedMigrations.has(name));
+					.filter((name) => executed.has(name) || skippedMigrations.has(name));
 
 				return result;
 			}

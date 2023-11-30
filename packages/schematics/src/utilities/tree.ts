@@ -36,7 +36,7 @@ function* walkDir(
 		);
 
 		const parentIgnore = ignore;
-		ignore = path => parentIgnore(path) || localIgnore.ignores(path);
+		ignore = (path) => parentIgnore(path) || localIgnore.ignores(path);
 	}
 
 	for (const file of dir.subfiles) {
@@ -53,7 +53,7 @@ function* walkDir(
 			continue;
 		}
 
-		for (const file of walkDir(dir.dir(subdir)!, path =>
+		for (const file of walkDir(dir.dir(subdir)!, (path) =>
 			ignore(join(subdir, path)),
 		)) {
 			yield join(subdir, file);

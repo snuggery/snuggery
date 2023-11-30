@@ -58,7 +58,7 @@ function cloneValueDeep<T extends JsonValue>(value: T, version?: Version): T {
 
 	let clonedValue: T & (JsonValue[] | JsonObject);
 	if (Array.isArray(value)) {
-		clonedValue = value.map(subValue => {
+		clonedValue = value.map((subValue) => {
 			return cloneValueDeep(subValue, version);
 		}) as T & JsonValue[];
 	} else {

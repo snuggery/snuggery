@@ -36,7 +36,7 @@ const PATH_REGEXP = new RegExp('\\' + path.sep, 'g');
  */
 export const ensureUnixPath =
 	path.sep !== path.posix.sep
-		? p => {
+		? (p) => {
 				if (typeof p !== 'string') {
 					return /** @type {typeof p} */ (null);
 				}
@@ -45,7 +45,7 @@ export const ensureUnixPath =
 				// the path separator needs to be preceded by an escape character
 				return /** @type {typeof p} */ (p.replace(PATH_REGEXP, path.posix.sep));
 		  }
-		: path => path;
+		: (path) => path;
 
 /**
  * @template K, V
@@ -72,5 +72,5 @@ export function memoize(fn) {
 	/** @type {Map<K, V>} */
 	const cache = new Map();
 
-	return key => getOrCreate(cache, key, fn);
+	return (key) => getOrCreate(cache, key, fn);
 }

@@ -13,6 +13,6 @@ const defaults = [
 ];
 
 export const getBrowserslist = memoize(
-	/** @param {string} path */ path =>
+	/** @param {string} path */ (path) =>
 		browserslist(browserslist.loadConfig({path}) ?? defaults, {path}),
 );

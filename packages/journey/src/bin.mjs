@@ -105,7 +105,7 @@ let defaultVersion;
 
 if (
 	await stat(arg).then(
-		s => s.isFile(),
+		(s) => s.isFile(),
 		() => false,
 	)
 ) {
@@ -240,7 +240,7 @@ if (optionalMigrations.length) {
 		name: 'includedMigrations',
 		type: 'multiselect',
 		message: 'Select optional journeys to run',
-		choices: optionalMigrations.map(migration => {
+		choices: optionalMigrations.map((migration) => {
 			const {title, description} = getMigrationTitleAndDescription(migration);
 
 			return {
@@ -254,7 +254,7 @@ if (optionalMigrations.length) {
 
 	migrations.push(
 		...includedMigrations.map(
-			name => collection.createSchematic(name).description,
+			(name) => collection.createSchematic(name).description,
 		),
 	);
 }
@@ -274,9 +274,9 @@ if (options.from) {
 }
 
 const logger = createConsoleLogger(options.verbose, undefined, undefined, {
-	warn: message => kleur.bold().yellow(message),
-	error: message => kleur.bold().red(message),
-	fatal: message => kleur.bold().red(message),
+	warn: (message) => kleur.bold().yellow(message),
+	error: (message) => kleur.bold().red(message),
+	fatal: (message) => kleur.bold().red(message),
 });
 
 logger.info(kleur.cyan(`Executing ${positionals[0]} journey\n`));
@@ -293,7 +293,7 @@ for (const migration of migrations) {
 	);
 
 	const reporterSubscription = !options['dry-run']
-		? workflow.reporter.subscribe(event => {
+		? workflow.reporter.subscribe((event) => {
 				if (event.kind === 'error') {
 					error = true;
 					reporterSubscription.unsubscribe();
@@ -303,7 +303,7 @@ for (const migration of migrations) {
 					files.add(eventPath);
 				}
 		  })
-		: workflow.reporter.subscribe(event => {
+		: workflow.reporter.subscribe((event) => {
 				// Strip leading slash to prevent confusion.
 				const eventPath =
 					event.path.charAt(0) === '/' ? event.path.substring(1) : event.path;
@@ -340,11 +340,11 @@ for (const migration of migrations) {
 				}
 		  });
 
-	const lifecycleSubscription = workflow.lifeCycle.subscribe(event => {
+	const lifecycleSubscription = workflow.lifeCycle.subscribe((event) => {
 		if (event.kind == 'end' || event.kind == 'post-tasks-start') {
 			if (!error) {
 				// Output the logging queue, no error happened.
-				logs.forEach(log => logger.info(log));
+				logs.forEach((log) => logger.info(log));
 			}
 
 			logs = [];

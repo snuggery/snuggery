@@ -21,5 +21,5 @@ export function memoize<K, V>(fn: (key: K) => V): (key: K) => V {
 		return () => getOrCreate(cache, undefined!, fn);
 	}
 
-	return key => getOrCreate(cache, key, fn);
+	return (key) => getOrCreate(cache, key, fn);
 }

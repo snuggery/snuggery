@@ -29,7 +29,7 @@ export async function executeBuild(
 	);
 	const loadedPlugins = await Promise.all(
 		(input.plugins ?? config.plugins ?? []).map(
-			async pluginPossiblyWithConfig => {
+			async (pluginPossiblyWithConfig) => {
 				let plugin: string;
 				let config: JsonObject | undefined;
 				if (Array.isArray(pluginPossiblyWithConfig)) {
@@ -81,8 +81,8 @@ export async function executeBuild(
 		: await resolveProjectPath(context, 'dist');
 
 	const manifest = await resolveProjectPath(context, manifestFilename)
-		.then(path => fs.readFile(path, 'utf8'))
-		.then(manifest => JSON.parse(manifest) as JsonObject);
+		.then((path) => fs.readFile(path, 'utf8'))
+		.then((manifest) => JSON.parse(manifest) as JsonObject);
 
 	const {compile, assets = []} = input;
 
@@ -95,7 +95,9 @@ export async function executeBuild(
 			compile,
 			tsconfig,
 			outputFolder,
-			transformers: loadedPlugins.map(plugin => plugin.typescriptTransformers),
+			transformers: loadedPlugins.map(
+				(plugin) => plugin.typescriptTransformers,
+			),
 		});
 	}
 

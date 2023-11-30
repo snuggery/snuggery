@@ -189,7 +189,7 @@ export class SnuggeryArchitectHost
 			...Object.keys(executorsJson || {}),
 		]);
 
-		return Array.from(names, name => {
+		return Array.from(names, (name) => {
 			const description =
 				builderJson[name]?.description ?? executorsJson?.[name]?.description;
 
@@ -295,8 +295,8 @@ export class SnuggeryArchitectHost
 		try {
 			implementation = await dynamicImport(info.implementationPath).then(
 				info.implementationExport != null
-					? module => module[info.implementationExport!]
-					: module => module.default ?? module,
+					? (module) => module[info.implementationExport!]
+					: (module) => module.default ?? module,
 			);
 		} catch (e) {
 			throw new InvalidBuilderError(

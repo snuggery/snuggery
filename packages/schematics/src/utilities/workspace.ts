@@ -39,7 +39,7 @@ export function getWorkspace(tree: Tree): Promise<WorkspaceDefinition> {
 export function updateWorkspace(
 	updater: (workspace: WorkspaceDefinition) => void | Promise<void>,
 ): (tree: Tree) => Promise<void> {
-	return async tree => {
+	return async (tree) => {
 		await _updateWorkspace('/', updater, {host: createHost(tree)});
 	};
 }

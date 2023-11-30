@@ -41,7 +41,7 @@ export async function exec(
 		child.kill();
 	});
 
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		child.addListener('close', (code, signal) => {
 			if (signal) {
 				resolve({

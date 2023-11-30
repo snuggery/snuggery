@@ -19,7 +19,7 @@ import {BuildFailureError} from './error.js';
  */
 export function createCompileCache() {
 	return {
-		moduleResolution: ts.createModuleResolutionCache(process.cwd(), s => s),
+		moduleResolution: ts.createModuleResolutionCache(process.cwd(), (s) => s),
 		files: new FileCache(),
 		program: undefined,
 	};
@@ -31,9 +31,9 @@ export function createCompileCache() {
  * @returns {CompileCache}
  */
 function excludeSelfFromModuleCache(cache, context) {
-	const selfCache = ts.createModuleResolutionCache(process.cwd(), s => s);
+	const selfCache = ts.createModuleResolutionCache(process.cwd(), (s) => s);
 	const ownPackageNames = new Set(
-		context.entryPoints.map(entryPoint => entryPoint.packageName),
+		context.entryPoints.map((entryPoint) => entryPoint.packageName),
 	);
 
 	/** @param {string} p */

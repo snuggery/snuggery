@@ -61,7 +61,7 @@ export class NewCommand extends SchematicCommand {
 				pathSuffix: [this.collection],
 				values: this.args,
 			},
-			options =>
+			(options) =>
 				this.runSchematic({
 					schematic,
 					options: {

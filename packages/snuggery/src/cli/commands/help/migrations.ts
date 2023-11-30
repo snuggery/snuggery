@@ -110,7 +110,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 				),
 			);
 		} else {
-			schematics = collection.listSchematicNames().map(name => {
+			schematics = collection.listSchematicNames().map((name) => {
 				try {
 					const schematic = collection.createSchematic(name, false);
 

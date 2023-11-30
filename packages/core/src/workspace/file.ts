@@ -46,7 +46,7 @@ export async function createTextFileHandle(
 		}
 
 		const allFiles = new Set(await source.readdir(path));
-		const filename = supportedFilenames.find(name => allFiles.has(name));
+		const filename = supportedFilenames.find((name) => allFiles.has(name));
 
 		if (filename != null) {
 			return await createTextFileHandle(
@@ -77,7 +77,7 @@ export async function createTextFileHandle(
 		dirname: dirname(path),
 		read,
 		write: !readonly
-			? value => source.write(path, value)
+			? (value) => source.write(path, value)
 			: async () => {
 					throw new Error(`File ${path} cannot be modified`);
 			  },

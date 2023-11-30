@@ -190,7 +190,7 @@ export async function build({
 		);
 	}
 
-	const plugins = pluginFactories.map(pluginFactoryOrArray => {
+	const plugins = pluginFactories.map((pluginFactoryOrArray) => {
 		let pluginInput = undefined;
 		let pluginFactory;
 		if (Array.isArray(pluginFactoryOrArray)) {

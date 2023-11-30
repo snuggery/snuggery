@@ -52,7 +52,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 	constructor(formats: schema.SchemaFormat[] = []) {
 		this.#ajv = new Ajv({
 			strict: false,
-			loadSchema: uri => this.#fetch(uri),
+			loadSchema: (uri) => this.#fetch(uri),
 			passContext: true,
 			addUsedSchema: false,
 		});
@@ -96,7 +96,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		const result = new Promise<JsonObject>((resolve, reject) => {
 			const url = new URL(uri);
 			const client = url.protocol === 'https:' ? https : http;
-			client.get(url, res => {
+			client.get(url, (res) => {
 				if (!res.statusCode || res.statusCode >= 300) {
 					// Consume the rest of the data to free memory.
 					res.resume();
@@ -108,7 +108,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 				} else {
 					res.setEncoding('utf8');
 					let data = '';
-					res.on('data', chunk => {
+					res.on('data', (chunk) => {
 						data += chunk;
 					});
 					res.on('end', () => {
@@ -282,7 +282,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 				}
 
 				const definitions = schemaInfo.promptDefinitions.filter(
-					def => !validationContext.promptFieldsWithValue.has(def.id),
+					(def) => !validationContext.promptFieldsWithValue.has(def.id),
 				);
 
 				if (definitions.length > 0) {
@@ -680,5 +680,5 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 function normalizeDataPathArr(it: SchemaObjCxt): (number | string)[] {
 	return it.dataPathArr
 		.slice(1, it.dataLevel + 1)
-		.map(p => (typeof p === 'number' ? p : p.str.replace(/"/g, '')));
+		.map((p) => (typeof p === 'number' ? p : p.str.replace(/"/g, '')));
 }

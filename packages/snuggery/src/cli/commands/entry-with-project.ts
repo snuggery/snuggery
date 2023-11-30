@@ -66,7 +66,7 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 				pathSuffix: [this.target, this.project],
 				values: this.args,
 			},
-			options => {
+			(options) => {
 				return this.runTarget({
 					target: addConfigurationsToTarget(
 						target,

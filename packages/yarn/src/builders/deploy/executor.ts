@@ -33,7 +33,7 @@ export async function executeDeploy(
 
 	const [hasPlugin, includedWorkingDirectories] = await Promise.all([
 		yarn.hasPlugin(),
-		findWorkspace(context).then(async workspace => {
+		findWorkspace(context).then(async (workspace) => {
 			const projects = await findProjects(context, {
 				workspace,
 				include,
@@ -41,7 +41,7 @@ export async function executeDeploy(
 			});
 
 			return new Set(
-				projects.map(project =>
+				projects.map((project) =>
 					normalize(
 						resolveWorkspacePath(
 							context,
@@ -59,7 +59,7 @@ export async function executeDeploy(
 
 	const workingDirectoriesToRelease = appliedVersions
 		.map(({cwd}) => cwd)
-		.filter(cwd => includedWorkingDirectories.has(normalize(cwd)));
+		.filter((cwd) => includedWorkingDirectories.has(normalize(cwd)));
 
 	for (const cwd of workingDirectoriesToRelease) {
 		if (useWorkspacePlugin !== false && hasPlugin) {

@@ -15,7 +15,7 @@ export const tslib = {
 		let isTslibUsed = false;
 
 		/** @type {ts.TransformerFactory<ts.SourceFile>} */
-		const checkIfTslibIsUsed = context => sourceFile => {
+		const checkIfTslibIsUsed = (context) => (sourceFile) => {
 			if (isTslibUsed) {
 				return sourceFile;
 			}

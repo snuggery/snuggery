@@ -10,5 +10,5 @@ export function camelize(str: string): string {
 		.replace(/[-_.\s]+(.)?/g, (_, chr) => {
 			return chr?.toUpperCase() ?? '';
 		})
-		.replace(/^[A-Z]/, match => match.toLowerCase());
+		.replace(/^[A-Z]/, (match) => match.toLowerCase());
 }

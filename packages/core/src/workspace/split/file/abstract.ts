@@ -32,7 +32,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		const {updateReady} = this.#context;
 		if (updateReady != null) {
 			/* eslint-disable-next-line no-async-promise-executor */
-			return new Promise(async resolve => {
+			return new Promise(async (resolve) => {
 				const source = await this.#context.source.read();
 				const document = await this.parse(source);
 

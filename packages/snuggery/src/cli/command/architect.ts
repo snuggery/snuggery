@@ -83,7 +83,7 @@ export function addConfigurationsToTarget(
 	if (typeof options.configuration === 'string') {
 		for (const value of options.configuration
 			.split(',')
-			.map(configuration => configuration.trim())) {
+			.map((configuration) => configuration.trim())) {
 			if (value) {
 				configurations.add(value);
 			}
@@ -156,8 +156,8 @@ export abstract class ArchitectCommand extends AbstractCommand {
 	): Set<string> {
 		return new Set(
 			this.configuration
-				?.flatMap(c => c.split(','))
-				.map(configuration => configuration.trim()),
+				?.flatMap((c) => c.split(','))
+				.map((configuration) => configuration.trim()),
 		);
 	}
 

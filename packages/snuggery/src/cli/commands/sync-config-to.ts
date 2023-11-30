@@ -97,7 +97,8 @@ function isJsonEqual(
 
 	return cacheResult(
 		sourceProps.every(
-			prop => targetProps.has(prop) && isJsonEqual(target[prop], source[prop]),
+			(prop) =>
+				targetProps.has(prop) && isJsonEqual(target[prop], source[prop]),
 		),
 	);
 }
@@ -114,7 +115,7 @@ interface ApplyChange {
 function pathToPointer(path: JsonPropertyPath): json.schema.JsonPointer {
 	return ('/' +
 		path
-			.map(entry => String(entry).replace(/~/g, '~0').replace(/\//g, '~1'))
+			.map((entry) => String(entry).replace(/~/g, '~0').replace(/\//g, '~1'))
 			.join('/')) as json.schema.JsonPointer;
 }
 
@@ -122,7 +123,7 @@ function pointerToPath(pointer: json.schema.JsonPointer): JsonPropertyPath {
 	return pointer
 		.slice(1)
 		.split('/')
-		.map(entry => entry.replace(/~1/g, '/').replace(/~0/g, '~'));
+		.map((entry) => entry.replace(/~1/g, '/').replace(/~0/g, '~'));
 }
 
 function createChangeApplier(
@@ -382,7 +383,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 
 			await updateWorkspace(
 				join(workspaceFolder, this.target),
-				async target => {
+				async (target) => {
 					await this.#sync(
 						new CliWorkspace(target, join(workspaceFolder, this.target)),
 						source,
@@ -395,7 +396,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 				report.reportInfo(
 					formatMarkdownish(
 						`Run \`${this.cli.binaryName} ${this.context.startArgs
-							.filter(arg => arg !== '--validate')
+							.filter((arg) => arg !== '--validate')
 							.join(' ')}\` to update`,
 						{format: this.format, maxLineLength: Infinity},
 					),
@@ -457,8 +458,14 @@ export class SyncConfigToCommand extends AbstractCommand {
 		const [architectHost, workflow, sourceRegistry, targetRegistry] =
 			await Promise.all([
 				this.architectHost,
-				this.createEngineHost(target.workspaceFolder, false).then(engineHost =>
-					this.createWorkflow(engineHost, target.workspaceFolder, false, true),
+				this.createEngineHost(target.workspaceFolder, false).then(
+					(engineHost) =>
+						this.createWorkflow(
+							engineHost,
+							target.workspaceFolder,
+							false,
+							true,
+						),
 				),
 				this.createSchemaRegistry({
 					workspace: source,

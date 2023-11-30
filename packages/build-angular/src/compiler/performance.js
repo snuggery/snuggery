@@ -26,13 +26,13 @@ if (performance === _realPerformance) {
 	/** @type {Map<string, number>} */
 	const cacheMisses = new Map();
 
-	const measurementObserver = new PerformanceObserver(list => {
+	const measurementObserver = new PerformanceObserver((list) => {
 		for (const entry of list.getEntries()) {
 			timings.set(entry.name, (timings.get(entry.name) ?? 0) + entry.duration);
 		}
 	});
 
-	const cacheObserver = new PerformanceObserver(list => {
+	const cacheObserver = new PerformanceObserver((list) => {
 		for (const entry of list.getEntries()) {
 			if (entry.name.startsWith('cache:')) {
 				const name = entry.name.slice('cache:'.length).trimStart();
@@ -67,7 +67,7 @@ if (performance === _realPerformance) {
 
 		const longestNameLength = Array.from(
 			timings.keys(),
-			name => name.length,
+			(name) => name.length,
 		).reduce((a, b) => Math.max(a, b));
 
 		console.log('\nTimings:');

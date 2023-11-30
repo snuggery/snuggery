@@ -212,7 +212,7 @@ function createSimpleRunner(journey: Journey) {
 		const printer = ts.createPrinter();
 
 		const formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
-			getCanonicalFileName: path => path,
+			getCanonicalFileName: (path) => path,
 			getCurrentDirectory: () => '/',
 			getNewLine: () => '\n',
 		};

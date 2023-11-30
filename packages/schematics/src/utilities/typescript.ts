@@ -106,7 +106,7 @@ export function createSystem({
 		createDirectory: proxy('createDirectory', () => {
 			// there is no "mkdir" function in Tree
 		}),
-		directoryExists: proxy('directoryExists', path => {
+		directoryExists: proxy('directoryExists', (path) => {
 			if (tree.exists(path)) {
 				// is a file
 				return false;
@@ -118,11 +118,11 @@ export function createSystem({
 		exit(exitCode) {
 			ts.sys.exit(exitCode);
 		},
-		fileExists: proxy('fileExists', path => {
+		fileExists: proxy('fileExists', (path) => {
 			return tree.exists(path);
 		}),
 		getCurrentDirectory: () => virtualFileSystemFolder,
-		getDirectories: proxy('getDirectories', path => {
+		getDirectories: proxy('getDirectories', (path) => {
 			return tree.getDir(path).subdirs;
 		}),
 		getExecutingFilePath() {
@@ -155,7 +155,7 @@ export function createSystem({
 				if (extensions != null) {
 					const exts = new Set(extensions);
 
-					files = files.filter(file => exts.has(posix.extname(file)));
+					files = files.filter((file) => exts.has(posix.extname(file)));
 				}
 
 				if (include != null || exclude != null) {
@@ -165,7 +165,7 @@ export function createSystem({
 					});
 				}
 
-				return files.map(file => posix.join(virtualFileSystemFolder, file));
+				return files.map((file) => posix.join(virtualFileSystemFolder, file));
 			},
 		),
 		readFile: proxy('readFile', (path, encoding = 'utf-8') => {
@@ -175,7 +175,7 @@ export function createSystem({
 			return ts.sys.resolvePath(path);
 		},
 		useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
-		write: string => logger.debug(string),
+		write: (string) => logger.debug(string),
 		writeFile: proxy('writeFile', (path, data) => {
 			if (tree.exists(path)) {
 				tree.overwrite(path, data);
@@ -187,7 +187,7 @@ export function createSystem({
 }
 
 export const formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
-	getCanonicalFileName: path => posix.normalize(path),
+	getCanonicalFileName: (path) => posix.normalize(path),
 	getCurrentDirectory: () => virtualFileSystemFolder,
 	getNewLine: () => '\n',
 };

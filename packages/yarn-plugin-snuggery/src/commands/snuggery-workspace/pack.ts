@@ -35,7 +35,7 @@ export class PackCommand extends BaseCommand {
 				includeInfos: true,
 				json: this.json,
 			},
-			async report => {
+			async (report) => {
 				const {project, workspace} = await Project.find(
 					configuration,
 					this.context.cwd,

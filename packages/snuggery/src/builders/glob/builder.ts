@@ -16,7 +16,7 @@ import {execute as executeCombine} from '../combine';
 import type {Schema} from './schema';
 
 function stringifyArray(values: string[]) {
-	return values.map(value => JSON.stringify(value)).join(', ');
+	return values.map((value) => JSON.stringify(value)).join(', ');
 }
 
 /**
@@ -74,7 +74,7 @@ export async function execute(
 
 	let targets: TargetSpecifier[];
 	if (builder != null) {
-		targets = projects.map(project => ({builder, project}));
+		targets = projects.map((project) => ({builder, project}));
 	} else {
 		targets = [];
 		const missingTargets: string[] = [];

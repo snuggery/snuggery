@@ -48,7 +48,7 @@ process.on('message', (message: Message) => {
 			);
 	}
 
-	logger.subscribe(logMessage => {
+	logger.subscribe((logMessage) => {
 		process.send!({
 			type: ChildMessageType.Logging,
 			message: logMessage,
@@ -56,7 +56,7 @@ process.on('message', (message: Message) => {
 	});
 
 	obs.subscribe({
-		next: output =>
+		next: (output) =>
 			process.send!({
 				type: ChildMessageType.Output,
 				output,

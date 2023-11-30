@@ -101,7 +101,7 @@ export class Resolver implements ResolverFacade {
 					extname(resolvedPath) === '.json'
 						? require(resolvedPath)
 						: await import(pathToFileURL(resolvedPath).href).then(
-								module => module.default ?? module,
+								(module) => module.default ?? module,
 						  );
 			} catch {
 				throw new InvalidBuilderError(

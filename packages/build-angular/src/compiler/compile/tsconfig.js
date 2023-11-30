@@ -118,7 +118,7 @@ export function parseConfiguration(context, input) {
 	compilerOptions.inlineSources = true;
 
 	configuration.rootNames = context.entryPoints.map(
-		entryPoint => entryPoint.mainFile,
+		(entryPoint) => entryPoint.mainFile,
 	);
 	if (input.usePrivateApiAsImportIssueWorkaround) {
 		// Uh oh, a private property: "This option is internal and is used by the ng_module.bzl rule to switch behavior between Bazel and Blaze."

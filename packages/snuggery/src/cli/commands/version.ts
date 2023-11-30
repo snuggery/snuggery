@@ -88,7 +88,7 @@ export class VersionCommand extends AbstractCommand {
 				report.reportInfo(
 					`${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
 						versions,
-						v => format.code(v),
+						(v) => format.code(v),
 					).join(', ')}`,
 				);
 			}
@@ -104,7 +104,7 @@ export class VersionCommand extends AbstractCommand {
 			[workspace.extensions, null] as const,
 			...Array.from(
 				workspace.projects.values(),
-				project => [project.extensions, project.root] as const,
+				(project) => [project.extensions, project.root] as const,
 			),
 		]) {
 			if (
@@ -150,7 +150,7 @@ export class VersionCommand extends AbstractCommand {
 				report.reportInfo(
 					`${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
 						versions,
-						v => format.code(v),
+						(v) => format.code(v),
 					).join(', ')}`,
 				);
 			}

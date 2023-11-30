@@ -113,7 +113,7 @@ function parseProjects(document: Document): JsonObject | undefined {
 		if (cycleDetection.includes(name)) {
 			throw new InvalidConfigurationError(
 				`Loop in project extensions: ${[...cycleDetection, name]
-					.map(name => JSON.stringify(name))
+					.map((name) => JSON.stringify(name))
 					.join(' -> ')}`,
 			);
 		}
@@ -126,7 +126,7 @@ function parseProjects(document: Document): JsonObject | undefined {
 				`Couldn't find project ${JSON.stringify(
 					name,
 				)} to extend in project ${cycleDetection
-					.map(name => JSON.stringify(name))
+					.map((name) => JSON.stringify(name))
 					.join(' -> ')}`,
 			);
 		}

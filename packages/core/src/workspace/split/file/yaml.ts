@@ -34,7 +34,7 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 	} else if (errors.length > 0) {
 		throw new InvalidConfigurationError(
 			`Errors while parsing YAML file:\n- ${errors
-				.map(error => `${error.message} at ${error.pos.join(':')}`)
+				.map((error) => `${error.message} at ${error.pos.join(':')}`)
 				.join('\n- ')}`,
 		);
 	}

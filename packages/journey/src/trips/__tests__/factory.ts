@@ -9,7 +9,7 @@ import {updatePackageJsons} from '../update-package-jsons';
 import {updateWorkspace} from '../update-workspace';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const init: RuleFactory<{}> = () => tree => {
+export const init: RuleFactory<{}> = () => (tree) => {
 	tree.create(
 		'.gitignore',
 		tags.stripIndent`
@@ -79,15 +79,15 @@ export const replaceLoremIpsum = journey(
 );
 
 export const addPrefix = journey(
-	updateWorkspace(workspace =>
-		workspace.projects.forEach(project => {
+	updateWorkspace((workspace) =>
+		workspace.projects.forEach((project) => {
 			project.prefix = 'pref';
 		}),
 	),
 );
 
 export const mainToExport = journey(
-	updatePackageJsons(pkg => {
+	updatePackageJsons((pkg) => {
 		if (pkg.main) {
 			pkg.exports = pkg.main.startsWith('.') ? pkg.main : `./${pkg.main}`;
 			delete pkg.main;

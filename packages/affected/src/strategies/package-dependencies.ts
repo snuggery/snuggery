@@ -80,9 +80,9 @@ export const packageDependenciesStrategy: ChangeLocatorStrategy = {
 		const changedPackages = new Set(
 			Array.from(
 				affectedProjects,
-				project =>
+				(project) =>
 					locationToPackageMap.get(projectToLocationMap.get(project)!)!,
-			).filter(v => v != null),
+			).filter((v) => v != null),
 		);
 
 		const addedPackages = new Set<string>(changedPackages);

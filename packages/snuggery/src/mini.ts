@@ -30,11 +30,11 @@ export function run(options: MiniCliOptions): Promise<never> {
 				workspace,
 			});
 		})
-		.catch(e => {
+		.catch((e) => {
 			process.stderr.write(
 				`Failed to start ${options.binaryLabel}:\n\n${e?.stack ?? e}\n`,
 			);
 			return 1;
 		})
-		.then(returnCode => process.exit(returnCode));
+		.then((returnCode) => process.exit(returnCode));
 }

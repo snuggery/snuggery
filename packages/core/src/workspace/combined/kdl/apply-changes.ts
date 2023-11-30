@@ -63,7 +63,7 @@ function applyChangeToNamedMap(
 
 	let added = false;
 
-	document.nodes = document.nodes.flatMap(n => {
+	document.nodes = document.nodes.flatMap((n) => {
 		if (n === firstExistingNode) {
 			added = true;
 			return nodes;
@@ -235,7 +235,7 @@ function applyChangeToProjects(
 
 	if (path.length === 0) {
 		const ownerDocument =
-			project && allDocuments.find(doc => doc.nodes.includes(project!.node))!;
+			project && allDocuments.find((doc) => doc.nodes.includes(project!.node))!;
 
 		if (change.type === ChangeType.Delete) {
 			ownerDocument!.removeNode(project!.node);
@@ -314,7 +314,7 @@ export function applyChangeToWorkspace(
 	}
 
 	const node = expandedDocument.findNodeByName(name)!;
-	const ownerDocument = allDocuments.find(doc => doc.nodes.includes(node))!;
+	const ownerDocument = allDocuments.find((doc) => doc.nodes.includes(node))!;
 
 	if (change.type === ChangeType.Delete) {
 		ownerDocument.removeNode(node);

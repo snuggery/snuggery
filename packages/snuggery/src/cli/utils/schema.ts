@@ -16,7 +16,7 @@ export function createWorkspaceTransform(
 	} = {},
 ): json.schema.JsonVisitor {
 	if (!workspaceFilename?.endsWith('.kdl')) {
-		return value => value;
+		return (value) => value;
 	}
 
 	return (value, pointer, schema) => {

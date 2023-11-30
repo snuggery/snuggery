@@ -43,7 +43,7 @@ export async function execute(
 	const projectRoots = Array.from(
 		new Set(
 			filterByPatterns(affectedProjects, {include, exclude}).map(
-				project => workspaceConfiguration.projects.get(project)!.root,
+				(project) => workspaceConfiguration.projects.get(project)!.root,
 			),
 		),
 	);
@@ -52,10 +52,10 @@ export async function execute(
 	if (files === '' || files === '.') {
 		affectedProjectFiles = projectRoots;
 	} else if (typeof files === 'string') {
-		affectedProjectFiles = projectRoots.map(root => join(root, files));
+		affectedProjectFiles = projectRoots.map((root) => join(root, files));
 	} else {
-		affectedProjectFiles = projectRoots.flatMap(root =>
-			files.map(file => join(root, file)),
+		affectedProjectFiles = projectRoots.flatMap((root) =>
+			files.map((file) => join(root, file)),
 		);
 	}
 

@@ -89,7 +89,7 @@ async function createCombinedStrategy(
 	{
 		const lastReset = findLastIndex(
 			locatorConfigurations,
-			cfg => cfg.resetStrategies,
+			(cfg) => cfg.resetStrategies,
 		);
 		if (lastReset !== -1) {
 			locatorConfigurations = locatorConfigurations.slice(lastReset);
@@ -118,7 +118,7 @@ async function createCombinedStrategy(
 		}
 
 		strategies.push(
-			import(pathToFileURL(require.resolve(path)).href).then(mod => {
+			import(pathToFileURL(require.resolve(path)).href).then((mod) => {
 				const strategy = exportName ? mod[exportName] : mod.default ?? mod;
 
 				if (strategy == null) {

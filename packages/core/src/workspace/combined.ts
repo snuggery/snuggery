@@ -45,7 +45,7 @@ export async function createCombinedMiniWorkspaceHandle(
 	const fileHandle = await createTextFileHandle(
 		source,
 		path,
-		Array.from(options.basename, basename => `${basename}.kdl`),
+		Array.from(options.basename, (basename) => `${basename}.kdl`),
 	);
 	if (fileHandle == null) {
 		return null;

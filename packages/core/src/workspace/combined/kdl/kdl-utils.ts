@@ -30,7 +30,7 @@ function formatHeader(header?: string | string[]) {
 	}
 
 	if (Array.isArray(header)) {
-		return `/*\n${header.map(line => ` * ${line}`).join('\n')}\n */\n`;
+		return `/*\n${header.map((line) => ` * ${line}`).join('\n')}\n */\n`;
 	}
 
 	return `// ${header}\n`;
@@ -136,7 +136,7 @@ export abstract class AbstractKdlWorkspaceFileHandle implements FileHandle {
 		}
 
 		let markReady: () => void;
-		this.#context.updateReady = new Promise<void>(resolve => {
+		this.#context.updateReady = new Promise<void>((resolve) => {
 			markReady = resolve;
 		});
 
@@ -191,14 +191,14 @@ async function expandDocument(
 ): Promise<Document> {
 	allDocuments?.push(document);
 
-	const imports = document.nodes.filter(node => node.getTag() === 'import');
+	const imports = document.nodes.filter((node) => node.getTag() === 'import');
 	if (imports.length === 0) {
 		return document;
 	}
 
 	const replacements = new Map(
 		await Promise.all(
-			imports.map(async importNode => {
+			imports.map(async (importNode) => {
 				const path = importNode.getName();
 				// Node package names can't start with . and relative paths have to start
 				// with . (./, ../, .\ and ..\)
@@ -217,6 +217,6 @@ async function expandDocument(
 	);
 
 	return new Document(
-		document.nodes.flatMap(node => replacements.get(node)?.nodes ?? node),
+		document.nodes.flatMap((node) => replacements.get(node)?.nodes ?? node),
 	);
 }

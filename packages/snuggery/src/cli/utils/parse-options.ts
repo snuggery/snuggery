@@ -189,9 +189,9 @@ export function parseOptions({
 				}
 
 				const names = Array.from(new Set([option.name, ...option.aliases]))
-					.map(f => strings.dasherize(f))
-					.map(f => (f.length > 1 ? `--${f}` : `-${f}`))
-					.filter(name => !claimedNames.has(name));
+					.map((f) => strings.dasherize(f))
+					.map((f) => (f.length > 1 ? `--${f}` : `-${f}`))
+					.filter((name) => !claimedNames.has(name));
 
 				if (names.length === 0) {
 					// All names of this option have already been claimed, that's too bad

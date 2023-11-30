@@ -40,12 +40,12 @@ function fromJsonArray(name: string, jsonValue: JsonValue[]): Node {
 			node.setTag('array');
 		}
 
-		node.entries = jsonValue.map(item => Entry.createArgument(item));
+		node.entries = jsonValue.map((item) => Entry.createArgument(item));
 		return node;
 	}
 
 	node.children = new Document(
-		jsonValue.map(item => fromJsonValue(namelessName, item)),
+		jsonValue.map((item) => fromJsonValue(namelessName, item)),
 	);
 	return node;
 }
@@ -70,7 +70,7 @@ export function fromJsonObject(
 			if (isJsonArray(propertyValue)) {
 				if (isArrayOfPrimitives(propertyValue)) {
 					node.entries.unshift(
-						...propertyValue.map(item => Entry.createArgument(item)),
+						...propertyValue.map((item) => Entry.createArgument(item)),
 					);
 					continue;
 				}

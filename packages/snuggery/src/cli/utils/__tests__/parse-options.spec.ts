@@ -14,7 +14,7 @@ const test = suite<{
 
 const path = ['test'];
 
-test.before.each(testContext => {
+test.before.each((testContext) => {
 	testContext.context = {
 		stderr: new Writable(),
 	} as Context;

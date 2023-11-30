@@ -29,7 +29,7 @@ export const validateDependencies = {
 		const require = createRequire(manifestFile);
 
 		/** @type {ts.CustomTransformerFactory} */
-		const collectUsedDependencies = context => {
+		const collectUsedDependencies = (context) => {
 			/** @type {ts.CustomTransformer} */
 			const collector = {
 				transformSourceFile(sourceFile) {

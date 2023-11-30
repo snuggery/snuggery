@@ -66,7 +66,7 @@ export abstract class RegularScheduler extends Scheduler {
 		parallelTarget: ParallelTarget,
 		extraOptions?: JsonObject,
 	): Observable<BuilderOutput> {
-		const targets = parallelTarget.targets.map(target =>
+		const targets = parallelTarget.targets.map((target) =>
 			this.run(target, extraOptions),
 		);
 
@@ -82,7 +82,7 @@ export abstract class RegularScheduler extends Scheduler {
 		extraOptions?: JsonObject,
 	): Observable<BuilderOutput> {
 		return concat(
-			...serialTarget.targets.map(target => this.run(target, extraOptions)),
+			...serialTarget.targets.map((target) => this.run(target, extraOptions)),
 		);
 	}
 
@@ -131,7 +131,7 @@ export abstract class ChildScheduler extends Scheduler {
 		extraOptions: JsonObject | undefined,
 		child: Child,
 	): Observable<BuilderOutput> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			const poolSize = calculate(
 				parallelTarget.maxParallel || parallelTarget.targets.length,
 			);
@@ -165,8 +165,8 @@ export abstract class ChildScheduler extends Scheduler {
 
 				observer.add(
 					this.run(target, extraOptions, child).subscribe({
-						next: value => observer.next(value),
-						error: err => observer.error(err),
+						next: (value) => observer.next(value),
+						error: (err) => observer.error(err),
 						complete: () => pop(child),
 					}),
 				);
@@ -184,7 +184,7 @@ export abstract class ChildScheduler extends Scheduler {
 		child: Child,
 	): Observable<BuilderOutput> {
 		return concat(
-			...serialTarget.targets.map(target =>
+			...serialTarget.targets.map((target) =>
 				this.run(target, extraOptions, child),
 			),
 		);

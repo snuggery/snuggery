@@ -49,7 +49,7 @@ function extractResult(value: ReturnType<Executor>): BuilderOutputLike {
 		// executors can potentially return anything they want, e.g. void
 
 		// @ts-expect-error see above
-		return Promise.resolve(value).then(v => ({success: true, ...v}));
+		return Promise.resolve(value).then((v) => ({success: true, ...v}));
 	}
 
 	return (async function* () {
@@ -239,7 +239,7 @@ class MappedTree implements NxTree {
 			r: 'UPDATE',
 		} as const;
 
-		return this.#tree.actions.flatMap(action => {
+		return this.#tree.actions.flatMap((action) => {
 			if (action.kind === 'r') {
 				return [
 					{

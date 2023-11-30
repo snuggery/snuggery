@@ -19,10 +19,10 @@ export class ChildArchitect {
 	readonly #workspace: Promise<CliWorkspace>;
 
 	public constructor(workspaceRoot: string) {
-		const workspace = findWorkspace(workspaceRoot).then(w => w!.workspace());
+		const workspace = findWorkspace(workspaceRoot).then((w) => w!.workspace());
 		this.#workspace = workspace;
 
-		this.#architect = workspace.then(workspace => {
+		this.#architect = workspace.then((workspace) => {
 			const registry = new schema.CoreSchemaRegistry();
 			registry.addPreTransform(workspace.createWorkspaceDataVisitor());
 			registry.addPostTransform(schema.transforms.addUndefinedDefaults);
@@ -40,12 +40,12 @@ export class ChildArchitect {
 		logger: logging.Logger,
 	): Observable<BuilderOutput> {
 		return from(this.#architect).pipe(
-			mergeMap(architect =>
+			mergeMap((architect) =>
 				architect.scheduleTarget(targetFromTargetString(target), extraOptions, {
 					logger,
 				}),
 			),
-			switchMap(run => run.output.pipe(finalize(() => run.stop()))),
+			switchMap((run) => run.output.pipe(finalize(() => run.stop()))),
 		);
 	}
 
@@ -58,13 +58,13 @@ export class ChildArchitect {
 		return forkJoin([
 			this.#architect,
 			from(this.#workspace).pipe(
-				map(workspace => workspace.makeSyntheticTarget(project, builder)),
+				map((workspace) => workspace.makeSyntheticTarget(project, builder)),
 			),
 		]).pipe(
 			switchMap(([architect, target]) =>
 				architect.scheduleTarget(target, options, {logger}),
 			),
-			switchMap(run => run.output.pipe(finalize(() => run.stop()))),
+			switchMap((run) => run.output.pipe(finalize(() => run.stop()))),
 		);
 	}
 }

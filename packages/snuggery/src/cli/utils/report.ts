@@ -113,7 +113,7 @@ class BaseReport {
 		str: string,
 		{
 			truncate,
-			color = value => value,
+			color = (value) => value,
 		}: {truncate?: boolean; color?: (text: string) => string} = {},
 	) {
 		const doColor = this.#enableColors ? color : stripAnsi;

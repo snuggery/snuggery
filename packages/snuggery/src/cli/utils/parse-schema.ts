@@ -41,7 +41,7 @@ function isValidatableEnum(
 	}
 
 	const validTypes = new Set(['string', 'number', 'boolean']);
-	return val.every(item => item === null || validTypes.has(typeof item));
+	return val.every((item) => item === null || validTypes.has(typeof item));
 }
 
 /**
@@ -162,7 +162,7 @@ export async function parseSchema({
 										items.type === 'string' ||
 										(isJsonArray(items.oneOf) &&
 											items.oneOf.some(
-												item =>
+												(item) =>
 													isJsonObject(item) &&
 													tryDereference(item, schema).type === 'string',
 											))
@@ -188,7 +188,7 @@ export async function parseSchema({
 					const type = types.shift()!;
 
 					const aliases = isJsonArray(property.aliases)
-						? property.aliases.map(x => String(x))
+						? property.aliases.map((x) => String(x))
 						: property.alias
 						? [String(property.alias)]
 						: [];

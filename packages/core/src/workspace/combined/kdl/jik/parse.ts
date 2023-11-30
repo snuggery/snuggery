@@ -25,7 +25,8 @@ export function toJsonValue(context: ParserContext): JsonValue {
 	if (node.hasChildren()) {
 		if (
 			node.children!.nodes.every(
-				node => node.getName() === namelessName || node.getName() === superName,
+				(node) =>
+					node.getName() === namelessName || node.getName() === superName,
 			)
 		) {
 			return toJsonArray(context);
@@ -45,7 +46,7 @@ export function getArrayItems(
 ): (ParserContext | ParserContext<Entry>)[] {
 	const result: (ParserContext | ParserContext<Entry>)[] = context.node
 		.getArgumentEntries()
-		.map(entry => ({
+		.map((entry) => ({
 			...context,
 			node: entry,
 			extends: undefined,
@@ -88,7 +89,7 @@ function isEntryContext(
 }
 
 function toJsonArray(context: ParserContext): JsonValue[] {
-	return getArrayItems(context).map(item =>
+	return getArrayItems(context).map((item) =>
 		isEntryContext(item)
 			? parseTaggedValue(item, item.node)
 			: toJsonValue(item),

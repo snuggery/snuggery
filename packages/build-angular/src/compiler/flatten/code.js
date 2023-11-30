@@ -19,7 +19,10 @@ import {BuildFailureError} from '../error.js';
  */
 function resolveOnlySelf(entryPoints) {
 	const ownImports = new Map(
-		entryPoints.map(entryPoint => [entryPoint.packageName, entryPoint.esmFile]),
+		entryPoints.map((entryPoint) => [
+			entryPoint.packageName,
+			entryPoint.esmFile,
+		]),
 	);
 
 	return {
@@ -87,7 +90,7 @@ export async function flattenCode(context, input) {
 
 		await build({
 			entryPoints: Object.fromEntries(
-				context.entryPoints.map(entryPoint => [
+				context.entryPoints.map((entryPoint) => [
 					relative(input.outputFolder, entryPoint.fesmFile).slice(
 						0,
 						-extname(entryPoint.fesmFile).length,
@@ -103,7 +106,7 @@ export async function flattenCode(context, input) {
 			format: 'esm',
 			plugins: [
 				resolveOnlySelf(context.entryPoints),
-				...context.plugins.map(plugin => plugin.esbuildPlugin),
+				...context.plugins.map((plugin) => plugin.esbuildPlugin),
 			],
 			sourcemap: 'linked',
 			outdir: input.outputFolder,

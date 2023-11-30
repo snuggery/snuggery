@@ -103,7 +103,7 @@ export async function tsc(
 
 	context.logger.debug('Compiling typescript...');
 
-	const tsconfig = ts.readConfigFile(tsconfigPath, path =>
+	const tsconfig = ts.readConfigFile(tsconfigPath, (path) =>
 		ts.sys.readFile(path),
 	);
 	const customTransformers = (
@@ -138,20 +138,24 @@ export async function tsc(
 			context,
 			parsedConfig.options,
 		);
-		const host = ts.createSolutionBuilderHost(ts.sys, undefined, diagnostic => {
-			const message = ts.formatDiagnostic(diagnostic, formatDiagnosticsHost);
+		const host = ts.createSolutionBuilderHost(
+			ts.sys,
+			undefined,
+			(diagnostic) => {
+				const message = ts.formatDiagnostic(diagnostic, formatDiagnosticsHost);
 
-			switch (diagnostic.category) {
-				case ts.DiagnosticCategory.Error:
-					context.logger.error(message);
-					break;
-				case ts.DiagnosticCategory.Warning:
-					context.logger.warn(message);
-					break;
-				default:
-					context.logger.info(message);
-			}
-		});
+				switch (diagnostic.category) {
+					case ts.DiagnosticCategory.Error:
+						context.logger.error(message);
+						break;
+					case ts.DiagnosticCategory.Warning:
+						context.logger.warn(message);
+						break;
+					default:
+						context.logger.info(message);
+				}
+			},
+		);
 
 		if ('JSDocParsingMode' in ts) {
 			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
@@ -262,7 +266,7 @@ function processResult(
 
 	throw new BuildFailureError(
 		errorsAndWarnings
-			.map(errorOrWarning =>
+			.map((errorOrWarning) =>
 				ts.formatDiagnostic(errorOrWarning, formatDiagnosticsHost),
 			)
 			.join('\n'),
@@ -278,7 +282,7 @@ function getFormatDiagnosticsHost(
 		// We need to normalize the path separators here because by default, TypeScript
 		// compiler hosts use posix canonical paths. In order to print consistent diagnostics,
 		// we also normalize the paths.
-		getCanonicalFileName: fileName => fileName.replace(/\\/g, '/'),
+		getCanonicalFileName: (fileName) => fileName.replace(/\\/g, '/'),
 		getNewLine: () => {
 			// Manually determine the proper new line string based on the passed compiler
 			// options. There is no public TypeScript function that returns the corresponding

@@ -63,7 +63,7 @@ export function collectDiagnostics(program) {
 		...program.getNgStructuralDiagnostics(),
 	];
 
-	return diagnostics.filter(diagnostic => {
+	return diagnostics.filter((diagnostic) => {
 		// Angular complains about missing imports of components or modules,
 		// because it doesn't think the dependencies are built to the APF
 		// specification. We know they are, so ignore those errors.

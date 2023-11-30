@@ -79,7 +79,7 @@ export function createPlugin(logger, name, factory, ...input) {
 			isArray(plugin.styleProcessor)
 				? plugin.styleProcessor
 				: [plugin.styleProcessor]
-		).map(processor => {
+		).map((processor) => {
 			return {
 				...processor,
 				process: wrap(processor.process, processor),
@@ -156,7 +156,7 @@ export function createPlugin(logger, name, factory, ...input) {
 		const wrappedFn = /** @type {F} */ (wrap(fn, undefined));
 
 		return /** @type {F} */ (
-			context => {
+			(context) => {
 				const result = wrappedFn(context);
 
 				if (typeof result === 'function') {
