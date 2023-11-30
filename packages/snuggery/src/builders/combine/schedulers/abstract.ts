@@ -31,7 +31,10 @@ export abstract class Scheduler {
 
 	protected getTarget(projectOverride?: string): ArchitectTarget | undefined {
 		return projectOverride
-			? ({...this.context.target, project: projectOverride} as ArchitectTarget)
+			? ({
+					...this.context.target,
+					project: projectOverride,
+			  } as ArchitectTarget)
 			: this.context.target;
 	}
 

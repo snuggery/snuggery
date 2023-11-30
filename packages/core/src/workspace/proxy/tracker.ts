@@ -256,7 +256,11 @@ function createChangeTracker(
 ): ChangeTracker {
 	return {
 		add(path, value) {
-			changes.push({type: ChangeType.Add, path: [...parentPath, path], value});
+			changes.push({
+				type: ChangeType.Add,
+				path: [...parentPath, path],
+				value,
+			});
 		},
 		delete(path, oldValue) {
 			changes.push({
