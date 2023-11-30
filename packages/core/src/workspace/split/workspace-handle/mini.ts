@@ -8,10 +8,10 @@ import {
 	ProjectDefinitionCollection,
 	ConvertibleWorkspaceDefinition,
 	WorkspaceHandle,
-} from '../../types';
-import type {FileHandle} from '../file';
+} from "../../types";
+import type {FileHandle} from "../file";
 
-import {AngularTargetDefinition} from './angular';
+import {AngularTargetDefinition} from "./angular";
 
 class MiniTargetDefinition extends AngularTargetDefinition {
 	static fromMiniConfiguration(
@@ -36,7 +36,7 @@ class MiniTargetDefinitionCollection extends TargetDefinitionCollection {
 
 					if (!isJsonObject(target)) {
 						throw new InvalidConfigurationError(
-							'Target configuration must be an object',
+							"Target configuration must be an object",
 							[targetName],
 						);
 					}
@@ -68,7 +68,7 @@ class MiniProjectDefinition implements ProjectDefinition {
 
 	extensions: JsonObject;
 	targets: MiniTargetDefinitionCollection;
-	root = '';
+	root = "";
 	prefix = undefined;
 	sourceRoot = undefined;
 
@@ -97,11 +97,11 @@ class MiniWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		raw: JsonObject,
 		targets: ReadonlyMap<string, string>,
 	) {
-		if (typeof raw.version === 'number') {
+		if (typeof raw.version === "number") {
 			if (raw.version !== 1) {
 				throw new InvalidConfigurationError(
-					'Unrecognized configuration version, expected version 1',
-					['version'],
+					"Unrecognized configuration version, expected version 1",
+					["version"],
 				);
 			}
 
@@ -144,10 +144,10 @@ export class MiniWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async write(): Promise<void> {
-		throw new Error('Writing mini project configurations is not supported');
+		throw new Error("Writing mini project configurations is not supported");
 	}
 
 	async update(): Promise<void> {
-		throw new Error('Writing mini project configurations is not supported');
+		throw new Error("Writing mini project configurations is not supported");
 	}
 }

@@ -1,10 +1,10 @@
-import {posix} from 'node:path';
-import ts from 'typescript';
+import {posix} from "node:path";
+import ts from "typescript";
 
-import {FileCache} from './cache/file.js';
-import {compile as performCompilation} from './compile/compile.js';
-import {parseConfiguration} from './compile/tsconfig.js';
-import {BuildFailureError} from './error.js';
+import {FileCache} from "./cache/file.js";
+import {compile as performCompilation} from "./compile/compile.js";
+import {parseConfiguration} from "./compile/tsconfig.js";
+import {BuildFailureError} from "./error.js";
 
 /**
  * @typedef {import('./compile/compile.js').Cache} CompileCache
@@ -38,7 +38,7 @@ function excludeSelfFromModuleCache(cache, context) {
 
 	/** @param {string} p */
 	function isInsidePackage(p) {
-		return !posix.relative(context.rootFolder, p).startsWith('../');
+		return !posix.relative(context.rootFolder, p).startsWith("../");
 	}
 
 	return {
@@ -110,7 +110,7 @@ export async function compile(
 		usePrivateApiAsImportIssueWorkaround,
 	},
 ) {
-	context.logger.debug('Starting Angular compiler!');
+	context.logger.debug("Starting Angular compiler!");
 
 	const safeCache = excludeSelfFromModuleCache(context.compileCache, context);
 
@@ -125,7 +125,7 @@ export async function compile(
 		}),
 		usePrivateApiAsImportIssueWorkaround,
 	});
-	context.logger.debug('Compilation succeeded.');
+	context.logger.debug("Compilation succeeded.");
 
 	context.compileCache.program = safeCache.program;
 

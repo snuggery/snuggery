@@ -2,11 +2,11 @@ import type {
 	SchematicContext,
 	Tree,
 	UpdateRecorder,
-} from '@angular-devkit/schematics';
+} from "@angular-devkit/schematics";
 
 export type {UpdateRecorder};
 
-const kJourney = Symbol('journey');
+const kJourney = Symbol("journey");
 
 /**
  * Opaque type for a journey

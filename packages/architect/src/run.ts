@@ -1,10 +1,10 @@
-import type {Target as ArchitectTarget} from '@angular-devkit/architect';
-import type {JsonObject} from '@snuggery/core';
-import {Observable, defer, of, from} from 'rxjs';
-import {switchMap} from 'rxjs/operators';
+import type {Target as ArchitectTarget} from "@angular-devkit/architect";
+import type {JsonObject} from "@snuggery/core";
+import {Observable, defer, of, from} from "rxjs";
+import {switchMap} from "rxjs/operators";
 
-import type {BuilderContext, BuilderOutput} from './create-builder';
-import {resolveTargetString, targetFromTargetString} from './target';
+import type {BuilderContext, BuilderOutput} from "./create-builder";
+import {resolveTargetString, targetFromTargetString} from "./target";
 
 /**
  * A specifier for a transient target, i.e. a combination of builder and configuration that together
@@ -57,7 +57,7 @@ export function scheduleTarget(
 	context: BuilderContext,
 ): Observable<BuilderOutput> {
 	return defer(() => {
-		if (typeof targetSpec === 'string') {
+		if (typeof targetSpec === "string") {
 			let target: ArchitectTarget;
 
 			try {
@@ -72,7 +72,7 @@ export function scheduleTarget(
 			}
 
 			return (
-				require('@angular-devkit/architect') as typeof import('@angular-devkit/architect')
+				require("@angular-devkit/architect") as typeof import("@angular-devkit/architect")
 			).scheduleTargetAndForget(context, target, options, {target});
 		} else {
 			const currentTarget = context.target;
@@ -89,7 +89,7 @@ export function scheduleTarget(
 			} else if (targetSpec.project) {
 				newTarget = {
 					project: targetSpec.project,
-					target: '$generated',
+					target: "$generated",
 				};
 			} else {
 				return of({

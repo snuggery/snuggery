@@ -1,14 +1,14 @@
-import {Document, Entry, Node} from '@bgotink/kdl';
+import {Document, Entry, Node} from "@bgotink/kdl";
 
-import type {JsonObject} from '../../types';
+import type {JsonObject} from "../../types";
 
-import {fromJsonObject, fromJsonValue} from './jik/serialize';
+import {fromJsonObject, fromJsonValue} from "./jik/serialize";
 
 export function serializeConfiguration(
 	name: string,
 	configuration: JsonObject,
 ): Node {
-	const node = fromJsonObject('configuration', configuration, {
+	const node = fromJsonObject("configuration", configuration, {
 		allowEntries: false,
 	});
 
@@ -18,23 +18,23 @@ export function serializeConfiguration(
 }
 
 export function serializeTarget(name: string, target: JsonObject): Node {
-	const node = Node.create('target');
+	const node = Node.create("target");
 	node.addArgument(name);
-	node.setProperty('builder', target.builder as string);
+	node.setProperty("builder", target.builder as string);
 
 	if (target.defaultConfiguration != null) {
 		node.setProperty(
-			'defaultConfiguration',
+			"defaultConfiguration",
 			target.defaultConfiguration as string,
 		);
 	}
 
 	const children = Object.entries(target).flatMap(([propertyName, value]) => {
 		switch (propertyName) {
-			case 'builder':
-			case 'defaultConfiguration':
+			case "builder":
+			case "defaultConfiguration":
 				return [];
-			case 'configurations':
+			case "configurations":
 				return Object.entries(value as JsonObject).map(
 					([configurationName, configuration]) =>
 						serializeConfiguration(
@@ -42,7 +42,7 @@ export function serializeTarget(name: string, target: JsonObject): Node {
 							configuration as JsonObject,
 						),
 				);
-			case 'options': {
+			case "options": {
 				const options = fromJsonObject(propertyName, value as JsonObject, {
 					allowEntries: false,
 				});
@@ -64,11 +64,11 @@ export function serializeTarget(name: string, target: JsonObject): Node {
 }
 
 export function serializeProject(name: string, project: JsonObject): Node {
-	const node = Node.create('project');
+	const node = Node.create("project");
 	node.addArgument(name);
-	node.setProperty('root', project.root as string);
+	node.setProperty("root", project.root as string);
 
-	for (const key of ['projectType', 'sourceRoot', 'prefix']) {
+	for (const key of ["projectType", "sourceRoot", "prefix"]) {
 		if (project[key] != null) {
 			node.setProperty(key, project[key] as string);
 		}
@@ -76,13 +76,13 @@ export function serializeProject(name: string, project: JsonObject): Node {
 
 	const children = Object.entries(project).flatMap(([propertyName, value]) => {
 		switch (propertyName) {
-			case 'root':
-			case 'projectType':
-			case 'sourceRoot':
-			case 'prefix':
+			case "root":
+			case "projectType":
+			case "sourceRoot":
+			case "prefix":
 				return [];
-			case 'architect':
-			case 'targets':
+			case "architect":
+			case "targets":
 				return Object.entries(value as JsonObject).map(([targetName, target]) =>
 					serializeTarget(targetName, target as JsonObject),
 				);
@@ -102,12 +102,12 @@ export function serializeWorkspace(workspace: JsonObject): Document {
 	return new Document(
 		Object.entries(workspace).flatMap(([name, value]) => {
 			switch (name) {
-				case 'projects':
+				case "projects":
 					return Object.entries(value as JsonObject).map(
 						([projectName, project]) =>
 							serializeProject(projectName, project as JsonObject),
 					);
-				case 'version':
+				case "version":
 					return fromJsonValue(name, 0);
 				default:
 					return fromJsonValue(name, value);

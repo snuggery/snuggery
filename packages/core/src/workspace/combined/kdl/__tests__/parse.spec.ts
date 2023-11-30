@@ -1,12 +1,12 @@
-import {Node, parse} from '@bgotink/kdl';
-import assert from 'node:assert/strict';
-import {suite} from 'uvu';
+import {Node, parse} from "@bgotink/kdl";
+import assert from "node:assert/strict";
+import {suite} from "uvu";
 
-import {ParserContext} from '../context';
-import {toJsonObject, toJsonValue} from '../jik/parse';
-import {parseWorkspace} from '../parse';
+import {ParserContext} from "../context";
+import {toJsonObject, toJsonValue} from "../jik/parse";
+import {parseWorkspace} from "../parse";
 
-const test = suite('kdl parse');
+const test = suite("kdl parse");
 
 function ctx(nodes: Node): ParserContext {
 	return {
@@ -15,23 +15,23 @@ function ctx(nodes: Node): ParserContext {
 	};
 }
 
-test('toJsonValue should work for simple values', () => {
+test("toJsonValue should work for simple values", () => {
 	assert.equal(
-		toJsonValue(ctx(parse(String.raw`node "lorem"`, {as: 'node'}))),
-		'lorem',
+		toJsonValue(ctx(parse(String.raw`node "lorem"`, {as: "node"}))),
+		"lorem",
 	);
 });
 
-test('toJsonObject should work for objects', () => {
+test("toJsonObject should work for objects", () => {
 	assert.deepEqual(
 		toJsonObject(
-			ctx(parse(String.raw`parent { node "lorem"; }`, {as: 'node'})),
+			ctx(parse(String.raw`parent { node "lorem"; }`, {as: "node"})),
 		),
-		{node: 'lorem'},
+		{node: "lorem"},
 	);
 });
 
-test('toJsonObject should work for when passing arrays', () => {
+test("toJsonObject should work for when passing arrays", () => {
 	assert.deepEqual(
 		toJsonObject(
 			ctx(
@@ -42,7 +42,7 @@ test('toJsonObject should work for when passing arrays', () => {
 							- "ipsum"
 						}
 					}`,
-					{as: 'node'},
+					{as: "node"},
 				),
 			),
 		),
@@ -50,15 +50,15 @@ test('toJsonObject should work for when passing arrays', () => {
 			node: [
 				{
 					object: true,
-					$implicit: 'lorem',
+					$implicit: "lorem",
 				},
-				'ipsum',
+				"ipsum",
 			],
 		},
 	);
 });
 
-test('parseWorkspace supports extending projects', () => {
+test("parseWorkspace supports extending projects", () => {
 	const workspace = parseWorkspace(
 		parse(String.raw`
 			version 0
@@ -104,12 +104,12 @@ test('parseWorkspace supports extending projects', () => {
 		version: 1,
 		projects: {
 			parent: {
-				root: 'projects/parent',
+				root: "projects/parent",
 				targets: {
 					build: {
-						builder: '@lorem/ipsum:dolor',
+						builder: "@lorem/ipsum:dolor",
 						options: {
-							configFile: 'projects/parent/build.config.json',
+							configFile: "projects/parent/build.config.json",
 							verbose: false,
 						},
 						configurations: {
@@ -119,9 +119,9 @@ test('parseWorkspace supports extending projects', () => {
 						},
 					},
 					test: {
-						builder: '@lorem/ipsum:sit',
+						builder: "@lorem/ipsum:sit",
 						options: {
-							configFiles: ['projects/parent/test.config.js'],
+							configFiles: ["projects/parent/test.config.js"],
 							coverage: false,
 						},
 						configurations: {
@@ -133,12 +133,12 @@ test('parseWorkspace supports extending projects', () => {
 				},
 			},
 			child: {
-				root: 'projects/child',
+				root: "projects/child",
 				targets: {
 					build: {
-						builder: '@lorem/ipsum:dolor',
+						builder: "@lorem/ipsum:dolor",
 						options: {
-							configFile: 'projects/child/build.config.json',
+							configFile: "projects/child/build.config.json",
 							verbose: false,
 						},
 						configurations: {
@@ -148,11 +148,11 @@ test('parseWorkspace supports extending projects', () => {
 						},
 					},
 					test: {
-						builder: '@lorem/ipsum:sit',
+						builder: "@lorem/ipsum:sit",
 						options: {
 							configFiles: [
-								'projects/child/test.config.js',
-								'projects/child/test2.config.js',
+								"projects/child/test.config.js",
+								"projects/child/test2.config.js",
 							],
 							coverage: false,
 						},

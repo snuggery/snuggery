@@ -4,7 +4,7 @@
  * This file contains different error types used throughout the SnuggeryArchitectHost.
  */
 
-import {AbstractError} from '../../utils/error';
+import {AbstractError} from "../../utils/error";
 
 export class UnknownBuilderError extends AbstractError {}
 

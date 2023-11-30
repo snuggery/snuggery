@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
-import type {PnpApi} from '@yarnpkg/pnp';
-import {promises as fs} from 'fs';
-import {createRequire} from 'module';
-import {dirname, join, parse as parsePath} from 'path';
+import type {PnpApi} from "@yarnpkg/pnp";
+import {promises as fs} from "fs";
+import {createRequire} from "module";
+import {dirname, join, parse as parsePath} from "path";
 
-const [major, minor] = process.version.replace(/^v/, '').split('.') as [
+const [major, minor] = process.version.replace(/^v/, "").split(".") as [
 	string,
 	string,
 ];
 
-if (parseInt(major) < 16 || (major === '16' && parseInt(minor) < 10)) {
+if (parseInt(major) < 16 || (major === "16" && parseInt(minor) < 10)) {
 	process.stderr.write(`Snuggery requires at least node version 16.10\n`);
 	process.exit(1);
 }
 
 const startCwd = process.cwd();
 
-import('@snuggery/snuggery/cli')
+import("@snuggery/snuggery/cli")
 	.then(async function (globalSnuggery): Promise<
-		Pick<typeof import('@snuggery/snuggery/cli'), 'findWorkspace' | 'run'>
+		Pick<typeof import("@snuggery/snuggery/cli"), "findWorkspace" | "run">
 	> {
 		const workspace = (await globalSnuggery.findWorkspace(startCwd))?.path;
 
@@ -31,7 +31,7 @@ import('@snuggery/snuggery/cli')
 
 		if (process.versions.pnp == null) {
 			const pnpFile = await findUp(
-				['.pnp.js', '.pnp.cjs'],
+				[".pnp.js", ".pnp.cjs"],
 				// Fallback to old property name to prevent breaking
 				// combination of old global + new local or vice versa
 				workspaceFolder,
@@ -40,7 +40,7 @@ import('@snuggery/snuggery/cli')
 			if (pnpFile != null) {
 				const pnpapi = require(pnpFile) as PnpApi & {setup?: () => void};
 
-				if (typeof pnpapi.setup === 'function') {
+				if (typeof pnpapi.setup === "function") {
 					pnpapi.setup();
 				}
 
@@ -57,14 +57,14 @@ import('@snuggery/snuggery/cli')
 			const require = createRequire(
 				// Fallback to old property name to prevent breaking
 				// combination of old global + new local or vice versa
-				join(workspaceFolder, '<workspace>'),
+				join(workspaceFolder, "<workspace>"),
 			);
 			const localCli =
-				require('@snuggery/snuggery/cli') as typeof import('@snuggery/snuggery/cli');
+				require("@snuggery/snuggery/cli") as typeof import("@snuggery/snuggery/cli");
 
 			if (
-				typeof localCli.run === 'function' &&
-				typeof localCli.findWorkspace === 'function'
+				typeof localCli.run === "function" &&
+				typeof localCli.findWorkspace === "function"
 			) {
 				return localCli;
 			}
@@ -81,7 +81,7 @@ import('@snuggery/snuggery/cli')
 		run(process.argv.slice(2), {
 			startCwd,
 			workspace: (await (await findWorkspace(startCwd))?.workspace()) ?? null,
-			globalManifest: require.resolve('@snuggery/global/package.json'),
+			globalManifest: require.resolve("@snuggery/global/package.json"),
 		}),
 	)
 	.catch((e) => {

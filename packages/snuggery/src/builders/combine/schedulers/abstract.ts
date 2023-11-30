@@ -1,27 +1,27 @@
 import {
 	type Target as ArchitectTarget,
 	targetStringFromTarget,
-} from '@angular-devkit/architect';
+} from "@angular-devkit/architect";
 import {
 	type BuilderContext,
 	type BuilderOutput,
 	TransientTarget,
 	resolveTargetString,
 	TargetSpecifier,
-} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import {concat, merge, Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import {concat, merge, Observable} from "rxjs";
+import {finalize} from "rxjs/operators";
 
-import {calculate} from '../calculator';
-import type {ParallelTarget, SerialTarget, Target} from '../schema';
-import {Type} from '../types';
+import {calculate} from "../calculator";
+import type {ParallelTarget, SerialTarget, Target} from "../schema";
+import {Type} from "../types";
 
-import type {Child} from './child/shared';
+import type {Child} from "./child/shared";
 
 export function isSingleTarget(target: Target): target is TargetSpecifier {
 	return (
-		typeof target === 'string' ||
+		typeof target === "string" ||
 		(target != null && (target as TransientTarget).builder != null)
 	);
 }
@@ -195,7 +195,7 @@ export abstract class ChildScheduler extends Scheduler {
 		extraOptions: JsonObject | undefined,
 		child: Child,
 	): Observable<BuilderOutput> {
-		if (typeof targetSpec === 'string') {
+		if (typeof targetSpec === "string") {
 			const target = resolveTargetString(this.context, targetSpec);
 
 			return child.executeTarget(target, extraOptions);

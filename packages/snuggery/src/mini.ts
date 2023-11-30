@@ -1,23 +1,23 @@
-import process from 'node:process';
+import process from "node:process";
 
-import type {MiniCliOptions} from './cli/mini.js';
+import type {MiniCliOptions} from "./cli/mini.js";
 
 export type {MiniCliOptions};
 
 export function run(options: MiniCliOptions): Promise<never> {
-	const [major, minor] = process.version.replace(/^v/, '').split('.') as [
+	const [major, minor] = process.version.replace(/^v/, "").split(".") as [
 		string,
 		string,
 	];
 
-	if (parseInt(major) < 16 || (major === '16' && parseInt(minor) < 10)) {
+	if (parseInt(major) < 16 || (major === "16" && parseInt(minor) < 10)) {
 		process.stderr.write(
 			`${options.binaryLabel} requires at least node version 16.10\n`,
 		);
 		process.exit(1);
 	}
 
-	return import('./cli/mini.js')
+	return import("./cli/mini.js")
 		.then(async ({findWorkspace, run}) => {
 			// Allow overriding the startCwd using an environment variable. This is
 			// useful when running a local clone of `sn`

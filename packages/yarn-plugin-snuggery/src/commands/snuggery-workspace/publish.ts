@@ -1,4 +1,4 @@
-import {BaseCommand} from '@yarnpkg/cli';
+import {BaseCommand} from "@yarnpkg/cli";
 import {
 	Configuration,
 	formatUtils,
@@ -6,23 +6,23 @@ import {
 	Project,
 	StreamReport,
 	structUtils,
-} from '@yarnpkg/core';
-import {Filename, PortablePath, ppath, xfs} from '@yarnpkg/fslib';
+} from "@yarnpkg/core";
+import {Filename, PortablePath, ppath, xfs} from "@yarnpkg/fslib";
 import {
 	npmConfigUtils,
 	npmHttpUtils,
 	npmPublishUtils,
-} from '@yarnpkg/plugin-npm';
-import {Option} from 'clipanion';
+} from "@yarnpkg/plugin-npm";
+import {Option} from "clipanion";
 
-import {createPublishWorkspace, getManifestFromTarball} from '../../utils';
+import {createPublishWorkspace, getManifestFromTarball} from "../../utils";
 
 export class PublishCommand extends BaseCommand {
-	static override paths = [['snuggery-workspace', 'publish']];
+	static override paths = [["snuggery-workspace", "publish"]];
 
-	tag = Option.String('--tag', 'latest');
+	tag = Option.String("--tag", "latest");
 
-	json = Option.Boolean('--json');
+	json = Option.Boolean("--json");
 
 	async execute(): Promise<number> {
 		const configuration = await Configuration.find(
@@ -54,7 +54,7 @@ export class PublishCommand extends BaseCommand {
 				) {
 					report.reportError(
 						MessageName.UNNAMED,
-						'Workspaces must have valid names and versions to be published on an external registry',
+						"Workspaces must have valid names and versions to be published on an external registry",
 					);
 					return;
 				}
@@ -63,7 +63,7 @@ export class PublishCommand extends BaseCommand {
 
 				const tgz = ppath.join(
 					project.cwd,
-					'dist' as PortablePath,
+					"dist" as PortablePath,
 					`${structUtils.slugifyIdent(ident)}.tgz` as Filename,
 				);
 
@@ -127,7 +127,7 @@ export class PublishCommand extends BaseCommand {
 					});
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
-					if (error.name !== 'HTTPError') {
+					if (error.name !== "HTTPError") {
 						throw error;
 					} else {
 						const message =

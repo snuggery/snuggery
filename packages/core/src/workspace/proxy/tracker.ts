@@ -13,9 +13,9 @@ import type {
 	JsonPropertyName,
 	JsonPropertyPath,
 	JsonValue,
-} from '../types';
+} from "../types";
 
-import {Change, ChangeType} from './types';
+import {Change, ChangeType} from "./types";
 
 type Version = Record<never, never>;
 
@@ -25,7 +25,7 @@ const versions = new WeakMap<JsonObject | JsonValue[], Version>();
 declare function isNaN(value: unknown): boolean;
 
 function cloneValue<T extends JsonValue>(value: T, version?: Version): T {
-	if (typeof value !== 'object' || value == null) {
+	if (typeof value !== "object" || value == null) {
 		return value;
 	}
 
@@ -48,7 +48,7 @@ function cloneValue<T extends JsonValue>(value: T, version?: Version): T {
 }
 
 function cloneValueDeep<T extends JsonValue>(value: T, version?: Version): T {
-	if (typeof value !== 'object' || value == null) {
+	if (typeof value !== "object" || value == null) {
 		return value;
 	}
 
@@ -95,8 +95,8 @@ function compareValuesDeep(a: JsonValue, b: JsonValue): boolean {
 		return true;
 	}
 
-	if (typeof a === 'object') {
-		if (typeof b !== 'object' || Array.isArray(b)) {
+	if (typeof a === "object") {
+		if (typeof b !== "object" || Array.isArray(b)) {
 			return false;
 		}
 
@@ -129,9 +129,9 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 	const {proxy, revoke} = Proxy.revocable(value, {
 		get(source, prop): JsonValue | undefined {
 			if (
-				typeof prop === 'symbol' ||
+				typeof prop === "symbol" ||
 				!Reflect.has(source, prop) ||
-				(isArray && prop !== 'length' && isNaN(prop))
+				(isArray && prop !== "length" && isNaN(prop))
 			) {
 				// JSON can't use symbol keys
 				return undefined;
@@ -140,7 +140,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			// @ts-expect-error typescript can't tell prop indexes source
 			const value: JsonValue = source[prop];
 
-			if (typeof value !== 'object' || value == null) {
+			if (typeof value !== "object" || value == null) {
 				return value;
 			}
 
@@ -164,7 +164,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			);
 		},
 		deleteProperty(source, prop): boolean {
-			if (typeof prop === 'symbol') {
+			if (typeof prop === "symbol") {
 				return false;
 			}
 
@@ -181,7 +181,7 @@ function makeValueObservable<T extends JsonObject | JsonValue[]>(
 			return true;
 		},
 		set(source, prop, value: JsonValue): boolean {
-			if (typeof prop === 'symbol') {
+			if (typeof prop === "symbol") {
 				// JSON can't have symbol keys
 				return false;
 			}

@@ -1,4 +1,4 @@
-import {AssetSpec} from '@snuggery/architect';
+import {AssetSpec} from "@snuggery/architect";
 
 export interface Schema {
 	/**

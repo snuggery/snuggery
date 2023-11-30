@@ -1,7 +1,7 @@
-import {join, dirname, parse as parsePath} from 'node:path';
+import {join, dirname, parse as parsePath} from "node:path";
 
-import type {WorkspaceHost} from './file';
-import {nodeFsHost} from './node';
+import type {WorkspaceHost} from "./file";
+import {nodeFsHost} from "./node";
 
 export async function findUp(
 	names: string | readonly string[],

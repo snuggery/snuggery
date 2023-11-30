@@ -1,9 +1,9 @@
-import {createHash} from 'crypto';
-import {promises as fs} from 'fs';
-import _glob from 'glob';
-import {dirname, posix, resolve} from 'path';
-import satisfiesRange from 'semver/functions/satisfies.js';
-import {promisify} from 'util';
+import {createHash} from "crypto";
+import {promises as fs} from "fs";
+import _glob from "glob";
+import {dirname, posix, resolve} from "path";
+import satisfiesRange from "semver/functions/satisfies.js";
+import {promisify} from "util";
 
 const glob = promisify(_glob);
 
@@ -29,7 +29,7 @@ function getPackageName(path: string, {name}: PackageManifest) {
 		return name;
 	}
 
-	return createHash('sha256').update(path).digest('base64');
+	return createHash("sha256").update(path).digest("base64");
 }
 
 export async function getPackageInformation(
@@ -38,7 +38,7 @@ export async function getPackageInformation(
 	let rootManifest: PackageManifest;
 	try {
 		rootManifest = JSON.parse(
-			await fs.readFile(`${root}/package.json`, 'utf8'),
+			await fs.readFile(`${root}/package.json`, "utf8"),
 		) as unknown as PackageManifest;
 	} catch (e) {
 		throw new Error(
@@ -88,7 +88,7 @@ export async function getPackageInformation(
 		let manifest: PackageManifest;
 		try {
 			manifest = JSON.parse(
-				await fs.readFile(workspacePath, 'utf8'),
+				await fs.readFile(workspacePath, "utf8"),
 			) as unknown as PackageManifest;
 		} catch (e) {
 			throw new Error(
@@ -148,7 +148,7 @@ export async function getPackageInformation(
 				continue;
 			}
 
-			if (locator === '*' || /^workspace:[*^~]$/.test(locator)) {
+			if (locator === "*" || /^workspace:[*^~]$/.test(locator)) {
 				// Wildcard or wildcard workspace protocol
 				workspaceInfo[packageName]!.workspaceDependencies.add(dependencyName);
 			} else if (
@@ -160,7 +160,7 @@ export async function getPackageInformation(
 				dependencyInfo.manifest.version &&
 				satisfiesRange(
 					dependencyInfo.manifest.version,
-					locator.replace(/^npm:/, ''),
+					locator.replace(/^npm:/, ""),
 				)
 			) {
 				// Range matching local version

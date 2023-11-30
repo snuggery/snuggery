@@ -1,6 +1,6 @@
-import {relative, resolve} from 'path';
+import {relative, resolve} from "path";
 
-import type {BuilderContext} from './create-builder';
+import type {BuilderContext} from "./create-builder";
 
 /**
  * Resolve the given path relative to the workspace root

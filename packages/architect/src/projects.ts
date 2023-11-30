@@ -1,11 +1,11 @@
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 import {
 	filterByPatterns,
 	readWorkspace,
 	WorkspaceDefinition,
-} from '@snuggery/core';
+} from "@snuggery/core";
 
-import type {BuilderContext} from './create-builder';
+import type {BuilderContext} from "./create-builder";
 
 export async function findProjects(
 	context: BuilderContext,

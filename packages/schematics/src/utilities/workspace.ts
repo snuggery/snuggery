@@ -1,19 +1,19 @@
-import type {Tree} from '@angular-devkit/schematics';
+import type {Tree} from "@angular-devkit/schematics";
 import {
 	updateWorkspace as _updateWorkspace,
 	WorkspaceHost,
 	WorkspaceDefinition,
 	readWorkspace,
-} from '@snuggery/core';
+} from "@snuggery/core";
 
 function createHost(tree: Tree): WorkspaceHost {
 	return {
 		async read(path) {
 			const data = tree.read(path);
 			if (!data) {
-				throw new Error('File not found.');
+				throw new Error("File not found.");
 			}
-			return data.toString('utf-8');
+			return data.toString("utf-8");
 		},
 		async write(path, data) {
 			return tree.overwrite(path, data);
@@ -33,13 +33,13 @@ function createHost(tree: Tree): WorkspaceHost {
 }
 
 export function getWorkspace(tree: Tree): Promise<WorkspaceDefinition> {
-	return readWorkspace('/', {host: createHost(tree)});
+	return readWorkspace("/", {host: createHost(tree)});
 }
 
 export function updateWorkspace(
 	updater: (workspace: WorkspaceDefinition) => void | Promise<void>,
 ): (tree: Tree) => Promise<void> {
 	return async (tree) => {
-		await _updateWorkspace('/', updater, {host: createHost(tree)});
+		await _updateWorkspace("/", updater, {host: createHost(tree)});
 	};
 }

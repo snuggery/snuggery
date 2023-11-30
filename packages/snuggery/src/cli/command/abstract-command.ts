@@ -1,33 +1,33 @@
-import type {Architect} from '@angular-devkit/architect';
-import type {schema} from '@angular-devkit/core';
-import {isJsonObject, JsonObject} from '@snuggery/core';
+import type {Architect} from "@angular-devkit/architect";
+import type {schema} from "@angular-devkit/core";
+import {isJsonObject, JsonObject} from "@snuggery/core";
 import {
 	ColorFormat,
 	Command,
 	ErrorWithMeta,
 	Option as CommandOption,
 	UsageError,
-} from 'clipanion';
-import path, {dirname, normalize, posix, relative} from 'path';
+} from "clipanion";
+import path, {dirname, normalize, posix, relative} from "path";
 
-import type {SnuggeryArchitectHost} from '../architect/index';
-import {Cached} from '../utils/decorator';
-import {memoize} from '../utils/memoize';
+import type {SnuggeryArchitectHost} from "../architect/index";
+import {Cached} from "../utils/decorator";
+import {memoize} from "../utils/memoize";
 import {
 	ParsedArguments,
 	parseFreeFormArguments,
 	parseOptions,
-} from '../utils/parse-options';
-import type {Option} from '../utils/parse-schema';
-import type {Report} from '../utils/report';
+} from "../utils/parse-options";
+import type {Option} from "../utils/parse-schema";
+import type {Report} from "../utils/report";
 
-import type {CliWorkspace, Context} from './context';
+import type {CliWorkspace, Context} from "./context";
 
 /**
  * An error that won't show a stack trace
  */
 class PrettiedError extends Error implements ErrorWithMeta {
-	readonly clipanion = {type: 'none'} as const;
+	readonly clipanion = {type: "none"} as const;
 
 	constructor(name: string, message: string) {
 		super(message);
@@ -38,21 +38,21 @@ class PrettiedError extends Error implements ErrorWithMeta {
 /** Errors the Angular APIs throw that shouldn't show a stacktrace */
 const angularUserErrors = new Set([
 	// Schematics
-	'CollectionCannotBeResolvedException',
-	'InvalidCollectionJsonException',
-	'CollectionMissingSchematicsMapException',
-	'CollectionMissingFieldsException',
-	'CircularCollectionException',
-	'UnknownCollectionException',
-	'NodePackageDoesNotSupportSchematics',
-	'SchematicMissingFactoryException',
-	'FactoryCannotBeResolvedException',
-	'CollectionMissingFieldsException',
-	'SchematicMissingDescriptionException',
-	'SchematicNameCollisionException',
-	'UnknownSchematicException',
-	'PrivateSchematicException',
-	'SchematicMissingFieldsException',
+	"CollectionCannotBeResolvedException",
+	"InvalidCollectionJsonException",
+	"CollectionMissingSchematicsMapException",
+	"CollectionMissingFieldsException",
+	"CircularCollectionException",
+	"UnknownCollectionException",
+	"NodePackageDoesNotSupportSchematics",
+	"SchematicMissingFactoryException",
+	"FactoryCannotBeResolvedException",
+	"CollectionMissingFieldsException",
+	"SchematicMissingDescriptionException",
+	"SchematicNameCollisionException",
+	"UnknownSchematicException",
+	"PrivateSchematicException",
+	"SchematicMissingFieldsException",
 ]);
 
 /**
@@ -62,8 +62,8 @@ export abstract class AbstractCommand extends Command<Context> {
 	/**
 	 * Turn on extra logging
 	 */
-	verbose = CommandOption.Boolean('--verbose,-v', false, {
-		description: 'Turn on extra logging',
+	verbose = CommandOption.Boolean("--verbose,-v", false, {
+		description: "Turn on extra logging",
 		hidden: true,
 	});
 
@@ -77,7 +77,7 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		if (workspace == null) {
 			const err = new UsageError(`Couldn't find any workspace configuration`);
-			err.clipanion.type = 'none';
+			err.clipanion.type = "none";
 			throw err;
 		}
 
@@ -102,10 +102,10 @@ export abstract class AbstractCommand extends Command<Context> {
 	 */
 	@Cached()
 	protected get logger(): Promise<
-		import('@angular-devkit/core').logging.Logger
+		import("@angular-devkit/core").logging.Logger
 	> {
-		return import('@angular-devkit/core').then(({logging}) => {
-			const logger = new logging.Logger('');
+		return import("@angular-devkit/core").then(({logging}) => {
+			const logger = new logging.Logger("");
 
 			const {report} = this.context;
 			const method = {
@@ -128,13 +128,13 @@ export abstract class AbstractCommand extends Command<Context> {
 		formats,
 		workspace = this.context.workspace,
 		...opts
-	}: Parameters<CliWorkspace['createWorkspaceDataVisitor']>[0] & {
-		formats?: import('@angular-devkit/core').schema.SchemaFormat[];
+	}: Parameters<CliWorkspace["createWorkspaceDataVisitor"]>[0] & {
+		formats?: import("@angular-devkit/core").schema.SchemaFormat[];
 		workspace?: CliWorkspace | null;
-	} = {}): Promise<import('../utils/schema-registry.js').SchemaRegistry> {
+	} = {}): Promise<import("../utils/schema-registry.js").SchemaRegistry> {
 		const [{SchemaRegistry}, {schema}] = await Promise.all([
-			import('../utils/schema-registry.js'),
-			import('@angular-devkit/core'),
+			import("../utils/schema-registry.js"),
+			import("@angular-devkit/core"),
 		]);
 
 		const registry = new SchemaRegistry(formats);
@@ -172,12 +172,12 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		if (
 			isJsonObject(cliExtension) &&
-			typeof cliExtension.packageManager === 'string'
+			typeof cliExtension.packageManager === "string"
 		) {
 			return cliExtension.packageManager;
 		}
 
-		return (require('which-pm-runs') as typeof import('which-pm-runs'))()?.name;
+		return (require("which-pm-runs") as typeof import("which-pm-runs"))()?.name;
 	}
 
 	// Basic setup for Architects, can be used in non-architect commands like --doctor or --sync-config-to
@@ -189,7 +189,7 @@ export abstract class AbstractCommand extends Command<Context> {
 
 	@Cached()
 	protected get architectHost(): Promise<SnuggeryArchitectHost> {
-		return import('../architect/index.js').then(({createArchitectHost}) =>
+		return import("../architect/index.js").then(({createArchitectHost}) =>
 			createArchitectHost(this.context, this.context.workspace),
 		);
 	}
@@ -199,7 +199,7 @@ export abstract class AbstractCommand extends Command<Context> {
 		return Promise.all([
 			this.architectHost,
 			this.architectSchemaRegistry,
-			import('@angular-devkit/architect'),
+			import("@angular-devkit/architect"),
 		]).then(([host, registry, {Architect}]) => new Architect(host, registry));
 	}
 
@@ -213,17 +213,17 @@ export abstract class AbstractCommand extends Command<Context> {
 	 */
 	@Cached()
 	protected get schematicsSchemaRegistry() {
-		return import('@angular-devkit/schematics').then(async ({formats}) => {
+		return import("@angular-devkit/schematics").then(async ({formats}) => {
 			const registry = await this.createSchemaRegistry({
 				formats: formats.standardFormats,
 			});
 
 			registry.addSmartDefaultProvider(
-				'projectName',
+				"projectName",
 				() => this.currentProject,
 			);
 			registry.addSmartDefaultProvider(
-				'workingDirectory',
+				"workingDirectory",
 				memoize(() => {
 					const {workspace, startCwd} = this.context;
 
@@ -236,7 +236,7 @@ export abstract class AbstractCommand extends Command<Context> {
 					);
 
 					if (path !== posix) {
-						relativeCwd = relativeCwd.replace(/\\/g, '/');
+						relativeCwd = relativeCwd.replace(/\\/g, "/");
 					}
 
 					// Angular maps empty string to undefined, mimic that behavior
@@ -244,7 +244,7 @@ export abstract class AbstractCommand extends Command<Context> {
 				}),
 			);
 			registry.usePromptProvider(
-				await (await import('../utils/prompt.js')).createPromptProvider(),
+				await (await import("../utils/prompt.js")).createPromptProvider(),
 			);
 
 			return registry;
@@ -254,9 +254,9 @@ export abstract class AbstractCommand extends Command<Context> {
 	protected async createEngineHost(
 		root: string,
 		resolveSelf: boolean,
-		optionTransforms?: import('../schematic/engine-host.js').OptionTransform[],
-	): Promise<import('../schematic/engine-host.js').SnuggeryEngineHost> {
-		const {SnuggeryEngineHost} = await import('../schematic/engine-host.js');
+		optionTransforms?: import("../schematic/engine-host.js").OptionTransform[],
+	): Promise<import("../schematic/engine-host.js").SnuggeryEngineHost> {
+		const {SnuggeryEngineHost} = await import("../schematic/engine-host.js");
 		return new SnuggeryEngineHost(root, {
 			context: this.context,
 			optionTransforms,
@@ -265,7 +265,7 @@ export abstract class AbstractCommand extends Command<Context> {
 			resolvePaths: [
 				root,
 				...(resolveSelf
-					? [dirname(require.resolve('@snuggery/snuggery/package.json'))]
+					? [dirname(require.resolve("@snuggery/snuggery/package.json"))]
 					: []),
 			],
 			schemaValidation: true,
@@ -273,12 +273,12 @@ export abstract class AbstractCommand extends Command<Context> {
 	}
 
 	protected async createWorkflow(
-		engineHost: import('../schematic/engine-host.js').SnuggeryEngineHost,
+		engineHost: import("../schematic/engine-host.js").SnuggeryEngineHost,
 		root: string,
 		force: boolean,
 		dryRun: boolean,
-	): Promise<import('../schematic/workflow.js').SnuggeryWorkflow> {
-		const {SnuggeryWorkflow} = await import('../schematic/workflow.js');
+	): Promise<import("../schematic/workflow.js").SnuggeryWorkflow> {
+		const {SnuggeryWorkflow} = await import("../schematic/workflow.js");
 		return new SnuggeryWorkflow(root, {
 			engineHost,
 			force,
@@ -296,7 +296,7 @@ export abstract class AbstractCommand extends Command<Context> {
 	 * @param fn Function to execute with the parsed options
 	 */
 	protected async withOptionValues<T>(
-		options: Parameters<AbstractCommand['parseOptionValues']>[0],
+		options: Parameters<AbstractCommand["parseOptionValues"]>[0],
 		fn: (parsedOptions: JsonObject) => Promise<T>,
 	): Promise<number | T> {
 		const [success, parsedOptions] = this.parseOptionValues(options);
@@ -377,14 +377,14 @@ export abstract class AbstractCommand extends Command<Context> {
 	protected prettifyError(error: Error): Error {
 		// Extending from the Error class is often done without overriding the name
 		// property to something other than 'Error'
-		if (error.name === 'Error' && error.constructor !== Error) {
+		if (error.name === "Error" && error.constructor !== Error) {
 			// Prevent minified code from showing something less useful than 'Error'
 			if (error.constructor.name.length > 5) {
 				error.name = error.constructor.name;
 			}
 		}
 
-		if (error.name === 'SchemaValidationException') {
+		if (error.name === "SchemaValidationException") {
 			const errors = (error as schema.SchemaValidationException).errors
 				.filter((error) => error.message)
 				.map((error) =>
@@ -396,7 +396,7 @@ export abstract class AbstractCommand extends Command<Context> {
 			error = new PrettiedError(
 				error.name,
 				errors.length > 0
-					? `Schema validation failed:\n${errors.join('\n')}`
+					? `Schema validation failed:\n${errors.join("\n")}`
 					: error.message,
 			);
 		}
@@ -408,7 +408,7 @@ export abstract class AbstractCommand extends Command<Context> {
 		if (/^[A-Z].*[A-Z].*(?:Error|Exception)$/.test(error.name)) {
 			// The name of the error is probably already useful
 			// e.g. IllegalArgumentException, SchemaValidationException, BuildFailedError
-			error.name = error.name.replace(/(?:Error|Exception)$/, '');
+			error.name = error.name.replace(/(?:Error|Exception)$/, "");
 		}
 
 		return error;

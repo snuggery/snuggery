@@ -1,12 +1,12 @@
-import type {workspaces} from '@angular-devkit/core';
-import type {StrictValidator} from 'typanion';
+import type {workspaces} from "@angular-devkit/core";
+import type {StrictValidator} from "typanion";
 
 import type {
 	JsonValue,
 	ProjectDefinition,
 	TargetDefinition,
 	WorkspaceDefinition,
-} from './workspace';
+} from "./workspace";
 
 export interface ExtraConfigurationDefinition {
 	/**
@@ -61,7 +61,7 @@ export function extractExtraConfiguration(
 	targetName?: string,
 ): JsonValue[] {
 	const configurations: [Record<string, JsonValue | undefined>, string][] = [
-		[workspace.extensions, 'Workspace'],
+		[workspace.extensions, "Workspace"],
 	];
 
 	if (projectName != null) {
@@ -93,7 +93,7 @@ export function extractExtraConfiguration(
 				);
 			}
 
-			if ('extensions' in target) {
+			if ("extensions" in target) {
 				configurations.push([
 					target.extensions,
 					`Project ${JSON.stringify(projectName)} target ${JSON.stringify(
@@ -129,7 +129,7 @@ export function extractExtraConfiguration(
 				throw new Error(
 					`${location} configuration ${JSON.stringify(
 						key,
-					)} is invalid:\n- ${errors.join('\n- ')}`,
+					)} is invalid:\n- ${errors.join("\n- ")}`,
 				);
 			}
 		}

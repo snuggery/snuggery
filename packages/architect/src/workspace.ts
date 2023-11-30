@@ -1,9 +1,9 @@
 import {
 	type ConvertibleWorkspaceDefinition,
 	readWorkspace,
-} from '@snuggery/core';
+} from "@snuggery/core";
 
-import type {BuilderContext} from './create-builder';
+import type {BuilderContext} from "./create-builder";
 
 export async function findWorkspace(
 	context: BuilderContext,

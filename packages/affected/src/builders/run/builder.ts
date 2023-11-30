@@ -1,14 +1,14 @@
-import type {BuilderContext} from '@snuggery/architect';
-import {filterByPatterns} from '@snuggery/core';
-import {glob} from '@snuggery/snuggery/builders';
+import type {BuilderContext} from "@snuggery/architect";
+import {filterByPatterns} from "@snuggery/core";
+import {glob} from "@snuggery/snuggery/builders";
 
-import {findAffectedProjects} from '../../changes';
+import {findAffectedProjects} from "../../changes";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 export async function execute(
 	{
-		include = '**',
+		include = "**",
 		exclude,
 		printOnly,
 		fromRevision,
@@ -30,7 +30,7 @@ export async function execute(
 	);
 
 	if (printOnly) {
-		context.logger.info(affectedProjects.join('\n'));
+		context.logger.info(affectedProjects.join("\n"));
 	}
 
 	if (printOnly || !affectedProjects.length) {

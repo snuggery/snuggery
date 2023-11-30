@@ -1,12 +1,12 @@
-import {AbstractCommand} from '../command/abstract-command';
-import type {Report} from '../utils/report';
+import {AbstractCommand} from "../command/abstract-command";
+import type {Report} from "../utils/report";
 
 export class DoctorCommand extends AbstractCommand {
-	static override readonly paths = [['--doctor']];
+	static override readonly paths = [["--doctor"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Diagnose configuration mistakes',
+		category: "Workspace information commands",
+		description: "Diagnose configuration mistakes",
 	});
 
 	async execute(): Promise<number> {
@@ -19,7 +19,7 @@ export class DoctorCommand extends AbstractCommand {
 		]);
 
 		await (
-			await import('./doctor/index.js')
+			await import("./doctor/index.js")
 		).doctor({
 			report: subReport,
 			workspace,
@@ -30,15 +30,15 @@ export class DoctorCommand extends AbstractCommand {
 
 		if (subReport.numberOfErrors > 0) {
 			report.reportSeparator();
-			report.reportError('Failed with errors');
+			report.reportError("Failed with errors");
 			return 1;
 		}
 
 		if (subReport.numberOfWarnings) {
 			report.reportSeparator();
-			report.reportWarning('Succeeded with warnings');
+			report.reportWarning("Succeeded with warnings");
 		} else {
-			report.reportInfo('Everything is A-OK!');
+			report.reportInfo("Everything is A-OK!");
 		}
 
 		return 0;

@@ -1,10 +1,10 @@
-import type {WorkspaceDefinition} from '@snuggery/core';
-import type {Trip} from '@snuggery/journey';
+import type {WorkspaceDefinition} from "@snuggery/core";
+import type {Trip} from "@snuggery/journey";
 import {
 	type TreeVisitorWithInput,
 	visitTree,
-} from '@snuggery/journey/agents/general';
-import {updateWorkspace as _updateWorkspace} from '@snuggery/schematics';
+} from "@snuggery/journey/agents/general";
+import {updateWorkspace as _updateWorkspace} from "@snuggery/schematics";
 
 interface UpdateWorkspaceInput {
 	(workspace: WorkspaceDefinition): void | Promise<void>;

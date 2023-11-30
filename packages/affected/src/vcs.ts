@@ -1,7 +1,7 @@
-import type {BuilderContext} from '@snuggery/architect';
+import type {BuilderContext} from "@snuggery/architect";
 
-import type {VersionControlFactory, VersionControlSystem} from './vcs/abstract';
-import {GitRepository} from './vcs/git';
+import type {VersionControlFactory, VersionControlSystem} from "./vcs/abstract";
+import {GitRepository} from "./vcs/git";
 
 const factories: VersionControlFactory[] = [GitRepository];
 

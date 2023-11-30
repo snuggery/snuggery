@@ -2,16 +2,16 @@ import {
 	Architect,
 	type BuilderOutput,
 	targetFromTargetString,
-} from '@angular-devkit/architect';
-import {logging, schema} from '@angular-devkit/core';
-import type {JsonObject} from '@snuggery/core';
+} from "@angular-devkit/architect";
+import {logging, schema} from "@angular-devkit/core";
+import type {JsonObject} from "@snuggery/core";
 import {
 	createArchitectHost,
 	CliWorkspace,
 	findWorkspace,
-} from '@snuggery/snuggery/cli';
-import {forkJoin, from, Observable} from 'rxjs';
-import {finalize, map, mergeMap, switchMap} from 'rxjs/operators';
+} from "@snuggery/snuggery/cli";
+import {forkJoin, from, Observable} from "rxjs";
+import {finalize, map, mergeMap, switchMap} from "rxjs/operators";
 
 export class ChildArchitect {
 	readonly #architect: Promise<Architect>;

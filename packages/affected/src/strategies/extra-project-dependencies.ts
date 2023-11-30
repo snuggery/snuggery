@@ -1,8 +1,8 @@
-import {filterByPatterns, isJsonArray} from '@snuggery/core';
+import {filterByPatterns, isJsonArray} from "@snuggery/core";
 
-import {MapOfSets} from '../utils/map-of-sets';
+import {MapOfSets} from "../utils/map-of-sets";
 
-import type {ChangeLocatorStrategy} from './interface';
+import type {ChangeLocatorStrategy} from "./interface";
 
 /**
  * Strategy that uses a map defining extra project dependencies to extend the affected projects
@@ -19,11 +19,11 @@ export const extraProjectDependenciesStrategy: ChangeLocatorStrategy = {
 			for (const [key, value] of Object.entries(config)) {
 				const extras = projectRelationships.get(key);
 
-				if (typeof value === 'string') {
+				if (typeof value === "string") {
 					extras.add(value);
 				} else if (isJsonArray(value)) {
 					for (const v of value) {
-						if (typeof v === 'string') {
+						if (typeof v === "string") {
 							extras.add(v);
 						}
 					}

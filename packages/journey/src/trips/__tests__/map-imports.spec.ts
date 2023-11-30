@@ -1,19 +1,19 @@
-import {tags} from '@angular-devkit/core';
-import {SchematicTestRunner} from '@angular-devkit/schematics/testing';
-import assert from 'node:assert/strict';
-import {test} from 'uvu';
+import {tags} from "@angular-devkit/core";
+import {SchematicTestRunner} from "@angular-devkit/schematics/testing";
+import assert from "node:assert/strict";
+import {test} from "uvu";
 
-test('it should map imports', async () => {
+test("it should map imports", async () => {
 	const runner = new SchematicTestRunner(
-		'test',
-		require.resolve('./collection.json'),
+		"test",
+		require.resolve("./collection.json"),
 	);
 
-	let tree = await runner.runSchematic('init');
-	tree = await runner.runSchematic('replace-lorem-ipsum', undefined, tree);
+	let tree = await runner.runSchematic("init");
+	tree = await runner.runSchematic("replace-lorem-ipsum", undefined, tree);
 
 	assert.equal(
-		tree.readContent('file.ts').trim(),
+		tree.readContent("file.ts").trim(),
 		tags.stripIndent`
 			import { unchanged, newName, NewName } from "@lorem/ipsum";
 			import { moved, amet as aliasedImport, Moved, Amet } from "@dolor/sit";

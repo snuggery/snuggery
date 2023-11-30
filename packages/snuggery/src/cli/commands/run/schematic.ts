@@ -1,13 +1,13 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {SchematicCommand} from '../../command/schematic';
+import {SchematicCommand} from "../../command/schematic";
 
 export class RunSchematicCommand extends SchematicCommand {
-	static override readonly paths = [['run', 'schematic']];
+	static override readonly paths = [["run", "schematic"]];
 
 	static override readonly usage = SchematicCommand.Usage({
-		category: 'Schematic commands',
-		description: 'Run a schematic to generate and/or modify files',
+		category: "Schematic commands",
+		description: "Run a schematic to generate and/or modify files",
 		details: `
 			A schematic is a code generator that supports complex logic. It contains instructions and templates for creating or modifying your codebase.
 
@@ -19,30 +19,30 @@ export class RunSchematicCommand extends SchematicCommand {
 		`,
 		examples: [
 			[
-				'Run the `component` schematic of the `@schematics/angular` package',
-				'$0 run schematic @schematics/angular:component',
+				"Run the `component` schematic of the `@schematics/angular` package",
+				"$0 run schematic @schematics/angular:component",
 			],
 			[
-				'Dry-run the `application` schematic of a configured schematic package (if not configured, defaults to `@schematics/angular` if installed)',
-				'$0 run schematic --dry-run application',
+				"Dry-run the `application` schematic of a configured schematic package (if not configured, defaults to `@schematics/angular` if installed)",
+				"$0 run schematic --dry-run application",
 			],
 			[
-				'Show all available command line options for the `@nrwl/react:application` schematic',
-				'$0 run schematic @nrwl/react:application --help',
+				"Show all available command line options for the `@nrwl/react:application` schematic",
+				"$0 run schematic @nrwl/react:application --help",
 			],
 		],
 	});
 
-	dryRun = Option.Boolean('--dry-run', false, {
-		description: 'Run the schematics without writing the results to disk',
+	dryRun = Option.Boolean("--dry-run", false, {
+		description: "Run the schematics without writing the results to disk",
 	});
 
-	force = Option.Boolean('--force', false, {
-		description: 'Write the results to disk even if there are conflicts',
+	force = Option.Boolean("--force", false, {
+		description: "Write the results to disk even if there are conflicts",
 	});
 
-	showFileChanges = Option.Boolean('--show-file-changes', false, {
-		description: 'Print an overview of all file changes made by the schematic',
+	showFileChanges = Option.Boolean("--show-file-changes", false, {
+		description: "Print an overview of all file changes made by the schematic",
 	});
 
 	schematic = Option.String();

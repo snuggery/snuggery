@@ -1,21 +1,21 @@
-import * as path from 'node:path';
+import * as path from "node:path";
 
 /**
  * @param {string} moduleSpecifier
  * @returns {string}
  */
 export function getPackageName(moduleSpecifier) {
-	const firstSlash = moduleSpecifier.indexOf('/');
+	const firstSlash = moduleSpecifier.indexOf("/");
 
 	if (firstSlash === -1) {
 		return moduleSpecifier;
 	}
 
-	if (!moduleSpecifier.startsWith('@')) {
+	if (!moduleSpecifier.startsWith("@")) {
 		return moduleSpecifier.slice(0, firstSlash);
 	}
 
-	const secondSlash = moduleSpecifier.indexOf('/', firstSlash + 1);
+	const secondSlash = moduleSpecifier.indexOf("/", firstSlash + 1);
 	return secondSlash === -1
 		? moduleSpecifier
 		: moduleSpecifier.slice(0, secondSlash);
@@ -26,10 +26,10 @@ export function getPackageName(moduleSpecifier) {
  * @returns {string}
  */
 export function getUnscopedName(moduleSpecifier) {
-	return moduleSpecifier.slice(moduleSpecifier.lastIndexOf('/') + 1);
+	return moduleSpecifier.slice(moduleSpecifier.lastIndexOf("/") + 1);
 }
 
-const PATH_REGEXP = new RegExp('\\' + path.sep, 'g');
+const PATH_REGEXP = new RegExp("\\" + path.sep, "g");
 
 /**
  * @type {<T extends string | null>(path: T) => T}
@@ -37,7 +37,7 @@ const PATH_REGEXP = new RegExp('\\' + path.sep, 'g');
 export const ensureUnixPath =
 	path.sep !== path.posix.sep
 		? (p) => {
-				if (typeof p !== 'string') {
+				if (typeof p !== "string") {
 					return /** @type {typeof p} */ (null);
 				}
 

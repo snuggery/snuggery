@@ -1,5 +1,5 @@
-import type {TextFileHandle} from '../../file';
-import type {JsonObject} from '../../types';
+import type {TextFileHandle} from "../../file";
+import type {JsonObject} from "../../types";
 
 export interface FileHandle {
 	readonly filename: string;

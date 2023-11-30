@@ -1,7 +1,7 @@
-import {Change, makeCombinedTracker} from '../../proxy';
-import type {JsonObject} from '../../types';
+import {Change, makeCombinedTracker} from "../../proxy";
+import type {JsonObject} from "../../types";
 
-import type {FileHandle, FileHandleContext} from './types';
+import type {FileHandle, FileHandleContext} from "./types";
 
 export abstract class AbstractFileHandle<Document> implements FileHandle {
 	#context: FileHandleContext;
@@ -59,7 +59,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		{header}: {header?: string | string[]},
 	): Promise<void> {
 		await this.#context.source.write(
-			(header ? this.createHeader(header) : '') + (await this.stringify(value)),
+			(header ? this.createHeader(header) : "") + (await this.stringify(value)),
 		);
 	}
 
@@ -67,7 +67,7 @@ export abstract class AbstractFileHandle<Document> implements FileHandle {
 		updater: (value: JsonObject) => void | Promise<void>,
 	): Promise<void> {
 		if (this.#context.updateReady != null) {
-			throw new Error('Configuration is already being updated');
+			throw new Error("Configuration is already being updated");
 		}
 
 		const updatePromise = (async () => {

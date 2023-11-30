@@ -1,10 +1,10 @@
-import type {JsonObject} from '@snuggery/core';
-import * as snuggery from '@snuggery/snuggery/cli';
-import path from 'node:path';
-import {Readable, Writable} from 'node:stream';
-import * as assert from 'uvu/assert';
+import type {JsonObject} from "@snuggery/core";
+import * as snuggery from "@snuggery/snuggery/cli";
+import path from "node:path";
+import {Readable, Writable} from "node:stream";
+import * as assert from "uvu/assert";
 
-const fixtureRoot = path.resolve(__dirname, '../__fixtures__');
+const fixtureRoot = path.resolve(__dirname, "../__fixtures__");
 
 export interface Fixture {
 	directory: string;
@@ -84,7 +84,7 @@ class CollectingWritable extends Writable {
 	}
 }
 
-function createRunner(dir: string): Fixture['run'] {
+function createRunner(dir: string): Fixture["run"] {
 	return async function run(args: string[], options = {}) {
 		const startCwd = options.cwd ? path.resolve(dir, options.cwd) : dir;
 
@@ -111,8 +111,8 @@ function createRunner(dir: string): Fixture['run'] {
 
 		return {
 			exitCode,
-			stdout: stdout.getContent().toString('utf8'),
-			stderr: stderr.getContent().toString('utf8'),
+			stdout: stdout.getContent().toString("utf8"),
+			stderr: stderr.getContent().toString("utf8"),
 		};
 	};
 }

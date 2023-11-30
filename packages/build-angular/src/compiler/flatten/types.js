@@ -1,10 +1,10 @@
 /* cspell:word tsdoc */
 
-import {rm, writeFile} from 'node:fs/promises';
-import {dirname, join, relative} from 'node:path';
+import {rm, writeFile} from "node:fs/promises";
+import {dirname, join, relative} from "node:path";
 
-import {BuildFailureError} from '../error.js';
-import {ensureUnixPath} from '../utils.js';
+import {BuildFailureError} from "../error.js";
+import {ensureUnixPath} from "../utils.js";
 
 /**
  * @typedef {object} FlattenTypesInput
@@ -44,14 +44,14 @@ function createConfig(
 				overrideTsconfig: {
 					files: [entryPoint.declarationFile],
 					compilerOptions: {
-						lib: ['esnext', 'dom', 'dom.iterable'],
+						lib: ["esnext", "dom", "dom.iterable"],
 					},
 				},
 			},
 
 			apiReport: {
 				enabled: false,
-				reportFileName: 'this property is required but not used',
+				reportFileName: "this property is required but not used",
 			},
 
 			projectFolder: declarationOutputFolder,
@@ -60,7 +60,7 @@ function createConfig(
 		configObjectFullPath: undefined,
 		// file doesn't exist, but we need to pass it in order for API Extractor
 		// to recognize the packageJson value we pass
-		packageJsonFullPath: join(declarationOutputFolder, 'package.json'),
+		packageJsonFullPath: join(declarationOutputFolder, "package.json"),
 		// API Extractor expects valid NPM package names, so use the main package name
 		packageJson: {name: context.manifest.name},
 	});
@@ -74,7 +74,7 @@ async function reExportTypes(context, input) {
 	for (const entryPoint of context.entryPoints) {
 		const newDeclarationFile = join(
 			input.outputFolder,
-			`${entryPoint.exportName === '.' ? 'index' : entryPoint.exportName}.d.ts`,
+			`${entryPoint.exportName === "." ? "index" : entryPoint.exportName}.d.ts`,
 		);
 
 		await writeFile(
@@ -82,7 +82,7 @@ async function reExportTypes(context, input) {
 			`export * from './${ensureUnixPath(
 				relative(
 					dirname(newDeclarationFile),
-					entryPoint.declarationFile.replace(/\.d\.([mc]?)ts$/, '.$1js'),
+					entryPoint.declarationFile.replace(/\.d\.([mc]?)ts$/, ".$1js"),
 				),
 			)}';\n`,
 		);
@@ -101,12 +101,12 @@ export async function flattenTypes(context, input) {
 		return;
 	}
 
-	const apiExtractor = await import('@microsoft/api-extractor');
+	const apiExtractor = await import("@microsoft/api-extractor");
 
 	for (const entryPoint of context.entryPoints) {
 		const flattenedDeclarationFile = join(
 			input.outputFolder,
-			`${entryPoint.exportName === '.' ? 'index' : entryPoint.exportName}.d.ts`,
+			`${entryPoint.exportName === "." ? "index" : entryPoint.exportName}.d.ts`,
 		);
 
 		const {succeeded} = apiExtractor.Extractor.invoke(
@@ -122,25 +122,25 @@ export async function flattenTypes(context, input) {
 					message.handled = true;
 
 					if (
-						message.messageId === 'console-compiler-version-notice' ||
-						message.messageId === 'console-preamble'
+						message.messageId === "console-compiler-version-notice" ||
+						message.messageId === "console-preamble"
 					) {
 						return;
 					}
 
 					switch (message.logLevel) {
-						case 'none':
+						case "none":
 							break;
-						case 'verbose':
+						case "verbose":
 							context.logger.debug(message.text);
 							break;
-						case 'warning':
+						case "warning":
 							context.logger.warn(message.text);
 							break;
-						case 'error':
+						case "error":
 							context.logger.error(message.text);
 							break;
-						case 'info':
+						case "info":
 						default:
 							context.logger.info(message.text);
 							break;

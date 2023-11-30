@@ -1,4 +1,4 @@
-import type {json} from '@angular-devkit/core';
+import type {json} from "@angular-devkit/core";
 import {
 	isJsonArray,
 	isJsonObject,
@@ -11,16 +11,16 @@ import {
 	workspaceFilenames,
 	writeWorkspace,
 	updateWorkspace,
-} from '@snuggery/core';
-import {Option} from 'clipanion';
-import {join} from 'path';
+} from "@snuggery/core";
+import {Option} from "clipanion";
+import {join} from "path";
 
-import {AbstractCommand} from '../command/abstract-command';
-import {CliWorkspace} from '../command/context';
-import {formatMarkdownish} from '../utils/format';
-import {memoize} from '../utils/memoize';
-import type {CompiledSchema} from '../utils/schema-registry';
-import {isEnum} from '../utils/typanion';
+import {AbstractCommand} from "../command/abstract-command";
+import {CliWorkspace} from "../command/context";
+import {formatMarkdownish} from "../utils/format";
+import {memoize} from "../utils/memoize";
+import type {CompiledSchema} from "../utils/schema-registry";
+import {isEnum} from "../utils/typanion";
 
 // We are handling proxies here, and structuredClone doesn't support proxies
 function cloneJson<T extends JsonValue>(value: T): T {
@@ -46,9 +46,9 @@ function isJsonEqual(
 	source: JsonValue | undefined,
 ): boolean {
 	if (
-		typeof target !== 'object' ||
+		typeof target !== "object" ||
 		target == null ||
-		typeof source !== 'object' ||
+		typeof source !== "object" ||
 		source == null
 	) {
 		return target === source;
@@ -104,8 +104,8 @@ function isJsonEqual(
 }
 
 interface ApplyChange {
-	(change: 'modify' | 'add', path: JsonPropertyPath, value: JsonValue): void;
-	(change: 'delete', path: JsonPropertyPath): void;
+	(change: "modify" | "add", path: JsonPropertyPath, value: JsonValue): void;
+	(change: "delete", path: JsonPropertyPath): void;
 }
 
 // Implement our own buildJsonPointer / parseJsonPointer functions here to
@@ -113,17 +113,17 @@ interface ApplyChange {
 // we would have to lazy load it.
 
 function pathToPointer(path: JsonPropertyPath): json.schema.JsonPointer {
-	return ('/' +
+	return ("/" +
 		path
-			.map((entry) => String(entry).replace(/~/g, '~0').replace(/\//g, '~1'))
-			.join('/')) as json.schema.JsonPointer;
+			.map((entry) => String(entry).replace(/~/g, "~0").replace(/\//g, "~1"))
+			.join("/")) as json.schema.JsonPointer;
 }
 
 function pointerToPath(pointer: json.schema.JsonPointer): JsonPropertyPath {
 	return pointer
 		.slice(1)
-		.split('/')
-		.map((entry) => entry.replace(/~1/g, '/').replace(/~0/g, '~'));
+		.split("/")
+		.map((entry) => entry.replace(/~1/g, "/").replace(/~0/g, "~"));
 }
 
 function createChangeApplier(
@@ -132,7 +132,7 @@ function createChangeApplier(
 ): ApplyChange {
 	if (appliedAliases == null) {
 		return (
-			change: 'modify' | 'add' | 'delete',
+			change: "modify" | "add" | "delete",
 			path: JsonPropertyPath,
 			value?: JsonValue,
 		) => {
@@ -142,7 +142,7 @@ function createChangeApplier(
 				currentTarget = (currentTarget as JsonObject)[key] as JsonObject;
 			}
 
-			if (change === 'delete') {
+			if (change === "delete") {
 				if (isJsonArray(currentTarget)) {
 					currentTarget.splice(+path[0]!, 1);
 				} else {
@@ -162,7 +162,7 @@ function createChangeApplier(
 	);
 
 	return (
-		change: 'modify' | 'add' | 'delete',
+		change: "modify" | "add" | "delete",
 		path: JsonPropertyPath,
 		value?: JsonValue,
 	) => {
@@ -197,7 +197,7 @@ function createChangeApplier(
 			currentTarget = (currentTarget as JsonObject)[key] as JsonObject;
 		}
 
-		if (change === 'delete') {
+		if (change === "delete") {
 			if (isJsonArray(currentTarget)) {
 				currentTarget.splice(+path[0]!, 1);
 			} else {
@@ -221,7 +221,7 @@ function merge(
 
 	if (target == null || source == null) {
 		if (target != null || source != null) {
-			applyChange('modify', path, source);
+			applyChange("modify", path, source);
 		}
 
 		return;
@@ -229,7 +229,7 @@ function merge(
 
 	if (isJsonArray(target)) {
 		if (!isJsonArray(source)) {
-			return applyChange('modify', path, source);
+			return applyChange("modify", path, source);
 		}
 
 		// TODO be smarter about this, e.g. when an item is inserted in the middle
@@ -241,11 +241,11 @@ function merge(
 			}
 
 			for (let i = target.length; i < source.length; i++) {
-				applyChange('add', [...path, i], source[i]!);
+				applyChange("add", [...path, i], source[i]!);
 			}
 		} else {
 			// TODO
-			applyChange('modify', path, source);
+			applyChange("modify", path, source);
 		}
 
 		return;
@@ -253,7 +253,7 @@ function merge(
 
 	if (isJsonObject(target)) {
 		if (!isJsonObject(source)) {
-			return applyChange('modify', path, source);
+			return applyChange("modify", path, source);
 		}
 
 		const sourceKeys = new Set(Object.keys(source));
@@ -261,7 +261,7 @@ function merge(
 
 		for (const key of targetKeys) {
 			if (!sourceKeys.has(key)) {
-				applyChange('delete', [...path, key]);
+				applyChange("delete", [...path, key]);
 				continue;
 			}
 
@@ -270,7 +270,7 @@ function merge(
 
 		for (const key of sourceKeys) {
 			if (!targetKeys.has(key)) {
-				applyChange('add', [...path, key], source[key]!);
+				applyChange("add", [...path, key], source[key]!);
 			}
 		}
 
@@ -278,16 +278,16 @@ function merge(
 	}
 
 	if (target !== source) {
-		applyChange('modify', path, source);
+		applyChange("modify", path, source);
 	}
 }
 
 export class SyncConfigToCommand extends AbstractCommand {
-	static override readonly paths = [['--sync-config']];
+	static override readonly paths = [["--sync-config"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Utility commands',
-		description: 'Sync config from one format to another',
+		category: "Utility commands",
+		description: "Sync config from one format to another",
 		details: `
 			This command syncs the configuration of this workspace to
 			another workspace configuration format.
@@ -321,7 +321,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 		`,
 		examples: [
 			[
-				'Write the project configuration to `angular.json` to allow using `ng` in the workspace',
+				"Write the project configuration to `angular.json` to allow using `ng` in the workspace",
 				`$0 --sync-config --to angular.json`,
 			],
 			[
@@ -329,28 +329,28 @@ export class SyncConfigToCommand extends AbstractCommand {
 				`$0 --sync-config --to angular.json --validate`,
 			],
 			[
-				'Merge the configuration from angular.json to workspace.json, e.g. to sync after an angular schematic modified the configuration',
+				"Merge the configuration from angular.json to workspace.json, e.g. to sync after an angular schematic modified the configuration",
 				`$0 --sync-config --from angular.json --merge --to workspace.json`,
 			],
 		],
 	});
 
-	validate = Option.Boolean('--validate', false, {
-		description: 'Validate the existing output file instead of updating it',
+	validate = Option.Boolean("--validate", false, {
+		description: "Validate the existing output file instead of updating it",
 	});
 
-	merge = Option.Boolean('--merge', false, {
+	merge = Option.Boolean("--merge", false, {
 		description:
-			'Merge changes into existing target file instead of overwriting',
+			"Merge changes into existing target file instead of overwriting",
 	});
 
-	source = Option.String('--from', {
+	source = Option.String("--from", {
 		description:
-			'The configuration file to use as source, defaults to the active workspace configuration',
+			"The configuration file to use as source, defaults to the active workspace configuration",
 		validator: isEnum(workspaceFilenames),
 	});
 
-	target = Option.String('--to', {
+	target = Option.String("--to", {
 		required: true,
 		validator: isEnum(workspaceFilenames),
 	});
@@ -396,8 +396,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 				report.reportInfo(
 					formatMarkdownish(
 						`Run \`${this.cli.binaryName} ${this.context.startArgs
-							.filter((arg) => arg !== '--validate')
-							.join(' ')}\` to update`,
+							.filter((arg) => arg !== "--validate")
+							.join(" ")}\` to update`,
 						{format: this.format, maxLineLength: Infinity},
 					),
 				);
@@ -431,8 +431,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 		await writeWorkspace(join(workspaceFolder, this.target), target, {
 			header: [
 				`This file was generated from ${sourceName} using \`sn --sync-config-to ${this.target}\``,
-				'Make changes to the original configuration file and re-run the command to regenerate this file,',
-				'otherwise your changes might get lost the next time the configuration is synced.',
+				"Make changes to the original configuration file and re-run the command to regenerate this file,",
+				"otherwise your changes might get lost the next time the configuration is synced.",
 			],
 		});
 
@@ -503,7 +503,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 			): Promise<
 				[source: CompiledSchema, target: CompiledSchema] | [null, null]
 			> => {
-				const [collectionName, schematicName] = name.split(':', 2) as [
+				const [collectionName, schematicName] = name.split(":", 2) as [
 					string,
 					string,
 				];
@@ -524,7 +524,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 			},
 		);
 
-		processExtensions('in workspace', target.extensions, source.extensions);
+		processExtensions("in workspace", target.extensions, source.extensions);
 
 		for (const name of target.projects.keys()) {
 			if (!source.projects.has(name)) {
@@ -709,9 +709,9 @@ export class SyncConfigToCommand extends AbstractCommand {
 			const targetKeys = new Set(Object.keys(target));
 			const sourceKeys = new Set(Object.keys(source));
 
-			if (where === 'in workspace') {
-				targetKeys.delete('version');
-				sourceKeys.delete('version');
+			if (where === "in workspace") {
+				targetKeys.delete("version");
+				sourceKeys.delete("version");
 			}
 
 			for (const key of targetKeys) {
@@ -721,7 +721,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 			}
 
 			for (const key of sourceKeys) {
-				if (key !== 'schematics' || !isJsonObject(source[key])) {
+				if (key !== "schematics" || !isJsonObject(source[key])) {
 					merge(createChangeApplier(target), target[key]!, source[key]!, [key]);
 					continue;
 				}
@@ -737,7 +737,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 									return [collectionOrName, config];
 								}
 
-								if (collectionOrName.includes(':')) {
+								if (collectionOrName.includes(":")) {
 									const [compiledSchema] =
 										await getCompiledSchematicSchemas(collectionOrName);
 									if (compiledSchema == null) {
@@ -820,7 +820,7 @@ export class SyncConfigToCommand extends AbstractCommand {
 						continue;
 					}
 
-					if (collectionOrName.includes(':')) {
+					if (collectionOrName.includes(":")) {
 						const [, compiledSchema] =
 							await getCompiledSchematicSchemas(collectionOrName);
 

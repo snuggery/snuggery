@@ -1,4 +1,4 @@
-import {createCompileCache} from './compile.js';
+import {createCompileCache} from "./compile.js";
 
 const globalCompileCache = createCompileCache();
 
@@ -65,7 +65,7 @@ export class BuildContext {
 		this.resourceProcessor = resourceProcessor;
 
 		this.compileCache =
-			typeof compileCache === 'boolean'
+			typeof compileCache === "boolean"
 				? compileCache
 					? globalCompileCache
 					: createCompileCache()

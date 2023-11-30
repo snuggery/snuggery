@@ -2,11 +2,11 @@ import {
 	type BuilderOutput,
 	scheduleTarget,
 	type TargetSpecifier,
-} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import type {Observable} from 'rxjs';
+} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import type {Observable} from "rxjs";
 
-import {RegularScheduler} from './abstract';
+import {RegularScheduler} from "./abstract";
 
 export class InProcessScheduler extends RegularScheduler {
 	public runSingleTarget(

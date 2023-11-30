@@ -1,23 +1,23 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {SchematicCommand} from '../../command/schematic';
-import type {SnuggeryCollection} from '../../schematic/engine-host';
-import {formatMarkdownish} from '../../utils/format';
+import {SchematicCommand} from "../../command/schematic";
+import type {SnuggeryCollection} from "../../schematic/engine-host";
+import {formatMarkdownish} from "../../utils/format";
 
 export class HelpSchematicsCommand extends SchematicCommand {
-	static override readonly paths = [['help', 'schematics']];
+	static override readonly paths = [["help", "schematics"]];
 
 	static override readonly usage = SchematicCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about schematic collection',
+		category: "Workspace information commands",
+		description: "Show information about schematic collection",
 		examples: [
 			[
-				'Print information about `@schematics/angular`',
-				'$0 help schematics @schematics/angular',
+				"Print information about `@schematics/angular`",
+				"$0 help schematics @schematics/angular",
 			],
 			[
 				"Print information about the configured collection(s) (if unconfigured, that's `@schematics/angular` if installed)",
-				'$0 help schematics',
+				"$0 help schematics",
 			],
 		],
 	});
@@ -51,12 +51,12 @@ export class HelpSchematicsCommand extends SchematicCommand {
 				this.#showCollection(defaultCollection, new Map());
 
 				report.reportWarning(
-					'This project is using the deprecated `defaultCollection` configuration, consider switching to `schematicCollections` instead',
+					"This project is using the deprecated `defaultCollection` configuration, consider switching to `schematicCollections` instead",
 				);
 				report.reportSeparator();
 			} else {
-				report.reportInfo('No schematic collections have been configured.');
-				report.reportInfo('Pass a collection name into this command');
+				report.reportInfo("No schematic collections have been configured.");
+				report.reportInfo("Pass a collection name into this command");
 				report.reportInfo(`  $ sn help schematics <collection name>`);
 				report.reportInfo(
 					formatMarkdownish(
@@ -86,7 +86,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 		const {report, format} = this;
 		const collectionName = collection.description.name;
 
-		const prefix = shownShorthands ? '' : `${collectionName}:`;
+		const prefix = shownShorthands ? "" : `${collectionName}:`;
 
 		report.reportInfo(
 			formatMarkdownish(`Collection \`${collectionName}\`:`, {
@@ -147,7 +147,7 @@ export class HelpSchematicsCommand extends SchematicCommand {
 				if (e instanceof Error) {
 					error = this.prettifyError(e);
 				} else {
-					error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
+					error = new Error(String(typeof e === "symbol" ? e.toString() : e));
 				}
 
 				report.reportError(

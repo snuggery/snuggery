@@ -1,17 +1,17 @@
-import type {JsonObject, JsonValue} from '@snuggery/core';
-import {Cli, Command, Option as CommandOption} from 'clipanion';
+import type {JsonObject, JsonValue} from "@snuggery/core";
+import {Cli, Command, Option as CommandOption} from "clipanion";
 
-import type {AbstractCommand} from '../command/abstract-command';
+import type {AbstractCommand} from "../command/abstract-command";
 
-import {Option, Type} from './parse-schema';
-import * as strings from './strings';
-import * as t from './typanion';
+import {Option, Type} from "./parse-schema";
+import * as strings from "./strings";
+import * as t from "./typanion";
 
 export type ParsedArguments =
 	| [success: true, value: JsonObject | null]
 	| [success: false, value: void];
 
-const globalReservedNames = new Set(['--help', '-h']);
+const globalReservedNames = new Set(["--help", "-h"]);
 
 function createOptionParserCommand({
 	path = Command.Default,
@@ -25,12 +25,12 @@ function createOptionParserCommand({
 
 		static override readonly usage = description ? {description} : undefined;
 
-		override help = CommandOption.Boolean('--help,-h', false, {
-			description: 'Show this help message',
+		override help = CommandOption.Boolean("--help,-h", false, {
+			description: "Show this help message",
 		});
 
 		execute(): never {
-			throw new Error('Never called');
+			throw new Error("Never called");
 		}
 	};
 }
@@ -66,18 +66,18 @@ export function parseFreeFormArguments({
 	for (let i = 0, {length} = values; i < length; i++) {
 		const current = values[i]!;
 
-		if (current === '--') {
+		if (current === "--") {
 			leftOvers.push(...values.slice(i + 1));
 			break;
 		}
 
-		if (!current.startsWith('-')) {
+		if (!current.startsWith("-")) {
 			leftOvers.push(current);
 			continue;
 		}
 
-		const hasDoubleDash = current.startsWith('--');
-		const equals = current.indexOf('=');
+		const hasDoubleDash = current.startsWith("--");
+		const equals = current.indexOf("=");
 
 		let name = current.slice(
 			hasDoubleDash ? 2 : 1,
@@ -102,7 +102,7 @@ export function parseFreeFormArguments({
 			value = current.slice(equals + 1);
 		} else {
 			const next = values[i + 1];
-			if (!next || next.startsWith('-')) {
+			if (!next || next.startsWith("-")) {
 				value = true;
 			} else {
 				value = next;
@@ -110,10 +110,10 @@ export function parseFreeFormArguments({
 			}
 		}
 
-		if (value === 'true' || value === 'false') {
-			value = value === 'true';
+		if (value === "true" || value === "false") {
+			value = value === "true";
 		} else if (
-			typeof value === 'string' &&
+			typeof value === "string" &&
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			!isNaN(value as any) &&
 			!isNaN(parseFloat(value))
@@ -125,7 +125,7 @@ export function parseFreeFormArguments({
 	}
 
 	if (leftOvers.length) {
-		result['--'] = leftOvers;
+		result["--"] = leftOvers;
 	}
 
 	if ((result.help ?? result.h) !== true) {
@@ -183,7 +183,7 @@ export function parseOptions({
 			const self = this as unknown as Record<string, JsonValue | undefined>;
 
 			for (const option of options) {
-				if (option.name === '--') {
+				if (option.name === "--") {
 					restOption = option;
 					continue;
 				}
@@ -209,12 +209,12 @@ export function parseOptions({
 				let cliOption: JsonValue | undefined;
 
 				if (option.type === Type.Boolean) {
-					cliOption = CommandOption.Boolean(names.join(','), {
+					cliOption = CommandOption.Boolean(names.join(","), {
 						description,
 						hidden,
 					});
 				} else if (option.type === Type.StringArray) {
-					cliOption = CommandOption.Array(names.join(','), {
+					cliOption = CommandOption.Array(names.join(","), {
 						description,
 						hidden,
 					});
@@ -234,7 +234,7 @@ export function parseOptions({
 						}
 					}
 
-					cliOption = CommandOption.String(names.join(','), {
+					cliOption = CommandOption.String(names.join(","), {
 						description,
 						hidden,
 						validator,
@@ -268,8 +268,8 @@ export function parseOptions({
 
 	class HelpCommand extends Command {
 		static override readonly paths = [
-			[...path, '-h'],
-			[...path, '--help'],
+			[...path, "-h"],
+			[...path, "--help"],
 		];
 
 		execute(): never {

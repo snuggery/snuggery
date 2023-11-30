@@ -3,9 +3,9 @@
  * angular's configuration format version 1 (used by angular.json, workspace.json and snuggery.json)
  */
 
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 
-import {proxyObject} from '../../proxy';
+import {proxyObject} from "../../proxy";
 import {
 	InvalidConfigurationError,
 	isJsonObject,
@@ -18,8 +18,8 @@ import {
 	TargetDefinitionCollection,
 	WorkspaceDefinition,
 	WorkspaceHandle,
-} from '../../types';
-import type {FileHandle} from '../file';
+} from "../../types";
+import type {FileHandle} from "../file";
 
 type AngularTargetDefinitionData = JsonObject & {
 	builder: string;
@@ -30,7 +30,7 @@ type AngularTargetDefinitionData = JsonObject & {
 
 export class AngularTargetDefinition implements TargetDefinition {
 	static fromConfiguration(path: JsonPropertyPath, data: JsonObject) {
-		if (typeof data.builder !== 'string') {
+		if (typeof data.builder !== "string") {
 			throw new InvalidConfigurationError(
 				'Property "builder" is required and must be a string',
 				path,
@@ -38,8 +38,8 @@ export class AngularTargetDefinition implements TargetDefinition {
 		}
 
 		if (
-			Reflect.has(data, 'defaultConfiguration') &&
-			typeof data.defaultConfiguration !== 'string'
+			Reflect.has(data, "defaultConfiguration") &&
+			typeof data.defaultConfiguration !== "string"
 		) {
 			throw new InvalidConfigurationError(
 				`Property "defaultConfiguration" must be a string if present`,
@@ -47,14 +47,14 @@ export class AngularTargetDefinition implements TargetDefinition {
 			);
 		}
 
-		if (Reflect.has(data, 'options') && typeof data.options !== 'object') {
+		if (Reflect.has(data, "options") && typeof data.options !== "object") {
 			throw new InvalidConfigurationError(
 				`Property "options" must be an object or null if present`,
 				path,
 			);
 		}
 
-		if (Reflect.has(data, 'configurations')) {
+		if (Reflect.has(data, "configurations")) {
 			if (!isJsonObject(data.configurations)) {
 				throw new InvalidConfigurationError(
 					`Property "configurations" must be an object or null if present`,
@@ -66,7 +66,7 @@ export class AngularTargetDefinition implements TargetDefinition {
 				if (value != null && !isJsonObject(value)) {
 					throw new InvalidConfigurationError(
 						`Configurations must be an object`,
-						[...path, 'configurations', name],
+						[...path, "configurations", name],
 					);
 				}
 			}
@@ -117,10 +117,10 @@ export class AngularTargetDefinition implements TargetDefinition {
 
 		this.extensions = proxyObject(data, {
 			remove: new Set([
-				'builder',
-				'defaultConfiguration',
-				'options',
-				'configurations',
+				"builder",
+				"defaultConfiguration",
+				"options",
+				"configurations",
 			]),
 		});
 	}
@@ -175,7 +175,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 		path: JsonPropertyPath,
 		raw: JsonObject | (() => JsonObject),
 	) {
-		if (typeof raw === 'function') {
+		if (typeof raw === "function") {
 			return new this(raw, undefined);
 		}
 
@@ -185,7 +185,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 				Object.entries(raw).map(([targetName, target]) => {
 					if (!isJsonObject(target)) {
 						throw new InvalidConfigurationError(
-							'Target configuration must be an object',
+							"Target configuration must be an object",
 							[...path, targetName],
 						);
 					}
@@ -238,7 +238,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	get #raw() {
-		if (typeof this.#_raw === 'function') {
+		if (typeof this.#_raw === "function") {
 			this.#_raw = this.#_raw();
 		}
 
@@ -263,29 +263,29 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 
 class AngularProjectDefinition implements ProjectDefinition {
 	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
-		if (typeof raw.root !== 'string') {
+		if (typeof raw.root !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "root" is required and must be a string`,
 				path,
 			);
 		}
 
-		if (Reflect.has(raw, 'prefix') && typeof raw.prefix !== 'string') {
+		if (Reflect.has(raw, "prefix") && typeof raw.prefix !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "prefix" must be a string if present`,
 				path,
 			);
 		}
 
-		if (Reflect.has(raw, 'sourceRoot') && typeof raw.sourceRoot !== 'string') {
+		if (Reflect.has(raw, "sourceRoot") && typeof raw.sourceRoot !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "sourceRoot" must be a string if present`,
 				path,
 			);
 		}
 
-		const hasArchitect = Reflect.has(raw, 'architect');
-		const hasTargets = Reflect.has(raw, 'targets');
+		const hasArchitect = Reflect.has(raw, "architect");
+		const hasTargets = Reflect.has(raw, "targets");
 
 		if (hasArchitect && hasTargets) {
 			throw new InvalidConfigurationError(
@@ -294,7 +294,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 			);
 		}
 
-		const targetKey = hasArchitect ? 'architect' : 'targets';
+		const targetKey = hasArchitect ? "architect" : "targets";
 		let targets;
 
 		if (!Reflect.has(raw, targetKey)) {
@@ -307,7 +307,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 			);
 		} else {
 			if (!isJsonObject(raw[targetKey])) {
-				throw new InvalidConfigurationError('Targets must be an object', [
+				throw new InvalidConfigurationError("Targets must be an object", [
 					...path,
 					targetKey,
 				]);
@@ -365,7 +365,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 		this.targets = targets;
 
 		this.extensions = proxyObject(raw, {
-			remove: new Set(['root', 'prefix', 'sourceRoot', 'targets', 'architect']),
+			remove: new Set(["root", "prefix", "sourceRoot", "targets", "architect"]),
 		});
 
 		this.#data = raw as JsonObject & {
@@ -413,7 +413,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 		path: JsonPropertyPath,
 		raw: JsonObject | (() => JsonObject),
 	) {
-		if (typeof raw === 'function') {
+		if (typeof raw === "function") {
 			return new this(raw, undefined);
 		}
 
@@ -423,7 +423,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 				Object.entries(raw).map(([projectName, project]) => {
 					if (!isJsonObject(project)) {
 						throw new InvalidConfigurationError(
-							'Project configuration must be an object',
+							"Project configuration must be an object",
 							[...path, projectName],
 						);
 					}
@@ -475,7 +475,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	get #raw(): JsonObject {
-		if (typeof this.#_raw === 'function') {
+		if (typeof this.#_raw === "function") {
 			this.#_raw = this.#_raw();
 		}
 
@@ -500,22 +500,22 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 	static fromConfiguration(raw: JsonObject) {
-		if (typeof raw.version !== 'number') {
-			throw new InvalidConfigurationError('Configuration must have a version');
+		if (typeof raw.version !== "number") {
+			throw new InvalidConfigurationError("Configuration must have a version");
 		}
 
 		if (raw.version !== 1) {
 			throw new InvalidConfigurationError(
-				'Unrecognized configuration version, expected version 1',
-				['version'],
+				"Unrecognized configuration version, expected version 1",
+				["version"],
 			);
 		}
 
 		let projects;
 
-		if (!Reflect.has(raw, 'projects')) {
+		if (!Reflect.has(raw, "projects")) {
 			projects = AngularProjectDefinitionCollection.fromConfiguration(
-				['projects'],
+				["projects"],
 				() => {
 					raw.projects = {};
 					return raw.projects;
@@ -523,13 +523,13 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 			);
 		} else {
 			if (!isJsonObject(raw.projects)) {
-				throw new InvalidConfigurationError('Projects must be an object', [
-					'projects',
+				throw new InvalidConfigurationError("Projects must be an object", [
+					"projects",
 				]);
 			}
 
 			projects = AngularProjectDefinitionCollection.fromConfiguration(
-				['projects'],
+				["projects"],
 				raw.projects,
 			);
 		}
@@ -575,7 +575,7 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		this.projects = projects;
 
 		this.extensions = proxyObject(raw, {
-			remove: new Set(['projects', 'version', '$schema']),
+			remove: new Set(["projects", "version", "$schema"]),
 		});
 
 		this.data = raw;

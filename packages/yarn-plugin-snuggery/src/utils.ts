@@ -5,15 +5,15 @@ import {
 	structUtils,
 	tgzUtils,
 	Workspace,
-} from '@yarnpkg/core';
-import {CwdFS, xfs} from '@yarnpkg/fslib';
-import {suggestUtils} from '@yarnpkg/plugin-essentials';
-import * as semver from 'semver';
+} from "@yarnpkg/core";
+import {CwdFS, xfs} from "@yarnpkg/fslib";
+import {suggestUtils} from "@yarnpkg/plugin-essentials";
+import * as semver from "semver";
 
 export function createPublishWorkspace(
 	workspace: Workspace,
-	cwd: Workspace['cwd'],
-	rawManifest: Manifest['raw'],
+	cwd: Workspace["cwd"],
+	rawManifest: Manifest["raw"],
 ): Workspace {
 	return Object.create(workspace, {
 		cwd: {
@@ -36,12 +36,12 @@ export function getManifestFromTarball(buffer: Buffer): Promise<Manifest> {
 		await tgzUtils.extractArchiveTo(buffer, fs, {stripComponents: 1});
 
 		return Manifest.fromText(
-			await fs.readFilePromise(Manifest.fileName, 'utf8'),
+			await fs.readFilePromise(Manifest.fileName, "utf8"),
 		);
 	});
 }
 
-const npmProtocol = 'npm:';
+const npmProtocol = "npm:";
 
 export function getModifier({range}: Descriptor): suggestUtils.Modifier {
 	if (range.startsWith(npmProtocol)) {
@@ -50,17 +50,17 @@ export function getModifier({range}: Descriptor): suggestUtils.Modifier {
 
 	if (
 		/^[a-z]+:/.test(range) ||
-		range.includes('||') ||
-		range.includes('&&') ||
+		range.includes("||") ||
+		range.includes("&&") ||
 		!semverUtils.validRange(range)
 	) {
 		return suggestUtils.Modifier.EXACT;
 	}
 
 	switch (range[0]) {
-		case '^':
+		case "^":
 			return suggestUtils.Modifier.CARET;
-		case '~':
+		case "~":
 			return suggestUtils.Modifier.TILDE;
 		default:
 			return suggestUtils.Modifier.EXACT;

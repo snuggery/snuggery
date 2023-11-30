@@ -1,10 +1,10 @@
-import {Trip, getContext} from '@snuggery/journey';
+import {Trip, getContext} from "@snuggery/journey";
 import {
 	VisitorFactory,
 	visitTypescriptFiles,
 	ts,
 	getPath,
-} from '@snuggery/journey/agents/typescript';
+} from "@snuggery/journey/agents/typescript";
 
 interface MapImportsInput {
 	moduleSpecifier: string;
@@ -297,26 +297,26 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 		>(
 			declaration: D,
 			moduleSpecifier: string,
-			clause: T['parent'],
+			clause: T["parent"],
 			namedBindings: T,
 			updateDeclaration: (
 				isTypeOnly: boolean,
-				elements: T['elements'][number][],
+				elements: T["elements"][number][],
 			) => D,
 			createDeclaration: (
 				moduleSpecifier: string,
 				isTypeOnly: boolean,
-				elements: T['elements'][number][],
+				elements: T["elements"][number][],
 			) => D,
 			updateElement: (
-				node: T['elements'][number],
+				node: T["elements"][number],
 				isTypeOnly: boolean,
 				propertyName: ts.Identifier | undefined,
 				name: ts.Identifier,
-			) => T['elements'][number],
+			) => T["elements"][number],
 			renames?: Map<string, string>,
 		): void {
-			const perModuleSpecifier = new Map<string, T['elements'][number][]>();
+			const perModuleSpecifier = new Map<string, T["elements"][number][]>();
 			function getElements(specifier: string) {
 				let elements = perModuleSpecifier.get(specifier);
 				if (elements == null) {
@@ -392,7 +392,7 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 			// eslint-disable-next-line prefer-const
 			for (let [ms, specifiers] of perModuleSpecifier) {
 				if (!first) {
-					recorder.insertRight(location, '\n');
+					recorder.insertRight(location, "\n");
 				}
 				first = false;
 

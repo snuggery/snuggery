@@ -1,8 +1,8 @@
-import type {BuilderContext} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
+import type {BuilderContext} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
 
-import {commitAndTag, validateWorktreeIsClean} from './git';
-import {applyVersion, VersionBuilderOutput} from './yarn';
+import {commitAndTag, validateWorktreeIsClean} from "./git";
+import {applyVersion, VersionBuilderOutput} from "./yarn";
 
 export async function executeVersion(
 	_options: JsonObject,

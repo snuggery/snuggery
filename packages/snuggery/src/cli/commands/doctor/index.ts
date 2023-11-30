@@ -1,7 +1,7 @@
-import {checkConfiguredCollections} from './configured-collections';
-import type {DoctorContext} from './context';
-import {checkDefaultCollections} from './default-collection';
-import {checkProjectsWithSameRoot} from './same-root';
+import {checkConfiguredCollections} from "./configured-collections";
+import type {DoctorContext} from "./context";
+import {checkDefaultCollections} from "./default-collection";
+import {checkProjectsWithSameRoot} from "./same-root";
 
 const checks: readonly ((context: DoctorContext) => void | Promise<void>)[] = [
 	checkConfiguredCollections,

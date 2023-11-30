@@ -1,21 +1,21 @@
-import type {JsonObject, JsonValue} from '@snuggery/core';
-import {createRequire} from 'module';
-import {basename, extname, join} from 'path';
-import {pathToFileURL} from 'url';
+import type {JsonObject, JsonValue} from "@snuggery/core";
+import {createRequire} from "module";
+import {basename, extname, join} from "path";
+import {pathToFileURL} from "url";
 
-import {loadJson} from '../../utils/json-resolver';
-import type {Context} from '../command/context';
+import {loadJson} from "../../utils/json-resolver";
+import type {Context} from "../command/context";
 
-import {InvalidBuilderError, UnknownBuilderError} from './errors';
-import {Builder, isBuilder, ResolverFacade, WorkspaceFacade} from './host';
+import {InvalidBuilderError, UnknownBuilderError} from "./errors";
+import {Builder, isBuilder, ResolverFacade, WorkspaceFacade} from "./host";
 
 const {hasOwnProperty} = Object.prototype;
 
 export class Resolver implements ResolverFacade {
-	readonly #context: Pick<Context, 'startCwd'>;
+	readonly #context: Pick<Context, "startCwd">;
 	readonly #workspace: WorkspaceFacade;
 
-	constructor(context: Pick<Context, 'startCwd'>, workspace: WorkspaceFacade) {
+	constructor(context: Pick<Context, "startCwd">, workspace: WorkspaceFacade) {
 		this.#context = context;
 		this.#workspace = workspace;
 	}
@@ -32,8 +32,8 @@ export class Resolver implements ResolverFacade {
 		const [json, path] = loadJson(
 			this.#workspace.workspaceFolder ?? this.#context.startCwd,
 			packageName,
-			'builders',
-			'executors',
+			"builders",
+			"executors",
 		);
 
 		return [
@@ -86,7 +86,7 @@ export class Resolver implements ResolverFacade {
 				? [this.#context.startCwd, this.#workspace.workspaceFolder]
 				: [this.#context.startCwd],
 		)) {
-			const require = createRequire(join(folder, '<synthetic>'));
+			const require = createRequire(join(folder, "<synthetic>"));
 
 			let resolvedPath;
 			try {
@@ -98,7 +98,7 @@ export class Resolver implements ResolverFacade {
 			let schemaOrBuilder: JsonObject | Builder;
 			try {
 				schemaOrBuilder =
-					extname(resolvedPath) === '.json'
+					extname(resolvedPath) === ".json"
 						? require(resolvedPath)
 						: await import(pathToFileURL(resolvedPath).href).then(
 								(module) => module.default ?? module,
@@ -111,7 +111,7 @@ export class Resolver implements ResolverFacade {
 
 			if (
 				schemaOrBuilder == null ||
-				typeof schemaOrBuilder !== 'object' ||
+				typeof schemaOrBuilder !== "object" ||
 				Array.isArray(schemaOrBuilder)
 			) {
 				throw new InvalidBuilderError(
@@ -128,8 +128,8 @@ export class Resolver implements ResolverFacade {
 					},
 				];
 			} else if (
-				typeof schemaOrBuilder.type === 'string' &&
-				typeof schemaOrBuilder.implementation === 'string'
+				typeof schemaOrBuilder.type === "string" &&
+				typeof schemaOrBuilder.implementation === "string"
 			) {
 				return [
 					resolvedPath,

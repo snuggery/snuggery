@@ -1,8 +1,8 @@
-import {createBuilder} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
+import {createBuilder} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
 
-import {execute} from './builder';
-import type {Schema} from './schema';
+import {execute} from "./builder";
+import type {Schema} from "./schema";
 
 export {execute, type Schema};
 

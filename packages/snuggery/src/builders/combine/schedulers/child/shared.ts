@@ -1,11 +1,11 @@
-import type {logging} from '@angular-devkit/core';
-import type {BuilderOutput} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import type {Observable} from 'rxjs';
+import type {logging} from "@angular-devkit/core";
+import type {BuilderOutput} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import type {Observable} from "rxjs";
 
 export enum MessageType {
-	ScheduleTarget = 'scheduleTarget',
-	ScheduleBuilder = 'scheduleBuilder',
+	ScheduleTarget = "scheduleTarget",
+	ScheduleBuilder = "scheduleBuilder",
 }
 
 export interface ExecuteTargetMessage {
@@ -25,8 +25,8 @@ export interface ExecuteBuilderMessage {
 export type Message = ExecuteTargetMessage | ExecuteBuilderMessage;
 
 export enum ChildMessageType {
-	Output = 'output',
-	Logging = 'logging',
+	Output = "output",
+	Logging = "logging",
 }
 
 export interface ChildBuilderOutputMessage {

@@ -5,14 +5,14 @@
  * the experimental KDL format supported by snuggery (snuggery.kdl, version 0)
  */
 
-import type {Document} from '@bgotink/kdl';
+import type {Document} from "@bgotink/kdl";
 
-import type {TextFileHandle} from '../../file';
-import {AngularWorkspaceHandle} from '../../split/workspace-handle/angular';
-import type {JsonObject} from '../../types';
+import type {TextFileHandle} from "../../file";
+import {AngularWorkspaceHandle} from "../../split/workspace-handle/angular";
+import type {JsonObject} from "../../types";
 
-import {AbstractKdlWorkspaceFileHandle} from './kdl-utils';
-import {parseMiniWorkspace} from './parse';
+import {AbstractKdlWorkspaceFileHandle} from "./kdl-utils";
+import {parseMiniWorkspace} from "./parse";
 
 class MiniSnuggeryWorkspaceFileHandle extends AbstractKdlWorkspaceFileHandle {
 	readonly #targets: ReadonlyMap<string, string>;
@@ -38,11 +38,11 @@ class MiniSnuggeryWorkspaceFileHandle extends AbstractKdlWorkspaceFileHandle {
 	}
 
 	protected serializeWorkspace(): Document {
-		throw new Error('Unsupported operation');
+		throw new Error("Unsupported operation");
 	}
 
 	protected applyChangeToWorkspace(): void {
-		throw new Error('Unsupported operation');
+		throw new Error("Unsupported operation");
 	}
 }
 

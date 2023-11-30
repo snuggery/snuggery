@@ -1,11 +1,11 @@
-import type {json} from '@angular-devkit/core';
-import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
+import type {json} from "@angular-devkit/core";
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
 
-type JsonObjectSchema = JsonObject & {type: 'object'; properties: JsonObject};
+type JsonObjectSchema = JsonObject & {type: "object"; properties: JsonObject};
 
 type JsonPointer = json.schema.JsonPointer;
 
-const implicitPropertyKey = '$implicit';
+const implicitPropertyKey = "$implicit";
 
 export function createWorkspaceTransform(
 	workspaceFilename: string | undefined,
@@ -15,7 +15,7 @@ export function createWorkspaceTransform(
 		appliedAliases?: Map<JsonPointer, JsonPointer>;
 	} = {},
 ): json.schema.JsonVisitor {
-	if (!workspaceFilename?.endsWith('.kdl')) {
+	if (!workspaceFilename?.endsWith(".kdl")) {
 		return (value) => value;
 	}
 
@@ -28,7 +28,7 @@ export function createWorkspaceTransform(
 			return value;
 		}
 
-		if (schema.type === 'object' && isJsonObject(schema.properties)) {
+		if (schema.type === "object" && isJsonObject(schema.properties)) {
 			return supportImplicit(
 				value,
 				pointer,
@@ -37,7 +37,7 @@ export function createWorkspaceTransform(
 			);
 		}
 
-		for (const key of ['oneOf', 'anyOf']) {
+		for (const key of ["oneOf", "anyOf"]) {
 			const options = schema[key];
 			if (!isJsonArray(options)) {
 				continue;
@@ -51,14 +51,14 @@ export function createWorkspaceTransform(
 					continue;
 				}
 
-				if (value == null && option.type === 'null') {
+				if (value == null && option.type === "null") {
 					return value;
-				} else if (typeof value !== 'object' && typeof value === option.type) {
+				} else if (typeof value !== "object" && typeof value === option.type) {
 					return value;
-				} else if (option.type === 'array') {
+				} else if (option.type === "array") {
 					arraySchemas.push(option);
 				} else if (
-					option.type === 'object' &&
+					option.type === "object" &&
 					isJsonObject(option.properties)
 				) {
 					objectSchemas.push(option as JsonObjectSchema);

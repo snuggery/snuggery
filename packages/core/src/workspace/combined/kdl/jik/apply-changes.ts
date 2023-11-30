@@ -1,19 +1,19 @@
-import {Document, Entry, Node} from '@bgotink/kdl';
+import {Document, Entry, Node} from "@bgotink/kdl";
 
-import {type Change, ChangeType} from '../../../proxy';
+import {type Change, ChangeType} from "../../../proxy";
 import type {
 	JsonPropertyName,
 	JsonPropertyPath,
 	JsonValue,
-} from '../../../types';
-import {hasNamedSubContext, namedSubContext, ParserContext} from '../context';
-import {isArrayOfPrimitives, isPrimitive} from '../json-utils';
-import {implicitPropertyKey, tagOverwrite} from '../kdl-utils';
-import {updateTaggedEntry, updateTaggedValue} from '../tags';
+} from "../../../types";
+import {hasNamedSubContext, namedSubContext, ParserContext} from "../context";
+import {isArrayOfPrimitives, isPrimitive} from "../json-utils";
+import {implicitPropertyKey, tagOverwrite} from "../kdl-utils";
+import {updateTaggedEntry, updateTaggedValue} from "../tags";
 
-import {getArrayItems} from './parse';
-import {fromJsonValue} from './serialize';
-import {namelessName, superName} from './utils';
+import {getArrayItems} from "./parse";
+import {fromJsonValue} from "./serialize";
+import {namelessName, superName} from "./utils";
 
 function deleteFromObject(node: Node, name: string) {
 	if (name === implicitPropertyKey) {
@@ -154,7 +154,7 @@ function _applyChangeToArray(
 			if (
 				isPrimitive(change.value) &&
 				(lastItem == null ||
-					(lastItem.node.type === 'entry' &&
+					(lastItem.node.type === "entry" &&
 						node.entries.includes(lastItem.node)))
 			) {
 				// array was empty or all array items are entries on the node itself -> we can append an entry
@@ -168,7 +168,7 @@ function _applyChangeToArray(
 
 		const {node: before} = items[index - 1]!;
 
-		if (before.type === 'entry' && node.entries.includes(before)) {
+		if (before.type === "entry" && node.entries.includes(before)) {
 			const {value} = change;
 			if (isPrimitive(value)) {
 				node.entries = node.entries.flatMap((entry) =>
@@ -197,20 +197,20 @@ function _applyChangeToArray(
 			return;
 		}
 
-		if (before.type === 'node' && node.children?.nodes.includes(before)) {
+		if (before.type === "node" && node.children?.nodes.includes(before)) {
 			node.insertNodeAfter(fromJsonValue(namelessName, change.value), before);
 			return;
 		}
 
 		const {node: after} = items[index]!;
-		if (after.type === 'node' && node.children?.nodes.includes(after)) {
+		if (after.type === "node" && node.children?.nodes.includes(after)) {
 			node.insertNodeBefore(fromJsonValue(namelessName, change.value), after);
 			return;
 		}
 	} else if (change.type === ChangeType.Delete) {
 		const existing = items[index]!;
 
-		if (existing.node.type === 'entry') {
+		if (existing.node.type === "entry") {
 			if (node.entries.includes(existing.node)) {
 				node.entries = node.entries.filter((entry) => entry !== existing.node);
 				return;
@@ -224,7 +224,7 @@ function _applyChangeToArray(
 	} /* (change.type === ChangeType.Modify) */ else {
 		const existing = items[index]!;
 
-		if (existing.node.type === 'entry') {
+		if (existing.node.type === "entry") {
 			if (node.entries.includes(existing.node)) {
 				if (isPrimitive(change.value)) {
 					updateTaggedEntry(context, existing.node, change.value);
@@ -263,7 +263,7 @@ function _applyChangeToArray(
 	// Alas, clone the entire array
 
 	if (node.findNodeByName(superName) == null) {
-		throw new Error('Expected super node in array');
+		throw new Error("Expected super node in array");
 	}
 
 	inlineArray(context);
@@ -283,7 +283,7 @@ function inlineArray(context: ParserContext) {
 	const ownNodes: Node[] = [];
 
 	for (const item of getArrayItems(context)) {
-		if (item.node.type === 'node') {
+		if (item.node.type === "node") {
 			ownNodes.push(item.node);
 			continue;
 		}
@@ -309,7 +309,7 @@ export function applyChangeToJsonValue(
 	{allowEntries = true} = {},
 ) {
 	if (path.length === 0) {
-		if (typeof name === 'string') {
+		if (typeof name === "string") {
 			_applyChangeToObject(context, name, change, {allowEntries});
 		} else {
 			_applyChangeToArray(context, name, change);
@@ -320,7 +320,7 @@ export function applyChangeToJsonValue(
 
 	const {node} = context;
 
-	if (typeof name === 'number') {
+	if (typeof name === "number") {
 		const items = getArrayItems(context);
 		let nextContext = items[name] as ParserContext;
 

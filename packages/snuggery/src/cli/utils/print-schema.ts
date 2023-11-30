@@ -1,9 +1,9 @@
-import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
-import type {ColorFormat} from 'clipanion';
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
+import type {ColorFormat} from "clipanion";
 
-import {formatMarkdownish} from './format';
-import {tryDereference} from './parse-schema';
-import type {Report} from './report';
+import {formatMarkdownish} from "./format";
+import {tryDereference} from "./parse-schema";
+import type {Report} from "./report";
 
 export function printSchema(
 	schema: JsonObject,
@@ -39,7 +39,7 @@ function printObjectProperties(
 
 	if (object.properties == null || !isJsonObject(object.properties)) {
 		if (object.additionalProperties === false) {
-			report.reportInfo(formatHelper('An empty object'));
+			report.reportInfo(formatHelper("An empty object"));
 		} else if (object.additionalProperties === true) {
 			report.reportInfo(
 				formatHelper(
@@ -65,7 +65,7 @@ function printObjectProperties(
 	for (const [name, prop] of Object.entries(object.properties)) {
 		report.reportInfo(
 			formatHelper(
-				`- \`${name}\`${required.has(name) ? ' (required)' : ''}`,
+				`- \`${name}\`${required.has(name) ? " (required)" : ""}`,
 				false,
 			),
 		);
@@ -75,7 +75,7 @@ function printObjectProperties(
 		try {
 			if (!isJsonObject(prop)) {
 				report.reportWarning(
-					formatHelper('Invalid property definition', false),
+					formatHelper("Invalid property definition", false),
 				);
 				continue;
 			}
@@ -110,7 +110,7 @@ function printObjectProperties(
 				dereferencedProp.examples.length > 0
 			) {
 				hasExamples = true;
-				report.reportInfo(formatHelper('Examples:', false));
+				report.reportInfo(formatHelper("Examples:", false));
 				for (const example of dereferencedProp.examples) {
 					report.reportInfo(
 						formatHelper(`- \`${JSON.stringify(example)}\``, false),
@@ -127,9 +127,9 @@ function printObjectProperties(
 			const complexTypes = getTypesComplex(dereferencedProp, schema);
 
 			if (complexTypes == null) {
-				report[hasExamples ? 'reportInfo' : 'reportWarning'](
+				report[hasExamples ? "reportInfo" : "reportWarning"](
 					formatHelper(
-						'The type of this property is too complex to print in this help block.',
+						"The type of this property is too complex to print in this help block.",
 					),
 				);
 				continue;
@@ -153,7 +153,7 @@ function printObjectProperties(
 						report.reportInfo(formatHelper(`- \`${type}\``, false));
 					}
 					if (complexTypes.object != null) {
-						report.reportInfo(formatHelper('- or an object:'));
+						report.reportInfo(formatHelper("- or an object:"));
 						indentation += 2;
 						report.reportSeparator();
 					}
@@ -188,7 +188,7 @@ function printObjectProperties(
 						report.reportInfo(formatHelper(`- \`${type}\``, false));
 					}
 					if (complexTypes.object != null) {
-						report.reportInfo(formatHelper('- or an object:'));
+						report.reportInfo(formatHelper("- or an object:"));
 						indentation += 2;
 						report.reportSeparator();
 					}
@@ -234,7 +234,7 @@ function printObjectProperties(
 }
 
 function getDescription(property: JsonObject): string | undefined {
-	if (typeof property.description === 'string') {
+	if (typeof property.description === "string") {
 		return property.description;
 	}
 
@@ -247,16 +247,16 @@ function getDefault(
 ): string | undefined {
 	// Add $default support here if we ever support a "smart source"
 
-	if ('default' in property) {
+	if ("default" in property) {
 		return `\`${JSON.stringify(property.default)}\``;
 	}
 
 	if (
 		supportPathFormat &&
-		property.type === 'string' &&
-		property.format === 'path'
+		property.type === "string" &&
+		property.format === "path"
 	) {
-		return 'the path to the active project';
+		return "the path to the active project";
 	}
 
 	return undefined;
@@ -280,18 +280,18 @@ function getTypesSimple(
 
 	property = tryDereference(property, schema);
 
-	if (property.type === 'object') {
+	if (property.type === "object") {
 		if (
 			!property.properties &&
 			(property.additionalProperties == null ||
 				property.additionalProperties === true)
 		) {
-			return ['object'];
+			return ["object"];
 		}
 		return null;
 	}
 
-	if (property.type === 'array') {
+	if (property.type === "array") {
 		if (Array.isArray(property.prefixItems)) {
 			if (property.items) {
 				return [`any[]`];
@@ -304,7 +304,7 @@ function getTypesSimple(
 				return null;
 			}
 
-			return [`[${items.join(', ')}]`];
+			return [`[${items.join(", ")}]`];
 		}
 
 		const innerType = getTypesSimple(property.items, schema);
@@ -315,15 +315,15 @@ function getTypesSimple(
 
 		switch (innerType.length) {
 			case 0:
-				return ['any[]'];
+				return ["any[]"];
 			case 1:
 				return [`${innerType[0]}[]`];
 			default:
-				return [`(${innerType.join(' | ')})[]`];
+				return [`(${innerType.join(" | ")})[]`];
 		}
 	}
 
-	if (typeof property.type === 'string') {
+	if (typeof property.type === "string") {
 		return [property.type];
 	}
 
@@ -354,9 +354,9 @@ function printSimpleTypes(
 ) {
 	switch (types.length) {
 		case 0:
-			report[hasExamples ? 'reportInfo' : 'reportWarning'](
+			report[hasExamples ? "reportInfo" : "reportWarning"](
 				format(
-					'The type of this property is too complex to print in this help block.',
+					"The type of this property is too complex to print in this help block.",
 				),
 			);
 			break;
@@ -375,11 +375,11 @@ function getTypesComplex(
 	property: JsonObject,
 	schema: JsonObject,
 ): {object?: JsonObject; isArray: boolean; rest: string[]} | null {
-	if (property.type === 'object') {
+	if (property.type === "object") {
 		return {object: property, isArray: false, rest: []};
 	}
 
-	if (property.type === 'array') {
+	if (property.type === "array") {
 		const innerType = isJsonObject(property.items)
 			? getTypesComplex(tryDereference(property.items, schema), schema)
 			: null;
@@ -387,7 +387,7 @@ function getTypesComplex(
 		return innerType && {...innerType, isArray: true};
 	}
 
-	if (typeof property.type === 'string') {
+	if (typeof property.type === "string") {
 		return {isArray: false, rest: [property.type]};
 	}
 

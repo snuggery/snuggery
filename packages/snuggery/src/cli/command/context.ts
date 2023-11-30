@@ -1,5 +1,5 @@
-import type {Target} from '@angular-devkit/architect';
-import type {schema, workspaces} from '@angular-devkit/core';
+import type {Target} from "@angular-devkit/architect";
+import type {schema, workspaces} from "@angular-devkit/core";
 import {
 	type JsonObject,
 	type ProjectDefinition,
@@ -8,12 +8,12 @@ import {
 	findWorkspace as _findWorkspace,
 	findMiniWorkspace as _findMiniWorkspace,
 	type MiniWorkspaceOptions,
-} from '@snuggery/core';
-import {type BaseContext, UsageError} from 'clipanion';
-import {basename, dirname, normalize, relative, resolve, sep} from 'node:path';
+} from "@snuggery/core";
+import {type BaseContext, UsageError} from "clipanion";
+import {basename, dirname, normalize, relative, resolve, sep} from "node:path";
 
-import type {Report} from '../utils/report';
-import {createWorkspaceTransform} from '../utils/schema';
+import type {Report} from "../utils/report";
+import {createWorkspaceTransform} from "../utils/schema";
 
 export interface Context extends BaseContext {
 	/**
@@ -69,7 +69,7 @@ export class CliWorkspace implements WorkspaceDefinition {
 	}
 
 	get defaultProject(): string | null {
-		return typeof this.extensions.defaultProject === 'string'
+		return typeof this.extensions.defaultProject === "string"
 			? this.extensions.defaultProject
 			: null;
 	}
@@ -86,7 +86,7 @@ export class CliWorkspace implements WorkspaceDefinition {
 			throw new UsageError(`Invalid project path ${relativeCwd}`);
 		}
 
-		let longestMatch = '';
+		let longestMatch = "";
 		let longestMatchingProject: string | null = null;
 
 		let warnDuplicate = false;
@@ -146,12 +146,12 @@ export class CliWorkspace implements WorkspaceDefinition {
 	makeSyntheticTarget(projectName: string | null, builder: string): Target {
 		let project;
 		if (projectName == null) {
-			projectName = '@synthetic/project';
+			projectName = "@synthetic/project";
 			project =
 				this.#syntheticProject ??
 				(this.#syntheticProject = this.projects.add({
 					name: projectName,
-					root: '',
+					root: "",
 				}));
 		} else {
 			project = this.tryGetProjectByName(projectName);

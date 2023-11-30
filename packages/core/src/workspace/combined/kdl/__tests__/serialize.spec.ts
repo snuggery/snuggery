@@ -1,37 +1,37 @@
-import {clearFormat, Entry, Identifier, Node, parse} from '@bgotink/kdl';
-import assert from 'node:assert/strict';
-import {suite} from 'uvu';
+import {clearFormat, Entry, Identifier, Node, parse} from "@bgotink/kdl";
+import assert from "node:assert/strict";
+import {suite} from "uvu";
 
-import {fromJsonObject, fromJsonValue} from '../jik/serialize';
-import {serializeWorkspace} from '../serialize';
+import {fromJsonObject, fromJsonValue} from "../jik/serialize";
+import {serializeWorkspace} from "../serialize";
 
-const test = suite('kdl serialize');
+const test = suite("kdl serialize");
 
-test('fromJsonValue should work for simple values', () => {
+test("fromJsonValue should work for simple values", () => {
 	assert.deepEqual(
-		fromJsonValue('lorem', 2),
-		new Node(new Identifier('lorem'), [Entry.createArgument(2)]),
+		fromJsonValue("lorem", 2),
+		new Node(new Identifier("lorem"), [Entry.createArgument(2)]),
 	);
 });
 
-test('fromJsonObject should work for objects', () => {
+test("fromJsonObject should work for objects", () => {
 	assert.deepEqual(
-		fromJsonObject('parent', {node: 'lorem', is: {deep: true}}),
+		fromJsonObject("parent", {node: "lorem", is: {deep: true}}),
 		clearFormat(
-			parse(String.raw`parent node="lorem" { is deep=true; }`, {as: 'node'}),
+			parse(String.raw`parent node="lorem" { is deep=true; }`, {as: "node"}),
 		),
 	);
 });
 
-test('fromJsonObject should work for when passing arrays', () => {
+test("fromJsonObject should work for when passing arrays", () => {
 	assert.deepEqual(
-		fromJsonObject('parent', {
+		fromJsonObject("parent", {
 			node: [
 				{
 					object: true,
-					$implicit: 'lorem',
+					$implicit: "lorem",
 				},
-				'ipsum',
+				"ipsum",
 			],
 		}),
 		clearFormat(
@@ -42,24 +42,24 @@ test('fromJsonObject should work for when passing arrays', () => {
 						- "ipsum"
 					}
 				}`,
-				{as: 'node'},
+				{as: "node"},
 			),
 		),
 	);
 });
 
-test('serializeWorkspace should work', () => {
+test("serializeWorkspace should work", () => {
 	assert.deepEqual(
 		serializeWorkspace({
 			version: 1,
 			projects: {
 				parent: {
-					root: 'projects/parent',
+					root: "projects/parent",
 					targets: {
 						build: {
-							builder: '@lorem/ipsum:dolor',
+							builder: "@lorem/ipsum:dolor",
 							options: {
-								configFile: 'projects/parent/build.config.json',
+								configFile: "projects/parent/build.config.json",
 								verbose: false,
 							},
 							configurations: {
@@ -69,9 +69,9 @@ test('serializeWorkspace should work', () => {
 							},
 						},
 						test: {
-							builder: '@lorem/ipsum:sit',
+							builder: "@lorem/ipsum:sit",
 							options: {
-								configFile: 'projects/parent/test.config.js',
+								configFile: "projects/parent/test.config.js",
 								coverage: false,
 							},
 							configurations: {
@@ -83,12 +83,12 @@ test('serializeWorkspace should work', () => {
 					},
 				},
 				child: {
-					root: 'projects/child',
+					root: "projects/child",
 					targets: {
 						build: {
-							builder: '@lorem/ipsum:dolor',
+							builder: "@lorem/ipsum:dolor",
 							options: {
-								configFile: 'projects/child/build.config.json',
+								configFile: "projects/child/build.config.json",
 								verbose: false,
 							},
 							configurations: {
@@ -98,11 +98,11 @@ test('serializeWorkspace should work', () => {
 							},
 						},
 						test: {
-							builder: '@lorem/ipsum:sit',
+							builder: "@lorem/ipsum:sit",
 							options: {
 								configFile: [
-									'projects/child/test.config.js',
-									'projects/child/test2.config.js',
+									"projects/child/test.config.js",
+									"projects/child/test2.config.js",
 								],
 								coverage: false,
 							},

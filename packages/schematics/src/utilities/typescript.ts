@@ -2,12 +2,12 @@ import {
 	type SchematicContext,
 	SchematicsException,
 	type Tree,
-} from '@angular-devkit/schematics';
-import {filterByPatterns} from '@snuggery/core';
-import {posix} from 'path';
-import ts from 'typescript';
+} from "@angular-devkit/schematics";
+import {filterByPatterns} from "@snuggery/core";
+import {posix} from "path";
+import ts from "typescript";
 
-import {getWorkspace} from './workspace';
+import {getWorkspace} from "./workspace";
 
 export {ts};
 
@@ -35,7 +35,7 @@ export interface CreateProgramOptions {
 	/**
 	 * Logger
 	 */
-	logger: SchematicContext['logger'];
+	logger: SchematicContext["logger"];
 
 	/**
 	 * TypeScript System created via `createSystem`
@@ -46,7 +46,7 @@ export interface CreateProgramOptions {
 /**
  * Location where the virtual file system is mapped in the typescript `System`.
  */
-export const virtualFileSystemFolder = '/__workspace__';
+export const virtualFileSystemFolder = "/__workspace__";
 
 /**
  * Return the path of the given source file
@@ -71,7 +71,7 @@ export function getPath({fileName}: ts.SourceFile): string {
 export function createSystem({
 	logger,
 	tree,
-}: Pick<CreateProgramOptions, 'logger' | 'tree'>): ts.System {
+}: Pick<CreateProgramOptions, "logger" | "tree">): ts.System {
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	type SystemMethod = {
 		[key in keyof ts.System]-?: ts.System[key] extends (
@@ -103,10 +103,10 @@ export function createSystem({
 
 	return {
 		args: [],
-		createDirectory: proxy('createDirectory', () => {
+		createDirectory: proxy("createDirectory", () => {
 			// there is no "mkdir" function in Tree
 		}),
-		directoryExists: proxy('directoryExists', (path) => {
+		directoryExists: proxy("directoryExists", (path) => {
 			if (tree.exists(path)) {
 				// is a file
 				return false;
@@ -118,19 +118,19 @@ export function createSystem({
 		exit(exitCode) {
 			ts.sys.exit(exitCode);
 		},
-		fileExists: proxy('fileExists', (path) => {
+		fileExists: proxy("fileExists", (path) => {
 			return tree.exists(path);
 		}),
 		getCurrentDirectory: () => virtualFileSystemFolder,
-		getDirectories: proxy('getDirectories', (path) => {
+		getDirectories: proxy("getDirectories", (path) => {
 			return tree.getDir(path).subdirs;
 		}),
 		getExecutingFilePath() {
 			return ts.sys.getExecutingFilePath();
 		},
-		newLine: '\n',
+		newLine: "\n",
 		readDirectory: proxy(
-			'readDirectory',
+			"readDirectory",
 			(path, extensions, exclude, include, depth) => {
 				let files: string[] = [];
 
@@ -160,7 +160,7 @@ export function createSystem({
 
 				if (include != null || exclude != null) {
 					files = filterByPatterns(files, {
-						include: include ?? '**/*',
+						include: include ?? "**/*",
 						exclude,
 					});
 				}
@@ -168,7 +168,7 @@ export function createSystem({
 				return files.map((file) => posix.join(virtualFileSystemFolder, file));
 			},
 		),
-		readFile: proxy('readFile', (path, encoding = 'utf-8') => {
+		readFile: proxy("readFile", (path, encoding = "utf-8") => {
 			return tree.read(path)?.toString(encoding as BufferEncoding);
 		}),
 		resolvePath(path) {
@@ -176,7 +176,7 @@ export function createSystem({
 		},
 		useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
 		write: (string) => logger.debug(string),
-		writeFile: proxy('writeFile', (path, data) => {
+		writeFile: proxy("writeFile", (path, data) => {
 			if (tree.exists(path)) {
 				tree.overwrite(path, data);
 			} else {
@@ -189,7 +189,7 @@ export function createSystem({
 export const formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
 	getCanonicalFileName: (path) => posix.normalize(path),
 	getCurrentDirectory: () => virtualFileSystemFolder,
-	getNewLine: () => '\n',
+	getNewLine: () => "\n",
 };
 
 /**
@@ -204,7 +204,7 @@ export async function readProjectConfiguration({
 }: CreateProgramOptions): Promise<ts.ParsedCommandLine> {
 	if (project == null) {
 		if (workspaceProjectName == null) {
-			project = '/';
+			project = "/";
 		} else {
 			const workspace = await getWorkspace(tree);
 			const workspaceProject = workspace.projects.get(workspaceProjectName);
@@ -221,10 +221,10 @@ export async function readProjectConfiguration({
 		}
 	}
 
-	if (tree.exists(posix.join(project, 'tsconfig.json'))) {
-		project = posix.join(project, 'tsconfig.json');
-	} else if (tree.exists(posix.join(project, 'jsconfig.json'))) {
-		project = posix.join(project, 'jsconfig.json');
+	if (tree.exists(posix.join(project, "tsconfig.json"))) {
+		project = posix.join(project, "tsconfig.json");
+	} else if (tree.exists(posix.join(project, "jsconfig.json"))) {
+		project = posix.join(project, "jsconfig.json");
 	}
 
 	if (tree.exists(project)) {
@@ -257,9 +257,9 @@ export async function readProjectConfiguration({
 					allowJs: true,
 					noEmit: true,
 					skipLibCheck: true,
-					target: 'esnext',
-					module: 'esnext',
-					moduleResolution: 'node',
+					target: "esnext",
+					module: "esnext",
+					moduleResolution: "node",
 				},
 			},
 			sys,
@@ -330,7 +330,7 @@ export async function createProgram(
 		}
 
 		if (hasError) {
-			throw new SchematicsException('Fix compilation errors before continuing');
+			throw new SchematicsException("Fix compilation errors before continuing");
 		}
 	}
 

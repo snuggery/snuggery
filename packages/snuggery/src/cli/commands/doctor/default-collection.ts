@@ -1,7 +1,7 @@
-import {isJsonObject, JsonObject} from '@snuggery/core';
+import {isJsonObject, JsonObject} from "@snuggery/core";
 
-import {hasConfiguredCollection} from './configured-collections';
-import type {DoctorContext} from './context';
+import {hasConfiguredCollection} from "./configured-collections";
+import type {DoctorContext} from "./context";
 
 export async function checkDefaultCollections({
 	workspace,
@@ -74,6 +74,6 @@ function hasDefaultCollection(pow: {
 }): pow is {extensions: {cli: {defaultCollection: string}}} {
 	return (
 		isJsonObject(pow.extensions.cli) &&
-		typeof pow.extensions.cli.defaultCollection === 'string'
+		typeof pow.extensions.cli.defaultCollection === "string"
 	);
 }

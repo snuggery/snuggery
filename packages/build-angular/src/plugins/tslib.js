@@ -1,5 +1,5 @@
-import {isJsonObject} from '@snuggery/core';
-import ts from 'typescript';
+import {isJsonObject} from "@snuggery/core";
+import ts from "typescript";
 
 /**
  * @typedef {object} TslibOptions
@@ -10,8 +10,8 @@ import ts from 'typescript';
  * @type {import("../compiler.js").CompilerPluginFactory<TslibOptions>}
  */
 export const tslib = {
-	name: 'tslib',
-	create({logger}, {version = '^2.6.2'} = {}) {
+	name: "tslib",
+	create({logger}, {version = "^2.6.2"} = {}) {
 		let isTslibUsed = false;
 
 		/** @type {ts.TransformerFactory<ts.SourceFile>} */
@@ -26,7 +26,7 @@ export const tslib = {
 					if (
 						ts.isImportDeclaration(node) &&
 						ts.isStringLiteral(node.moduleSpecifier) &&
-						node.moduleSpecifier.text === 'tslib'
+						node.moduleSpecifier.text === "tslib"
 					) {
 						isTslibUsed = true;
 					}
@@ -48,10 +48,10 @@ export const tslib = {
 						manifest.dependencies.tslib
 					) {
 						logger.debug(
-							'Dependency on tslib was already present, keeping that one...',
+							"Dependency on tslib was already present, keeping that one...",
 						);
 					} else {
-						logger.info('Adding tslib dependency...');
+						logger.info("Adding tslib dependency...");
 						manifest.dependencies = isJsonObject(manifest.dependencies)
 							? {
 									...manifest.dependencies,
@@ -66,14 +66,14 @@ export const tslib = {
 						isJsonObject(manifest.dependencies) &&
 						manifest.dependencies.tslib
 					) {
-						logger.info('Removing superfluous dependency on tslib...');
+						logger.info("Removing superfluous dependency on tslib...");
 						if (Object.keys(manifest.dependencies).length > 1) {
 							delete manifest.dependencies.tslib;
 						} else {
 							delete manifest.dependencies;
 						}
 					} else {
-						logger.debug('No dependency on tslib required or present...');
+						logger.debug("No dependency on tslib required or present...");
 					}
 				}
 			},

@@ -1,9 +1,9 @@
-import {resolveWorkspacePath} from '@snuggery/architect';
+import {resolveWorkspacePath} from "@snuggery/architect";
 
-import {MapOfSets} from '../utils/map-of-sets';
-import {getPackageInformation} from '../utils/package-info';
+import {MapOfSets} from "../utils/map-of-sets";
+import {getPackageInformation} from "../utils/package-info";
 
-import type {ChangeLocatorStrategy} from './interface';
+import type {ChangeLocatorStrategy} from "./interface";
 
 /**
  * Strategy that uses the dependencies between packages in the workspace
@@ -21,10 +21,10 @@ export const packageDependenciesStrategy: ChangeLocatorStrategy = {
 		const packageRelationShips = new MapOfSets<string, string>();
 
 		for (const config of locatorConfigurations) {
-			if (typeof config.includeDependencies === 'boolean') {
+			if (typeof config.includeDependencies === "boolean") {
 				includeDependencies = config.includeDependencies;
 			}
-			if (typeof config.includeDependents === 'boolean') {
+			if (typeof config.includeDependents === "boolean") {
 				includeDependents = config.includeDependents;
 			}
 		}

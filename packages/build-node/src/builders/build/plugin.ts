@@ -1,12 +1,12 @@
-import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
+import {type BuilderContext, BuildFailureError} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
 import type {
 	CustomTransformerFactory,
 	CustomTransformers,
 	TransformerFactory,
-} from 'typescript';
+} from "typescript";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 /**
  * A plugin for the `@snuggery/build-node` library compiler
@@ -66,7 +66,7 @@ export interface WrappedPlugin {
 export function createPlugin<T = unknown>(
 	context: BuilderContext,
 	factory: PluginFactory<T>,
-	...input: Parameters<PluginFactory<T>['create']>
+	...input: Parameters<PluginFactory<T>["create"]>
 ): WrappedPlugin {
 	const plugin = wrap(factory.create, factory)(...input);
 	const finalize = plugin.finalize ? wrap(plugin.finalize, plugin) : noop;
@@ -125,7 +125,7 @@ export function createPlugin<T = unknown>(
 		return ((context) => {
 			const result = wrappedFn(context);
 
-			if (typeof result === 'function') {
+			if (typeof result === "function") {
 				return wrap(result, undefined);
 			}
 

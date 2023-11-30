@@ -1,10 +1,10 @@
-import {suite} from 'uvu';
+import {suite} from "uvu";
 
-import {AngularWorkspaceHandle} from '../angular';
+import {AngularWorkspaceHandle} from "../angular";
 
-import {itShouldHandleAngularConfiguration} from './utils';
+import {itShouldHandleAngularConfiguration} from "./utils";
 
-const test = suite('AngularWorkspaceHandle');
+const test = suite("AngularWorkspaceHandle");
 
 itShouldHandleAngularConfiguration(test, AngularWorkspaceHandle);
 

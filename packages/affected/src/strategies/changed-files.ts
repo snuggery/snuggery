@@ -1,8 +1,8 @@
-import {isJsonArray} from '@snuggery/core';
+import {isJsonArray} from "@snuggery/core";
 
-import {createVersionControlSystem} from '../vcs';
+import {createVersionControlSystem} from "../vcs";
 
-import type {ChangeLocatorStrategy} from './interface';
+import type {ChangeLocatorStrategy} from "./interface";
 
 /**
  * Strategy that uses the version control system to find files that have
@@ -17,16 +17,16 @@ export const changedFilesStrategy: ChangeLocatorStrategy = {
 		const exclude: string[] = [];
 
 		for (const config of locatorConfigurations) {
-			if (typeof config.from === 'string' || config.from === null) {
+			if (typeof config.from === "string" || config.from === null) {
 				from = config.from ?? undefined;
 			}
-			if (typeof config.to === 'string' || config.to === null) {
+			if (typeof config.to === "string" || config.to === null) {
 				to = config.to ?? undefined;
 			}
 
 			if (isJsonArray(config.exclude)) {
 				for (const ex of config.exclude) {
-					if (typeof ex === 'string') {
+					if (typeof ex === "string") {
 						exclude.push(ex);
 					}
 				}

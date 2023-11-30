@@ -3,10 +3,10 @@ import type {
 	JsonObject,
 	JsonPropertyPath,
 	JsonValue,
-} from '../types';
+} from "../types";
 
-import {Tracker, makeTracker} from './tracker';
-import {Change, ChangeType} from './types';
+import {Tracker, makeTracker} from "./tracker";
+import {Change, ChangeType} from "./types";
 
 type ChangeMap = Map<JsonPropertyName, Change | ChangeMap>;
 

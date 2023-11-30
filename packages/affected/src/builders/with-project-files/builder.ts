@@ -3,28 +3,28 @@ import {
 	findWorkspace,
 	lastValueFrom,
 	scheduleTarget,
-} from '@snuggery/architect';
-import {filterByPatterns} from '@snuggery/core';
-import {join} from 'node:path';
+} from "@snuggery/architect";
+import {filterByPatterns} from "@snuggery/core";
+import {join} from "node:path";
 
-import {findAffectedProjects} from '../../changes';
+import {findAffectedProjects} from "../../changes";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 function hasTarget(value: unknown): value is {target: string} {
-	return typeof (value as {target: string}).target === 'string';
+	return typeof (value as {target: string}).target === "string";
 }
 
 export async function execute(
 	{
-		include = '**',
+		include = "**",
 		exclude,
 		printOnly,
 		fromRevision,
 		toRevision,
 		affectedFiles,
 		optionName,
-		files = '.',
+		files = ".",
 		...targetSpec
 	}: Schema,
 	context: BuilderContext,
@@ -49,9 +49,9 @@ export async function execute(
 	);
 
 	let affectedProjectFiles;
-	if (files === '' || files === '.') {
+	if (files === "" || files === ".") {
 		affectedProjectFiles = projectRoots;
-	} else if (typeof files === 'string') {
+	} else if (typeof files === "string") {
 		affectedProjectFiles = projectRoots.map((root) => join(root, files));
 	} else {
 		affectedProjectFiles = projectRoots.flatMap((root) =>
@@ -60,7 +60,7 @@ export async function execute(
 	}
 
 	if (printOnly) {
-		context.logger.info(affectedProjectFiles.join('\n'));
+		context.logger.info(affectedProjectFiles.join("\n"));
 	}
 
 	if (printOnly || !affectedProjectFiles.length) {

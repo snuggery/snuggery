@@ -1,19 +1,19 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {ArchitectCommand} from '../../command/architect';
-import {formatMarkdownish} from '../../utils/format';
-import {printSchema} from '../../utils/print-schema';
+import {ArchitectCommand} from "../../command/architect";
+import {formatMarkdownish} from "../../utils/format";
+import {printSchema} from "../../utils/print-schema";
 
 export class HelpBuilderCommand extends ArchitectCommand {
-	static override readonly paths = [['help', 'builder']];
+	static override readonly paths = [["help", "builder"]];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about a builder',
+		category: "Workspace information commands",
+		description: "Show information about a builder",
 		examples: [
 			[
-				'Print information about `@angular-devkit/build-angular:browser`',
-				'$0 help builder @angular-devkit/build-angular:browser',
+				"Print information about `@angular-devkit/build-angular:browser`",
+				"$0 help builder @angular-devkit/build-angular:browser",
 			],
 		],
 	});
@@ -39,9 +39,9 @@ export class HelpBuilderCommand extends ArchitectCommand {
 			report.reportSeparator();
 		}
 
-		report.reportInfo(`${format.header('Properties:')}\n`);
+		report.reportInfo(`${format.header("Properties:")}\n`);
 
-		if (typeof optionSchema === 'boolean') {
+		if (typeof optionSchema === "boolean") {
 			if (optionSchema) {
 				report.reportInfo(`This builder accepts all properties.\n`);
 			} else {

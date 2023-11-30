@@ -1,4 +1,4 @@
-require('@snuggery-workspace/scripts/load-ts');
+require("@snuggery-workspace/scripts/load-ts");
 
 Error.stackTraceLimit = Infinity;
-module.exports = require('./src/bin.ts');
+module.exports = require("./src/bin.ts");

@@ -1,8 +1,8 @@
-import {writeFile} from 'node:fs/promises';
-import {dirname, join, posix, relative as _relative} from 'node:path';
+import {writeFile} from "node:fs/promises";
+import {dirname, join, posix, relative as _relative} from "node:path";
 
-import {BuildFailureError} from './error.js';
-import {ensureUnixPath} from './utils.js';
+import {BuildFailureError} from "./error.js";
+import {ensureUnixPath} from "./utils.js";
 
 /**
  * @param {string} from
@@ -36,8 +36,8 @@ export function findPrimaryEntryFile(manifestFile, manifest) {
 	if (manifest.exports != null) {
 		const exports = normalizeExports(manifest.exports);
 
-		if (exports['.'] !== undefined) {
-			const relativeExport = findSnuggeryExport(exports['.']);
+		if (exports["."] !== undefined) {
+			const relativeExport = findSnuggeryExport(exports["."]);
 
 			return relativeExport != null
 				? join(dirname(manifestFile), relativeExport)
@@ -49,7 +49,7 @@ export function findPrimaryEntryFile(manifestFile, manifest) {
 		return join(dirname(manifestFile), manifest.main);
 	}
 
-	return join(dirname(manifestFile), 'index.ts');
+	return join(dirname(manifestFile), "index.ts");
 }
 
 /**
@@ -60,7 +60,7 @@ export function findPrimaryEntryFile(manifestFile, manifest) {
  */
 export function* findEntryPoints(manifestFile, manifest, mainFile) {
 	if (mainFile) {
-		yield ['.', mainFile];
+		yield [".", mainFile];
 		return;
 	}
 
@@ -71,7 +71,7 @@ export function* findEntryPoints(manifestFile, manifest, mainFile) {
 			);
 		}
 
-		yield ['.', join(dirname(manifestFile), manifest.main)];
+		yield [".", join(dirname(manifestFile), manifest.main)];
 		return;
 	}
 
@@ -90,13 +90,13 @@ export function* findEntryPoints(manifestFile, manifest, mainFile) {
  * @returns {Record<string, unknown>}
  */
 function normalizeExports(exports) {
-	if (typeof exports !== 'object' || Array.isArray(exports)) {
-		return {'.': exports};
+	if (typeof exports !== "object" || Array.isArray(exports)) {
+		return {".": exports};
 	}
 
 	const exportedNames = Object.keys(exports);
-	if (exportedNames.some((name) => name !== '.' && !name.startsWith('./'))) {
-		return {'.': exports};
+	if (exportedNames.some((name) => name !== "." && !name.startsWith("./"))) {
+		return {".": exports};
 	}
 
 	return exports;
@@ -111,8 +111,8 @@ function findSnuggeryExport(exportValue) {
 		return null;
 	}
 
-	if (typeof exportValue === 'string') {
-		return posix.extname(exportValue) === '.ts' ? exportValue : null;
+	if (typeof exportValue === "string") {
+		return posix.extname(exportValue) === ".ts" ? exportValue : null;
 	}
 
 	if (Array.isArray(exportValue)) {
@@ -126,14 +126,14 @@ function findSnuggeryExport(exportValue) {
 		return null;
 	}
 
-	if (typeof exportValue !== 'object') {
+	if (typeof exportValue !== "object") {
 		return null;
 	}
 
 	const objExport = /** @type {import('@snuggery/core').JsonObject} */ (
 		exportValue
 	);
-	if ('snuggery' in objExport) {
+	if ("snuggery" in objExport) {
 		return findSnuggeryExport(objExport.snuggery);
 	}
 
@@ -198,14 +198,14 @@ export async function writeManifest(
 		delete manifest.publishConfig.exports;
 	}
 
-	if (typeof exports === 'string' || Array.isArray(exports)) {
+	if (typeof exports === "string" || Array.isArray(exports)) {
 		// -> maps to the default key of ., which gets overwritten anyway so we can drop it
 		exports = {};
 	}
 
 	for (const entryPoint of context.entryPoints) {
 		let keyExports = exports[entryPoint.exportName] ?? {};
-		if (typeof keyExports === 'string' || Array.isArray(keyExports)) {
+		if (typeof keyExports === "string" || Array.isArray(keyExports)) {
 			// -> maps to the default key, which gets overwritten anyway so we can drop it
 			keyExports = {};
 		}
@@ -225,8 +225,8 @@ export async function writeManifest(
 		};
 	}
 
-	if (!Reflect.has(exports, './package.json')) {
-		exports['./package.json'] = './package.json';
+	if (!Reflect.has(exports, "./package.json")) {
+		exports["./package.json"] = "./package.json";
 	}
 
 	manifest.exports = exports;
@@ -236,7 +236,7 @@ export async function writeManifest(
 	}
 
 	await writeFile(
-		join(outputFolder, 'package.json'),
+		join(outputFolder, "package.json"),
 		JSON.stringify(manifest, null, 2),
 	);
 }

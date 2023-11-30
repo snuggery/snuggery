@@ -1,14 +1,14 @@
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 import {
 	type ExtraConfigurationDefinition,
 	type ExtraConfigurationDefinitionWithType,
 	type JsonValue,
 	extractExtraConfiguration as _extractExtraConfiguration,
 	type WorkspaceDefinition,
-} from '@snuggery/core';
+} from "@snuggery/core";
 
-import type {BuilderContext} from './create-builder';
-import {findWorkspace} from './workspace';
+import type {BuilderContext} from "./create-builder";
+import {findWorkspace} from "./workspace";
 
 export type {
 	ExtraConfigurationDefinition,

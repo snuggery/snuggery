@@ -1,10 +1,10 @@
-import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
+import {type BuilderContext, BuildFailureError} from "@snuggery/architect";
 
-import {loadYarn} from '../../utils/yarn';
+import {loadYarn} from "../../utils/yarn";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
-const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
+const snuggeryPluginName = "@yarnpkg/plugin-snuggery";
 
 export async function executeUpdate(
 	{packages}: Schema,

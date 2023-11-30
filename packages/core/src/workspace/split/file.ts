@@ -1,16 +1,16 @@
-import {extname} from 'path';
+import {extname} from "path";
 
-import type {TextFileHandle} from '../file';
+import type {TextFileHandle} from "../file";
 
-import {JsonFileHandle} from './file/json';
-import type {FileHandle, FileHandleFactory} from './file/types';
-import {YamlFileHandle} from './file/yaml';
+import {JsonFileHandle} from "./file/json";
+import type {FileHandle, FileHandleFactory} from "./file/types";
+import {YamlFileHandle} from "./file/yaml";
 
 export type {FileHandle};
 
 const knownHandleTypes = new Map<string, FileHandleFactory>([
-	['.json', JsonFileHandle],
-	['.yaml', YamlFileHandle],
+	[".json", JsonFileHandle],
+	[".yaml", YamlFileHandle],
 ]);
 
 export const knownExtensions = Array.from(knownHandleTypes.keys());

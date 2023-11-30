@@ -5,17 +5,17 @@
  * the experimental KDL format supported by snuggery (snuggery.kdl, version 0)
  */
 
-import type {Document} from '@bgotink/kdl';
+import type {Document} from "@bgotink/kdl";
 
-import type {TextFileHandle} from '../../file';
-import type {Change} from '../../proxy';
-import {AngularWorkspaceHandle} from '../../split/workspace-handle/angular';
-import type {JsonObject} from '../../types';
+import type {TextFileHandle} from "../../file";
+import type {Change} from "../../proxy";
+import {AngularWorkspaceHandle} from "../../split/workspace-handle/angular";
+import type {JsonObject} from "../../types";
 
-import {applyChangeToWorkspace} from './apply-changes';
-import {AbstractKdlWorkspaceFileHandle} from './kdl-utils';
-import {parseWorkspace} from './parse';
-import {serializeWorkspace} from './serialize';
+import {applyChangeToWorkspace} from "./apply-changes";
+import {AbstractKdlWorkspaceFileHandle} from "./kdl-utils";
+import {parseWorkspace} from "./parse";
+import {serializeWorkspace} from "./serialize";
 
 class SnuggeryWorkspaceFileHandle extends AbstractKdlWorkspaceFileHandle {
 	protected createChildHandle(

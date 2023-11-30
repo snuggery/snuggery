@@ -1,5 +1,5 @@
-import {extractExtraConfiguration} from '@snuggery/architect';
-import * as t from 'typanion';
+import {extractExtraConfiguration} from "@snuggery/architect";
+import * as t from "typanion";
 
 const testConfiguration = t.isObject({
 	tsconfig: t.isOptional(t.isString()),
@@ -28,7 +28,7 @@ const testConfiguration = t.isObject({
 export async function loadConfiguration(context) {
 	const configs = await extractExtraConfiguration(
 		{
-			key: '@snuggery/build-angular',
+			key: "@snuggery/build-angular",
 			test: testConfiguration,
 		},
 		context,

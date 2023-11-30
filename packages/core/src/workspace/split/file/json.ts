@@ -1,12 +1,12 @@
-import type {ParseError, FormattingOptions} from 'jsonc-parser';
+import type {ParseError, FormattingOptions} from "jsonc-parser";
 
-import {ChangeType, Change} from '../../proxy';
-import {InvalidConfigurationError, isJsonObject, JsonObject} from '../../types';
+import {ChangeType, Change} from "../../proxy";
+import {InvalidConfigurationError, isJsonObject, JsonObject} from "../../types";
 
-import {AbstractFileHandle} from './abstract';
+import {AbstractFileHandle} from "./abstract";
 
 export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
-	#jsonc: typeof import('jsonc-parser') = require('jsonc-parser');
+	#jsonc: typeof import("jsonc-parser") = require("jsonc-parser");
 
 	#processParseErrors(errors: readonly ParseError[]) {
 		if (errors.length === 1) {
@@ -25,7 +25,7 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 								error.offset
 							}`,
 					)
-					.join('\n- ')}`,
+					.join("\n- ")}`,
 			);
 		}
 	}
@@ -41,7 +41,7 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 		this.#processParseErrors(errors);
 
 		if (!isJsonObject(value)) {
-			throw new InvalidConfigurationError('Configuration must be an object');
+			throw new InvalidConfigurationError("Configuration must be an object");
 		}
 
 		return value;
@@ -56,7 +56,7 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 	}
 
 	createHeader(header: string | string[]): string {
-		return `// ${[header].flat().join('\n// ')}\n`;
+		return `// ${[header].flat().join("\n// ")}\n`;
 	}
 
 	applyChanges(
@@ -81,10 +81,10 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 				? Array.from(indentations).reduce((a, b) =>
 						a.length < b.length ? a : b,
 				  )
-				: '  ';
+				: "  ";
 
 		const formattingOptions: FormattingOptions = {
-			insertSpaces: shortestIndentation[0] === ' ',
+			insertSpaces: shortestIndentation[0] === " ",
 			tabSize: shortestIndentation.length,
 			insertFinalNewline: true,
 		};

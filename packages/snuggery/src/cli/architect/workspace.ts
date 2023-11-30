@@ -1,16 +1,16 @@
-import type {createBuilder, Target} from '@angular-devkit/architect';
-import type {Executor} from '@nrwl/devkit';
+import type {createBuilder, Target} from "@angular-devkit/architect";
+import type {Executor} from "@nrwl/devkit";
 import type {
 	JsonObject,
 	ProjectDefinition,
 	TargetDefinition,
-} from '@snuggery/core';
+} from "@snuggery/core";
 
-import type {CliWorkspace} from '../command/context';
-import {makeExecutorIntoBuilder} from '../utils/tao';
+import type {CliWorkspace} from "../command/context";
+import {makeExecutorIntoBuilder} from "../utils/tao";
 
-import {UnknownConfigurationError, UnknownTargetError} from './errors';
-import type {WorkspaceFacade} from './host';
+import {UnknownConfigurationError, UnknownTargetError} from "./errors";
+import type {WorkspaceFacade} from "./host";
 
 export class CliWorkspaceFacade implements WorkspaceFacade {
 	readonly #workspace: CliWorkspace | null;
@@ -67,7 +67,7 @@ export class CliWorkspaceFacade implements WorkspaceFacade {
 
 		for (const configuration of (
 			target.configuration ?? targetDefinition.defaultConfiguration
-		)?.split(',') || []) {
+		)?.split(",") || []) {
 			const configurationOptions =
 				targetDefinition.configurations?.[configuration];
 

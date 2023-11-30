@@ -1,7 +1,7 @@
-import {JsonObject} from '@snuggery/core';
+import {JsonObject} from "@snuggery/core";
 
-import {ParallelOptions, SerialOptions} from '../combine';
-import {SchedulerType} from '../combine/types';
+import {ParallelOptions, SerialOptions} from "../combine";
+import {SchedulerType} from "../combine/types";
 
 interface AbstractSchema {
 	/**
@@ -60,12 +60,12 @@ export interface TargetSchema extends AbstractSchema {
 	/**
 	 * What to do if the glob encounters a project that doesn't include the requested target
 	 */
-	unknownTarget?: 'error' | 'skip';
+	unknownTarget?: "error" | "skip";
 
 	/**
 	 * What to do if the glob encounters a target that is missing a requested configuration
 	 */
-	unknownConfiguration?: 'error' | 'skip' | 'run';
+	unknownConfiguration?: "error" | "skip" | "run";
 
 	builder?: undefined;
 }

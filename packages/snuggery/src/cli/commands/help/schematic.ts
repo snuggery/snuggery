@@ -1,23 +1,23 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {SchematicCommand} from '../../command/schematic';
-import {formatMarkdownish} from '../../utils/format';
-import {printSchema} from '../../utils/print-schema';
+import {SchematicCommand} from "../../command/schematic";
+import {formatMarkdownish} from "../../utils/format";
+import {printSchema} from "../../utils/print-schema";
 
 export class HelpSchematicCommand extends SchematicCommand {
-	static override readonly paths = [['help', 'schematic']];
+	static override readonly paths = [["help", "schematic"]];
 
 	static override readonly usage = SchematicCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about a schematic',
+		category: "Workspace information commands",
+		description: "Show information about a schematic",
 		examples: [
 			[
-				'Print information about `@schematics/angular:component`',
-				'$0 help schematic @schematics/angular:component',
+				"Print information about `@schematics/angular:component`",
+				"$0 help schematic @schematics/angular:component",
 			],
 			[
-				'Print information about the `service` schematic of a configured collection',
-				'$0 help schematic service',
+				"Print information about the `service` schematic of a configured collection",
+				"$0 help schematic service",
 			],
 		],
 	});
@@ -56,7 +56,7 @@ export class HelpSchematicCommand extends SchematicCommand {
 			report.reportSeparator();
 		}
 
-		report.reportInfo(`${format.header('Properties:')}\n`);
+		report.reportInfo(`${format.header("Properties:")}\n`);
 
 		if (schemaJson == null) {
 			report.reportInfo(`This builder doesn't accept any properties.\n`);

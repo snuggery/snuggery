@@ -1,39 +1,39 @@
-import {workspaces} from '@angular-devkit/core';
-import assert from 'node:assert/strict';
-import {suite} from 'uvu';
+import {workspaces} from "@angular-devkit/core";
+import assert from "node:assert/strict";
+import {suite} from "uvu";
 
-import {isJsonObject, JsonObject} from '../../../types';
-import {NxWorkspaceHandle} from '../nx';
+import {isJsonObject, JsonObject} from "../../../types";
+import {NxWorkspaceHandle} from "../nx";
 
-import {itShouldHandleAngularConfiguration, TestFileHandle} from './utils';
+import {itShouldHandleAngularConfiguration, TestFileHandle} from "./utils";
 
-const test = suite('NxWorkspaceHandle');
+const test = suite("NxWorkspaceHandle");
 
 itShouldHandleAngularConfiguration(test, NxWorkspaceHandle, {
 	skipWriteOnly: true,
 });
 
-test('should read nx configuration correctly', async () => {
+test("should read nx configuration correctly", async () => {
 	const handle = new NxWorkspaceHandle(
 		new TestFileHandle({
 			version: 2,
 			projects: {
 				all: {
-					root: '',
+					root: "",
 					targets: {
 						build: {
-							executor: '@snuggery/snuggery:glob',
+							executor: "@snuggery/snuggery:glob",
 							options: {
-								include: '*',
+								include: "*",
 							},
 						},
 					},
 				},
 			},
 			generators: {
-				'@snuggery/schematics': {
+				"@snuggery/schematics": {
 					hook: {
-						'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+						"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 					},
 				},
 			},
@@ -43,48 +43,48 @@ test('should read nx configuration correctly', async () => {
 	const workspace = await handle.read();
 
 	assert.equal(workspace.projects.size, 1);
-	assert.equal(workspace.projects.has('all'), true);
-	assert.equal(workspace.projects.get('all')!.root, '');
+	assert.equal(workspace.projects.has("all"), true);
+	assert.equal(workspace.projects.get("all")!.root, "");
 	assert.deepEqual(
-		workspace.projects.get('all')!.targets.get('build')!.options,
+		workspace.projects.get("all")!.targets.get("build")!.options,
 		{
-			include: '*',
+			include: "*",
 		},
 	);
 
 	assert.ok(isJsonObject(workspace.extensions.schematics));
 	assert.deepEqual(
-		(workspace.extensions.schematics as JsonObject)['@snuggery/schematics'],
+		(workspace.extensions.schematics as JsonObject)["@snuggery/schematics"],
 		{
 			hook: {
-				'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+				"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 			},
 		},
 	);
 });
 
-test('should write workspaces correctly to nx configuration', async () => {
+test("should write workspaces correctly to nx configuration", async () => {
 	const file = new TestFileHandle({});
 
 	await new NxWorkspaceHandle(file).write(
 		{
 			extensions: {
 				schematics: {
-					'@snuggery/schematics': {
+					"@snuggery/schematics": {
 						hook: {
-							'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+							"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 						},
 					},
 				},
 			},
 			projects: new workspaces.ProjectDefinitionCollection({
 				all: {
-					root: '',
+					root: "",
 					targets: new workspaces.TargetDefinitionCollection({
 						build: {
-							builder: '@snuggery/snuggery:glob',
+							builder: "@snuggery/snuggery:glob",
 							options: {
-								include: '*',
+								include: "*",
 							},
 						},
 					}),
@@ -99,50 +99,50 @@ test('should write workspaces correctly to nx configuration', async () => {
 		version: 2,
 		projects: {
 			all: {
-				root: '',
+				root: "",
 				targets: {
 					build: {
-						executor: '@snuggery/snuggery:glob',
+						executor: "@snuggery/snuggery:glob",
 						options: {
-							include: '*',
+							include: "*",
 						},
 					},
 				},
 			},
 		},
 		generators: {
-			'@snuggery/schematics': {
+			"@snuggery/schematics": {
 				hook: {
-					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+					"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 				},
 			},
 		},
 	});
 });
 
-test('should update workspaces correctly via read + write as nx configuration', async () => {
+test("should update workspaces correctly via read + write as nx configuration", async () => {
 	const file = new TestFileHandle({
 		version: 2,
 		projects: {
 			all: {
-				root: '',
+				root: "",
 				targets: {
 					build: {
-						executor: '@snuggery/snuggery:glob',
+						executor: "@snuggery/snuggery:glob",
 						options: {
-							include: '*',
+							include: "*",
 						},
 					},
 					test: {
-						executor: '@nrwl/jest:jest',
+						executor: "@nrwl/jest:jest",
 					},
 				},
 			},
 		},
 		generators: {
-			'@snuggery/schematics': {
+			"@snuggery/schematics": {
 				hook: {
-					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+					"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 				},
 			},
 		},
@@ -152,21 +152,21 @@ test('should update workspaces correctly via read + write as nx configuration', 
 	const workspace = await handle.read();
 
 	const testProject = workspace.projects.add({
-		name: 'test',
-		root: 'packages/test',
+		name: "test",
+		root: "packages/test",
 	});
 	testProject.targets.add({
-		name: 'build',
-		builder: '@snuggery/build-node:build',
+		name: "build",
+		builder: "@snuggery/build-node:build",
 	}).options = {
-		packager: '@snuggery/yarn',
+		packager: "@snuggery/yarn",
 	};
 
-	const allProject = workspace.projects.get('all')!;
+	const allProject = workspace.projects.get("all")!;
 
-	allProject.targets.delete('test');
-	allProject.targets.delete('e2e');
-	allProject.targets.get('build')!.options!.include = ['*'];
+	allProject.targets.delete("test");
+	allProject.targets.delete("e2e");
+	allProject.targets.get("build")!.options!.include = ["*"];
 
 	await handle.write(workspace, {});
 
@@ -174,61 +174,61 @@ test('should update workspaces correctly via read + write as nx configuration', 
 		version: 2,
 		projects: {
 			all: {
-				root: '',
+				root: "",
 				targets: {
 					build: {
-						executor: '@snuggery/snuggery:glob',
+						executor: "@snuggery/snuggery:glob",
 						options: {
-							include: ['*'],
+							include: ["*"],
 						},
 					},
 				},
 			},
 			test: {
-				root: 'packages/test',
+				root: "packages/test",
 				targets: {
 					build: {
-						executor: '@snuggery/build-node:build',
+						executor: "@snuggery/build-node:build",
 						options: {
-							packager: '@snuggery/yarn',
+							packager: "@snuggery/yarn",
 						},
 					},
 				},
 			},
 		},
 		generators: {
-			'@snuggery/schematics': {
+			"@snuggery/schematics": {
 				hook: {
-					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+					"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 				},
 			},
 		},
 	});
 });
 
-test('should update workspaces correctly via update as nx configuration', async () => {
+test("should update workspaces correctly via update as nx configuration", async () => {
 	const file = new TestFileHandle({
 		version: 2,
 		projects: {
 			all: {
-				root: '',
+				root: "",
 				targets: {
 					build: {
-						executor: '@snuggery/snuggery:glob',
+						executor: "@snuggery/snuggery:glob",
 						options: {
-							include: '*',
+							include: "*",
 						},
 					},
 					test: {
-						executor: '@nrwl/jest:jest',
+						executor: "@nrwl/jest:jest",
 					},
 				},
 			},
 		},
 		generators: {
-			'@snuggery/schematics': {
+			"@snuggery/schematics": {
 				hook: {
-					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+					"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 				},
 			},
 		},
@@ -236,53 +236,53 @@ test('should update workspaces correctly via update as nx configuration', async 
 
 	await new NxWorkspaceHandle(file).update((workspace) => {
 		const testProject = workspace.projects.add({
-			name: 'test',
-			root: 'packages/test',
+			name: "test",
+			root: "packages/test",
 		});
 		testProject.targets.add({
-			name: 'build',
-			builder: '@snuggery/build-node:build',
+			name: "build",
+			builder: "@snuggery/build-node:build",
 		}).options = {
-			packager: '@snuggery/yarn',
+			packager: "@snuggery/yarn",
 		};
 
-		const allProject = workspace.projects.get('all')!;
+		const allProject = workspace.projects.get("all")!;
 
-		allProject.targets.delete('test');
-		allProject.targets.delete('e2e');
-		allProject.targets.get('build')!.options!.include = ['*'];
+		allProject.targets.delete("test");
+		allProject.targets.delete("e2e");
+		allProject.targets.get("build")!.options!.include = ["*"];
 	});
 
 	assert.deepEqual(file.value, {
 		version: 2,
 		projects: {
 			all: {
-				root: '',
+				root: "",
 				targets: {
 					build: {
-						executor: '@snuggery/snuggery:glob',
+						executor: "@snuggery/snuggery:glob",
 						options: {
-							include: ['*'],
+							include: ["*"],
 						},
 					},
 				},
 			},
 			test: {
-				root: 'packages/test',
+				root: "packages/test",
 				targets: {
 					build: {
-						executor: '@snuggery/build-node:build',
+						executor: "@snuggery/build-node:build",
 						options: {
-							packager: '@snuggery/yarn',
+							packager: "@snuggery/yarn",
 						},
 					},
 				},
 			},
 		},
 		generators: {
-			'@snuggery/schematics': {
+			"@snuggery/schematics": {
 				hook: {
-					'@snuggery/build-node:package': ['@snuggery/yarn:post-package'],
+					"@snuggery/build-node:package": ["@snuggery/yarn:post-package"],
 				},
 			},
 		},

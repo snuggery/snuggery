@@ -1,14 +1,14 @@
-import {Option} from 'clipanion';
-import {join} from 'path';
+import {Option} from "clipanion";
+import {join} from "path";
 
-import {AbstractCommand} from '../command/abstract-command';
+import {AbstractCommand} from "../command/abstract-command";
 
 export class ProjectCommand extends AbstractCommand {
-	static override readonly paths = [['project']];
+	static override readonly paths = [["project"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Utility commands',
-		description: 'Run a command within a project',
+		category: "Utility commands",
+		description: "Run a command within a project",
 		details: `
 			This command runs another command as if Snuggery was executed from within that project.
 			
@@ -17,10 +17,10 @@ export class ProjectCommand extends AbstractCommand {
 			Note: This command doesn't change the working directory of the process.
 		`,
 		examples: [
-			['Run the `build` target in project `app`', '$0 project app build'],
+			["Run the `build` target in project `app`", "$0 project app build"],
 			[
-				'Run the `@schematics/angular:component` schematic in project `app`',
-				'$0 project app generate @schematics/angular:component',
+				"Run the `@schematics/angular:component` schematic in project `app`",
+				"$0 project app generate @schematics/angular:component",
 			],
 		],
 	});

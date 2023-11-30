@@ -4,10 +4,10 @@ import {
 	noop,
 	type Rule,
 	SchematicsException,
-} from '@angular-devkit/schematics';
-import type {JsonObject} from '@snuggery/core';
+} from "@angular-devkit/schematics";
+import type {JsonObject} from "@snuggery/core";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 /**
  * Run hooks for a given schematic
@@ -28,14 +28,14 @@ export default function ({
 			let options: JsonObject | undefined;
 			let schematic: string;
 
-			if (typeof hook === 'string') {
+			if (typeof hook === "string") {
 				schematic = hook;
 				options = {};
 			} else {
 				({options, schematic} = hook);
 			}
 
-			const [collectionName, schematicName] = schematic.split(':', 2) as [
+			const [collectionName, schematicName] = schematic.split(":", 2) as [
 				string,
 				string | undefined,
 			];

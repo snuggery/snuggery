@@ -1,8 +1,8 @@
-import {isJsonObject} from '@snuggery/core';
-import {createRequire} from 'node:module';
-import ts from 'typescript';
+import {isJsonObject} from "@snuggery/core";
+import {createRequire} from "node:module";
+import ts from "typescript";
 
-import {BuildFailureError} from '../compiler.js';
+import {BuildFailureError} from "../compiler.js";
 
 /**
  * @typedef {object} ValidateDependenciesInput
@@ -14,7 +14,7 @@ import {BuildFailureError} from '../compiler.js';
  * @type {import("../compiler.js").CompilerPluginFactory<ValidateDependenciesInput>}
  */
 export const validateDependencies = {
-	name: 'validateDependencies',
+	name: "validateDependencies",
 	create({logger, manifestFile}, options = {}) {
 		/** @type {Set<string>} */
 		const usedDependencies = new Set();
@@ -112,7 +112,7 @@ export const validateDependencies = {
 			finalize() {
 				let hasError = false;
 
-				logger.info('Validating dependencies...');
+				logger.info("Validating dependencies...");
 
 				for (const usedDependency of usedDependencies) {
 					if (declaredDependencies.has(usedDependency)) {

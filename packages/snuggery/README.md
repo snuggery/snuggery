@@ -124,24 +124,24 @@ You can create your own CLI using the `run` function exported by `@snuggery/snug
 
 ```js
 #!/usr/bin/env node
-import {run} from '@snuggery/snuggery/mini';
-import {createRequire} from 'node:module';
+import {run} from "@snuggery/snuggery/mini";
+import {createRequire} from "node:module";
 
 await run({
 	// Label used in errors and help messages
-	binaryLabel: 'build-lit',
+	binaryLabel: "build-lit",
 	// The name of the binary as it's executed, e.g.
 	//   $ build-lit --help
 	//   $ build-lit test
-	binaryName: 'build-lit',
+	binaryName: "build-lit",
 	// The version of your binary
-	binaryVersion: createRequire(import.meta.url)('./package.json').version,
+	binaryVersion: createRequire(import.meta.url)("./package.json").version,
 	// Basename(s) of configuration files that can be used by your users
 	// The following extensions are supported: .json, .yaml, and .kdl
 	basename: [
 		// Allow configuration via
 		// build-lit.config.json, build-lit.config.yaml, or build-lit.config.kdl
-		'build-lit.config',
+		"build-lit.config",
 	],
 	// Map subcommand names onto builders
 	targets: new Map([
@@ -150,10 +150,10 @@ await run({
 		// - A builder created using `@angular-devkit/architect`
 		// - An executor created using nx
 		// - A builder created using `@snuggery/architect`
-		['build', '@ngx-lit/build-lit:browser'],
-		['extract-i18n', '@ngx-lit/build-lit:extract-i18n'],
-		['serve', '@ngx-lit/build-lit:dev-server'],
-		['test', '@ngx-lit/build-lit:karma'],
+		["build", "@ngx-lit/build-lit:browser"],
+		["extract-i18n", "@ngx-lit/build-lit:extract-i18n"],
+		["serve", "@ngx-lit/build-lit:dev-server"],
+		["test", "@ngx-lit/build-lit:karma"],
 	]),
 });
 ```

@@ -2,9 +2,9 @@ export {
 	type ExtraConfigurationDefinition,
 	type ExtraConfigurationDefinitionWithType,
 	extractExtraConfiguration,
-} from './extract-extra-configuration';
-export {findUp} from './workspace/find-up';
-export {filterByPatterns, matchesPatterns} from './pattern';
+} from "./extract-extra-configuration";
+export {findUp} from "./workspace/find-up";
+export {filterByPatterns, matchesPatterns} from "./pattern";
 export {
 	type ConvertibleWorkspaceDefinition,
 	type MiniWorkspaceOptions,
@@ -29,4 +29,4 @@ export {
 	type JsonPropertyName,
 	type JsonPropertyPath,
 	type JsonValue,
-} from './workspace';
+} from "./workspace";

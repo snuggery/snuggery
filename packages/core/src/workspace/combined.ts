@@ -1,20 +1,20 @@
 import {
 	SnuggeryKdlWorkspaceHandle,
 	MiniSnuggeryKdlWorkspaceHandle,
-} from './combined/kdl';
-import type {CombinedWorkspaceHandleFactory} from './combined/types';
-import {createTextFileHandle, WorkspaceHost} from './file';
-import type {MiniWorkspaceOptions} from './mini';
-import type {WorkspaceHandle} from './types';
+} from "./combined/kdl";
+import type {CombinedWorkspaceHandleFactory} from "./combined/types";
+import {createTextFileHandle, WorkspaceHost} from "./file";
+import type {MiniWorkspaceOptions} from "./mini";
+import type {WorkspaceHandle} from "./types";
 
 const knownTypes = new Map<string, CombinedWorkspaceHandleFactory>([
 	// Extend with own configuration when useful
-	['snuggery.kdl', SnuggeryKdlWorkspaceHandle],
-	['.snuggery.kdl', SnuggeryKdlWorkspaceHandle],
+	["snuggery.kdl", SnuggeryKdlWorkspaceHandle],
+	[".snuggery.kdl", SnuggeryKdlWorkspaceHandle],
 ]);
 
 export const workspaceFilenames = Array.from(knownTypes.keys());
-export const workspaceFileExtensions = ['.kdl'];
+export const workspaceFileExtensions = [".kdl"];
 
 export async function createCombinedWorkspaceHandle(
 	source: WorkspaceHost,

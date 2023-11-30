@@ -1,22 +1,22 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {ArchitectCommand} from '../../command/architect';
-import {formatMarkdownish} from '../../utils/format';
+import {ArchitectCommand} from "../../command/architect";
+import {formatMarkdownish} from "../../utils/format";
 
 export class HelpBuildersCommand extends ArchitectCommand {
-	static override readonly paths = [['help', 'builders']];
+	static override readonly paths = [["help", "builders"]];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about the builders of a package',
+		category: "Workspace information commands",
+		description: "Show information about the builders of a package",
 		examples: [
 			[
-				'List all builders in `@angular-devkit/build-angular`',
-				'$0 help builders @angular-devkit/build-angular',
+				"List all builders in `@angular-devkit/build-angular`",
+				"$0 help builders @angular-devkit/build-angular",
 			],
 			[
-				'List all builders in the `./tools/builders.json` file',
-				'$0 help builders ./tools/builders.json',
+				"List all builders in the `./tools/builders.json` file",
+				"$0 help builders ./tools/builders.json",
 			],
 		],
 	});

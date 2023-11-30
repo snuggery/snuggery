@@ -1,7 +1,7 @@
-import type {SchematicContext, Tree} from '@angular-devkit/schematics';
+import type {SchematicContext, Tree} from "@angular-devkit/schematics";
 
-import {Journey, getTree, registerGuide, getContext} from '../types';
-import {Map, WeakMap} from '../utils';
+import {Journey, getTree, registerGuide, getContext} from "../types";
+import {Map, WeakMap} from "../utils";
 
 export interface TreeVisitor {
 	(tree: Tree, context: SchematicContext): void | Promise<void>;

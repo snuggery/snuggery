@@ -1,54 +1,54 @@
-import {Cli, Command, RunContext} from 'clipanion';
+import {Cli, Command, RunContext} from "clipanion";
 
-import type {AbstractCommand} from './command/abstract-command';
-import type {Context} from './command/context';
-import {DoctorCommand} from './commands/doctor';
-import {EntryCommand} from './commands/entry';
-import {EntryWithProjectCommand} from './commands/entry-with-project';
-import {GenerateCommand} from './commands/generate';
-import {HelpCommand} from './commands/help';
-import {HelpBuilderCommand} from './commands/help/builder';
-import {HelpBuildersCommand} from './commands/help/builders';
-import {HelpMigrationsCommand} from './commands/help/migrations';
-import {HelpProjectCommand} from './commands/help/project';
-import {HelpProjectsCommand} from './commands/help/projects';
-import {HelpSchematicCommand} from './commands/help/schematic';
-import {HelpSchematicsCommand} from './commands/help/schematics';
-import {HelpTargetCommand} from './commands/help/target';
-import {HelpTargetsCommand} from './commands/help/targets';
-import {HelpUpdateCommand} from './commands/help/update';
-import {NewCommand} from './commands/new';
-import {ProjectCommand} from './commands/project';
-import {RunBuilderCommand} from './commands/run/builder';
-import {RunMigrationCommand} from './commands/run/migration';
-import {RunMigrationsCommand} from './commands/run/migrations';
-import {RunSchematicCommand} from './commands/run/schematic';
-import {RunTargetCommand} from './commands/run/target';
-import {RunUpdateCommand} from './commands/run/update';
-import {SyncConfigToCommand} from './commands/sync-config-to';
-import {VersionCommand} from './commands/version';
-import {Report} from './utils/report';
+import type {AbstractCommand} from "./command/abstract-command";
+import type {Context} from "./command/context";
+import {DoctorCommand} from "./commands/doctor";
+import {EntryCommand} from "./commands/entry";
+import {EntryWithProjectCommand} from "./commands/entry-with-project";
+import {GenerateCommand} from "./commands/generate";
+import {HelpCommand} from "./commands/help";
+import {HelpBuilderCommand} from "./commands/help/builder";
+import {HelpBuildersCommand} from "./commands/help/builders";
+import {HelpMigrationsCommand} from "./commands/help/migrations";
+import {HelpProjectCommand} from "./commands/help/project";
+import {HelpProjectsCommand} from "./commands/help/projects";
+import {HelpSchematicCommand} from "./commands/help/schematic";
+import {HelpSchematicsCommand} from "./commands/help/schematics";
+import {HelpTargetCommand} from "./commands/help/target";
+import {HelpTargetsCommand} from "./commands/help/targets";
+import {HelpUpdateCommand} from "./commands/help/update";
+import {NewCommand} from "./commands/new";
+import {ProjectCommand} from "./commands/project";
+import {RunBuilderCommand} from "./commands/run/builder";
+import {RunMigrationCommand} from "./commands/run/migration";
+import {RunMigrationsCommand} from "./commands/run/migrations";
+import {RunSchematicCommand} from "./commands/run/schematic";
+import {RunTargetCommand} from "./commands/run/target";
+import {RunUpdateCommand} from "./commands/run/update";
+import {SyncConfigToCommand} from "./commands/sync-config-to";
+import {VersionCommand} from "./commands/version";
+import {Report} from "./utils/report";
 
-export {workspaceFilenames} from '@snuggery/core';
+export {workspaceFilenames} from "@snuggery/core";
 
-export type {SnuggeryArchitectHost} from './architect';
-export {CliWorkspace, findWorkspace} from './command/context';
+export type {SnuggeryArchitectHost} from "./architect";
+export {CliWorkspace, findWorkspace} from "./command/context";
 
 export {Cli, Context};
 
-export const createArchitectHost: typeof import('./architect').createArchitectHost =
+export const createArchitectHost: typeof import("./architect").createArchitectHost =
 	(...args) => {
-		return require('./architect').createArchitectHost(...args);
+		return require("./architect").createArchitectHost(...args);
 	};
 
 export function run(
 	args: string[],
-	context: RunContext<Omit<Context, 'report' | 'startArgs'>>,
+	context: RunContext<Omit<Context, "report" | "startArgs">>,
 ): Promise<number> {
 	const cli = new Cli<Context>({
-		binaryLabel: 'Snuggery',
-		binaryName: 'sn',
-		binaryVersion: require('@snuggery/snuggery/package.json').version,
+		binaryLabel: "Snuggery",
+		binaryName: "sn",
+		binaryVersion: require("@snuggery/snuggery/package.json").version,
 		enableColors: context.colorDepth ? context.colorDepth > 1 : undefined,
 	});
 

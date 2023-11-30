@@ -1,16 +1,16 @@
-import {logging} from '@angular-devkit/core';
-import type {BuilderOutput} from '@snuggery/architect';
-import type {Observable} from 'rxjs';
+import {logging} from "@angular-devkit/core";
+import type {BuilderOutput} from "@snuggery/architect";
+import type {Observable} from "rxjs";
 
-import {ChildArchitect} from './architect';
+import {ChildArchitect} from "./architect";
 import {
 	ChildBuilderOutputMessage,
 	ChildLoggingMessage,
 	ChildMessageType,
 	Message,
 	MessageType,
-} from './shared';
-import {ChildMessage, SpawnChildMessageType} from './spawn';
+} from "./shared";
+import {ChildMessage, SpawnChildMessageType} from "./spawn";
 
 const workspaceRoot = process.argv[2]!;
 
@@ -21,10 +21,10 @@ if (process.send == null) {
 
 const architect = new ChildArchitect(workspaceRoot);
 
-process.on('message', (message: Message) => {
+process.on("message", (message: Message) => {
 	let obs: Observable<BuilderOutput>;
 
-	const logger = new logging.Logger('child');
+	const logger = new logging.Logger("child");
 
 	switch (message.type) {
 		case MessageType.ScheduleBuilder:

@@ -1,15 +1,15 @@
-import {Document, format, InvalidKdlError, Node, parse} from '@bgotink/kdl';
+import {Document, format, InvalidKdlError, Node, parse} from "@bgotink/kdl";
 
-import type {TextFileHandle} from '../../file';
-import {Change, makeCombinedTracker} from '../../proxy';
-import type {FileHandle, FileHandleContext} from '../../split/file/types';
-import {InvalidConfigurationError, JsonObject} from '../../types';
+import type {TextFileHandle} from "../../file";
+import {Change, makeCombinedTracker} from "../../proxy";
+import type {FileHandle, FileHandleContext} from "../../split/file/types";
+import {InvalidConfigurationError, JsonObject} from "../../types";
 
-export const arrayItemKey = '-';
+export const arrayItemKey = "-";
 
-export const implicitPropertyKey = '$implicit';
+export const implicitPropertyKey = "$implicit";
 
-export const tagOverwrite = 'overwrite';
+export const tagOverwrite = "overwrite";
 
 export function isChildOf(parent: Node | Document, child: Node) {
 	return (
@@ -26,11 +26,11 @@ export function setTag(tag: string | null, node: Node) {
 
 function formatHeader(header?: string | string[]) {
 	if (header == null) {
-		return '';
+		return "";
 	}
 
 	if (Array.isArray(header)) {
-		return `/*\n${header.map((line) => ` * ${line}`).join('\n')}\n */\n`;
+		return `/*\n${header.map((line) => ` * ${line}`).join("\n")}\n */\n`;
 	}
 
 	return `// ${header}\n`;
@@ -132,7 +132,7 @@ export abstract class AbstractKdlWorkspaceFileHandle implements FileHandle {
 		updater: (value: JsonObject) => void | Promise<void>,
 	): Promise<void> {
 		if (this.#context.updateReady != null) {
-			throw new Error('Configuration is already being updated');
+			throw new Error("Configuration is already being updated");
 		}
 
 		let markReady: () => void;
@@ -191,7 +191,7 @@ async function expandDocument(
 ): Promise<Document> {
 	allDocuments?.push(document);
 
-	const imports = document.nodes.filter((node) => node.getTag() === 'import');
+	const imports = document.nodes.filter((node) => node.getTag() === "import");
 	if (imports.length === 0) {
 		return document;
 	}
@@ -202,7 +202,7 @@ async function expandDocument(
 				const path = importNode.getName();
 				// Node package names can't start with . and relative paths have to start
 				// with . (./, ../, .\ and ..\)
-				const importedHandle = path.startsWith('.')
+				const importedHandle = path.startsWith(".")
 					? await handle.openRelative(path)
 					: await handle.openDependency(path);
 

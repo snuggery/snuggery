@@ -7,14 +7,14 @@
  * Licensed under the MIT License, https://github.com/angular/angular-cli/blob/9fafb2e1251f6790392a1f9c84854086c85d2191/LICENSE
  */
 
-import {PartiallyOrderedSet, schema} from '@angular-devkit/core';
-import type {JsonObject, JsonValue} from '@snuggery/core';
-import Ajv, {SchemaObjCxt, ValidateFunction} from 'ajv';
-import ajvAddFormats from 'ajv-formats';
-import http from 'node:http';
-import https from 'node:https';
-import {resolve as resolveUrl} from 'node:url';
-import {Observable, from, isObservable, throwError, firstValueFrom} from 'rxjs';
+import {PartiallyOrderedSet, schema} from "@angular-devkit/core";
+import type {JsonObject, JsonValue} from "@snuggery/core";
+import Ajv, {SchemaObjCxt, ValidateFunction} from "ajv";
+import ajvAddFormats from "ajv-formats";
+import http from "node:http";
+import https from "node:https";
+import {resolve as resolveUrl} from "node:url";
+import {Observable, from, isObservable, throwError, firstValueFrom} from "rxjs";
 
 export type UriHandler = (
 	uri: string,
@@ -66,7 +66,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 
 	// cspell:ignore ɵflatten
 	ɵflatten(): Promise<JsonObject> {
-		throw new Error('Method not implemented.');
+		throw new Error("Method not implemented.");
 	}
 
 	async #fetch(uri: string): Promise<JsonObject> {
@@ -95,7 +95,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		// If none are found, handle using http client.
 		const result = new Promise<JsonObject>((resolve, reject) => {
 			const url = new URL(uri);
-			const client = url.protocol === 'https:' ? https : http;
+			const client = url.protocol === "https:" ? https : http;
 			client.get(url, (res) => {
 				if (!res.statusCode || res.statusCode >= 300) {
 					// Consume the rest of the data to free memory.
@@ -106,12 +106,12 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 						),
 					);
 				} else {
-					res.setEncoding('utf8');
-					let data = '';
-					res.on('data', (chunk) => {
+					res.setEncoding("utf8");
+					let data = "";
+					res.on("data", (chunk) => {
 						data += chunk;
 					});
-					res.on('end', () => {
+					res.on("end", () => {
 						try {
 							resolve(JSON.parse(data));
 						} catch (err) {
@@ -154,13 +154,13 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		}
 
 		const schema = validate.schemaEnv.root.schema;
-		const id = typeof schema === 'object' ? schema.$id : null;
+		const id = typeof schema === "object" ? schema.$id : null;
 
 		let fullReference = ref;
-		if (typeof id === 'string') {
+		if (typeof id === "string") {
 			fullReference = resolveUrl(id, ref);
 
-			if (ref.startsWith('#')) {
+			if (ref.startsWith("#")) {
 				fullReference = id + fullReference;
 			}
 		}
@@ -184,7 +184,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 	 * See: https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.appendix.B.2
 	 */
 	flatten(): Observable<JsonObject> {
-		return throwError(new Error('SchemaRegistry#flatten is not supported'));
+		return throwError(new Error("SchemaRegistry#flatten is not supported"));
 	}
 
 	/**
@@ -195,7 +195,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 	 * @returns An Observable of the Validation function.
 	 */
 	async compile(schema: schema.JsonSchema): Promise<CompiledSchema> {
-		if (typeof schema === 'boolean') {
+		if (typeof schema === "boolean") {
 			return Object.assign(
 				async (data: JsonValue) => ({success: schema, data}),
 				{
@@ -271,7 +271,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 
 					return value;
 				};
-				if (typeof schema === 'object') {
+				if (typeof schema === "object") {
 					await visitJson(
 						data,
 						visitor,
@@ -373,7 +373,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		}
 
 		this.#ajv.addKeyword({
-			keyword: '$default',
+			keyword: "$default",
 			errors: false,
 			valid: true,
 			compile: (schema, _parentSchema, it) => {
@@ -392,12 +392,12 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 				return () => true;
 			},
 			metaSchema: {
-				type: 'object',
+				type: "object",
 				properties: {
-					$source: {type: 'string'},
+					$source: {type: "string"},
 				},
 				additionalProperties: true,
-				required: ['$source'],
+				required: ["$source"],
 			},
 		});
 	}
@@ -415,7 +415,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		}
 
 		this.#ajv.addKeyword({
-			keyword: 'x-prompt',
+			keyword: "x-prompt",
 			errors: false,
 			valid: true,
 			compile: (schema, parentSchema, it) => {
@@ -424,14 +424,14 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 					return () => true;
 				}
 
-				const path = '/' + normalizeDataPathArr(it).join('/');
+				const path = "/" + normalizeDataPathArr(it).join("/");
 
 				let type: string | undefined;
 				let items:
 					| Array<string | {label: string; value: string | number | boolean}>
 					| undefined;
 				let message: string;
-				if (typeof schema == 'string') {
+				if (typeof schema == "string") {
 					message = schema;
 				} else {
 					message = schema.message;
@@ -441,29 +441,29 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 
 				const propertyTypes = getTypesOfSchema(parentSchema as JsonObject);
 				if (!type) {
-					if (propertyTypes.size === 1 && propertyTypes.has('boolean')) {
-						type = 'confirmation';
+					if (propertyTypes.size === 1 && propertyTypes.has("boolean")) {
+						type = "confirmation";
 					} else if (Array.isArray((parentSchema as JsonObject).enum)) {
-						type = 'list';
+						type = "list";
 					} else if (
 						propertyTypes.size === 1 &&
-						propertyTypes.has('array') &&
+						propertyTypes.has("array") &&
 						(parentSchema as JsonObject).items &&
 						Array.isArray(
 							((parentSchema as JsonObject).items as JsonObject).enum,
 						)
 					) {
-						type = 'list';
+						type = "list";
 					} else {
-						type = 'input';
+						type = "input";
 					}
 				}
 
 				let multiselect;
-				if (type === 'list') {
+				if (type === "list") {
 					multiselect =
 						schema.multiselect === undefined
-							? propertyTypes.size === 1 && propertyTypes.has('array')
+							? propertyTypes.size === 1 && propertyTypes.has("array")
 							: schema.multiselect;
 
 					const enumValues = multiselect
@@ -473,9 +473,9 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 					if (!items && Array.isArray(enumValues)) {
 						items = [];
 						for (const value of enumValues) {
-							if (typeof value == 'string') {
+							if (typeof value == "string") {
 								items.push(value);
-							} else if (typeof value == 'object') {
+							} else if (typeof value == "object") {
 								// Invalid
 							} else {
 								items.push({label: value.toString(), value});
@@ -493,7 +493,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 					multiselect,
 					propertyTypes,
 					default:
-						typeof (parentSchema as JsonObject).default == 'object' &&
+						typeof (parentSchema as JsonObject).default == "object" &&
 						(parentSchema as JsonObject).default !== null &&
 						!Array.isArray((parentSchema as JsonObject).default)
 							? undefined
@@ -545,15 +545,15 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 			},
 			metaSchema: {
 				oneOf: [
-					{type: 'string'},
+					{type: "string"},
 					{
-						type: 'object',
+						type: "object",
 						properties: {
-							type: {type: 'string'},
-							message: {type: 'string'},
+							type: {type: "string"},
+							message: {type: "string"},
 						},
 						additionalProperties: true,
-						required: ['message'],
+						required: ["message"],
 					},
 				],
 			},
@@ -571,7 +571,7 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 
 		const answers = await from(provider(prompts)).toPromise();
 		for (const path in answers) {
-			const pathFragments = path.split('/').slice(1);
+			const pathFragments = path.split("/").slice(1);
 
 			SchemaRegistry.#set(
 				data,
@@ -660,12 +660,12 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 		}
 
 		this.#ajv.addKeyword({
-			keyword: 'x-deprecated',
+			keyword: "x-deprecated",
 			validate: (schema, _data, _parentSchema, dataCxt) => {
 				if (schema) {
 					this.#deprecationLogger!(
 						`Option "${dataCxt?.parentDataProperty}" is deprecated${
-							typeof schema == 'string' ? ': ' + schema : '.'
+							typeof schema == "string" ? ": " + schema : "."
 						}`,
 					);
 				}
@@ -680,5 +680,5 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 function normalizeDataPathArr(it: SchemaObjCxt): (number | string)[] {
 	return it.dataPathArr
 		.slice(1, it.dataLevel + 1)
-		.map((p) => (typeof p === 'number' ? p : p.str.replace(/"/g, '')));
+		.map((p) => (typeof p === "number" ? p : p.str.replace(/"/g, "")));
 }

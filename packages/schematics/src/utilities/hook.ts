@@ -1,9 +1,9 @@
-import {externalSchematic, type Rule} from '@angular-devkit/schematics';
-import type {JsonObject} from '@snuggery/core';
+import {externalSchematic, type Rule} from "@angular-devkit/schematics";
+import type {JsonObject} from "@snuggery/core";
 
-import type {Hook} from '../schematics/hook/schema';
+import type {Hook} from "../schematics/hook/schema";
 
-import {updateWorkspace} from './workspace';
+import {updateWorkspace} from "./workspace";
 
 /**
  * Run all hooks for the given schematics
@@ -18,8 +18,8 @@ export function runHooks(
 	scope?: string,
 ): Rule {
 	return externalSchematic(
-		'@snuggery/schematics',
-		'hook',
+		"@snuggery/schematics",
+		"hook",
 		{schematic, options},
 		{scope},
 	);
@@ -39,13 +39,13 @@ export function registerHook(schematic: string, hook: Hook): Rule {
 
 		const schematics = workspace.extensions.schematics as JsonObject;
 
-		if (schematics['@snuggery/schematics:hook'] == null) {
-			schematics['@snuggery/schematics:hook'] = Object.create(
+		if (schematics["@snuggery/schematics:hook"] == null) {
+			schematics["@snuggery/schematics:hook"] = Object.create(
 				null,
 			) as JsonObject;
 		}
 
-		const hookConfig = schematics['@snuggery/schematics:hook'] as {
+		const hookConfig = schematics["@snuggery/schematics:hook"] as {
 			hooks?: {[schematic: string]: Hook[]};
 		};
 

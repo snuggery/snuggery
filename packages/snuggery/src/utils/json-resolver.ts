@@ -1,8 +1,8 @@
-import {isJsonObject, type JsonObject} from '@snuggery/core';
-import {createRequire} from 'module';
-import {join} from 'path';
+import {isJsonObject, type JsonObject} from "@snuggery/core";
+import {createRequire} from "module";
+import {join} from "path";
 
-import {AbstractError} from './error';
+import {AbstractError} from "./error";
 
 export class CyclicDependencyError extends AbstractError {
 	constructor(
@@ -13,7 +13,7 @@ export class CyclicDependencyError extends AbstractError {
 		super(
 			`Cycle while loading ${angularKey} for ${originalRequest}: ${Array.from(
 				seenPaths,
-			).join(', ')}`,
+			).join(", ")}`,
 		);
 	}
 }
@@ -49,7 +49,7 @@ function loadJsonStep(
 		jsonPath = require.resolve(`./${request}`);
 	} catch {
 		try {
-			jsonPath = require.resolve(join(request, 'package.json'));
+			jsonPath = require.resolve(join(request, "package.json"));
 		} catch {
 			try {
 				jsonPath = require.resolve(request);
@@ -68,7 +68,7 @@ function loadJsonStep(
 
 	const {[angularKey]: angularProperty, [nxKey]: nxProperty} = json;
 
-	if (typeof angularProperty === 'string') {
+	if (typeof angularProperty === "string") {
 		return loadJsonStep(
 			jsonPath,
 			angularProperty,
@@ -96,9 +96,9 @@ export function loadJson(
 	angularKey: string,
 	nxKey: string,
 ): [content: JsonObject, path: string] {
-	if (typeof from === 'string') {
+	if (typeof from === "string") {
 		return loadJsonStep(
-			join(from, '<workspace>'),
+			join(from, "<workspace>"),
 			request,
 			angularKey,
 			nxKey,
@@ -110,7 +110,7 @@ export function loadJson(
 	for (const f of from) {
 		try {
 			return loadJsonStep(
-				join(f, '<workspace>'),
+				join(f, "<workspace>"),
 				request,
 				angularKey,
 				nxKey,

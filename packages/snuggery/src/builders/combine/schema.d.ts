@@ -1,7 +1,7 @@
-import {TargetSpecifier as SingleTarget} from '@snuggery/architect';
-import {JsonObject} from '@snuggery/core';
+import {TargetSpecifier as SingleTarget} from "@snuggery/architect";
+import {JsonObject} from "@snuggery/core";
 
-import {SchedulerType, Type} from './types';
+import {SchedulerType, Type} from "./types";
 
 export interface SerialOptions {
 	type: Type.Serial;

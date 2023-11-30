@@ -1,4 +1,4 @@
-import {BuildFailureError} from './error.js';
+import {BuildFailureError} from "./error.js";
 
 /**
  * A plugin for the `@snuggery/build-angular` library compiler
@@ -159,7 +159,7 @@ export function createPlugin(logger, name, factory, ...input) {
 			(context) => {
 				const result = wrappedFn(context);
 
-				if (typeof result === 'function') {
+				if (typeof result === "function") {
 					return wrap(result, undefined);
 				}
 

@@ -1,42 +1,42 @@
-import {Option, UsageError} from 'clipanion';
-import * as t from 'typanion';
+import {Option, UsageError} from "clipanion";
+import * as t from "typanion";
 
-import {MigrationCommand} from '../../command/migration';
-import {formatMarkdownish} from '../../utils/format';
-import {isSemVer} from '../../utils/typanion';
+import {MigrationCommand} from "../../command/migration";
+import {formatMarkdownish} from "../../utils/format";
+import {isSemVer} from "../../utils/typanion";
 
 export class HelpMigrationsCommand extends MigrationCommand {
-	static override readonly paths = [['help', 'migrations']];
+	static override readonly paths = [["help", "migrations"]];
 
 	static override readonly schema = [
-		t.hasKeyRelationship('to', t.KeyRelationship.Requires, ['from'], {
-			ignore: ['', undefined],
+		t.hasKeyRelationship("to", t.KeyRelationship.Requires, ["from"], {
+			ignore: ["", undefined],
 		}),
 	];
 
 	static override readonly usage = MigrationCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about migrations for a package',
+		category: "Workspace information commands",
+		description: "Show information about migrations for a package",
 		examples: [
 			[
-				'Print information about the migrations in `@schematics/angular`',
-				'$0 help migrations @schematics/angular',
+				"Print information about the migrations in `@schematics/angular`",
+				"$0 help migrations @schematics/angular",
 			],
 			[
-				'Print information about the migrations in `@schematics/angular` from 9.0.0 up to the installed version',
-				'$0 help migrations @schematics/angular --from 9.0.0',
+				"Print information about the migrations in `@schematics/angular` from 9.0.0 up to the installed version",
+				"$0 help migrations @schematics/angular --from 9.0.0",
 			],
 		],
 	});
 
-	from = Option.String('--from', {
-		description: 'The version from which to start listing migrations',
+	from = Option.String("--from", {
+		description: "The version from which to start listing migrations",
 		validator: isSemVer(),
 	});
 
-	to = Option.String('--to', {
+	to = Option.String("--to", {
 		description:
-			'The highest version to include in the listed migrations, can only be set if `--from` is set',
+			"The highest version to include in the listed migrations, can only be set if `--from` is set",
 		validator: isSemVer(),
 	});
 
@@ -79,13 +79,13 @@ export class HelpMigrationsCommand extends MigrationCommand {
 				);
 			}
 
-			const {default: gt} = await import('semver/functions/gt.js');
+			const {default: gt} = await import("semver/functions/gt.js");
 			if (currentVersion != null && gt(toVersion, currentVersion)) {
 				// Angular has the tendency to declare migrations on the stable version even if
 				// the migrations should run on pre-releases as well, so running migrations on
 				// pre-release versions
-				const {default: diff} = await import('semver/functions/diff.js');
-				if (!diff(toVersion, currentVersion)?.startsWith('pre')) {
+				const {default: diff} = await import("semver/functions/diff.js");
+				if (!diff(toVersion, currentVersion)?.startsWith("pre")) {
 					throw new UsageError(
 						`Limit ${toVersion} is higher than the installed version ${currentVersion}`,
 					);
@@ -120,7 +120,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 					if (e instanceof Error) {
 						error = this.prettifyError(e);
 					} else {
-						error = new Error(String(typeof e === 'symbol' ? e.toString() : e));
+						error = new Error(String(typeof e === "symbol" ? e.toString() : e));
 					}
 
 					return {name, error};
@@ -132,7 +132,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 					`Migrations for \`${this.package}\` (${
 						currentVersion
 							? `currently at \`${currentVersion}\``
-							: 'version number not found'
+							: "version number not found"
 					}):`,
 					{
 						format,
@@ -145,7 +145,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 		report.reportSeparator();
 
 		for (const schematic of schematics) {
-			if ('error' in schematic && schematic.error != null) {
+			if ("error" in schematic && schematic.error != null) {
 				report.reportInfo(
 					formatMarkdownish(`- \`${schematic.name}\``, {
 						format,
@@ -170,7 +170,7 @@ export class HelpMigrationsCommand extends MigrationCommand {
 					formatMarkdownish(
 						schematic.version
 							? `Version \`${schematic.version}\``
-							: 'Not linked to a version',
+							: "Not linked to a version",
 						{
 							format,
 							maxLineLength: Infinity,

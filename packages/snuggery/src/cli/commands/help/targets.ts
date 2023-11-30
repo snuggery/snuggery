@@ -1,12 +1,12 @@
-import {ArchitectCommand} from '../../command/architect';
-import {formatMarkdownish} from '../../utils/format';
+import {ArchitectCommand} from "../../command/architect";
+import {formatMarkdownish} from "../../utils/format";
 
 export class HelpTargetsCommand extends ArchitectCommand {
-	static override readonly paths = [['help', 'targets']];
+	static override readonly paths = [["help", "targets"]];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about all available targets',
+		category: "Workspace information commands",
+		description: "Show information about all available targets",
 	});
 
 	async execute(): Promise<void> {
@@ -22,17 +22,17 @@ export class HelpTargetsCommand extends ArchitectCommand {
 		} = this;
 
 		report.reportInfo(
-			'The following targets are available for execution without specifying a project.\n',
+			"The following targets are available for execution without specifying a project.\n",
 		);
 		report.reportInfo(`  $ ${this.cli.binaryName} help target <target name>\n`);
-		report.reportInfo('e.g.\n');
+		report.reportInfo("e.g.\n");
 		report.reportInfo(`  $ ${this.cli.binaryName} help target build\n`);
 
-		report.reportInfo(`${format.bold('Current project:')}\n`);
+		report.reportInfo(`${format.bold("Current project:")}\n`);
 
 		if (currentProject == null) {
 			report.reportInfo(
-				'The current working directory is not inside a project.\n',
+				"The current working directory is not inside a project.\n",
 			);
 		} else {
 			const project = workspace.getProjectByName(currentProject);
@@ -44,7 +44,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 			if (project.targets.size === 0) {
 				report.reportInfo("It doesn't have any targets.");
 			} else {
-				report.reportInfo('It exposes the following targets:\n');
+				report.reportInfo("It exposes the following targets:\n");
 
 				for (const target of project.targets.keys()) {
 					report.reportInfo(`- \`${format.code(target)}\``);
@@ -55,7 +55,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 			report.reportSeparator();
 		}
 
-		report.reportInfo(`${format.bold('Default project:')}\n`);
+		report.reportInfo(`${format.bold("Default project:")}\n`);
 
 		if (defaultProject == null) {
 			report.reportInfo("There's no default project in this workspace.\n");
@@ -90,7 +90,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 					);
 					report.reportSeparator();
 				} else {
-					report.reportInfo('It exposes the following targets:\n');
+					report.reportInfo("It exposes the following targets:\n");
 
 					for (const target of availableTargets) {
 						report.reportInfo(`- \`${format.code(target)}\``);
@@ -111,10 +111,10 @@ export class HelpTargetsCommand extends ArchitectCommand {
 			}
 		}
 
-		report.reportInfo(`${format.bold('Unique targets:')}\n`);
+		report.reportInfo(`${format.bold("Unique targets:")}\n`);
 
 		if (uniqueTargets.size === 0) {
-			report.reportInfo('There are no unique targets in this workspace.\n');
+			report.reportInfo("There are no unique targets in this workspace.\n");
 		} else {
 			const leftOverUniqueTargets = Array.from(uniqueTargets.keys()).filter(
 				(target) => !printedTargets.has(target),
@@ -122,11 +122,11 @@ export class HelpTargetsCommand extends ArchitectCommand {
 
 			if (leftOverUniqueTargets.length === 0) {
 				report.reportInfo(
-					'All unique targets are part of the current project and/or default project.\n',
+					"All unique targets are part of the current project and/or default project.\n",
 				);
 			} else {
 				report.reportInfo(
-					'The following unique targets are available in the workspace:\n',
+					"The following unique targets are available in the workspace:\n",
 				);
 
 				for (const target of leftOverUniqueTargets) {
@@ -137,7 +137,7 @@ export class HelpTargetsCommand extends ArchitectCommand {
 
 				if (leftOverUniqueTargets.length !== uniqueTargets.size) {
 					report.reportInfo(
-						'Some unique targets are part of the current project and/or default project.\n',
+						"Some unique targets are part of the current project and/or default project.\n",
 					);
 				}
 			}

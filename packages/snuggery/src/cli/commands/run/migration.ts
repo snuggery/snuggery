@@ -1,16 +1,16 @@
-import {Option, UsageError} from 'clipanion';
-import type SemVer from 'semver/classes/semver.js';
+import {Option, UsageError} from "clipanion";
+import type SemVer from "semver/classes/semver.js";
 
-import {MigrationCollection, MigrationCommand} from '../../command/migration';
-import {formatMarkdownish} from '../../utils/format';
-import {isSemVer} from '../../utils/typanion';
+import {MigrationCollection, MigrationCommand} from "../../command/migration";
+import {formatMarkdownish} from "../../utils/format";
+import {isSemVer} from "../../utils/typanion";
 
 export class RunMigrationCommand extends MigrationCommand {
-	static override readonly paths = [['run', 'migration']];
+	static override readonly paths = [["run", "migration"]];
 
 	static override readonly usage = MigrationCommand.Usage({
-		category: 'Update commands',
-		description: 'Run migration(s) of a package',
+		category: "Update commands",
+		description: "Run migration(s) of a package",
 		details: `
  This command migrates a package from an older version to the currently installed version by running schematics.
 
@@ -24,12 +24,12 @@ export class RunMigrationCommand extends MigrationCommand {
  `,
 		examples: [
 			[
-				'Run all migrations in `@angular/material` between versions `10.0.2` (exclusive) and `11.0.0` (inclusive)',
-				'$0 run migration @angular/material --from 10.0.2 --to 11.0.0',
+				"Run all migrations in `@angular/material` between versions `10.0.2` (exclusive) and `11.0.0` (inclusive)",
+				"$0 run migration @angular/material --from 10.0.2 --to 11.0.0",
 			],
 			[
-				'Run the `rename-browserslist-config` migration of the `@angular/cli` package',
-				'$0 run migration @angular/cli --name rename-browserslist-config',
+				"Run the `rename-browserslist-config` migration of the `@angular/cli` package",
+				"$0 run migration @angular/cli --name rename-browserslist-config",
 			],
 		],
 	});
@@ -51,22 +51,22 @@ export class RunMigrationCommand extends MigrationCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	override help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean("--help,-h", false, {hidden: true});
 
-	dryRun = Option.Boolean('--dry-run', false, {
-		description: 'Run the schematics without writing the results to disk',
+	dryRun = Option.Boolean("--dry-run", false, {
+		description: "Run the schematics without writing the results to disk",
 	});
 
-	force = Option.Boolean('--force', false, {
-		description: 'Write the results to disk even if there are conflicts',
+	force = Option.Boolean("--force", false, {
+		description: "Write the results to disk even if there are conflicts",
 	});
 
-	showFileChanges = Option.Boolean('--show-file-changes', false, {
-		description: 'Print an overview of all file changes made by the schematic',
+	showFileChanges = Option.Boolean("--show-file-changes", false, {
+		description: "Print an overview of all file changes made by the schematic",
 	});
 
 	ignoreMissingMigrations = Option.Boolean(
-		'--ignore-missing-migrations',
+		"--ignore-missing-migrations",
 		false,
 		{
 			description:
@@ -74,17 +74,17 @@ export class RunMigrationCommand extends MigrationCommand {
 		},
 	);
 
-	name = Option.String('--name', {
-		description: 'Name of the migration to run',
+	name = Option.String("--name", {
+		description: "Name of the migration to run",
 	});
 
-	from = Option.String('--from', {
-		description: 'The version to migrate from',
+	from = Option.String("--from", {
+		description: "The version to migrate from",
 		validator: isSemVer(),
 	});
 
-	to = Option.String('--to', {
-		description: 'The version to migrate to, defaults to the installed version',
+	to = Option.String("--to", {
+		description: "The version to migrate to, defaults to the installed version",
 		validator: isSemVer(),
 	});
 
@@ -117,14 +117,14 @@ export class RunMigrationCommand extends MigrationCommand {
 		}
 
 		if (this.name && this.from) {
-			throw new UsageError('Use only one of `--from` or `--name`');
+			throw new UsageError("Use only one of `--from` or `--name`");
 		} else if (this.name) {
 			return this.#executeName(collection, this.name);
 		} else if (this.from) {
 			return this.#executeFrom(collection, this.from);
 		} else {
 			throw new UsageError(
-				'Add one of `--name` or `--from` to run migrations, add `--help` for more information',
+				"Add one of `--name` or `--from` to run migrations, add `--help` for more information",
 			);
 		}
 	}
@@ -178,7 +178,7 @@ export class RunMigrationCommand extends MigrationCommand {
 		this.report.reportInfo(
 			formatMarkdownish(
 				`Running ${includedSchematics.length} migration${
-					includedSchematics.length > 1 ? 's' : ''
+					includedSchematics.length > 1 ? "s" : ""
 				} in package \`${this.package}\``,
 				{
 					format: this.format,

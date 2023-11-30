@@ -1,11 +1,11 @@
 /* cspell:ignore outdir */
 
-import {build} from 'esbuild';
-import {writeFile} from 'node:fs/promises';
-import {tmpdir} from 'node:os';
-import {relative, extname, join} from 'node:path';
+import {build} from "esbuild";
+import {writeFile} from "node:fs/promises";
+import {tmpdir} from "node:os";
+import {relative, extname, join} from "node:path";
 
-import {BuildFailureError} from '../error.js';
+import {BuildFailureError} from "../error.js";
 
 /**
  * @typedef {object} FlattenCodeInput
@@ -26,7 +26,7 @@ function resolveOnlySelf(entryPoints) {
 	);
 
 	return {
-		name: 'mark-externals',
+		name: "mark-externals",
 		setup(build) {
 			build.onResolve(
 				{
@@ -84,8 +84,8 @@ let fakeTsConfig;
 export async function flattenCode(context, input) {
 	try {
 		if (fakeTsConfig == null) {
-			const tmpPath = join(tmpdir(), 'tsconfig.empty.json');
-			fakeTsConfig = writeFile(tmpPath, '{}').then(() => tmpPath);
+			const tmpPath = join(tmpdir(), "tsconfig.empty.json");
+			fakeTsConfig = writeFile(tmpPath, "{}").then(() => tmpPath);
 		}
 
 		await build({
@@ -103,18 +103,18 @@ export async function flattenCode(context, input) {
 			splitting: true,
 			write: true,
 			target: [input.target],
-			format: 'esm',
+			format: "esm",
 			plugins: [
 				resolveOnlySelf(context.entryPoints),
 				...context.plugins.map((plugin) => plugin.esbuildPlugin),
 			],
-			sourcemap: 'linked',
+			sourcemap: "linked",
 			outdir: input.outputFolder,
 
 			tsconfig: await fakeTsConfig,
 		});
 	} catch {
 		// error details are already logged by esbuild
-		throw new BuildFailureError('Flattening code failed');
+		throw new BuildFailureError("Flattening code failed");
 	}
 }

@@ -3,11 +3,11 @@ import {
 	BuildFailureError,
 	getProjectPath,
 	resolveWorkspacePath,
-} from '@snuggery/architect';
+} from "@snuggery/architect";
 
-import {loadYarn, snuggeryPluginName} from '../../utils/yarn';
+import {loadYarn, snuggeryPluginName} from "../../utils/yarn";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 export async function executePack(
 	{directory, useWorkspacePlugin}: Schema,

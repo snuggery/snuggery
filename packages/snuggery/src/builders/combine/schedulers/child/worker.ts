@@ -1,8 +1,8 @@
-import type {logging} from '@angular-devkit/core';
-import type {BuilderOutput} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import {Observable} from 'rxjs';
-import {MessageChannel, MessagePort, Worker} from 'worker_threads';
+import type {logging} from "@angular-devkit/core";
+import type {BuilderOutput} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import {Observable} from "rxjs";
+import {MessageChannel, MessagePort, Worker} from "worker_threads";
 
 import {
 	Child,
@@ -11,7 +11,7 @@ import {
 	ExecuteBuilderMessage as _ExecuteBuilderMessage,
 	ExecuteTargetMessage as _ExecuteTargetMessage,
 	MessageType,
-} from './shared';
+} from "./shared";
 
 export interface ExecuteTargetMessage extends _ExecuteTargetMessage {
 	port: MessagePort;
@@ -30,8 +30,8 @@ function messagesToObservable(
 	return new Observable((observer) => {
 		const port = createPort();
 
-		port.on('close', () => observer.complete());
-		port.on('message', (message: ChildMessage) => {
+		port.on("close", () => observer.complete());
+		port.on("message", (message: ChildMessage) => {
 			switch (message.type) {
 				case ChildMessageType.Output:
 					observer.next(message.output);
@@ -56,7 +56,7 @@ export class WorkerChild extends Child {
 	public constructor(workspaceRoot: string, logger: logging.Logger) {
 		super(workspaceRoot, logger);
 
-		this.#thread = new Worker(require.resolve('./worked.js'), {
+		this.#thread = new Worker(require.resolve("./worked.js"), {
 			workerData: {workspaceRoot},
 		});
 	}

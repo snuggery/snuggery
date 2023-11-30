@@ -1,4 +1,4 @@
-import {BaseCommand} from '@yarnpkg/cli';
+import {BaseCommand} from "@yarnpkg/cli";
 import {
 	Configuration,
 	formatUtils,
@@ -7,17 +7,17 @@ import {
 	Project,
 	StreamReport,
 	structUtils,
-} from '@yarnpkg/core';
-import {Filename, npath, ppath, xfs} from '@yarnpkg/fslib';
-import {packUtils} from '@yarnpkg/plugin-pack';
-import {Option} from 'clipanion';
+} from "@yarnpkg/core";
+import {Filename, npath, ppath, xfs} from "@yarnpkg/fslib";
+import {packUtils} from "@yarnpkg/plugin-pack";
+import {Option} from "clipanion";
 
-import {createPublishWorkspace} from '../../utils';
+import {createPublishWorkspace} from "../../utils";
 
 export class PackCommand extends BaseCommand {
-	static override paths = [['snuggery-workspace', 'pack']];
+	static override paths = [["snuggery-workspace", "pack"]];
 
-	json = Option.Boolean('--json');
+	json = Option.Boolean("--json");
 
 	directory = Option.String({required: true});
 
@@ -58,7 +58,7 @@ export class PackCommand extends BaseCommand {
 					return;
 				}
 
-				const dist = ppath.join(project.cwd, 'dist' as Filename);
+				const dist = ppath.join(project.cwd, "dist" as Filename);
 				await xfs.mkdirPromise(dist, {recursive: true});
 
 				await project.restoreInstallState();

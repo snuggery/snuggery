@@ -1,8 +1,8 @@
-import {posix} from 'path';
+import {posix} from "path";
 
-import {SetMap} from '../../utils/collections';
+import {SetMap} from "../../utils/collections";
 
-import type {DoctorContext} from './context';
+import type {DoctorContext} from "./context";
 
 export function checkProjectsWithSameRoot({workspace, report}: DoctorContext) {
 	const projectPathToName = new SetMap<string, string>();
@@ -15,7 +15,7 @@ export function checkProjectsWithSameRoot({workspace, report}: DoctorContext) {
 		if (names.size !== 1) {
 			report.reportError(
 				`Projects ${Array.from(names, (name) => JSON.stringify(name)).join(
-					', ',
+					", ",
 				)} have the same root: ${JSON.stringify(path)}`,
 			);
 		}

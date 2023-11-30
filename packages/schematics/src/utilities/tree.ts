@@ -1,13 +1,13 @@
-import {fragment} from '@angular-devkit/core';
-import type {DirEntry, Tree} from '@angular-devkit/schematics';
-import {matchesPatterns} from '@snuggery/core';
-import mkIgnore from 'ignore';
-import {join} from 'node:path/posix';
+import {fragment} from "@angular-devkit/core";
+import type {DirEntry, Tree} from "@angular-devkit/schematics";
+import {matchesPatterns} from "@snuggery/core";
+import mkIgnore from "ignore";
+import {join} from "node:path/posix";
 
 export function* walkTree(
 	tree: Tree,
 	{
-		include = '**/*',
+		include = "**/*",
 		exclude,
 	}: {include?: string | string[]; exclude?: string | string[]} = {},
 ): Generator<string> {
@@ -23,7 +23,7 @@ export function* walkTree(
 	}
 }
 
-const ignoreFile = fragment('.gitignore');
+const ignoreFile = fragment(".gitignore");
 
 function* walkDir(
 	dir: DirEntry,

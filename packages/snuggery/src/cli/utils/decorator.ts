@@ -9,7 +9,7 @@ export function Cached(): MethodDecorator {
 		const values = new WeakMap<object, {value: unknown} | {error: unknown}>();
 
 		if (value !== undefined) {
-			if (typeof value !== 'function') {
+			if (typeof value !== "function") {
 				throw new Error(
 					`Can't decorate ${target.constructor.name}#${String(
 						key,
@@ -38,7 +38,7 @@ export function Cached(): MethodDecorator {
 					values.set(this, cached);
 				}
 
-				if ('value' in cached) {
+				if ("value" in cached) {
 					return cached.value;
 				} else {
 					throw cached.error;
@@ -66,7 +66,7 @@ export function Cached(): MethodDecorator {
 					values.set(this, cached);
 				}
 
-				if ('value' in cached) {
+				if ("value" in cached) {
 					return cached.value as T;
 				} else {
 					throw cached.error;

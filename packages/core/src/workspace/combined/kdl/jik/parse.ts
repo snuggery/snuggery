@@ -1,20 +1,20 @@
-import type {Entry} from '@bgotink/kdl';
+import type {Entry} from "@bgotink/kdl";
 
-import {InvalidConfigurationError, JsonObject, JsonValue} from '../../../types';
-import {namedSubContext, ParserContext} from '../context';
-import {implicitPropertyKey, tagOverwrite} from '../kdl-utils';
-import {parseTaggedValue} from '../tags';
-import {unpackSingleValue} from '../utils';
+import {InvalidConfigurationError, JsonObject, JsonValue} from "../../../types";
+import {namedSubContext, ParserContext} from "../context";
+import {implicitPropertyKey, tagOverwrite} from "../kdl-utils";
+import {parseTaggedValue} from "../tags";
+import {unpackSingleValue} from "../utils";
 
-import {namelessName, superName} from './utils';
+import {namelessName, superName} from "./utils";
 
 export function toJsonValue(context: ParserContext): JsonValue {
 	const {node} = context;
 
 	switch (node.getTag()) {
-		case 'array':
+		case "array":
 			return toJsonArray(context);
-		case 'object':
+		case "object":
 			return toJsonObject(context);
 	}
 
@@ -85,7 +85,7 @@ export function getArrayItems(
 function isEntryContext(
 	context: ParserContext | ParserContext<Entry>,
 ): context is ParserContext<Entry> {
-	return context.node.type === 'entry';
+	return context.node.type === "entry";
 }
 
 function toJsonArray(context: ParserContext): JsonValue[] {

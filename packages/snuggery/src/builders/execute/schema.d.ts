@@ -18,9 +18,9 @@ export interface AbstractSchema {
 	 * Configuration for standard input and output
 	 */
 	stdio?:
-		| 'inherit'
-		| 'ignore'
-		| ['inherit' | 'ignore', 'inherit' | 'ignore', 'inherit' | 'ignore'];
+		| "inherit"
+		| "ignore"
+		| ["inherit" | "ignore", "inherit" | "ignore", "inherit" | "ignore"];
 }
 
 export interface PathBinarySchema extends AbstractSchema {

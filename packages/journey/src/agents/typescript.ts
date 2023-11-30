@@ -1,16 +1,16 @@
-import type {UpdateRecorder} from '@angular-devkit/schematics';
-import {getWorkspace, walkTree} from '@snuggery/schematics';
+import type {UpdateRecorder} from "@angular-devkit/schematics";
+import {getWorkspace, walkTree} from "@snuggery/schematics";
 import {
 	ts,
 	createSystem,
 	createProgram,
 	getPath,
 	formatDiagnosticsHost,
-} from '@snuggery/schematics/typescript';
-import {extname, join} from 'node:path/posix';
+} from "@snuggery/schematics/typescript";
+import {extname, join} from "node:path/posix";
 
-import {Journey, registerGuide, getContext, getTree} from '../types';
-import {Map, WeakMap} from '../utils';
+import {Journey, registerGuide, getContext, getTree} from "../types";
+import {Map, WeakMap} from "../utils";
 
 export {ts, getPath};
 
@@ -71,12 +71,12 @@ function createTypescriptUpdateRecorder(
 	let printer: ts.Printer | undefined;
 
 	function stringify(value: ts.Node | Buffer | string): string {
-		if (typeof value === 'string') {
+		if (typeof value === "string") {
 			return value;
 		}
 
 		if (Buffer.isBuffer(value)) {
-			return value.toString('utf-8');
+			return value.toString("utf-8");
 		}
 
 		return (printer ??= ts.createPrinter()).printNode(
@@ -97,7 +97,7 @@ function createTypescriptUpdateRecorder(
 		},
 
 		remove(arg: ts.Node | number, length?: number) {
-			if (typeof arg === 'number') {
+			if (typeof arg === "number") {
 				updateRecorder.remove(arg, length!);
 			} else {
 				updateRecorder.remove(
@@ -213,24 +213,24 @@ function createSimpleRunner(journey: Journey) {
 
 		const formatDiagnosticsHost: ts.FormatDiagnosticsHost = {
 			getCanonicalFileName: (path) => path,
-			getCurrentDirectory: () => '/',
-			getNewLine: () => '\n',
+			getCurrentDirectory: () => "/",
+			getNewLine: () => "\n",
 		};
 
 		const scriptKinds: Record<string, ts.ScriptKind> = {
-			'.tsx': ts.ScriptKind.TSX,
-			'.mts': ts.ScriptKind.TS,
-			'.cts': ts.ScriptKind.TS,
-			'.ts': ts.ScriptKind.TS,
+			".tsx": ts.ScriptKind.TSX,
+			".mts": ts.ScriptKind.TS,
+			".cts": ts.ScriptKind.TS,
+			".ts": ts.ScriptKind.TS,
 
-			'.jsx': ts.ScriptKind.JSX,
-			'.mjs': ts.ScriptKind.JS,
-			'.cjs': ts.ScriptKind.JS,
-			'.js': ts.ScriptKind.JS,
+			".jsx": ts.ScriptKind.JSX,
+			".mjs": ts.ScriptKind.JS,
+			".cjs": ts.ScriptKind.JS,
+			".js": ts.ScriptKind.JS,
 		};
 
 		for (const path of walkTree(tree, {
-			include: ['**/*.{m,c,}{t,j}s', '**/*.{m,c,}{t,j}sx'],
+			include: ["**/*.{m,c,}{t,j}s", "**/*.{m,c,}{t,j}sx"],
 		})) {
 			let content = tree.readText(path);
 			let sourceFile = ts.createSourceFile(
@@ -384,26 +384,26 @@ function createTypeCheckedRunner(journey: Journey) {
 		const printer = ts.createPrinter();
 
 		const tsConfigs = new Set<string>();
-		if (tree.exists('tsconfig.json')) {
-			tsConfigs.add('tsconfig.json');
+		if (tree.exists("tsconfig.json")) {
+			tsConfigs.add("tsconfig.json");
 		}
-		if (tree.exists('jsconfig.json')) {
-			tsConfigs.add('jsconfig.json');
+		if (tree.exists("jsconfig.json")) {
+			tsConfigs.add("jsconfig.json");
 		}
 
 		const workspace = await getWorkspace(tree);
 		for (const project of workspace.projects.values()) {
-			if (tree.exists(join(project.root, 'tsconfig.json'))) {
-				tsConfigs.add(join(project.root, 'tsconfig.json'));
+			if (tree.exists(join(project.root, "tsconfig.json"))) {
+				tsConfigs.add(join(project.root, "tsconfig.json"));
 			}
-			if (tree.exists(join(project.root, 'jsconfig.json'))) {
-				tsConfigs.add(join(project.root, 'jsconfig.json'));
+			if (tree.exists(join(project.root, "jsconfig.json"))) {
+				tsConfigs.add(join(project.root, "jsconfig.json"));
 			}
 
 			for (const target of project.targets.values()) {
 				const tsConfig = target.options?.tsconfig ?? target.options?.tsConfig;
 
-				if (typeof tsConfig === 'string' && tree.exists(tsConfig)) {
+				if (typeof tsConfig === "string" && tree.exists(tsConfig)) {
 					tsConfigs.add(tsConfig);
 				}
 			}

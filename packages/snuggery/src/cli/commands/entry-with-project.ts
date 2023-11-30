@@ -1,17 +1,17 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
 import {
 	ArchitectCommand,
 	configurationOption,
 	addConfigurationsToTarget,
-} from '../command/architect';
+} from "../command/architect";
 
 export class EntryWithProjectCommand extends ArchitectCommand {
 	static override readonly paths = [ArchitectCommand.Default];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Architect commands',
-		description: 'Run a target in a project',
+		category: "Architect commands",
+		description: "Run a target in a project",
 		details: `
 			Execute a target in the specified project.
 
@@ -19,28 +19,28 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 		`,
 		examples: [
 			[
-				'Run the `build` target in the `application` project',
-				'$0 build application',
+				"Run the `build` target in the `application` project",
+				"$0 build application",
 			],
 			[
-				'Run the `build` target with the `production` configuration in the `application` project',
-				'$0 build application --configuration production',
+				"Run the `build` target with the `production` configuration in the `application` project",
+				"$0 build application --configuration production",
 			],
 			[
-				'Run the `build` target in the `application` project with the `production` and `french` configurations',
-				'$0 build application --configuration production --configuration french',
+				"Run the `build` target in the `application` project with the `production` and `french` configurations",
+				"$0 build application --configuration production --configuration french",
 			],
 			[
-				'Run the `build` target in the `application` project with the `production` and `french` configurations',
-				'$0 build application --configuration production,french',
+				"Run the `build` target in the `application` project with the `production` and `french` configurations",
+				"$0 build application --configuration production,french",
 			],
 			[
-				'Run the `serve` target in the `app` project, set `open` to true and set the `baseHref` to `/lorem/`',
-				'$0 serve app --open --base-href /lorem/',
+				"Run the `serve` target in the `app` project, set `open` to true and set the `baseHref` to `/lorem/`",
+				"$0 serve app --open --base-href /lorem/",
 			],
 			[
-				'Show all options to the `test` target in the `app` project that can be passed via command line arguments',
-				'$0 test app --help',
+				"Show all options to the `test` target in the `app` project that can be passed via command line arguments",
+				"$0 test app --help",
 			],
 		],
 	});
@@ -49,8 +49,8 @@ export class EntryWithProjectCommand extends ArchitectCommand {
 
 	project = Option.String();
 
-	configuration = Option.Array('--configuration,-c', {
-		description: 'Configuration(s) to use',
+	configuration = Option.Array("--configuration,-c", {
+		description: "Configuration(s) to use",
 	});
 
 	args = Option.Proxy();

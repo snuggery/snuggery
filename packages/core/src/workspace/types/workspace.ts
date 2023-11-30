@@ -1,6 +1,6 @@
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 
-import type {JsonObject} from './json';
+import type {JsonObject} from "./json";
 
 /**
  * The definition of a single target
@@ -249,7 +249,7 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 	 * @throws if a project with the given name is already present
 	 */
 	add(
-		...project: Parameters<workspaces.ProjectDefinitionCollection['add']>
+		...project: Parameters<workspaces.ProjectDefinitionCollection["add"]>
 	): ProjectDefinition;
 	/**
 	 * Add a new project to the collection
@@ -354,7 +354,7 @@ export class TargetDefinitionCollection extends DefinitionCollection<
 		defaultConfiguration,
 		options,
 		...extensions
-	}: Omit<TargetDefinition, 'extensions'> & {name: string} & JsonObject) {
+	}: Omit<TargetDefinition, "extensions"> & {name: string} & JsonObject) {
 		if (this.has(name)) {
 			throw new Error(`Target ${JSON.stringify(name)} already exists`);
 		}
@@ -384,4 +384,4 @@ export interface WorkspaceHandle {
 	): Promise<void>;
 }
 
-export type MiniWorkspaceHandle = Pick<WorkspaceHandle, 'read'>;
+export type MiniWorkspaceHandle = Pick<WorkspaceHandle, "read">;

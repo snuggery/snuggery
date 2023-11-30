@@ -1,25 +1,25 @@
-import {readFileSync} from 'node:fs';
-import {createRequire} from 'node:module';
-import {dirname, join} from 'node:path';
-import {resolve} from 'resolve.exports';
+import {readFileSync} from "node:fs";
+import {createRequire} from "node:module";
+import {dirname, join} from "node:path";
+import {resolve} from "resolve.exports";
 
-import {BuildFailureError} from '../error.js';
-import {getPackageName} from '../utils.js';
+import {BuildFailureError} from "../error.js";
+import {getPackageName} from "../utils.js";
 
 /** @return {Promise<import('sass')>} */
 let getSass = () => {
-	const sass = import('sass')
+	const sass = import("sass")
 		.then((mod) => mod.default ?? mod)
 		.catch((e) => {
 			if (
 				!e ||
-				/** @type {NodeJS.ErrnoException} */ (e).code !== 'ERR_MODULE_NOT_FOUND'
+				/** @type {NodeJS.ErrnoException} */ (e).code !== "ERR_MODULE_NOT_FOUND"
 			) {
 				throw e;
 			}
 
 			throw new BuildFailureError(
-				'Failed to load the sass compiler, did you install sass?',
+				"Failed to load the sass compiler, did you install sass?",
 			);
 		});
 	getSass = () => sass;
@@ -31,13 +31,13 @@ const packageManifests = new Map();
 
 /** @type {import('sass').LegacySyncImporter} */
 const sassResolver = (url, prev) => {
-	if (url.startsWith('.')) {
+	if (url.startsWith(".")) {
 		// definitely relative
 		return null;
 	}
 
 	// support leading tilde
-	if (url.startsWith('~')) {
+	if (url.startsWith("~")) {
 		url = url.slice(1);
 	}
 
@@ -48,7 +48,7 @@ const sassResolver = (url, prev) => {
 	} catch (e) {
 		if (
 			/** @type {NodeJS.ErrnoException} */ (e).code ===
-			'ERR_PACKAGE_PATH_NOT_EXPORTED'
+			"ERR_PACKAGE_PATH_NOT_EXPORTED"
 		) {
 			throw new Error(`Package ${packageName} doesn't expose package.json`);
 		}
@@ -59,7 +59,7 @@ const sassResolver = (url, prev) => {
 	let manifest = packageManifests.get(manifestFile);
 	if (manifest == null) {
 		manifest = /** @type {{exports?: unknown}} */ (
-			JSON.parse(readFileSync(manifestFile, 'utf-8'))
+			JSON.parse(readFileSync(manifestFile, "utf-8"))
 		);
 		// only cache the exports key, we don't care about the rest
 		packageManifests.set(manifestFile, {exports: manifest.exports});
@@ -70,7 +70,7 @@ const sassResolver = (url, prev) => {
 		file: join(
 			dirname(manifestFile),
 			resolve(manifest, `.${deepImport}`, {
-				conditions: ['sass', 'style'],
+				conditions: ["sass", "style"],
 				unsafe: true,
 			})?.[0] ?? deepImport,
 		),
@@ -103,8 +103,8 @@ async function compile(file, data, indentedSyntax) {
 /** @type {import('../resource-processor.js').StyleProcessor[]} */
 export const sassProcessors = [
 	{
-		languageName: 'sass',
-		fileExtensions: ['.sass'],
+		languageName: "sass",
+		fileExtensions: [".sass"],
 		process: (input) =>
 			compile(
 				input.context.resourceFile ?? input.context.containingFile,
@@ -113,8 +113,8 @@ export const sassProcessors = [
 			),
 	},
 	{
-		languageName: 'scss',
-		fileExtensions: ['.scss'],
+		languageName: "scss",
+		fileExtensions: [".scss"],
 		process: (input) =>
 			compile(
 				input.context.resourceFile ?? input.context.containingFile,

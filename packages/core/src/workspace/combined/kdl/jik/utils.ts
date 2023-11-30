@@ -1,3 +1,3 @@
-export const namelessName = '-';
+export const namelessName = "-";
 
-export const superName = 'super';
+export const superName = "super";

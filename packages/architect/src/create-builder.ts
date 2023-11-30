@@ -1,7 +1,7 @@
-import type {BuilderOutput, BuilderContext} from '@angular-devkit/architect';
-import type {JsonObject} from '@snuggery/core';
+import type {BuilderOutput, BuilderContext} from "@angular-devkit/architect";
+import type {JsonObject} from "@snuggery/core";
 
-const buildFailureError = Symbol.for('@snuggery/architect:BuildFailureError');
+const buildFailureError = Symbol.for("@snuggery/architect:BuildFailureError");
 
 export class BuildFailureError extends Error {
 	declare [buildFailureError]: true;
@@ -9,13 +9,13 @@ export class BuildFailureError extends Error {
 	constructor(message?: string) {
 		super(message);
 
-		this.name = 'BuildFailureError';
+		this.name = "BuildFailureError";
 		this[buildFailureError] = true;
 	}
 }
 
 function isBuildFailureError(e: unknown): e is BuildFailureError {
-	return typeof e === 'object' && e != null && buildFailureError in e;
+	return typeof e === "object" && e != null && buildFailureError in e;
 }
 
 function handleError(e: unknown): BuilderOutput {
@@ -38,7 +38,7 @@ export function createBuilder<OptT = JsonObject>(
 	fn: (input: OptT, context: BuilderContext) => BuilderOutputLike,
 ) {
 	const {isBuilderOutput, createBuilder} =
-		require('@angular-devkit/architect') as typeof import('@angular-devkit/architect');
+		require("@angular-devkit/architect") as typeof import("@angular-devkit/architect");
 
 	return createBuilder<OptT>((input, context) => {
 		try {
@@ -64,8 +64,8 @@ export function createBuilder<OptT = JsonObject>(
 
 function isPromiseLike(value: object): value is PromiseLike<unknown> {
 	return (
-		'then' in value &&
-		typeof (value as PromiseLike<unknown>).then === 'function'
+		"then" in value &&
+		typeof (value as PromiseLike<unknown>).then === "function"
 	);
 }
 

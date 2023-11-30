@@ -1,11 +1,11 @@
-import type {JsonObject} from '@snuggery/core';
-import type SemVer from 'semver/classes/semver.js';
-import {makeValidator, type StrictValidator} from 'typanion';
+import type {JsonObject} from "@snuggery/core";
+import type SemVer from "semver/classes/semver.js";
+import {makeValidator, type StrictValidator} from "typanion";
 
-export {isNumber, type StrictValidator} from 'typanion';
+export {isNumber, type StrictValidator} from "typanion";
 
 export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
-	const JSON5: typeof import('json5') = require('json5');
+	const JSON5: typeof import("json5") = require("json5");
 	return makeValidator({
 		test: (value, state): value is JsonObject => {
 			let data;
@@ -15,7 +15,7 @@ export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
 
 				if (state?.coercions != null && state.coercion != null) {
 					state.coercions.push([
-						state.p ?? '.',
+						state.p ?? ".",
 						state.coercion.bind(null, data),
 					]);
 				}
@@ -43,7 +43,7 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 				state?.errors?.push(
 					`Expected one of ${allowedValuesArr
 						.map((value) => JSON.stringify(value))
-						.join(', ')}; but got ${JSON.stringify(value)}`,
+						.join(", ")}; but got ${JSON.stringify(value)}`,
 				);
 				return false;
 			}
@@ -55,15 +55,15 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 
 export const isSemVer = (): StrictValidator<unknown, SemVer> => {
 	const valid =
-		require('semver/functions/valid.js') as typeof import('semver/functions/valid.js');
+		require("semver/functions/valid.js") as typeof import("semver/functions/valid.js");
 	const SemVer =
-		require('semver/classes/semver.js') as typeof import('semver/classes/semver.js');
+		require("semver/classes/semver.js") as typeof import("semver/classes/semver.js");
 	return makeValidator({
 		test(value, state): value is SemVer {
-			if (typeof value === 'string' && valid(value)) {
+			if (typeof value === "string" && valid(value)) {
 				if (state?.coercions != null && state.coercion != null) {
 					state.coercions.push([
-						state.p ?? '.',
+						state.p ?? ".",
 						state.coercion.bind(null, new SemVer(value)),
 					]);
 				}

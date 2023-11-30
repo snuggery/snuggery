@@ -1,8 +1,8 @@
-import type {CliWorkspace, Context} from '../command/context';
+import type {CliWorkspace, Context} from "../command/context";
 
-import {SnuggeryArchitectHost} from './host';
-import {Resolver} from './resolution';
-import {CliWorkspaceFacade} from './workspace';
+import {SnuggeryArchitectHost} from "./host";
+import {Resolver} from "./resolution";
+import {CliWorkspaceFacade} from "./workspace";
 
 export {
 	InvalidBuilderError,
@@ -10,16 +10,16 @@ export {
 	UnknownBuilderError,
 	UnknownConfigurationError,
 	UnknownTargetError,
-} from './errors';
+} from "./errors";
 export {
 	SnuggeryArchitectHost,
 	type ResolverFacade,
 	type WorkspaceFacade,
 	type SnuggeryBuilderInfo,
-} from './host';
+} from "./host";
 
 export function createArchitectHost(
-	context: Pick<Context, 'startCwd'>,
+	context: Pick<Context, "startCwd">,
 	workspace?: CliWorkspace | null,
 ): SnuggeryArchitectHost {
 	const workspaceFacade = new CliWorkspaceFacade(workspace);

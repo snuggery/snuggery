@@ -1,7 +1,7 @@
-import {join} from 'node:path';
+import {join} from "node:path";
 
-import {type BuilderContext, BuildFailureError} from './create-builder';
-import {getProjectPath, resolveWorkspacePath} from './resolve';
+import {type BuilderContext, BuildFailureError} from "./create-builder";
+import {getProjectPath, resolveWorkspacePath} from "./resolve";
 
 export interface AssetSpec {
 	/**
@@ -35,16 +35,16 @@ export async function copyAssets(
 	outputFolder: string,
 	assets: string | string[] | AssetSpec[],
 ): Promise<void> {
-	const {copy} = await import('fs-extra');
-	const {glob} = await import('glob');
+	const {copy} = await import("fs-extra");
+	const {glob} = await import("glob");
 
-	if (typeof assets === 'string') {
+	if (typeof assets === "string") {
 		assets = [assets];
 	}
 
 	for (const [i, rawAsset] of assets.entries()) {
 		const asset: AssetSpec =
-			typeof rawAsset === 'string' ? {include: rawAsset} : rawAsset;
+			typeof rawAsset === "string" ? {include: rawAsset} : rawAsset;
 
 		const from = asset.from
 			? resolveWorkspacePath(context, asset.from)

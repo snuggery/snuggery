@@ -1,8 +1,8 @@
 import {
 	type BuilderContext,
 	extractExtraConfiguration,
-} from '@snuggery/architect';
-import * as t from 'typanion';
+} from "@snuggery/architect";
+import * as t from "typanion";
 
 const testConfiguration = t.isObject({
 	tsconfig: t.isOptional(t.isString()),
@@ -19,7 +19,7 @@ export async function loadConfiguration(
 ): Promise<t.InferType<typeof testConfiguration>> {
 	const configs = await extractExtraConfiguration(
 		{
-			key: '@snuggery/build-node',
+			key: "@snuggery/build-node",
 			test: testConfiguration,
 		},
 		context,

@@ -2,19 +2,19 @@ import {
 	type BuilderContext,
 	extractExtraConfiguration,
 	findWorkspace,
-} from '@snuggery/architect';
+} from "@snuggery/architect";
 import {
 	JsonObject,
 	isJsonObject,
 	WorkspaceDefinition,
 	JsonValue,
-} from '@snuggery/core';
-import {createRequire} from 'module';
-import {join} from 'path';
-import * as t from 'typanion';
-import {pathToFileURL} from 'url';
+} from "@snuggery/core";
+import {createRequire} from "module";
+import {join} from "path";
+import * as t from "typanion";
+import {pathToFileURL} from "url";
 
-import type {ChangeLocatorStrategy} from './strategies/interface';
+import type {ChangeLocatorStrategy} from "./strategies/interface";
 
 export interface LocatorConfig {
 	strategies: string[];
@@ -23,7 +23,7 @@ export interface LocatorConfig {
 	strategyConfigurations: JsonObject;
 }
 
-const locatorConfigKey = '@snuggery/affected';
+const locatorConfigKey = "@snuggery/affected";
 
 type NullablePartial<T> = {
 	[K in keyof T]?: T[K] | null | undefined;
@@ -109,12 +109,12 @@ async function createCombinedStrategy(
 		configs = [];
 		registeredStrategies.set(name, configs);
 
-		const require = createRequire(join(context.workspaceRoot, '<workspace>'));
+		const require = createRequire(join(context.workspaceRoot, "<workspace>"));
 
 		let path = name;
 		let exportName: string | null = null;
-		if (path.includes('#')) {
-			[path, exportName] = path.split('#', 2) as [string, string];
+		if (path.includes("#")) {
+			[path, exportName] = path.split("#", 2) as [string, string];
 		}
 
 		strategies.push(
@@ -130,16 +130,16 @@ async function createCombinedStrategy(
 		);
 	}
 
-	addStrategy('@snuggery/affected/strategies#changedFiles');
-	addStrategy('@snuggery/affected/strategies#projectsOfFiles');
-	addStrategy('@snuggery/affected/strategies#packageDependencies');
-	addStrategy('@snuggery/affected/strategies#extraProjectDependencies');
+	addStrategy("@snuggery/affected/strategies#changedFiles");
+	addStrategy("@snuggery/affected/strategies#projectsOfFiles");
+	addStrategy("@snuggery/affected/strategies#packageDependencies");
+	addStrategy("@snuggery/affected/strategies#extraProjectDependencies");
 
 	for (const config of locatorConfigurations) {
 		config?.strategies.forEach(addStrategy);
 	}
 
-	addStrategy('@snuggery/affected/strategies#removeOwnProject');
+	addStrategy("@snuggery/affected/strategies#removeOwnProject");
 
 	for (const config of locatorConfigurations) {
 		for (const [name, value] of Object.entries(
@@ -155,7 +155,7 @@ async function createCombinedStrategy(
 
 	if (from != null || to != null) {
 		registeredStrategies
-			.get('@snuggery/affected/strategies#changedFiles')!
+			.get("@snuggery/affected/strategies#changedFiles")!
 			.push({
 				...(from != null ? {from} : null),
 				...(to != null ? {to} : null),

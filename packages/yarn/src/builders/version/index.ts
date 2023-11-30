@@ -1,8 +1,8 @@
-import {createBuilder} from '@snuggery/architect';
+import {createBuilder} from "@snuggery/architect";
 
-import {executeVersion} from './executor';
+import {executeVersion} from "./executor";
 
-export type {VersionBuilderOutput} from './yarn';
+export type {VersionBuilderOutput} from "./yarn";
 export {executeVersion};
 
 export default createBuilder(async (options, context) => {

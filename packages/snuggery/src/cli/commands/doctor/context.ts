@@ -1,10 +1,10 @@
-import type {WorkspaceDefinition} from '@snuggery/core';
+import type {WorkspaceDefinition} from "@snuggery/core";
 
-import type {SnuggeryArchitectHost} from '../../architect/index';
-import type {SnuggeryEngineHost} from '../../schematic/engine-host';
-import type {SnuggeryWorkflow} from '../../schematic/workflow';
-import type {Report} from '../../utils/report';
-import type {SchemaRegistry} from '../../utils/schema-registry';
+import type {SnuggeryArchitectHost} from "../../architect/index";
+import type {SnuggeryEngineHost} from "../../schematic/engine-host";
+import type {SnuggeryWorkflow} from "../../schematic/workflow";
+import type {Report} from "../../utils/report";
+import type {SchemaRegistry} from "../../utils/schema-registry";
 
 export interface DoctorContext {
 	readonly workspace: WorkspaceDefinition;

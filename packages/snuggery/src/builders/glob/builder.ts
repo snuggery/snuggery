@@ -1,22 +1,22 @@
 import {
 	Target as ArchitectTarget,
 	targetStringFromTarget,
-} from '@angular-devkit/architect';
-import {tags} from '@angular-devkit/core';
+} from "@angular-devkit/architect";
+import {tags} from "@angular-devkit/core";
 import {
 	type BuilderContext,
 	BuildFailureError,
 	findProjects,
 	findWorkspace,
 	TargetSpecifier,
-} from '@snuggery/architect';
+} from "@snuggery/architect";
 
-import {execute as executeCombine} from '../combine';
+import {execute as executeCombine} from "../combine";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 function stringifyArray(values: string[]) {
-	return values.map((value) => JSON.stringify(value)).join(', ');
+	return values.map((value) => JSON.stringify(value)).join(", ");
 }
 
 /**
@@ -85,14 +85,14 @@ export async function execute(
 			const targetDefinition = projectDefinition.targets.get(target!);
 
 			if (targetDefinition == null) {
-				if (unknownTarget !== 'skip') {
+				if (unknownTarget !== "skip") {
 					missingTargets.push(project);
 				}
 
 				continue;
 			}
 
-			const requestedConfigurations = configuration?.split(',') ?? [];
+			const requestedConfigurations = configuration?.split(",") ?? [];
 			let modified = false;
 			const missingConfigurationsForProject: string[] = [];
 
@@ -102,13 +102,13 @@ export async function execute(
 					!Reflect.has(targetDefinition.configurations, config)
 				) {
 					switch (unknownConfiguration) {
-						case 'skip':
+						case "skip":
 							continue outer;
-						case 'run':
+						case "run":
 							requestedConfigurations.splice(i);
 							modified = true;
 							break;
-						case 'error':
+						case "error":
 						default:
 							missingConfigurationsForProject.push(config);
 					}
@@ -121,7 +121,7 @@ export async function execute(
 			}
 
 			if (modified) {
-				configuration = requestedConfigurations.join(',');
+				configuration = requestedConfigurations.join(",");
 			}
 
 			targets.push(
@@ -149,7 +149,7 @@ export async function execute(
 		if (missingConfigurations.size > 0) {
 			const errors = Array.from(missingConfigurations, ([project, configs]) => {
 				return `Project ${JSON.stringify(project)} is missing ${
-					configs.length === 1 ? 'configuration' : 'configurations'
+					configs.length === 1 ? "configuration" : "configurations"
 				} ${stringifyArray(configs)}`;
 			});
 
@@ -166,7 +166,7 @@ export async function execute(
 						The following projects are missing configurations for target ${JSON.stringify(
 							target,
 						)}:
-						- ${errors.join('\n- ')}
+						- ${errors.join("\n- ")}
 						Set the "unknownConfiguration" option to "skip" or "run" to either skip these projects or run the target in these projects without the missing configurations.
 					`,
 				);

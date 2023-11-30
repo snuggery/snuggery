@@ -1,17 +1,17 @@
 /* cspell:ignore merol muspi rolod */
-require('@snuggery-workspace/scripts/load-ts');
+require("@snuggery-workspace/scripts/load-ts");
 
-const {journey} = require('@snuggery/journey');
-const {mapImports} = require('@snuggery/journey/trips/map-imports');
+const {journey} = require("@snuggery/journey");
+const {mapImports} = require("@snuggery/journey/trips/map-imports");
 
 exports.lorem = journey(
-	mapImports('@integration/test', [['lorem', {newName: 'merol'}]]),
+	mapImports("@integration/test", [["lorem", {newName: "merol"}]]),
 );
 
 exports.ipsum = journey(
-	mapImports('@integration/test', [['ipsum', {newName: 'muspi'}]]),
+	mapImports("@integration/test", [["ipsum", {newName: "muspi"}]]),
 );
 
 exports.dolor = journey(
-	mapImports('@integration/test', [['dolor', {newName: 'rolod'}]]),
+	mapImports("@integration/test", [["dolor", {newName: "rolod"}]]),
 );

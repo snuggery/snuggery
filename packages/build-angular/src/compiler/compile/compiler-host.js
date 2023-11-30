@@ -1,14 +1,14 @@
-import {createCompilerHost as _createCompilerHost} from '@angular/compiler-cli';
-import {readFile} from 'node:fs/promises';
-import {dirname, posix, resolve} from 'node:path';
-import ts from 'typescript';
+import {createCompilerHost as _createCompilerHost} from "@angular/compiler-cli";
+import {readFile} from "node:fs/promises";
+import {dirname, posix, resolve} from "node:path";
+import ts from "typescript";
 
-import {ModuleCache} from '../cache/module.js';
-import {performance} from '../performance.js';
-import {ensureUnixPath} from '../utils.js';
+import {ModuleCache} from "../cache/module.js";
+import {performance} from "../performance.js";
+import {ensureUnixPath} from "../utils.js";
 
-import {isUsingNodeResolution} from './tsconfig.js';
-import {disallowCjsWriteFileFactory} from './writer.js';
+import {isUsingNodeResolution} from "./tsconfig.js";
+import {disallowCjsWriteFileFactory} from "./writer.js";
 
 /**
  * @typedef {object} CreateCompilerHostInput
@@ -26,7 +26,7 @@ import {disallowCjsWriteFileFactory} from './writer.js';
 function relativeToRootDir(compilerOptions, path) {
 	if (compilerOptions.rootDir) {
 		const relative = posix.relative(compilerOptions.rootDir, path);
-		if (!relative.startsWith('../')) {
+		if (!relative.startsWith("../")) {
 			return relative;
 		}
 	}
@@ -34,7 +34,7 @@ function relativeToRootDir(compilerOptions, path) {
 	if (compilerOptions.rootDirs) {
 		for (const rootDir of compilerOptions.rootDirs) {
 			const relative = posix.relative(rootDir, path);
-			if (!relative.startsWith('../')) {
+			if (!relative.startsWith("../")) {
 				return relative;
 			}
 		}
@@ -68,11 +68,11 @@ export function createCompilerHost(
 		// Add caching to typescript's CompilerHost
 
 		fileExists(fileName) {
-			performance.mark('cache: fileExists');
+			performance.mark("cache: fileExists");
 			const cache = fileCache.get(fileName);
 
 			if (cache.exists == null) {
-				performance.mark('cache miss: fileExists');
+				performance.mark("cache miss: fileExists");
 				cache.exists = compilerHost.fileExists.call(this, fileName);
 			}
 
@@ -80,11 +80,11 @@ export function createCompilerHost(
 		},
 
 		getSourceFile(fileName, languageVersion) {
-			performance.mark('cache: getSourceFile');
+			performance.mark("cache: getSourceFile");
 			const cache = fileCache.get(fileName);
 
 			if (cache.sourceFile == null) {
-				performance.mark('cache miss: getSourceFile');
+				performance.mark("cache miss: getSourceFile");
 				cache.sourceFile = compilerHost.getSourceFile.call(
 					this,
 					fileName,
@@ -96,11 +96,11 @@ export function createCompilerHost(
 		},
 
 		readFile(fileName) {
-			performance.mark('cache: readFile');
+			performance.mark("cache: readFile");
 			const cache = fileCache.get(fileName);
 
 			if (cache.content == null) {
-				performance.mark('cache miss: readFile');
+				performance.mark("cache miss: readFile");
 				cache.content = compilerHost.readFile.call(this, fileName);
 			}
 
@@ -164,12 +164,12 @@ export function createCompilerHost(
 		},
 
 		async readResource(fileName) {
-			performance.mark('cache: readFile');
+			performance.mark("cache: readFile");
 			const cache = fileCache.get(fileName);
 
 			if (cache.content == null) {
-				performance.mark('cache miss: readFile');
-				cache.content = await readFile(fileName, 'utf8');
+				performance.mark("cache miss: readFile");
+				cache.content = await readFile(fileName, "utf8");
 			}
 
 			return cache.content;
@@ -178,7 +178,7 @@ export function createCompilerHost(
 		// Process resources (e.g. support SASS, optimize CSS)
 
 		async transformResource(data, resourceContext) {
-			performance.mark('cache: transformResource');
+			performance.mark("cache: transformResource");
 			const cache = fileCache.get(
 				resourceContext.resourceFile || resourceContext.containingFile,
 			);
@@ -187,11 +187,11 @@ export function createCompilerHost(
 				cache.processedResource = new Map();
 			}
 
-			const cacheKey = resourceContext.resourceFile ? '.' : data;
+			const cacheKey = resourceContext.resourceFile ? "." : data;
 			let result = cache.processedResource.get(cacheKey);
 
 			if (result == null) {
-				performance.mark('cache miss: transformResource');
+				performance.mark("cache miss: transformResource");
 				result = await context.resourceProcessor.getProcessedResource(
 					data,
 					resourceContext,
@@ -220,7 +220,7 @@ export function createCompilerHost(
 			const relativeImportedFile = relativeToRootDir(
 				compilerOptions,
 				importedFilePath,
-			).replace(/\.([cm]?)tsx?$/, '.$1js');
+			).replace(/\.([cm]?)tsx?$/, ".$1js");
 
 			const containingFileFolder = posix.dirname(
 				relativeToRootDir(compilerOptions, containingFilePath) ??
@@ -231,7 +231,7 @@ export function createCompilerHost(
 				relativeImportedFile,
 			);
 
-			return relativeImportPath.startsWith('../')
+			return relativeImportPath.startsWith("../")
 				? relativeImportPath
 				: `./${relativeImportPath}`;
 		},

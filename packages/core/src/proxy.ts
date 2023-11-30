@@ -1,4 +1,4 @@
-import type {JsonObject} from './index';
+import type {JsonObject} from "./index";
 
 export function aliasProperties(
 	{
@@ -15,7 +15,7 @@ export function aliasProperties(
 	);
 
 	function toSourceKey(key: string | symbol) {
-		if (typeof key === 'symbol' || remove.has(key)) {
+		if (typeof key === "symbol" || remove.has(key)) {
 			return null;
 		}
 
@@ -23,7 +23,7 @@ export function aliasProperties(
 	}
 
 	function fromSourceKey(key: string | symbol) {
-		if (typeof key === 'symbol' || remove.has(key)) {
+		if (typeof key === "symbol" || remove.has(key)) {
 			return null;
 		}
 

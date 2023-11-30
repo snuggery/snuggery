@@ -1,7 +1,7 @@
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {StandaloneModule} from '@integration/standalone';
+import {ModuleWithProviders, NgModule} from "@angular/core";
+import {StandaloneModule} from "@integration/standalone";
 
-import {OtherComponent} from './other.component.js';
+import {OtherComponent} from "./other.component.js";
 
 export {OtherComponent};
 

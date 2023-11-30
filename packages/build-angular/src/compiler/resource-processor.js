@@ -2,13 +2,13 @@
  * @typedef {Parameters<Required<import('@angular/compiler-cli').CompilerHost>['transformResource']>[1]} ResourceHostContext
  */
 
-import {extname} from 'node:path';
+import {extname} from "node:path";
 
-import {BuildFailureError} from './error.js';
-import {lessProcessor} from './resource-processor/less-processor.js';
-import {optimizeStyle} from './resource-processor/optimize.js';
-import {postProcess} from './resource-processor/post-process.js';
-import {sassProcessors} from './resource-processor/sass-processor.js';
+import {BuildFailureError} from "./error.js";
+import {lessProcessor} from "./resource-processor/less-processor.js";
+import {optimizeStyle} from "./resource-processor/optimize.js";
+import {postProcess} from "./resource-processor/post-process.js";
+import {sassProcessors} from "./resource-processor/sass-processor.js";
 
 /**
  * @typedef {object} ResourceProcessorInput
@@ -54,8 +54,8 @@ export class ResourceProcessor {
 		const plugins = [
 			// default plugins, can always be overwritten later on
 			{
-				languageName: 'css',
-				fileExtensions: ['.css'],
+				languageName: "css",
+				fileExtensions: [".css"],
 				process: ({content}) => ({css: content}),
 			},
 			...sassProcessors,
@@ -73,7 +73,7 @@ export class ResourceProcessor {
 		this.#pluginByFileExtension = new Map(
 			plugins.flatMap((plugin) =>
 				(plugin.fileExtensions ?? []).map((extension) => [
-					extension.startsWith('.') ? extension : `.${extension}`,
+					extension.startsWith(".") ? extension : `.${extension}`,
 					plugin,
 				]),
 			),
@@ -86,7 +86,7 @@ export class ResourceProcessor {
 	 * @returns {Promise<string>}
 	 */
 	async getProcessedResource(content, context) {
-		if (context.type !== 'style') {
+		if (context.type !== "style") {
 			// add explicit check for forward compatibility, to ensure we don't try to
 			// process HTML as CSS if angular decides to add template processing support
 			return content;
@@ -118,7 +118,7 @@ export class ResourceProcessor {
 					)}, supported extensions are ${Array.from(
 						this.#pluginByFileExtension.keys(),
 						(v) => JSON.stringify(v),
-					).join(', ')}`,
+					).join(", ")}`,
 				);
 			}
 		} else {
@@ -139,7 +139,7 @@ export class ResourceProcessor {
 		});
 
 		const cssPlugin = /** @type {StyleProcessor} */ (
-			this.#pluginsByLanguageName.get('css')
+			this.#pluginsByLanguageName.get("css")
 		);
 		if (cssPlugin === plugin) {
 			return processed;

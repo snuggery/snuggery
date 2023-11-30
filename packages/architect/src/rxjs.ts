@@ -1,6 +1,6 @@
-import type {Observable} from 'rxjs';
+import type {Observable} from "rxjs";
 
-import type {BuilderContext} from './create-builder';
+import type {BuilderContext} from "./create-builder";
 
 export function firstValueFrom<T>(
 	context: BuilderContext,

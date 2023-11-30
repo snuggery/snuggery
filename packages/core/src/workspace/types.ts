@@ -1,7 +1,7 @@
 export {
 	InvalidConfigurationError,
 	UnsupportedOperationError,
-} from './types/error';
+} from "./types/error";
 export {
 	type JsonObject,
 	type JsonPropertyName,
@@ -11,7 +11,7 @@ export {
 	isJsonArray,
 	isJsonObject,
 	stringifyPath,
-} from './types/json';
+} from "./types/json";
 export {
 	ConvertibleWorkspaceDefinition,
 	type ProjectDefinition,
@@ -20,4 +20,4 @@ export {
 	TargetDefinitionCollection,
 	type WorkspaceDefinition,
 	type WorkspaceHandle,
-} from './types/workspace';
+} from "./types/workspace";

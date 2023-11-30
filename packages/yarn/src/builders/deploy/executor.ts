@@ -6,17 +6,17 @@ import {
 	firstValueFrom,
 	resolveWorkspacePath,
 	scheduleTarget,
-} from '@snuggery/architect';
-import {normalize} from 'node:path';
+} from "@snuggery/architect";
+import {normalize} from "node:path";
 
-import {executeVersion} from '../version';
+import {executeVersion} from "../version";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
-const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
+const snuggeryPluginName = "@yarnpkg/plugin-snuggery";
 
 export async function executeDeploy(
-	{buildTarget, distTag, useWorkspacePlugin, include = '**', exclude}: Schema,
+	{buildTarget, distTag, useWorkspacePlugin, include = "**", exclude}: Schema,
 	context: BuilderContext,
 ): Promise<void> {
 	const {appliedVersions, yarn} = await executeVersion({}, context);

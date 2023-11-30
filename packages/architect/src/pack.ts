@@ -1,7 +1,7 @@
-import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
+import {type BuilderContext, BuildFailureError} from "@snuggery/architect";
 
-import {scheduleTarget} from './run';
-import {firstValueFrom} from './rxjs';
+import {scheduleTarget} from "./run";
+import {firstValueFrom} from "./rxjs";
 
 export async function runPackager(
 	context: BuilderContext,
@@ -11,7 +11,7 @@ export async function runPackager(
 		return;
 	}
 
-	const packageBuilder = packager.includes(':') ? packager : `${packager}:pack`;
+	const packageBuilder = packager.includes(":") ? packager : `${packager}:pack`;
 
 	const result = await firstValueFrom(
 		context,

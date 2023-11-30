@@ -1,26 +1,26 @@
 /** cspell:ignore fesm */
 
-import {mkdir, readFile, rm} from 'node:fs/promises';
-import {dirname, join, posix, resolve} from 'node:path';
-import {cwd} from 'node:process';
+import {mkdir, readFile, rm} from "node:fs/promises";
+import {dirname, join, posix, resolve} from "node:path";
+import {cwd} from "node:process";
 
 import {
 	compile,
 	createCompileCache,
 	fillInCompilerOutput,
 	ScriptTarget,
-} from './compiler/compile.js';
-import {BuildContext} from './compiler/context.js';
-import {BuildFailureError} from './compiler/error.js';
-import * as flags from './compiler/flags.js';
-import {flattenCode} from './compiler/flatten/code.js';
-import {flattenTypes} from './compiler/flatten/types.js';
-import {defaultLogger} from './compiler/logger.js';
-import {findEntryPoints, writeManifest} from './compiler/manifest.js';
-import {performance} from './compiler/performance.js';
-import {createPlugin} from './compiler/plugin.js';
-import {ResourceProcessor} from './compiler/resource-processor.js';
-import {ensureUnixPath, getUnscopedName} from './compiler/utils.js';
+} from "./compiler/compile.js";
+import {BuildContext} from "./compiler/context.js";
+import {BuildFailureError} from "./compiler/error.js";
+import * as flags from "./compiler/flags.js";
+import {flattenCode} from "./compiler/flatten/code.js";
+import {flattenTypes} from "./compiler/flatten/types.js";
+import {defaultLogger} from "./compiler/logger.js";
+import {findEntryPoints, writeManifest} from "./compiler/manifest.js";
+import {performance} from "./compiler/performance.js";
+import {createPlugin} from "./compiler/plugin.js";
+import {ResourceProcessor} from "./compiler/resource-processor.js";
+import {ensureUnixPath, getUnscopedName} from "./compiler/utils.js";
 
 export {BuildFailureError, createCompileCache};
 
@@ -130,14 +130,14 @@ export async function build({
 	mainFile,
 	tsConfigFile,
 	rootFolder = cwd(),
-	outputFolder = 'dist',
+	outputFolder = "dist",
 	cleanOutputFolder = true,
 	cache = true,
 	logger = defaultLogger,
 	plugins: pluginFactories = [],
 	keepScripts = false,
 	keepDevDependencies = keepScripts,
-	inlineStyleLanguage = 'css',
+	inlineStyleLanguage = "css",
 	flags: {
 		usePrivateApiAsImportIssueWorkaround = flags.usePrivateApiAsImportIssueWorkaround,
 		enableApiExtractor = flags.enableApiExtractor,
@@ -148,13 +148,13 @@ export async function build({
 
 	const esmOutputFolder = join(outputFolder, `esm${targetLanguageLevel}`);
 	const fesmOutputFolder = join(outputFolder, `fesm${targetLanguageLevel}`);
-	const declarationOutputFolder = join(outputFolder, 'types');
+	const declarationOutputFolder = join(outputFolder, "types");
 
-	performance.mark('start');
+	performance.mark("start");
 
 	manifestFile = resolve(rootFolder, manifestFile);
 	const manifest = /** @type {import('./compiler/manifest.js').Manifest} */ (
-		JSON.parse(await readFile(manifestFile, 'utf-8'))
+		JSON.parse(await readFile(manifestFile, "utf-8"))
 	);
 
 	const mainPackageName = manifest.name;
@@ -230,7 +230,7 @@ export async function build({
 		logger,
 		plugins,
 		compileCache:
-			typeof cache === 'boolean'
+			typeof cache === "boolean"
 				? cache
 					? globalCache
 					: createCompileCache()
@@ -242,8 +242,8 @@ export async function build({
 		),
 	});
 
-	performance.mark('prepared');
-	performance.measure('prepare', 'start', 'prepared');
+	performance.mark("prepared");
+	performance.measure("prepare", "start", "prepared");
 
 	// Start with a clean slate
 	if (cleanOutputFolder) {
@@ -251,12 +251,12 @@ export async function build({
 	}
 	await mkdir(outputFolder, {recursive: true});
 
-	performance.mark('cleaned');
-	performance.measure('clean', 'prepared', 'cleaned');
+	performance.mark("cleaned");
+	performance.measure("clean", "prepared", "cleaned");
 
 	tsConfigFile = tsConfigFile
 		? resolve(rootFolder, tsConfigFile)
-		: join(dirname(manifestFile), 'tsconfig.json');
+		: join(dirname(manifestFile), "tsconfig.json");
 
 	// Start by compiling all entryPoints
 	logger.info(`Building ${mainPackageName}...`);
@@ -270,8 +270,8 @@ export async function build({
 
 	fillInCompilerOutput(buildContext, compilationOutput);
 
-	performance.mark('compiled');
-	performance.measure('compile', 'cleaned', 'compiled');
+	performance.mark("compiled");
+	performance.measure("compile", "cleaned", "compiled");
 
 	// Then flatten the code
 	await flattenCode(buildContext, {
@@ -279,8 +279,8 @@ export async function build({
 		outputFolder: fesmOutputFolder,
 	});
 
-	performance.mark('code-flattened');
-	performance.measure('flatten code', 'compiled', 'code-flattened');
+	performance.mark("code-flattened");
+	performance.measure("flatten code", "compiled", "code-flattened");
 
 	// And the types
 	await flattenTypes(buildContext, {
@@ -289,8 +289,8 @@ export async function build({
 		enableApiExtractor,
 	});
 
-	performance.mark('types-flattened');
-	performance.measure('flatten types', 'code-flattened', 'types-flattened');
+	performance.mark("types-flattened");
+	performance.measure("flatten types", "code-flattened", "types-flattened");
 
 	// Finally, write the manifest
 	await writeManifest(buildContext, {

@@ -5,19 +5,19 @@ import {
 	resolveProjectPath,
 	resolveWorkspacePath,
 	runPackager,
-} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import fs from 'node:fs/promises';
-import {createRequire} from 'node:module';
-import {join} from 'node:path';
-import {pathToFileURL} from 'node:url';
+} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import fs from "node:fs/promises";
+import {createRequire} from "node:module";
+import {join} from "node:path";
+import {pathToFileURL} from "node:url";
 
-import {loadConfiguration} from './config';
-import {createPlugin, PluginFactory, WrappedPlugin} from './plugin';
-import type {Schema} from './schema';
-import {tsc} from './typescript';
+import {loadConfiguration} from "./config";
+import {createPlugin, PluginFactory, WrappedPlugin} from "./plugin";
+import type {Schema} from "./schema";
+import {tsc} from "./typescript";
 
-const manifestFilename = 'package.json';
+const manifestFilename = "package.json";
 
 export async function executeBuild(
 	input: Schema,
@@ -25,7 +25,7 @@ export async function executeBuild(
 ): Promise<void> {
 	const config = await loadConfiguration(context);
 	const workspaceRequire = createRequire(
-		resolveWorkspacePath(context, '<workspace>'),
+		resolveWorkspacePath(context, "<workspace>"),
 	);
 	const loadedPlugins = await Promise.all(
 		(input.plugins ?? config.plugins ?? []).map(
@@ -39,8 +39,8 @@ export async function executeBuild(
 				}
 
 				let exportName: string | undefined;
-				if (plugin.includes('#')) {
-					[plugin, exportName] = plugin.split('#', 2) as [string, string];
+				if (plugin.includes("#")) {
+					[plugin, exportName] = plugin.split("#", 2) as [string, string];
 				}
 
 				let resolvedPlugin;
@@ -64,7 +64,7 @@ export async function executeBuild(
 
 	let hasTypescript: boolean;
 	try {
-		require.resolve('typescript/package.json');
+		require.resolve("typescript/package.json");
 		hasTypescript = true;
 	} catch {
 		hasTypescript = false;
@@ -78,10 +78,10 @@ export async function executeBuild(
 
 	const outputFolder = input.outputFolder
 		? resolveWorkspacePath(context, input.outputFolder)
-		: await resolveProjectPath(context, 'dist');
+		: await resolveProjectPath(context, "dist");
 
 	const manifest = await resolveProjectPath(context, manifestFilename)
-		.then((path) => fs.readFile(path, 'utf8'))
+		.then((path) => fs.readFile(path, "utf8"))
 		.then((manifest) => JSON.parse(manifest) as JsonObject);
 
 	const {compile, assets = []} = input;
@@ -116,11 +116,11 @@ export async function executeBuild(
 		);
 	}
 
-	context.logger.debug('Copying assets...');
+	context.logger.debug("Copying assets...");
 	await copyAssets(context, outputFolder, assets);
 
 	if (packager) {
-		context.logger.debug('Running packager');
+		context.logger.debug("Running packager");
 		await runPackager(context, {packager, directory: outputFolder});
 	}
 
@@ -136,13 +136,13 @@ async function writeManifest(
 	{
 		keepScripts,
 		keepDevDependencies,
-	}: Pick<Schema, 'keepScripts' | 'keepDevDependencies'>,
+	}: Pick<Schema, "keepScripts" | "keepDevDependencies">,
 	outputFolder: string,
 	plugins: readonly WrappedPlugin[],
 ) {
 	if (
 		manifest.publishConfig != null &&
-		typeof manifest.publishConfig === 'object' &&
+		typeof manifest.publishConfig === "object" &&
 		!Array.isArray(manifest.publishConfig)
 	) {
 		if (manifest.publishConfig.main !== undefined) {

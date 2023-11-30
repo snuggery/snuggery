@@ -1,4 +1,4 @@
-const {posix} = require('path');
+const {posix} = require("path");
 
 /**
  *
@@ -14,6 +14,6 @@ function createRuleFactory(name) {
 			);
 }
 
-exports.dolor = createRuleFactory('dolor');
-exports.sit = createRuleFactory('sit');
-exports.amet = createRuleFactory('amet');
+exports.dolor = createRuleFactory("dolor");
+exports.sit = createRuleFactory("sit");
+exports.amet = createRuleFactory("amet");

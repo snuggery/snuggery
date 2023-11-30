@@ -1,4 +1,4 @@
-import {BuildFailureError} from '../error.js';
+import {BuildFailureError} from "../error.js";
 
 /**
  * @param {import('../context.js').BuildContext} context
@@ -8,8 +8,8 @@ import {BuildFailureError} from '../error.js';
 export function disallowCjsWriteFileFactory(context, compilerHost) {
 	return (fileName, text, writeBOM, onError, sourceFiles, data) => {
 		if (
-			fileName.endsWith('.cjs') ||
-			(context.manifest.type !== 'module' && fileName.endsWith('.js'))
+			fileName.endsWith(".cjs") ||
+			(context.manifest.type !== "module" && fileName.endsWith(".js"))
 		) {
 			(onError ?? defaultOnError)(
 				`Angular packages may only contain ESM files`,

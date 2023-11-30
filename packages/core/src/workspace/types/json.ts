@@ -23,7 +23,7 @@ export function isJsonArray(
 export function isJsonObject(
 	value: JsonValue | undefined,
 ): value is JsonObject {
-	return typeof value === 'object' && value != null && !Array.isArray(value);
+	return typeof value === "object" && value != null && !Array.isArray(value);
 }
 
 export function getPrintableType(value: JsonValue | undefined): string {
@@ -31,21 +31,21 @@ export function getPrintableType(value: JsonValue | undefined): string {
 		return String(value);
 	}
 
-	if (typeof value !== 'object') {
+	if (typeof value !== "object") {
 		return `a ${typeof value}`;
 	}
 
-	return Array.isArray(value) ? 'an array' : 'an object';
+	return Array.isArray(value) ? "an array" : "an object";
 }
 
 export function stringifyPath(path: JsonPropertyPath): string {
 	if (path.length === 0) {
-		return '<configuration file>';
+		return "<configuration file>";
 	}
 
 	return path
 		.map((part, idx) => {
-			if (typeof part === 'number') {
+			if (typeof part === "number") {
 				return `[${part}]`;
 			} else if (idx === 0) {
 				return part;
@@ -53,5 +53,5 @@ export function stringifyPath(path: JsonPropertyPath): string {
 				return `.${part}`;
 			}
 		})
-		.join('');
+		.join("");
 }

@@ -1,5 +1,5 @@
-import {aliasProperties} from '../../proxy';
-import type {JsonObject} from '../types';
+import {aliasProperties} from "../../proxy";
+import type {JsonObject} from "../types";
 
 export function proxyObject(
 	object: JsonObject,

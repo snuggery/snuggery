@@ -1,9 +1,9 @@
-import {BaseCommand} from '@yarnpkg/cli';
-import {Configuration, Project, scriptUtils, structUtils} from '@yarnpkg/core';
-import {Option} from 'clipanion';
+import {BaseCommand} from "@yarnpkg/cli";
+import {Configuration, Project, scriptUtils, structUtils} from "@yarnpkg/core";
+import {Option} from "clipanion";
 
 export class SnCommand extends BaseCommand {
-	static override paths = [['sn']];
+	static override paths = [["sn"]];
 
 	args = Option.Proxy();
 
@@ -20,8 +20,8 @@ export class SnCommand extends BaseCommand {
 		await project.restoreInstallState();
 
 		const snuggeryIdentHash = structUtils.makeIdent(
-			'snuggery',
-			'snuggery',
+			"snuggery",
+			"snuggery",
 		).identHash;
 
 		const workspacesToLook = [project.topLevelWorkspace];
@@ -42,13 +42,13 @@ export class SnCommand extends BaseCommand {
 				continue;
 			}
 
-			if (i === 0 && scriptUtils.hasWorkspaceScript(workspace, 'sn')) {
+			if (i === 0 && scriptUtils.hasWorkspaceScript(workspace, "sn")) {
 				break;
 			}
 
 			return await scriptUtils.executePackageAccessibleBinary(
 				workspace.anchoredLocator,
-				'sn',
+				"sn",
 				this.args,
 				{
 					cwd: this.context.cwd,
@@ -60,6 +60,6 @@ export class SnCommand extends BaseCommand {
 			);
 		}
 
-		return this.cli.run(['run', 'sn', ...this.args]);
+		return this.cli.run(["run", "sn", ...this.args]);
 	}
 }

@@ -1,7 +1,7 @@
-import {createRequire} from 'module';
-import {basename, dirname, join} from 'path';
+import {createRequire} from "module";
+import {basename, dirname, join} from "path";
 
-import {InvalidConfigurationError} from './types';
+import {InvalidConfigurationError} from "./types";
 
 export interface WorkspaceHost {
 	isFile(path: string): Promise<boolean>;

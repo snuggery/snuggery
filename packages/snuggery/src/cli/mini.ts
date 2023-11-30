@@ -1,19 +1,19 @@
-import type {MiniWorkspaceOptions} from '@snuggery/core';
-import {Cli, Command, RunContext} from 'clipanion';
+import type {MiniWorkspaceOptions} from "@snuggery/core";
+import {Cli, Command, RunContext} from "clipanion";
 
-import type {AbstractCommand} from './command/abstract-command';
-import type {Context} from './command/context';
-import {EntryCommand} from './mini-commands/entry';
-import {HelpCommand} from './mini-commands/help';
-import {Report} from './utils/report';
+import type {AbstractCommand} from "./command/abstract-command";
+import type {Context} from "./command/context";
+import {EntryCommand} from "./mini-commands/entry";
+import {HelpCommand} from "./mini-commands/help";
+import {Report} from "./utils/report";
 
-export {workspaceFilenames} from '@snuggery/core';
+export {workspaceFilenames} from "@snuggery/core";
 
-export type {SnuggeryArchitectHost} from './architect';
+export type {SnuggeryArchitectHost} from "./architect";
 export {
 	CliWorkspace,
 	findMiniWorkspace as findWorkspace,
-} from './command/context';
+} from "./command/context";
 
 export {Cli, Context};
 
@@ -26,7 +26,7 @@ export interface MiniCliOptions extends MiniWorkspaceOptions {
 export function run(
 	args: string[],
 	options: MiniCliOptions,
-	context: RunContext<Omit<Context, 'report' | 'startArgs'>>,
+	context: RunContext<Omit<Context, "report" | "startArgs">>,
 ): Promise<number> {
 	const cli = new Cli<Context>({
 		binaryLabel: options.binaryLabel,

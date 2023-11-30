@@ -1,9 +1,9 @@
-import {createTextFileHandle, type WorkspaceHost} from '../file';
-import type {MiniWorkspaceOptions} from '../mini';
-import type {WorkspaceHandle} from '../types';
+import {createTextFileHandle, type WorkspaceHost} from "../file";
+import type {MiniWorkspaceOptions} from "../mini";
+import type {WorkspaceHandle} from "../types";
 
-import {createFileHandle, knownExtensions} from './file';
-import {MiniWorkspaceHandle} from './workspace-handle/mini';
+import {createFileHandle, knownExtensions} from "./file";
+import {MiniWorkspaceHandle} from "./workspace-handle/mini";
 
 export async function createSplitMiniWorkspaceHandle(
 	source: WorkspaceHost,

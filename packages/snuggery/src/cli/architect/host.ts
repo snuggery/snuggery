@@ -10,27 +10,27 @@ import type {
 	Target,
 	BuilderInfo,
 	createBuilder,
-} from '@angular-devkit/architect';
+} from "@angular-devkit/architect";
 // It would be great if we could have access to these without going through `/src/internal/`.
 import {
 	type ArchitectHost,
 	type Builder,
 	BuilderSymbol,
-} from '@angular-devkit/architect/src/internal';
+} from "@angular-devkit/architect/src/internal";
 import {
 	isJsonObject,
 	type JsonObject,
 	type JsonValue,
 	type ProjectDefinition,
 	type TargetDefinition,
-} from '@snuggery/core';
-import {dirname, join} from 'path';
+} from "@snuggery/core";
+import {dirname, join} from "path";
 
-import type {Context} from '../command/context';
-import {dynamicImport} from '../utils/dynamic-import';
-import type {Executor} from '../utils/tao';
+import type {Context} from "../command/context";
+import {dynamicImport} from "../utils/dynamic-import";
+import type {Executor} from "../utils/tao";
 
-import {InvalidBuilderError, InvalidBuilderSpecifiedError} from './errors';
+import {InvalidBuilderError, InvalidBuilderSpecifiedError} from "./errors";
 
 export {Builder};
 
@@ -160,11 +160,11 @@ export interface WorkspaceFacade {
 export class SnuggeryArchitectHost
 	implements ArchitectHost<SnuggeryBuilderInfo>
 {
-	readonly #context: Pick<Context, 'startCwd'>;
+	readonly #context: Pick<Context, "startCwd">;
 	readonly #resolver: ResolverFacade;
 	readonly #workspace: WorkspaceFacade;
 	constructor(
-		context: Pick<Context, 'startCwd'>,
+		context: Pick<Context, "startCwd">,
 		resolver: ResolverFacade,
 		workspace: WorkspaceFacade,
 	) {
@@ -193,7 +193,7 @@ export class SnuggeryArchitectHost
 			const description =
 				builderJson[name]?.description ?? executorsJson?.[name]?.description;
 
-			if (typeof description === 'string') {
+			if (typeof description === "string") {
 				return {name, description};
 			} else {
 				return {name};
@@ -203,7 +203,7 @@ export class SnuggeryArchitectHost
 
 	/** @override */
 	async resolveBuilder(builderSpec: string): Promise<SnuggeryBuilderInfo> {
-		const [packageName, builderName] = builderSpec.split(':', 2) as [
+		const [packageName, builderName] = builderSpec.split(":", 2) as [
 			string,
 			string | undefined,
 		];
@@ -218,7 +218,7 @@ export class SnuggeryArchitectHost
 		let builderInfo: JsonValue;
 		let isNx: boolean | null = null;
 
-		if (packageName === '$direct') {
+		if (packageName === "$direct") {
 			[builderPath, builderInfo] =
 				await this.#resolver.resolveDirectBuilder(builderName);
 		} else {
@@ -230,19 +230,19 @@ export class SnuggeryArchitectHost
 
 		if (
 			!isJsonObject(builderInfo) ||
-			typeof builderInfo.implementation !== 'string' ||
-			(typeof builderInfo.schema !== 'string' &&
-				typeof builderInfo.schema !== 'boolean')
+			typeof builderInfo.implementation !== "string" ||
+			(typeof builderInfo.schema !== "string" &&
+				typeof builderInfo.schema !== "boolean")
 		) {
 			throw new InvalidBuilderError(
-				packageName !== '$direct'
+				packageName !== "$direct"
 					? `Invalid configuration for builder "${builderName}" in package "${packageName}"`
 					: `Invalid configuration for builder "${builderName}"`,
 			);
 		}
 
 		let optionSchema: JsonValue;
-		if (typeof builderInfo.schema === 'boolean') {
+		if (typeof builderInfo.schema === "boolean") {
 			optionSchema = builderInfo.schema;
 		} else {
 			const schemaPath = join(dirname(builderPath), builderInfo.schema);
@@ -262,16 +262,16 @@ export class SnuggeryArchitectHost
 		}
 
 		const description =
-			typeof builderInfo.description === 'string'
+			typeof builderInfo.description === "string"
 				? builderInfo.description
 				: undefined!;
 
 		let implementationPath = builderInfo.implementation;
 		let implementationExport: string | null = null;
 
-		if (implementationPath.includes('#')) {
+		if (implementationPath.includes("#")) {
 			[implementationPath, implementationExport] = implementationPath.split(
-				'#',
+				"#",
 				2,
 			) as [string, string];
 		}
@@ -315,8 +315,8 @@ export class SnuggeryArchitectHost
 		if (
 			info.isNx ||
 			(info.isNx !== false &&
-				typeof info.optionSchema === 'object' &&
-				info.optionSchema.cli === 'nx')
+				typeof info.optionSchema === "object" &&
+				info.optionSchema.cli === "nx")
 		) {
 			return this.#workspace.convertExecutorIntoBuilder(implementation);
 		}
@@ -352,7 +352,7 @@ export class SnuggeryArchitectHost
 		projectNameOrTarget: string | Target,
 	): Promise<JsonObject> {
 		return this.#workspace.getProjectMetadata(
-			typeof projectNameOrTarget === 'string'
+			typeof projectNameOrTarget === "string"
 				? projectNameOrTarget
 				: projectNameOrTarget.project,
 		);

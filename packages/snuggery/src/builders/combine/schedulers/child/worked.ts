@@ -1,16 +1,16 @@
-import {logging} from '@angular-devkit/core';
-import type {BuilderOutput} from '@snuggery/architect';
-import type {Observable} from 'rxjs';
-import {isMainThread, parentPort, workerData} from 'worker_threads';
+import {logging} from "@angular-devkit/core";
+import type {BuilderOutput} from "@snuggery/architect";
+import type {Observable} from "rxjs";
+import {isMainThread, parentPort, workerData} from "worker_threads";
 
-import {ChildArchitect} from './architect';
+import {ChildArchitect} from "./architect";
 import {
 	ChildBuilderOutputMessage,
 	ChildLoggingMessage,
 	ChildMessageType,
 	MessageType,
-} from './shared';
-import type {Message} from './worker';
+} from "./shared";
+import type {Message} from "./worker";
 
 if (isMainThread) {
 	throw new Error(`Don't import ${__filename}, load it via a worker thread`);
@@ -18,10 +18,10 @@ if (isMainThread) {
 
 const architect = new ChildArchitect(workerData.workspaceRoot);
 
-parentPort!.on('message', (message: Message) => {
+parentPort!.on("message", (message: Message) => {
 	let obs: Observable<BuilderOutput>;
 
-	const logger = new logging.Logger('child');
+	const logger = new logging.Logger("child");
 
 	switch (message.type) {
 		case MessageType.ScheduleBuilder:

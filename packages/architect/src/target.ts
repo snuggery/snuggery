@@ -1,6 +1,6 @@
-import type {Target} from '@angular-devkit/architect';
+import type {Target} from "@angular-devkit/architect";
 
-import type {BuilderContext} from './create-builder';
+import type {BuilderContext} from "./create-builder";
 
 export function targetStringFromTarget(target: Target): string {
 	if (target.configuration) {
@@ -11,7 +11,7 @@ export function targetStringFromTarget(target: Target): string {
 }
 
 export function targetFromTargetString(targetString: string): Target {
-	const parts = targetString.split(':', 3);
+	const parts = targetString.split(":", 3);
 
 	if (parts.length < 2) {
 		throw new Error(`Invalid target: ${JSON.stringify(targetString)}`);
@@ -39,10 +39,10 @@ export function resolveTargetString(
 ): string {
 	let target: Target;
 
-	if (targetString.includes(':')) {
+	if (targetString.includes(":")) {
 		target = targetFromTargetString(targetString);
 	} else {
-		target = {project: '', target: targetString};
+		target = {project: "", target: targetString};
 	}
 
 	if (!target.project) {

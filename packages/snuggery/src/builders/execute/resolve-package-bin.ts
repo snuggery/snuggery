@@ -3,9 +3,9 @@ import {
 	BuildFailureError,
 	getProjectPath,
 	resolveWorkspacePath,
-} from '@snuggery/architect';
-import {createRequire} from 'node:module';
-import {dirname, join} from 'node:path';
+} from "@snuggery/architect";
+import {createRequire} from "node:module";
+import {dirname, join} from "node:path";
 
 interface Manifest {
 	name: string;
@@ -47,7 +47,7 @@ export async function resolvePackageBin(
 
 	if (resolveFrom == null) {
 		resolveFrom = [await getProjectPath(context), context.workspaceRoot];
-	} else if (typeof resolveFrom === 'string') {
+	} else if (typeof resolveFrom === "string") {
 		resolveFrom = [resolveWorkspacePath(context, resolveFrom)];
 	} else {
 		resolveFrom = resolveFrom.map((path) =>
@@ -58,12 +58,12 @@ export async function resolvePackageBin(
 	let manifestPath: string | undefined;
 
 	for (const path of resolveFrom) {
-		const require = createRequire(join(path, '<synthetic>'));
+		const require = createRequire(join(path, "<synthetic>"));
 		try {
 			manifestPath = require.resolve(`${packageName}/package.json`);
 			break;
 		} catch (e) {
-			if ((e as NodeJS.ErrnoException).code !== 'MODULE_NOT_FOUND') {
+			if ((e as NodeJS.ErrnoException).code !== "MODULE_NOT_FOUND") {
 				// Maybe the package doesn't have ./package.json in its exports...
 				// Try to work around that by resolving the package itself and looking for the package
 				// folder
@@ -103,7 +103,7 @@ export async function resolvePackageBin(
 
 	let relativeBinaryPath: string;
 
-	if (typeof manifest.bin === 'object') {
+	if (typeof manifest.bin === "object") {
 		const binaryName = binary ?? getUnscopedName(packageName);
 		const _relativeBinaryPath = manifest.bin[binaryName];
 

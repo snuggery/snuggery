@@ -1,29 +1,29 @@
-import {Document, Entry, Node} from '@bgotink/kdl';
+import {Document, Entry, Node} from "@bgotink/kdl";
 
-import {Change, ChangeType} from '../../proxy';
-import type {JsonObject, JsonPropertyName, JsonPropertyPath} from '../../types';
+import {Change, ChangeType} from "../../proxy";
+import type {JsonObject, JsonPropertyName, JsonPropertyPath} from "../../types";
 
 import {
 	collectParameterizedSubContexts,
 	getSingleStringValue,
 	ParserContext,
-} from './context';
-import {applyChangeToJsonValue} from './jik/apply-changes';
-import {fromJsonObject, fromJsonValue} from './jik/serialize';
-import {isChildOf, setTag, tagOverwrite} from './kdl-utils';
-import {addProjectRelativeTag} from './parse';
+} from "./context";
+import {applyChangeToJsonValue} from "./jik/apply-changes";
+import {fromJsonObject, fromJsonValue} from "./jik/serialize";
+import {isChildOf, setTag, tagOverwrite} from "./kdl-utils";
+import {addProjectRelativeTag} from "./parse";
 import {
 	serializeConfiguration,
 	serializeProject,
 	serializeTarget,
-} from './serialize';
+} from "./serialize";
 
 // Helpers
 
 function applyChangeToNamedMap(
 	context:
 		| (ParserContext & {node: Node})
-		| (Omit<ParserContext, 'node' | 'location'> & {node: Document}),
+		| (Omit<ParserContext, "node" | "location"> & {node: Document}),
 	nodeName: string,
 	change: Change,
 ) {
@@ -85,7 +85,7 @@ function applyChangeToConfigurations(
 	change: Change,
 ) {
 	if (path.length === 0) {
-		applyChangeToNamedMap(context, 'configuration', change);
+		applyChangeToNamedMap(context, "configuration", change);
 		return;
 	}
 
@@ -96,7 +96,7 @@ function applyChangeToConfigurations(
 
 	const configuration = collectParameterizedSubContexts(
 		context,
-		'configuration',
+		"configuration",
 	).get(name);
 
 	if (path.length === 0) {
@@ -140,14 +140,14 @@ function applyChangeToTargets(
 	change: Change,
 ): void {
 	if (path.length === 0) {
-		applyChangeToNamedMap(context, 'target', change);
+		applyChangeToNamedMap(context, "target", change);
 		return;
 	}
 
 	let name: string;
 	[name, ...path] = path as [string, ...JsonPropertyPath];
 
-	const target = collectParameterizedSubContexts(context, 'target').get(name);
+	const target = collectParameterizedSubContexts(context, "target").get(name);
 
 	if (path.length === 0) {
 		if (change.type === ChangeType.Delete) {
@@ -173,11 +173,11 @@ function applyChangeToTargets(
 
 	[name, ...path] = path as [string, ...JsonPropertyPath];
 
-	if (name === 'configurations') {
+	if (name === "configurations") {
 		applyChangeToConfigurations(target!, path, change);
 	} else {
 		applyChangeToJsonValue(target!, [name, ...path], change, {
-			allowEntries: name !== 'options',
+			allowEntries: name !== "options",
 		});
 	}
 }
@@ -194,7 +194,7 @@ function applyChangeToProjects(
 		// Then apply the change to the main document
 		for (const doc of allDocuments) {
 			if (doc !== document) {
-				doc.removeNodesByName('project');
+				doc.removeNodesByName("project");
 			}
 		}
 
@@ -203,7 +203,7 @@ function applyChangeToProjects(
 				tags: new Map(),
 				node: document,
 			},
-			'project',
+			"project",
 			change,
 		);
 		return;
@@ -217,7 +217,7 @@ function applyChangeToProjects(
 			tags: new Map(),
 			node: expandedDocument,
 		},
-		'project',
+		"project",
 	);
 	let project = projects.get(name);
 
@@ -225,11 +225,11 @@ function applyChangeToProjects(
 		project = addProjectRelativeTag(
 			{
 				...project,
-				extends: project.node.hasProperty('extends')
-					? projects.get(project.node.getProperty('extends') as string)
+				extends: project.node.hasProperty("extends")
+					? projects.get(project.node.getProperty("extends") as string)
 					: undefined,
 			},
-			getSingleStringValue(project, 'root'),
+			getSingleStringValue(project, "root"),
 		);
 	}
 
@@ -258,11 +258,11 @@ function applyChangeToProjects(
 
 	[name, ...path] = path as [string, ...JsonPropertyPath];
 
-	if (name === 'targets') {
+	if (name === "targets") {
 		applyChangeToTargets(project!, path, change);
 	} else {
 		applyChangeToJsonValue(project!, [name, ...path], change, {
-			allowEntries: name !== 'cli',
+			allowEntries: name !== "cli",
 		});
 	}
 }
@@ -275,11 +275,11 @@ export function applyChangeToWorkspace(
 ): void {
 	const [name, ...path] = change.path.slice() as [string, ...JsonPropertyPath];
 
-	if (name === 'version') {
+	if (name === "version") {
 		return;
 	}
 
-	if (name === 'projects') {
+	if (name === "projects") {
 		return applyChangeToProjects(
 			document,
 			expandedDocument,

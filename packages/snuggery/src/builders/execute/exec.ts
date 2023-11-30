@@ -1,8 +1,8 @@
-import type {BuilderContext, BuilderOutput} from '@snuggery/architect';
-import {fork, spawn, ForkOptions, ChildProcess} from 'child_process';
-import {extname} from 'path';
+import type {BuilderContext, BuilderOutput} from "@snuggery/architect";
+import {fork, spawn, ForkOptions, ChildProcess} from "child_process";
+import {extname} from "path";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 /**
  * Execute a binary
@@ -15,7 +15,7 @@ export async function exec(
 	context: BuilderContext,
 	cwd: string,
 	binary: string,
-	{stdio = 'inherit', env = {}, arguments: args = []}: Schema,
+	{stdio = "inherit", env = {}, arguments: args = []}: Schema,
 ): Promise<BuilderOutput> {
 	const childOptions: ForkOptions = {
 		cwd,
@@ -29,7 +29,7 @@ export async function exec(
 	let child: ChildProcess;
 	if (/^\.[cm]?js$/.test(extname(binary))) {
 		if (Array.isArray(childOptions.stdio)) {
-			childOptions.stdio.push('ipc');
+			childOptions.stdio.push("ipc");
 		}
 
 		child = fork(binary, args, childOptions);
@@ -42,7 +42,7 @@ export async function exec(
 	});
 
 	return new Promise((resolve) => {
-		child.addListener('close', (code, signal) => {
+		child.addListener("close", (code, signal) => {
 			if (signal) {
 				resolve({
 					success: false,

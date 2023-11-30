@@ -1,7 +1,7 @@
-import autoprefixer from 'autoprefixer';
-import postcss from 'postcss';
+import autoprefixer from "autoprefixer";
+import postcss from "postcss";
 
-import {getBrowserslist} from './browserslist.js';
+import {getBrowserslist} from "./browserslist.js";
 
 /**
  * @param {string | {toString(): string}} style

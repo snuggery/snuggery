@@ -4,23 +4,23 @@ import {
 	resolveProjectPath,
 	resolveWorkspacePath,
 	runPackager,
-} from '@snuggery/architect';
-import {readFile} from 'node:fs/promises';
-import {createRequire} from 'node:module';
-import {join} from 'node:path';
-import process from 'node:process';
-import {pathToFileURL} from 'node:url';
+} from "@snuggery/architect";
+import {readFile} from "node:fs/promises";
+import {createRequire} from "node:module";
+import {join} from "node:path";
+import process from "node:process";
+import {pathToFileURL} from "node:url";
 
 import {
 	build,
 	BuildFailureError as AngularBuildFailureError,
-} from '../../compiler.js';
+} from "../../compiler.js";
 
-import {loadConfiguration} from './config.js';
+import {loadConfiguration} from "./config.js";
 
-const manifestFilename = 'package.json';
+const manifestFilename = "package.json";
 
-const emoji = ['✨', '🚢', '🎉', '💯', '✅', '🏁', '🌈', '🦄'];
+const emoji = ["✨", "🚢", "🎉", "💯", "✅", "🏁", "🌈", "🦄"];
 
 /**
  * @param {import('./schema.js').Schema} input
@@ -80,19 +80,19 @@ export async function executeBuild(
 	main = resolveWorkspacePath(context, main);
 	tsconfig =
 		resolveWorkspacePath(context, tsconfig) ??
-		(await resolveProjectPath(context, 'tsconfig.json'));
+		(await resolveProjectPath(context, "tsconfig.json"));
 
 	outputFolder =
 		resolveWorkspacePath(context, outputFolder) ??
 		(useCentralOutputFolder
 			? resolveWorkspacePath(
 					context,
-					join('dist', JSON.parse(await readFile(manifest, 'utf8')).name),
+					join("dist", JSON.parse(await readFile(manifest, "utf8")).name),
 			  )
-			: await resolveProjectPath(context, 'dist'));
+			: await resolveProjectPath(context, "dist"));
 
 	const workspaceRequire = createRequire(
-		resolveWorkspacePath(context, '<workspace>'),
+		resolveWorkspacePath(context, "<workspace>"),
 	);
 	const loadedPlugins = await Promise.all(
 		plugins.map(async (pluginPossiblyWithConfig) => {
@@ -108,9 +108,9 @@ export async function executeBuild(
 
 			/** @type {string=} */
 			let exportName;
-			if (plugin.includes('#')) {
+			if (plugin.includes("#")) {
 				[plugin, exportName] = /** @type {[String, string]} */ (
-					plugin.split('#', 2)
+					plugin.split("#", 2)
 				);
 			}
 
@@ -164,12 +164,12 @@ export async function executeBuild(
 	}
 
 	if (assets?.length > 0) {
-		context.logger.info('Copying assets...');
+		context.logger.info("Copying assets...");
 		await copyAssets(context, outputFolder, assets);
 	}
 
 	if (packager != null) {
-		context.logger.debug('Running packager...');
+		context.logger.debug("Running packager...");
 		await runPackager(context, {
 			packager,
 			directory: outputFolder,

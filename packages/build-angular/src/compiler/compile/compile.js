@@ -1,14 +1,14 @@
 /** cspell:ignore ngtsc */
 
-import {createProgram} from '@angular/compiler-cli';
-import {posix} from 'path';
-import ts from 'typescript';
+import {createProgram} from "@angular/compiler-cli";
+import {posix} from "path";
+import ts from "typescript";
 
-import {BuildFailureError} from '../error.js';
+import {BuildFailureError} from "../error.js";
 
-import {createCompilerHost} from './compiler-host.js';
-import {collectDiagnostics, reportErrorsAndExit} from './diagnostics.js';
-import {combineTransformers} from './plugin.js';
+import {createCompilerHost} from "./compiler-host.js";
+import {collectDiagnostics, reportErrorsAndExit} from "./diagnostics.js";
+import {combineTransformers} from "./plugin.js";
 
 /**
  * @typedef {object} Cache
@@ -54,7 +54,7 @@ export async function compile(
 			moduleResolutionCache: cache.moduleResolution,
 			fileCache: cache.files,
 			markWrittenFile: (writtenFile, sourceFile) => {
-				if (!writtenFile.endsWith('.map')) {
+				if (!writtenFile.endsWith(".map")) {
 					(/\.d\.[cm]?ts$/.test(writtenFile)
 						? writtenDeclarationFiles
 						: writtenFiles
@@ -114,7 +114,7 @@ export async function compile(
 		// In certain scenarios the angular compiler throws a FatalDiagnosticError,
 		// a non-error that can be converted into a diagnostic
 		// https://github.com/angular/angular/blob/3a60063a54d850c50ce962a8a39ce01cfee71398/packages/compiler-cli/src/ngtsc/diagnostics/src/error.ts#L14-L28
-		if (typeof e === 'object' && e != null && 'toDiagnostic' in e) {
+		if (typeof e === "object" && e != null && "toDiagnostic" in e) {
 			reportErrorsAndExit(
 				[
 					/** @type {{toDiagnostic(): import('typescript').Diagnostic}} */ (
@@ -123,7 +123,7 @@ export async function compile(
 				],
 				context.logger,
 			);
-			throw new BuildFailureError('Fatal diagnostic encountered');
+			throw new BuildFailureError("Fatal diagnostic encountered");
 		}
 
 		throw e;
@@ -157,7 +157,7 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 						ts.isImportDeclaration(node) &&
 						// The import is a relative path into node_modules (into the .yarn folder for PnP)
 						ts.isStringLiteral(node.moduleSpecifier) &&
-						node.moduleSpecifier.text.startsWith('../') &&
+						node.moduleSpecifier.text.startsWith("../") &&
 						// Angular has a specific naming format for these imports
 						node.importClause &&
 						ts.isImportClause(node.importClause) &&

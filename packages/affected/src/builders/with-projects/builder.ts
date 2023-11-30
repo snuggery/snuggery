@@ -2,20 +2,20 @@ import {
 	type BuilderContext,
 	lastValueFrom,
 	scheduleTarget,
-} from '@snuggery/architect';
-import {filterByPatterns} from '@snuggery/core';
+} from "@snuggery/architect";
+import {filterByPatterns} from "@snuggery/core";
 
-import {findAffectedProjects} from '../../changes';
+import {findAffectedProjects} from "../../changes";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 function hasTarget(value: unknown): value is {target: string} {
-	return typeof (value as {target: string}).target === 'string';
+	return typeof (value as {target: string}).target === "string";
 }
 
 export async function execute(
 	{
-		include = '**',
+		include = "**",
 		exclude,
 		printOnly,
 		fromRevision,
@@ -38,7 +38,7 @@ export async function execute(
 	);
 
 	if (printOnly) {
-		context.logger.info(affectedProjects.join('\n'));
+		context.logger.info(affectedProjects.join("\n"));
 	}
 
 	if (printOnly || !affectedProjects.length) {

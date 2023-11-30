@@ -1,20 +1,20 @@
-import type {Entry} from '@bgotink/kdl';
+import type {Entry} from "@bgotink/kdl";
 
-import type {JsonObject, JsonValue} from '../../types';
+import type {JsonObject, JsonValue} from "../../types";
 
-import type {ParserContext} from './context';
-import type {JsonPrimitive} from './json-utils';
+import type {ParserContext} from "./context";
+import type {JsonPrimitive} from "./json-utils";
 
 export function parseTaggedValue(
-	context: Pick<ParserContext, 'tags'>,
+	context: Pick<ParserContext, "tags">,
 	value: Entry[],
 ): JsonValue[];
 export function parseTaggedValue(
-	context: Pick<ParserContext, 'tags'>,
+	context: Pick<ParserContext, "tags">,
 	value: Entry | Entry[],
 ): JsonValue;
 export function parseTaggedValue(
-	context: Pick<ParserContext, 'tags'>,
+	context: Pick<ParserContext, "tags">,
 	value: Entry | Entry[],
 ): JsonValue {
 	if (Array.isArray(value)) {
@@ -26,7 +26,7 @@ export function parseTaggedValue(
 }
 
 export function updateTaggedEntry(
-	context: Pick<ParserContext, 'tags'>,
+	context: Pick<ParserContext, "tags">,
 	entry: Entry,
 	value: Exclude<JsonValue, JsonValue[] | JsonObject>,
 ) {

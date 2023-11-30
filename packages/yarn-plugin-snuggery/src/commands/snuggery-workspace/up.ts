@@ -1,4 +1,4 @@
-import {BaseCommand, WorkspaceRequiredError} from '@yarnpkg/cli';
+import {BaseCommand, WorkspaceRequiredError} from "@yarnpkg/cli";
 import {
 	structUtils,
 	Project,
@@ -15,19 +15,19 @@ import {
 	Package,
 	Locator,
 	IdentHash,
-} from '@yarnpkg/core';
-import {Filename, ppath, xfs} from '@yarnpkg/fslib';
-import {suggestUtils, Hooks} from '@yarnpkg/plugin-essentials';
-import {npmHttpUtils} from '@yarnpkg/plugin-npm';
-import {Option, UsageError} from 'clipanion';
-import * as semver from 'semver';
+} from "@yarnpkg/core";
+import {Filename, ppath, xfs} from "@yarnpkg/fslib";
+import {suggestUtils, Hooks} from "@yarnpkg/plugin-essentials";
+import {npmHttpUtils} from "@yarnpkg/plugin-npm";
+import {Option, UsageError} from "clipanion";
+import * as semver from "semver";
 
-import {applyModifier, getModifier} from '../../utils';
+import {applyModifier, getModifier} from "../../utils";
 
-const migrationFilename = 'migrations.json' as Filename;
+const migrationFilename = "migrations.json" as Filename;
 
 export class UpCommand extends BaseCommand {
-	static override paths = [['snuggery-workspace', `up`]];
+	static override paths = [["snuggery-workspace", `up`]];
 
 	patterns = Option.Rest();
 
@@ -56,7 +56,7 @@ export class UpCommand extends BaseCommand {
 		const allSuggestionsPromises = [];
 		const unreferencedPatterns = [];
 
-		const defaultProtocol = configuration.get('defaultProtocol');
+		const defaultProtocol = configuration.get("defaultProtocol");
 
 		const resolveDescriptor = (descriptor: Descriptor) => {
 			const range = structUtils.parseRange(descriptor.range);
@@ -251,7 +251,7 @@ export class UpCommand extends BaseCommand {
 			);
 
 			const version =
-				'version' in locator && locator.version
+				"version" in locator && locator.version
 					? locator.version
 					: semver.clean(structUtils.parseRange(locator.reference).selector);
 
@@ -311,7 +311,7 @@ export class UpCommand extends BaseCommand {
 						}
 
 						const manifest = await getManifest(candidates[0]!);
-						const rawUpdateGroup = manifest['ng-update']?.packageGroup;
+						const rawUpdateGroup = manifest["ng-update"]?.packageGroup;
 
 						if (Array.isArray(rawUpdateGroup)) {
 							updateGroup = rawUpdateGroup.map((ident) =>
@@ -321,7 +321,7 @@ export class UpCommand extends BaseCommand {
 								),
 							);
 						} else if (
-							typeof rawUpdateGroup === 'object' &&
+							typeof rawUpdateGroup === "object" &&
 							rawUpdateGroup != null
 						) {
 							updateGroup = Object.entries(rawUpdateGroup).map(
@@ -395,7 +395,7 @@ export class UpCommand extends BaseCommand {
 					mode: InstallMode.UpdateLockfile,
 				});
 
-				await report.startTimerPromise('Preparing migration', async () => {
+				await report.startTimerPromise("Preparing migration", async () => {
 					const migrationFile = ppath.join(project.cwd, migrationFilename);
 
 					const migrationMap = new Map<
@@ -423,7 +423,7 @@ export class UpCommand extends BaseCommand {
 						const newPackage = resolveDescriptor(newDescriptor);
 						const name = structUtils.stringifyIdent(oldPackage);
 
-						if (!(await getManifest(newPackage))['ng-update']?.migrations) {
+						if (!(await getManifest(newPackage))["ng-update"]?.migrations) {
 							continue;
 						}
 
@@ -453,8 +453,8 @@ export class UpCommand extends BaseCommand {
 							migration = {
 								package: name,
 
-								from: oldPackage.version ?? 'unknown',
-								to: newPackage.version ?? 'unknown',
+								from: oldPackage.version ?? "unknown",
+								to: newPackage.version ?? "unknown",
 							};
 
 							migrationMap.set(oldPackage.identHash, migration);
@@ -492,19 +492,19 @@ export class UpCommand extends BaseCommand {
 						null,
 						`You can add extra migrations by executing ${formatUtils.pretty(
 							configuration,
-							'`yarn sn run update <package@version> [...package@version]`',
+							"`yarn sn run update <package@version> [...package@version]`",
 							formatUtils.Type.CODE,
 						)} again.`,
 					);
 					report.reportInfo(
 						null,
-						'If you are ready to apply the update, continue with the instructions below.',
+						"If you are ready to apply the update, continue with the instructions below.",
 					);
 					report.reportInfo(
 						null,
 						`First, check whether everything looks okay and perform the actual installation via ${formatUtils.pretty(
 							configuration,
-							'`yarn install`',
+							"`yarn install`",
 							formatUtils.Type.CODE,
 						)}`,
 					);
@@ -513,7 +513,7 @@ export class UpCommand extends BaseCommand {
 							null,
 							`Then, continue with executing the migrations. Run ${formatUtils.pretty(
 								configuration,
-								'`yarn sn help update`',
+								"`yarn sn help update`",
 								formatUtils.Type.CODE,
 							)} for instructions.`,
 						);

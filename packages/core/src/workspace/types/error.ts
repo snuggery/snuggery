@@ -1,7 +1,7 @@
-import {JsonPropertyPath, stringifyPath} from './json';
+import {JsonPropertyPath, stringifyPath} from "./json";
 
 export class InvalidConfigurationError extends Error {
-	readonly clipanion = {type: 'none'} as const;
+	readonly clipanion = {type: "none"} as const;
 
 	constructor(message: string, path: JsonPropertyPath = []) {
 		super(`${message} at ${stringifyPath(path)}`);
@@ -10,7 +10,7 @@ export class InvalidConfigurationError extends Error {
 }
 
 export class UnsupportedOperationError extends Error {
-	readonly clipanion = {type: 'none'} as const;
+	readonly clipanion = {type: "none"} as const;
 
 	constructor(message: string) {
 		super(message);

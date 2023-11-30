@@ -1,20 +1,20 @@
-import {isJsonObject} from '@snuggery/core';
+import {isJsonObject} from "@snuggery/core";
 
-import {AbstractCommand} from '../../command/abstract-command';
+import {AbstractCommand} from "../../command/abstract-command";
 
 export class HelpProjectsCommand extends AbstractCommand {
-	static override readonly paths = [['help', 'projects']];
+	static override readonly paths = [["help", "projects"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about all projects',
+		category: "Workspace information commands",
+		description: "Show information about all projects",
 	});
 
 	async execute(): Promise<void> {
 		const {workspace, report} = this.context;
 
 		if (workspace == null) {
-			report.reportInfo('No workspace configuration found.\n');
+			report.reportInfo("No workspace configuration found.\n");
 			return;
 		}
 
@@ -25,20 +25,20 @@ export class HelpProjectsCommand extends AbstractCommand {
 		const {currentProject, format} = this;
 
 		let defaultProject: string | null = null;
-		if (isJsonObject(cli) && typeof cli.defaultProject === 'string') {
+		if (isJsonObject(cli) && typeof cli.defaultProject === "string") {
 			({defaultProject} = cli);
 		}
 
 		report.reportInfo(
-			'The current workspace contains the following projects:\n',
+			"The current workspace contains the following projects:\n",
 		);
 
 		for (const [projectName, {root, extensions}] of projects) {
 			report.reportInfo(
 				`- \`${format.code(projectName)}\`: a \`${format.code(
-					typeof extensions.projectType === 'string'
+					typeof extensions.projectType === "string"
 						? extensions.projectType
-						: 'library',
+						: "library",
 				)}\` project at \`${format.code(root)}\``,
 			);
 
@@ -55,7 +55,7 @@ export class HelpProjectsCommand extends AbstractCommand {
 		}
 
 		report.reportSeparator();
-		report.reportInfo('For more information about a project, run\n');
+		report.reportInfo("For more information about a project, run\n");
 		report.reportInfo(`  ${this.cli.binaryName} help project <project name>\n`);
 	}
 }

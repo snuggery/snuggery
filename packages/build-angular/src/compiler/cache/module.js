@@ -4,9 +4,9 @@
  * @property {Set<Module>} parents
  */
 
-import path, {extname, posix} from 'node:path';
+import path, {extname, posix} from "node:path";
 
-import {memoize} from '../utils.js';
+import {memoize} from "../utils.js";
 
 /**
  * @param {string} moduleName
@@ -14,8 +14,8 @@ import {memoize} from '../utils.js';
 const isBareModuleSpecifier = memoize(
 	function isBareModuleSpecifier(moduleName) {
 		return (
-			!moduleName.startsWith('./') &&
-			!moduleName.startsWith('../') &&
+			!moduleName.startsWith("./") &&
+			!moduleName.startsWith("../") &&
 			!posix.isAbsolute(moduleName) &&
 			(path === posix || !path.isAbsolute(moduleName))
 		);

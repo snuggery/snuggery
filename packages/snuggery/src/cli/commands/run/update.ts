@@ -1,21 +1,21 @@
-import {Option, UsageError} from 'clipanion';
+import {Option, UsageError} from "clipanion";
 
-import {ArchitectCommand} from '../../command/architect';
+import {ArchitectCommand} from "../../command/architect";
 
 export class RunUpdateCommand extends ArchitectCommand {
-	static override readonly paths = [['run', 'update']];
+	static override readonly paths = [["run", "update"]];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Update commands',
-		description: 'Update packages and prepare migrations',
+		category: "Update commands",
+		description: "Update packages and prepare migrations",
 		details: `
 			This command shells out to an implementation specific to your package manager. Ensure that
 			the relevant \`@snuggery\` package is installed, e.g. \`@snuggery/yarn\` if you're using yarn 3.
 		`,
 		examples: [
 			[
-				'Update `@angular/core` and related packages to 12.2.2 and update `@angular/cli` and related packages to a version matching ^12.2.0',
-				'$0 run update @angular/core@12.2.2 @angular/cli@^12.2.0',
+				"Update `@angular/core` and related packages to 12.2.2 and update `@angular/cli` and related packages to a version matching ^12.2.0",
+				"$0 run update @angular/core@12.2.2 @angular/cli@^12.2.0",
 			],
 		],
 	});
@@ -37,9 +37,9 @@ export class RunUpdateCommand extends ArchitectCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	override help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean("--help,-h", false, {hidden: true});
 
-	packages = Option.Rest({name: 'package@version'});
+	packages = Option.Rest({name: "package@version"});
 
 	async execute(): Promise<number> {
 		// Always make this command run as if it was executed in the workspace root

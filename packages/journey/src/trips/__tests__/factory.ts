@@ -1,44 +1,44 @@
 /* cspell:ignore jsons */
 
-import {tags} from '@angular-devkit/core';
-import type {RuleFactory} from '@angular-devkit/schematics';
+import {tags} from "@angular-devkit/core";
+import type {RuleFactory} from "@angular-devkit/schematics";
 
-import {journey} from '../../';
-import {mapImports} from '../map-imports';
-import {updatePackageJsons} from '../update-package-jsons';
-import {updateWorkspace} from '../update-workspace';
+import {journey} from "../../";
+import {mapImports} from "../map-imports";
+import {updatePackageJsons} from "../update-package-jsons";
+import {updateWorkspace} from "../update-workspace";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const init: RuleFactory<{}> = () => (tree) => {
 	tree.create(
-		'.gitignore',
+		".gitignore",
 		tags.stripIndent`
 			node_modules
 		`,
 	);
 
 	tree.create(
-		'package.json',
+		"package.json",
 		JSON.stringify(
 			{
-				name: 'test',
-				main: 'main.js',
+				name: "test",
+				main: "main.js",
 			},
 			null,
 			2,
-		) + '\n',
+		) + "\n",
 	);
 
 	tree.create(
-		'node_modules/lorem/package.json',
+		"node_modules/lorem/package.json",
 		JSON.stringify({
-			name: 'lorem',
-			main: './dist/index.cjs',
+			name: "lorem",
+			main: "./dist/index.cjs",
 		}),
 	);
 
 	tree.create(
-		'angular.json',
+		"angular.json",
 		tags.stripIndent`
 			{
 				"version": 1,
@@ -53,7 +53,7 @@ export const init: RuleFactory<{}> = () => (tree) => {
 	);
 
 	tree.create(
-		'file.ts',
+		"file.ts",
 		tags.stripIndent`
 			import {unchanged, renamed, moved, renamedAndMoved as aliasedImport, Renamed, Moved, RenamedAndMoved} from '@lorem/ipsum';
 
@@ -68,20 +68,20 @@ export const init: RuleFactory<{}> = () => (tree) => {
 };
 
 export const replaceLoremIpsum = journey(
-	mapImports('@lorem/ipsum', [
-		['renamed', {newName: 'newName'}],
-		['moved', {newFrom: '@dolor/sit'}],
-		['renamedAndMoved', {newFrom: '@dolor/sit', newName: 'amet'}],
-		['Renamed', {newName: 'NewName'}],
-		['Moved', {newFrom: '@dolor/sit'}],
-		['RenamedAndMoved', {newFrom: '@dolor/sit', newName: 'Amet'}],
+	mapImports("@lorem/ipsum", [
+		["renamed", {newName: "newName"}],
+		["moved", {newFrom: "@dolor/sit"}],
+		["renamedAndMoved", {newFrom: "@dolor/sit", newName: "amet"}],
+		["Renamed", {newName: "NewName"}],
+		["Moved", {newFrom: "@dolor/sit"}],
+		["RenamedAndMoved", {newFrom: "@dolor/sit", newName: "Amet"}],
 	]),
 );
 
 export const addPrefix = journey(
 	updateWorkspace((workspace) =>
 		workspace.projects.forEach((project) => {
-			project.prefix = 'pref';
+			project.prefix = "pref";
 		}),
 	),
 );
@@ -89,7 +89,7 @@ export const addPrefix = journey(
 export const mainToExport = journey(
 	updatePackageJsons((pkg) => {
 		if (pkg.main) {
-			pkg.exports = pkg.main.startsWith('.') ? pkg.main : `./${pkg.main}`;
+			pkg.exports = pkg.main.startsWith(".") ? pkg.main : `./${pkg.main}`;
 			delete pkg.main;
 		}
 	}),

@@ -1,14 +1,14 @@
-import type {json} from '@angular-devkit/core';
-import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
+import type {json} from "@angular-devkit/core";
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
 
-import {isNotNull} from './varia';
+import {isNotNull} from "./varia";
 
 export enum Type {
-	String = 'string',
-	Boolean = 'boolean',
-	Number = 'number',
-	StringArray = 'string array',
-	Object = 'object',
+	String = "string",
+	Boolean = "boolean",
+	Number = "number",
+	StringArray = "string array",
+	Object = "object",
 }
 
 export interface Option {
@@ -40,7 +40,7 @@ function isValidatableEnum(
 		return false;
 	}
 
-	const validTypes = new Set(['string', 'number', 'boolean']);
+	const validTypes = new Set(["string", "number", "boolean"]);
 	return val.every((item) => item === null || validTypes.has(typeof item));
 }
 
@@ -54,11 +54,11 @@ export function tryDereference(
 	obj: JsonObject,
 	schema: JsonObject,
 ): JsonObject {
-	if (typeof obj.$ref !== 'string' || !obj.$ref.startsWith('#/')) {
+	if (typeof obj.$ref !== "string" || !obj.$ref.startsWith("#/")) {
 		return obj;
 	}
 
-	const path = obj.$ref.slice(2).split('/');
+	const path = obj.$ref.slice(2).split("/");
 	let current = schema;
 	for (let i = 0, l = path.length; i < l; i++) {
 		const key = path[i]!;
@@ -76,7 +76,7 @@ export function tryDereference(
 	}
 
 	if (current.$ref !== obj.$ref) {
-		if (typeof obj.description === 'string') {
+		if (typeof obj.description === "string") {
 			return {
 				...tryDereference(current, schema),
 				description: obj.description,
@@ -100,7 +100,7 @@ export async function parseSchema({
 	allowExtraOptions: boolean;
 	description?: string;
 }> {
-	if (typeof schema === 'boolean') {
+	if (typeof schema === "boolean") {
 		return {
 			options: [],
 			allowExtraOptions: schema,
@@ -113,13 +113,13 @@ export async function parseSchema({
 	const requiredProperties = new Set<string>();
 	if (Array.isArray(required)) {
 		for (const r of required) {
-			if (typeof r === 'string') {
+			if (typeof r === "string") {
 				requiredProperties.add(r);
 			}
 		}
 	}
 
-	if (typeof additionalProperties !== 'boolean') {
+	if (typeof additionalProperties !== "boolean") {
 		additionalProperties = true;
 	}
 
@@ -139,32 +139,32 @@ export async function parseSchema({
 
 					const required = requiredProperties.has(name);
 					const rawTypes = (
-						await import('@angular-devkit/core')
+						await import("@angular-devkit/core")
 					).json.schema.getTypesOfSchema(property);
 					const types: Type[] = [];
 
 					for (const rawType of rawTypes) {
 						switch (rawType) {
-							case 'string':
+							case "string":
 								types.push(Type.String);
 								break;
-							case 'boolean':
+							case "boolean":
 								types.push(Type.Boolean);
 								break;
-							case 'integer':
-							case 'number':
+							case "integer":
+							case "number":
 								types.push(Type.Number);
 								break;
-							case 'array':
+							case "array":
 								if (isJsonObject(property.items!)) {
 									const items = tryDereference(property.items, schema);
 									if (
-										items.type === 'string' ||
+										items.type === "string" ||
 										(isJsonArray(items.oneOf) &&
 											items.oneOf.some(
 												(item) =>
 													isJsonObject(item) &&
-													tryDereference(item, schema).type === 'string',
+													tryDereference(item, schema).type === "string",
 											))
 									) {
 										types.push(Type.StringArray);
@@ -174,7 +174,7 @@ export async function parseSchema({
 
 								types.push(Type.Object);
 								break;
-							case 'object':
+							case "object":
 								types.push(Type.Object);
 								break;
 						}
@@ -195,24 +195,24 @@ export async function parseSchema({
 
 					const $defaultIndex =
 						isJsonObject(property.$default) &&
-						property.$default.$source == 'argv'
+						property.$default.$source == "argv"
 							? property.$default.index
 							: undefined;
 					const positional: number | undefined =
-						typeof $defaultIndex == 'number' ? $defaultIndex : undefined;
+						typeof $defaultIndex == "number" ? $defaultIndex : undefined;
 
 					const visible =
 						property.visible === undefined || property.visible === true;
 					const hidden =
-						!!property.hidden || !!property['x-deprecated'] || !visible;
+						!!property.hidden || !!property["x-deprecated"] || !visible;
 
 					const description =
-						typeof property.description === 'string'
+						typeof property.description === "string"
 							? property.description
 							: undefined;
 
 					const format =
-						typeof property.format === 'string' ? property.format : undefined;
+						typeof property.format === "string" ? property.format : undefined;
 
 					const _enum = isValidatableEnum(property.enum)
 						? property.enum

@@ -1,8 +1,8 @@
-const jsLoader = require.extensions['.js'];
+const jsLoader = require.extensions[".js"];
 
-require('esbuild-register/dist/node').register({
-	format: 'cjs',
-	target: ['node18'],
+require("esbuild-register/dist/node").register({
+	format: "cjs",
+	target: ["node18"],
 	tsconfigRaw: {
 		compilerOptions: {
 			experimentalDecorators: true,
@@ -11,4 +11,4 @@ require('esbuild-register/dist/node').register({
 });
 
 // remove esbuild-register's javascript loader
-require.extensions['.js'] = jsLoader;
+require.extensions[".js"] = jsLoader;

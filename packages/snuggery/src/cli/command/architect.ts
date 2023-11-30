@@ -2,35 +2,35 @@ import type {
 	BuilderOutput,
 	BuilderRun,
 	Target,
-} from '@angular-devkit/architect';
-import {isJsonArray, JsonObject} from '@snuggery/core';
-import {promises as fs} from 'fs';
-import {tmpdir} from 'os';
-import {join} from 'path';
+} from "@angular-devkit/architect";
+import {isJsonArray, JsonObject} from "@snuggery/core";
+import {promises as fs} from "fs";
+import {tmpdir} from "os";
+import {join} from "path";
 
-import {AbstractError} from '../../utils/error';
-import {Cached} from '../utils/decorator';
-import {Option, parseSchema, Type} from '../utils/parse-schema';
+import {AbstractError} from "../../utils/error";
+import {Cached} from "../utils/decorator";
+import {Option, parseSchema, Type} from "../utils/parse-schema";
 
-import {AbstractCommand} from './abstract-command';
-import type {Context} from './context';
+import {AbstractCommand} from "./abstract-command";
+import type {Context} from "./context";
 
 /**
  * Architect commands share a `--configuration` / `-c` option
  */
 export const configurationOption: Option = {
-	name: 'configuration',
-	aliases: ['c'],
+	name: "configuration",
+	aliases: ["c"],
 	hidden: false,
 	required: false,
 	type: Type.StringArray,
-	description: 'Configuration(s) to use',
+	description: "Configuration(s) to use",
 };
 
 export class BuilderFailedError extends AbstractError {}
 
 async function handleBuilderRun(run: BuilderRun, context: Context) {
-	const {lastValueFrom} = await import('rxjs');
+	const {lastValueFrom} = await import("rxjs");
 
 	let result: BuilderOutput;
 	try {
@@ -48,8 +48,8 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
 
 		if (e.stack) {
 			const file = join(
-				await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
-				'error.log',
+				await fs.mkdtemp(join(tmpdir(), "snuggery-")),
+				"error.log",
 			);
 			await fs.writeFile(file, e.stack);
 
@@ -61,7 +61,7 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
 
 	if (result == null) {
 		context.report.reportWarning(
-			'Builder exited without emitting a value, assuming success',
+			"Builder exited without emitting a value, assuming success",
 		);
 		result = {success: true};
 	}
@@ -80,9 +80,9 @@ export function addConfigurationsToTarget(
 ): Target {
 	const configurations = new Set(initialConfigurations);
 
-	if (typeof options.configuration === 'string') {
+	if (typeof options.configuration === "string") {
 		for (const value of options.configuration
-			.split(',')
+			.split(",")
 			.map((configuration) => configuration.trim())) {
 			if (value) {
 				configurations.add(value);
@@ -91,7 +91,7 @@ export function addConfigurationsToTarget(
 		delete options.configuration;
 	} else if (isJsonArray(options.configuration)) {
 		for (const value of options.configuration) {
-			if (typeof value === 'string') {
+			if (typeof value === "string") {
 				configurations.add(value.trim());
 			}
 		}
@@ -104,7 +104,7 @@ export function addConfigurationsToTarget(
 
 	return {
 		...target,
-		configuration: Array.from(configurations).join(','),
+		configuration: Array.from(configurations).join(","),
 	};
 }
 
@@ -116,7 +116,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 	protected get defaultProject(): string | null {
 		const defaultProject = this.context.workspace?.extensions?.defaultProject;
 
-		if (typeof defaultProject === 'string') {
+		if (typeof defaultProject === "string") {
 			return defaultProject;
 		}
 
@@ -156,7 +156,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 	): Set<string> {
 		return new Set(
 			this.configuration
-				?.flatMap((c) => c.split(','))
+				?.flatMap((c) => c.split(","))
 				.map((configuration) => configuration.trim()),
 		);
 	}
@@ -245,7 +245,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 
 		const {defaultProject} = this;
 
-		if (typeof defaultProject === 'string') {
+		if (typeof defaultProject === "string") {
 			const project = workspace.tryGetProjectByName(defaultProject);
 
 			if (project == null) {
@@ -265,7 +265,7 @@ export abstract class ArchitectCommand extends AbstractCommand {
 			return {project: uniqueTargets.get(target)!, target};
 		}
 
-		const {UnknownTargetError} = await import('../architect/index.js');
+		const {UnknownTargetError} = await import("../architect/index.js");
 		throw new UnknownTargetError(
 			`Failed to resolve target ${JSON.stringify(
 				target,

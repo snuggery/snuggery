@@ -6,12 +6,12 @@
  * Licensed under the BSD 2-Clause License, https://github.com/yarnpkg/berry/blob/14027c/LICENSE.md
  */
 
-import sliceAnsi from '@arcanis/slice-ansi';
-import type {JsonValue} from '@snuggery/core';
-import {gray, red, white, yellow} from 'kleur';
-import type {Writable} from 'stream';
-import stripAnsi from 'strip-ansi';
-import type {WriteStream} from 'tty';
+import sliceAnsi from "@arcanis/slice-ansi";
+import type {JsonValue} from "@snuggery/core";
+import {gray, red, white, yellow} from "kleur";
+import type {Writable} from "stream";
+import stripAnsi from "strip-ansi";
+import type {WriteStream} from "tty";
 
 export type ReportOptions = {
 	enableColors: boolean;
@@ -143,7 +143,7 @@ export class Report {
 	constructor({enableColors, stdout, json, verbose}: ReportOptions);
 	constructor(base: Report | BaseReport);
 	constructor(optsOrBase: ReportOptions | Report | BaseReport) {
-		if ('reportWarning' in optsOrBase) {
+		if ("reportWarning" in optsOrBase) {
 			this.#base = optsOrBase;
 		} else {
 			this.#base = new BaseReport(optsOrBase);

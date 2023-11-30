@@ -1,13 +1,13 @@
-import {Option} from 'clipanion';
+import {Option} from "clipanion";
 
-import {AbstractCommand} from '../command/abstract-command';
+import {AbstractCommand} from "../command/abstract-command";
 
 export class GenerateCommand extends AbstractCommand {
-	static override readonly paths = [['generate']];
+	static override readonly paths = [["generate"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Schematic commands',
-		description: 'Alias for `sn run schematic`',
+		category: "Schematic commands",
+		description: "Alias for `sn run schematic`",
 		details: `
 			A schematic is a code generator that supports complex logic. It contains instructions and templates for creating or modifying your codebase.
 
@@ -19,12 +19,12 @@ export class GenerateCommand extends AbstractCommand {
 		`,
 		examples: [
 			[
-				'Run the `component` schematic of the `@schematics/angular` package',
-				'$0 generate @schematics/angular:component',
+				"Run the `component` schematic of the `@schematics/angular` package",
+				"$0 generate @schematics/angular:component",
 			],
 			[
 				"Dry-run the `application` schematic of the default schematic package (if not configured, that's `@schematics/angular`)",
-				'$0 generate --dry-run application',
+				"$0 generate --dry-run application",
 			],
 		],
 	});
@@ -32,6 +32,6 @@ export class GenerateCommand extends AbstractCommand {
 	args = Option.Proxy();
 
 	async execute(): Promise<number | void> {
-		return this.cli.run(['run', 'schematic', ...this.args]);
+		return this.cli.run(["run", "schematic", ...this.args]);
 	}
 }

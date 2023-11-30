@@ -14,7 +14,7 @@ export function filterByPatterns(
 		exclude?: string | readonly string[];
 	},
 ): string[] {
-	const match = require('micromatch') as typeof import('micromatch');
+	const match = require("micromatch") as typeof import("micromatch");
 
 	const included = match(list, include);
 
@@ -41,7 +41,7 @@ export function matchesPatterns(
 		exclude?: string | readonly string[];
 	},
 ): boolean {
-	const match = require('micromatch') as typeof import('micromatch');
+	const match = require("micromatch") as typeof import("micromatch");
 
 	return (
 		match.isMatch(path, include) && (!exclude || !match.isMatch(path, exclude))

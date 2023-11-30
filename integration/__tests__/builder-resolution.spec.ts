@@ -1,12 +1,12 @@
-import assert from 'node:assert/strict';
-import {suite} from 'uvu';
+import assert from "node:assert/strict";
+import {suite} from "uvu";
 
-import {inFixture} from './setup';
+import {inFixture} from "./setup";
 
-const test = suite('builder resolution');
+const test = suite("builder resolution");
 
 function matchObject(actual: unknown, expected: Record<string, unknown>) {
-	assert.equal(typeof actual, 'object');
+	assert.equal(typeof actual, "object");
 	assert.ok(actual);
 	assert.equal(Array.isArray(actual), false);
 
@@ -21,157 +21,157 @@ function matchObject(actual: unknown, expected: Record<string, unknown>) {
 }
 
 test(
-	'it runs builder via package',
-	inFixture('builders', async ({runJson}) => {
-		matchObject(await runJson(['run', 'target', 'fixture:installed-builder']), {
-			withDefault: 'defaultValue',
+	"it runs builder via package",
+	inFixture("builders", async ({runJson}) => {
+		matchObject(await runJson(["run", "target", "fixture:installed-builder"]), {
+			withDefault: "defaultValue",
 		});
 	}),
 );
 
 test(
-	'it runs builder via package with arguments',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via package with arguments",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
 			await runJson([
-				'run',
-				'target',
-				'fixture:installed-builder',
-				'--foo',
-				'bar',
-				'--with-default',
-				'baz',
+				"run",
+				"target",
+				"fixture:installed-builder",
+				"--foo",
+				"bar",
+				"--with-default",
+				"baz",
 			]),
 			{
-				foo: 'bar',
-				withDefault: 'baz',
+				foo: "bar",
+				withDefault: "baz",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via local builders.json',
-	inFixture('builders', async ({runJson}) => {
-		matchObject(await runJson(['run', 'target', 'fixture:local-builder']), {
-			withDefault: 'defaultValue',
+	"it runs builder via local builders.json",
+	inFixture("builders", async ({runJson}) => {
+		matchObject(await runJson(["run", "target", "fixture:local-builder"]), {
+			withDefault: "defaultValue",
 		});
 	}),
 );
 
 test(
-	'it runs builder via local builders.json with arguments',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via local builders.json with arguments",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
 			await runJson([
-				'run',
-				'target',
-				'fixture:local-builder',
-				'--foo',
-				'bar',
-				'--with-default',
-				'baz',
+				"run",
+				"target",
+				"fixture:local-builder",
+				"--foo",
+				"bar",
+				"--with-default",
+				"baz",
 			]),
 			{
-				foo: 'bar',
-				withDefault: 'baz',
+				foo: "bar",
+				withDefault: "baz",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via local builder.json',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via local builder.json",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
-			await runJson(['run', 'target', 'fixture:local-builder-single']),
+			await runJson(["run", "target", "fixture:local-builder-single"]),
 			{
-				withDefault: 'defaultValue',
+				withDefault: "defaultValue",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via local builder.json with arguments',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via local builder.json with arguments",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
 			await runJson([
-				'run',
-				'target',
-				'fixture:local-builder-single',
-				'--foo',
-				'bar',
-				'--with-default',
-				'baz',
+				"run",
+				"target",
+				"fixture:local-builder-single",
+				"--foo",
+				"bar",
+				"--with-default",
+				"baz",
 			]),
 			{
-				foo: 'bar',
-				withDefault: 'baz',
+				foo: "bar",
+				withDefault: "baz",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via implementation',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via implementation",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
-			await runJson(['run', 'target', 'fixture:local-builder-implementation']),
+			await runJson(["run", "target", "fixture:local-builder-implementation"]),
 			{},
 		);
 	}),
 );
 
 test(
-	'it runs builder via implementation with arguments',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via implementation with arguments",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
 			await runJson([
-				'run',
-				'target',
-				'fixture:local-builder-implementation',
-				'--foo',
-				'bar',
-				'--with-default',
-				'baz',
+				"run",
+				"target",
+				"fixture:local-builder-implementation",
+				"--foo",
+				"bar",
+				"--with-default",
+				"baz",
 			]),
 			{
-				foo: 'bar',
-				withDefault: 'baz',
+				foo: "bar",
+				withDefault: "baz",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via schema',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via schema",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
-			await runJson(['run', 'target', 'fixture:local-builder-schema']),
+			await runJson(["run", "target", "fixture:local-builder-schema"]),
 			{
-				withDefault: 'defaultValue',
+				withDefault: "defaultValue",
 			},
 		);
 	}),
 );
 
 test(
-	'it runs builder via schema with arguments',
-	inFixture('builders', async ({runJson}) => {
+	"it runs builder via schema with arguments",
+	inFixture("builders", async ({runJson}) => {
 		matchObject(
 			await runJson([
-				'run',
-				'target',
-				'fixture:local-builder-schema',
-				'--foo',
-				'bar',
-				'--with-default',
-				'baz',
+				"run",
+				"target",
+				"fixture:local-builder-schema",
+				"--foo",
+				"bar",
+				"--with-default",
+				"baz",
 			]),
 			{
-				foo: 'bar',
-				withDefault: 'baz',
+				foo: "bar",
+				withDefault: "baz",
 			},
 		);
 	}),

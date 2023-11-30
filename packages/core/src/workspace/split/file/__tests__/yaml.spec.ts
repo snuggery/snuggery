@@ -1,58 +1,58 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {tags} from '@angular-devkit/core';
-import assert from 'node:assert/strict';
-import {suite} from 'uvu';
-import * as YAML from 'yaml';
+import {tags} from "@angular-devkit/core";
+import assert from "node:assert/strict";
+import {suite} from "uvu";
+import * as YAML from "yaml";
 
-import {createTextFileHandle} from '../../../file';
-import type {JsonObject} from '../../../types';
-import {createFileHandle} from '../../file';
+import {createTextFileHandle} from "../../../file";
+import type {JsonObject} from "../../../types";
+import {createFileHandle} from "../../file";
 
-import {TestSingleFileWorkspaceHost} from './utils';
+import {TestSingleFileWorkspaceHost} from "./utils";
 
-const test = suite('YamlFileHandle');
+const test = suite("YamlFileHandle");
 
 function stripIndent(strings: TemplateStringsArray) {
-	return tags.stripIndent(strings).replace(/\t/g, '  ').trim() + '\n';
+	return tags.stripIndent(strings).replace(/\t/g, "  ").trim() + "\n";
 }
 
-test('reading objects should work', async () => {
+test("reading objects should work", async () => {
 	for (const obj of [
 		{},
 		{foo: 2},
 		{
-			lorem: 'ipsum',
-			dolor: ['sit', 'amet', ['the', 'quick', {brown: 'fox'}, 'jumps']],
+			lorem: "ipsum",
+			dolor: ["sit", "amet", ["the", "quick", {brown: "fox"}, "jumps"]],
 		},
 	]) {
 		assert.deepEqual(await parse(YAML.stringify(obj)), obj);
 	}
 });
 
-test('reading non-objects should fail', async () => {
-	for (const nonObj of [true, null, 42, 'not an object']) {
+test("reading non-objects should fail", async () => {
+	for (const nonObj of [true, null, 42, "not an object"]) {
 		await assert.rejects(
 			parse(YAML.stringify(nonObj)),
-			'Configuration must be an object',
+			"Configuration must be an object",
 		);
 	}
 });
 
-test('writing', async () => {
+test("writing", async () => {
 	for (const obj of [
 		{},
 		{foo: 2},
 		{
-			lorem: 'ipsum',
-			dolor: ['sit', 'amet', ['the', 'quick', {brown: 'fox'}, 'jumps']],
+			lorem: "ipsum",
+			dolor: ["sit", "amet", ["the", "quick", {brown: "fox"}, "jumps"]],
 		},
 	] as JsonObject[]) {
 		assert.deepEqual(await write(obj), obj);
 	}
 });
 
-test('updating without changes', async () => {
+test("updating without changes", async () => {
 	assert.deepEqual(await update({}, () => {}), {});
 
 	assert.deepEqual(await update({lorem: {ipsum: {}}}, () => {}), {
@@ -60,7 +60,7 @@ test('updating without changes', async () => {
 	});
 });
 
-test('updating should support adding properties', async () => {
+test("updating should support adding properties", async () => {
 	assert.deepEqual(
 		await update({}, (obj) => {
 			obj.foo = 2;
@@ -70,15 +70,15 @@ test('updating should support adding properties', async () => {
 
 	assert.deepEqual(
 		await update({lorem: {ipsum: {}}}, (obj: any) => {
-			obj.lorem.ipsum.dolor = {sit: 'amet'};
+			obj.lorem.ipsum.dolor = {sit: "amet"};
 		}),
 		{
-			lorem: {ipsum: {dolor: {sit: 'amet'}}},
+			lorem: {ipsum: {dolor: {sit: "amet"}}},
 		},
 	);
 });
 
-test('updating should support removing properties', async () => {
+test("updating should support removing properties", async () => {
 	assert.deepEqual(
 		await update({foo: 2, bar: 4}, (obj) => {
 			delete obj.foo;
@@ -87,7 +87,7 @@ test('updating should support removing properties', async () => {
 	);
 
 	assert.deepEqual(
-		await update({lorem: {ipsum: {dolor: {sit: 'amet'}}}}, (obj: any) => {
+		await update({lorem: {ipsum: {dolor: {sit: "amet"}}}}, (obj: any) => {
 			delete obj.lorem.ipsum.dolor;
 		}),
 		{
@@ -96,7 +96,7 @@ test('updating should support removing properties', async () => {
 	);
 });
 
-test('updating should support removing properties by setting to undefined', async () => {
+test("updating should support removing properties by setting to undefined", async () => {
 	assert.deepEqual(
 		await update({foo: 2, bar: 4}, (obj: any) => {
 			obj.foo = undefined;
@@ -105,7 +105,7 @@ test('updating should support removing properties by setting to undefined', asyn
 	);
 
 	assert.deepEqual(
-		await update({lorem: {ipsum: {dolor: {sit: 'amet'}}}}, (obj: any) => {
+		await update({lorem: {ipsum: {dolor: {sit: "amet"}}}}, (obj: any) => {
 			obj.lorem.ipsum.dolor = undefined;
 		}),
 		{
@@ -114,7 +114,7 @@ test('updating should support removing properties by setting to undefined', asyn
 	);
 });
 
-test('updating should support modifying properties', async () => {
+test("updating should support modifying properties", async () => {
 	await update({foo: 2, bar: 4}, (obj: any) => {
 		obj.foo = 6;
 	});
@@ -126,7 +126,7 @@ test('updating should support modifying properties', async () => {
 	);
 
 	assert.deepEqual(
-		await update({lorem: {ipsum: {dolor: {sit: 'amet'}}}}, (obj: any) => {
+		await update({lorem: {ipsum: {dolor: {sit: "amet"}}}}, (obj: any) => {
 			obj.lorem.ipsum.dolor = 42;
 		}),
 		{
@@ -135,12 +135,12 @@ test('updating should support modifying properties', async () => {
 	);
 });
 
-test('updating should support multiple changes', async () => {
+test("updating should support multiple changes", async () => {
 	assert.deepEqual(
 		await update(
 			{
-				lorem: {ipsum: {dolor: {sit: 'amet'}}},
-				foxy: ['the', 'quick', 'brown', 'fox', 'jumps'],
+				lorem: {ipsum: {dolor: {sit: "amet"}}},
+				foxy: ["the", "quick", "brown", "fox", "jumps"],
 			},
 			(obj: any) => {
 				obj.lorem.ipsum.dolor.loremIpsum = true;
@@ -149,7 +149,7 @@ test('updating should support multiple changes', async () => {
 
 				delete obj.lorem.ipsum.dolor.sit;
 
-				obj.foxy[1] = 'lazy';
+				obj.foxy[1] = "lazy";
 			},
 		),
 		{
@@ -162,12 +162,12 @@ test('updating should support multiple changes', async () => {
 				},
 				loremIpsum: true,
 			},
-			foxy: ['the', 'lazy', 'brown', 'fox', 'jumps'],
+			foxy: ["the", "lazy", "brown", "fox", "jumps"],
 		},
 	);
 });
 
-test('updating should transform aliases into merges', async () => {
+test("updating should transform aliases into merges", async () => {
 	assert.equal(
 		await updateString(
 			stripIndent`
@@ -199,7 +199,7 @@ test('updating should transform aliases into merges', async () => {
 					bar: *ipsum
 			`,
 			(object: any) => {
-				object.foo.bar = 'changed';
+				object.foo.bar = "changed";
 			},
 		),
 		stripIndent`
@@ -218,7 +218,7 @@ test('updating should transform aliases into merges', async () => {
 					bar: *ipsum
 			`,
 			(object: any) => {
-				object.foo.bar.dolor = 'changed';
+				object.foo.bar.dolor = "changed";
 			},
 		),
 		stripIndent`
@@ -280,7 +280,7 @@ test('updating should transform aliases into merges', async () => {
 	);
 });
 
-test('updating should handle changes on merged objects', async () => {
+test("updating should handle changes on merged objects", async () => {
 	assert.equal(
 		await updateString(
 			stripIndent`
@@ -425,20 +425,20 @@ test('updating should handle changes on merged objects', async () => {
 });
 
 async function parse(content: string) {
-	const host = new TestSingleFileWorkspaceHost('test.yaml', content);
+	const host = new TestSingleFileWorkspaceHost("test.yaml", content);
 
 	return await createFileHandle(
-		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
-		'test.yaml',
+		await createTextFileHandle(host, "test.yaml", ["test.yaml"]),
+		"test.yaml",
 	).read();
 }
 
 async function write(content: JsonObject) {
-	const host = new TestSingleFileWorkspaceHost('test.yaml', '');
+	const host = new TestSingleFileWorkspaceHost("test.yaml", "");
 
 	await createFileHandle(
-		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
-		'test.yaml',
+		await createTextFileHandle(host, "test.yaml", ["test.yaml"]),
+		"test.yaml",
 	).write(content, {});
 
 	return YAML.parse(host.currentContent);
@@ -449,13 +449,13 @@ async function update(
 	updater: (value: JsonObject) => void | Promise<void>,
 ) {
 	const host = new TestSingleFileWorkspaceHost(
-		'test.yaml',
+		"test.yaml",
 		YAML.stringify(source),
 	);
 
 	await createFileHandle(
-		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
-		'test.yaml',
+		await createTextFileHandle(host, "test.yaml", ["test.yaml"]),
+		"test.yaml",
 	).update(updater);
 
 	return YAML.parse(host.currentContent);
@@ -465,11 +465,11 @@ async function updateString(
 	source: string,
 	updater: (value: JsonObject) => void | Promise<void>,
 ) {
-	const host = new TestSingleFileWorkspaceHost('test.yaml', source);
+	const host = new TestSingleFileWorkspaceHost("test.yaml", source);
 
 	await createFileHandle(
-		await createTextFileHandle(host, 'test.yaml', ['test.yaml']),
-		'test.yaml',
+		await createTextFileHandle(host, "test.yaml", ["test.yaml"]),
+		"test.yaml",
 	).update(updater);
 
 	return host.currentContent;

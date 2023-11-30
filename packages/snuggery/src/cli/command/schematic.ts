@@ -1,42 +1,42 @@
-import type {DryRunEvent} from '@angular-devkit/schematics';
-import {isJsonArray, isJsonObject, JsonObject, JsonValue} from '@snuggery/core';
-import {promises as fs} from 'fs';
-import {tmpdir} from 'os';
-import path, {posix, join, normalize, relative} from 'path';
+import type {DryRunEvent} from "@angular-devkit/schematics";
+import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
+import {promises as fs} from "fs";
+import {tmpdir} from "os";
+import path, {posix, join, normalize, relative} from "path";
 
-import {AbstractError} from '../../utils/error';
-import {UnableToResolveError} from '../../utils/json-resolver';
+import {AbstractError} from "../../utils/error";
+import {UnableToResolveError} from "../../utils/json-resolver";
 import type {
 	SnuggeryCollection,
 	SnuggeryEngineHost,
 	SnuggerySchematic,
 	SnuggerySchematicDescription,
-} from '../schematic/engine-host';
-import type {SnuggeryWorkflow} from '../schematic/workflow';
-import {Cached} from '../utils/decorator';
-import {parseSchema, Option, Type} from '../utils/parse-schema';
+} from "../schematic/engine-host";
+import type {SnuggeryWorkflow} from "../schematic/workflow";
+import {Cached} from "../utils/decorator";
+import {parseSchema, Option, Type} from "../utils/parse-schema";
 
-import {AbstractCommand} from './abstract-command';
+import {AbstractCommand} from "./abstract-command";
 
 export const forceOption: Option = {
-	name: 'force',
+	name: "force",
 	aliases: [],
 	hidden: false,
 	required: false,
 	type: Type.Boolean,
-	description: 'Write the results to disk even if there are conflicts',
+	description: "Write the results to disk even if there are conflicts",
 };
 
 export const dryRunOption: Option = {
-	name: 'dryRun',
+	name: "dryRun",
 	aliases: [],
 	hidden: false,
 	required: false,
 	type: Type.Boolean,
-	description: 'Run the schematics without writing the results to disk',
+	description: "Run the schematics without writing the results to disk",
 };
 
-export const defaultSchematicCollection = '@schematics/angular';
+export const defaultSchematicCollection = "@schematics/angular";
 
 export class SchematicFailedError extends AbstractError {}
 
@@ -124,8 +124,8 @@ export abstract class SchematicCommand extends AbstractCommand {
 			!isJsonObject(schema) ||
 			!isJsonObject(schema.properties) ||
 			!isJsonObject(schema.properties.path) ||
-			schema.properties.path.type !== 'string' ||
-			schema.properties.path.format !== 'path' ||
+			schema.properties.path.type !== "string" ||
+			schema.properties.path.format !== "path" ||
 			isJsonObject(schema.properties.path.$default)
 		) {
 			return {};
@@ -133,8 +133,8 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 		const schematicName = schematic.collection.description.name;
 		if (
-			schematicName.startsWith('@angular/') ||
-			schematicName.startsWith('@schematics/')
+			schematicName.startsWith("@angular/") ||
+			schematicName.startsWith("@schematics/")
 		) {
 			this.report.reportWarning(
 				`Schematic ${schematicName} is using the deprecated path format, update the package to at least version 14.1.0`,
@@ -150,7 +150,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		);
 
 		if (path !== posix) {
-			relativeCwd = relativeCwd.replace(/\\/g, '/');
+			relativeCwd = relativeCwd.replace(/\\/g, "/");
 		}
 
 		return relativeCwd
@@ -222,8 +222,8 @@ export abstract class SchematicCommand extends AbstractCommand {
 		collectionName: string;
 		schematicName: string;
 	}> {
-		if (schematic.includes(':')) {
-			const [collectionName, schematicName] = schematic.split(':', 2) as [
+		if (schematic.includes(":")) {
+			const [collectionName, schematicName] = schematic.split(":", 2) as [
 				string,
 				string,
 			];
@@ -244,12 +244,12 @@ export abstract class SchematicCommand extends AbstractCommand {
 							`Unable to find a schematic named ${JSON.stringify(
 								schematic,
 							)} in the configured ${
-								configuredCollections.length > 1 ? 'collections' : 'collection'
+								configuredCollections.length > 1 ? "collections" : "collection"
 							}: ${configuredCollections
 								.map((collection) =>
 									JSON.stringify(collection.description.name),
 								)
-								.join(', ')}`,
+								.join(", ")}`,
 						);
 					} else {
 						// Neither configuredCollections nor defaultCollection is set
@@ -268,7 +268,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 				}
 
 				this.report.reportWarning(
-					'The `defaultCollection` configuration option is deprecated, consider switching to `schematicCollections` instead',
+					"The `defaultCollection` configuration option is deprecated, consider switching to `schematicCollections` instead",
 				);
 
 				collection = defaultCollection;
@@ -319,7 +319,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 		return await Promise.all(
 			configuredCollections
-				.filter((value): value is string => typeof value === 'string')
+				.filter((value): value is string => typeof value === "string")
 				.map((collectionName) => this.getCollection(collectionName)),
 		);
 	}
@@ -341,7 +341,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 				const projectCli = project.extensions.cli;
 				if (
 					isJsonObject(projectCli) &&
-					typeof projectCli.defaultCollection === 'string'
+					typeof projectCli.defaultCollection === "string"
 				) {
 					return await this.getCollection(projectCli.defaultCollection);
 				}
@@ -350,7 +350,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 			const workspaceCli = workspace.extensions.cli;
 			if (
 				isJsonObject(workspaceCli) &&
-				typeof workspaceCli.defaultCollection === 'string'
+				typeof workspaceCli.defaultCollection === "string"
 			) {
 				return await this.getCollection(workspaceCli.defaultCollection);
 			}
@@ -387,35 +387,35 @@ export abstract class SchematicCommand extends AbstractCommand {
 		const subscription = workflow.reporter.subscribe((event: DryRunEvent) => {
 			madeAChange = true;
 
-			const path = event.path.replace(/^\//, '');
+			const path = event.path.replace(/^\//, "");
 
-			if (event.kind === 'error') {
+			if (event.kind === "error") {
 				hasError = true;
 				this.context.report.reportWarning(
 					`Error: ${path} ${
-						event.description == 'alreadyExist'
-							? 'already exists'
-							: 'does not exist'
+						event.description == "alreadyExist"
+							? "already exists"
+							: "does not exist"
 					}.`,
 				);
 			} else if (shouldPrintFileChanges) {
 				switch (event.kind) {
-					case 'update':
+					case "update":
 						loggingQueue.push(
-							`${'UPDATE'} ${path} (${event.content.length} bytes)`,
+							`${"UPDATE"} ${path} (${event.content.length} bytes)`,
 						);
 						break;
-					case 'create':
+					case "create":
 						loggingQueue.push(
-							`${'CREATE'} ${path} (${event.content.length} bytes)`,
+							`${"CREATE"} ${path} (${event.content.length} bytes)`,
 						);
 						break;
-					case 'delete':
-						loggingQueue.push(`${'DELETE'} ${path}`);
+					case "delete":
+						loggingQueue.push(`${"DELETE"} ${path}`);
 						break;
-					case 'rename': {
-						const to = event.to.replace(/^\//, '');
-						loggingQueue.push(`${'RENAME'} ${path} => ${to}`);
+					case "rename": {
+						const to = event.to.replace(/^\//, "");
+						loggingQueue.push(`${"RENAME"} ${path} => ${to}`);
 						break;
 					}
 				}
@@ -425,7 +425,7 @@ export abstract class SchematicCommand extends AbstractCommand {
 		if (shouldPrintFileChanges) {
 			subscription.add(
 				workflow.lifeCycle.subscribe((event) => {
-					if (event.kind == 'end' || event.kind == 'post-tasks-start') {
+					if (event.kind == "end" || event.kind == "post-tasks-start") {
 						if (!hasError) {
 							loggingQueue.forEach((log) =>
 								this.context.report.reportInfo(log),
@@ -451,11 +451,11 @@ export abstract class SchematicCommand extends AbstractCommand {
 				.toPromise();
 		} catch (e) {
 			const {UnsuccessfulWorkflowExecution} = await import(
-				'@angular-devkit/schematics'
+				"@angular-devkit/schematics"
 			);
 			if (e instanceof UnsuccessfulWorkflowExecution) {
 				this.context.report.reportError(
-					'The schematic workflow failed. See above.',
+					"The schematic workflow failed. See above.",
 				);
 				return 1;
 			}
@@ -470,8 +470,8 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 			if (e.stack) {
 				const file = join(
-					await fs.mkdtemp(join(tmpdir(), 'snuggery-')),
-					'error.log',
+					await fs.mkdtemp(join(tmpdir(), "snuggery-")),
+					"error.log",
 				);
 				await fs.writeFile(file, e.stack);
 
@@ -484,10 +484,10 @@ export abstract class SchematicCommand extends AbstractCommand {
 		}
 
 		if (!madeAChange) {
-			this.context.report.reportWarning('Nothing to do');
+			this.context.report.reportWarning("Nothing to do");
 		} else if (this.dryRun) {
 			this.context.report.reportInfo(
-				'\nNote: no changes were made, run without `--dry-run` to actually make the changes',
+				"\nNote: no changes were made, run without `--dry-run` to actually make the changes",
 			);
 		}
 

@@ -1,23 +1,23 @@
-import type * as YAML from 'yaml';
+import type * as YAML from "yaml";
 
-import {Change, ChangeType} from '../../proxy';
+import {Change, ChangeType} from "../../proxy";
 import {
 	InvalidConfigurationError,
 	isJsonObject,
 	JsonObject,
 	JsonPropertyPath,
 	stringifyPath,
-} from '../../types';
+} from "../../types";
 
-import {AbstractFileHandle} from './abstract';
+import {AbstractFileHandle} from "./abstract";
 
 const yamlOptions: YAML.DocumentOptions &
 	YAML.SchemaOptions &
 	YAML.ToStringOptions = {
 	// Use YAML 1.2
-	version: '1.2',
+	version: "1.2",
 	// Run with the `core` schema but disable certain non-JSON-compatible tags
-	schema: 'core',
+	schema: "core",
 	resolveKnownTags: false,
 	// But support merges (<<) which are not included in the 1.2 spec
 	merge: true,
@@ -28,14 +28,14 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 		const [error] = errors as [YAML.YAMLError];
 		throw new InvalidConfigurationError(
 			`Error while parsing YAML file: ${error.message} at ${error.pos.join(
-				':',
+				":",
 			)}`,
 		);
 	} else if (errors.length > 0) {
 		throw new InvalidConfigurationError(
 			`Errors while parsing YAML file:\n- ${errors
-				.map((error) => `${error.message} at ${error.pos.join(':')}`)
-				.join('\n- ')}`,
+				.map((error) => `${error.message} at ${error.pos.join(":")}`)
+				.join("\n- ")}`,
 		);
 	}
 }
@@ -43,7 +43,7 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 export class YamlFileHandle extends AbstractFileHandle<
 	YAML.Document.Parsed<YAML.ParsedNode>
 > {
-	#YAML: typeof YAML = require('yaml');
+	#YAML: typeof YAML = require("yaml");
 
 	async parse(source: string): Promise<YAML.Document.Parsed<YAML.ParsedNode>> {
 		const document = this.#YAML.parseDocument(source, yamlOptions);
@@ -57,7 +57,7 @@ export class YamlFileHandle extends AbstractFileHandle<
 		const value = document.toJSON();
 
 		if (!isJsonObject(value)) {
-			throw new InvalidConfigurationError('Configuration must be an object');
+			throw new InvalidConfigurationError("Configuration must be an object");
 		}
 
 		return value;
@@ -68,7 +68,7 @@ export class YamlFileHandle extends AbstractFileHandle<
 	}
 
 	createHeader(header: string | string[]): string {
-		return `# ${[header].flat().join('\n# ')}\n`;
+		return `# ${[header].flat().join("\n# ")}\n`;
 	}
 
 	applyChanges(
@@ -122,15 +122,15 @@ export class YamlFileHandle extends AbstractFileHandle<
 				const isLast = i === change.path.length - 1;
 
 				isPropertyPresentInMerge = false;
-				if (YAML.isMap(node) && node.has('<<')) {
+				if (YAML.isMap(node) && node.has("<<")) {
 					// We're passing a merge, and the value we want to change is merged into the object
 					// -> clone the property to the object itself so we can override it
 
-					let source = node.get('<<', true) as YAML.Node;
+					let source = node.get("<<", true) as YAML.Node;
 					let resolvedSource;
 
 					if (!YAML.isAlias(source)) {
-						throw new Error('Expected << to be an alias');
+						throw new Error("Expected << to be an alias");
 					}
 
 					const seen = new Set<YAML.Node>();
@@ -146,8 +146,8 @@ export class YamlFileHandle extends AbstractFileHandle<
 
 						if (resolvedSource.has(prop)) {
 							break;
-						} else if (resolvedSource.has('<<')) {
-							source = resolvedSource.get('<<', true) as YAML.Node;
+						} else if (resolvedSource.has("<<")) {
+							source = resolvedSource.get("<<", true) as YAML.Node;
 						} else {
 							resolvedSource = null;
 							break;
@@ -182,7 +182,7 @@ export class YamlFileHandle extends AbstractFileHandle<
 					let newNode = unaliasedAliases.get(resolvedAlias);
 					if (newNode == null) {
 						newNode = document.createNode({
-							'<<': document.createAlias(resolvedAlias),
+							"<<": document.createAlias(resolvedAlias),
 						}) as YAML.YAMLMap;
 
 						unaliasedAliases.set(resolvedAlias, newNode);

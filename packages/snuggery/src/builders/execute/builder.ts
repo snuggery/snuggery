@@ -2,11 +2,11 @@ import {
 	type BuilderContext,
 	getProjectPath,
 	resolveWorkspacePath,
-} from '@snuggery/architect';
+} from "@snuggery/architect";
 
-import {exec} from './exec';
-import {resolvePackageBin} from './resolve-package-bin';
-import type {Schema, PackageBinarySchema} from './schema';
+import {exec} from "./exec";
+import {resolvePackageBin} from "./resolve-package-bin";
+import type {Schema, PackageBinarySchema} from "./schema";
 
 /**
  * Execute a binary, depending on config either globally installed or installed in a node package
@@ -35,5 +35,5 @@ export async function execute(
 }
 
 function isPackageConfiguration(config: Schema): config is PackageBinarySchema {
-	return 'package' in config && !!config.package;
+	return "package" in config && !!config.package;
 }

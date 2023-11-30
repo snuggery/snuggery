@@ -1,13 +1,13 @@
 /* cspell:ignore ngfactory bazel */
 
-import {readConfiguration} from '@angular/compiler-cli';
-import {fileURLToPath, URL} from 'node:url';
-import ts from 'typescript';
+import {readConfiguration} from "@angular/compiler-cli";
+import {fileURLToPath, URL} from "node:url";
+import ts from "typescript";
 
-import {BuildFailureError} from '../error.js';
+import {BuildFailureError} from "../error.js";
 
 const defaultTsConfigFile = fileURLToPath(
-	new URL('./tsconfig.default.json', import.meta.url),
+	new URL("./tsconfig.default.json", import.meta.url),
 );
 
 /**
@@ -67,9 +67,9 @@ export function parseConfiguration(context, input) {
 		compilerOptions.moduleResolution =
 			compilerOptions.moduleResolution ?? ts.ModuleResolutionKind.Node10;
 	} else if (isUsingNodeResolution(compilerOptions)) {
-		const primaryType = context.manifest.type ?? 'commonjs';
+		const primaryType = context.manifest.type ?? "commonjs";
 
-		if (primaryType !== 'module') {
+		if (primaryType !== "module") {
 			throw new BuildFailureError(
 				`Compiling angular libraries with TypeScript compiler option "module": "${
 					ts.ModuleKind[compilerOptions.module]
@@ -94,7 +94,7 @@ export function parseConfiguration(context, input) {
 	compilerOptions.flatModuleId = undefined;
 	compilerOptions.flatModuleOutFile = undefined;
 
-	compilerOptions.compilationMode = 'partial';
+	compilerOptions.compilationMode = "partial";
 
 	compilerOptions.basePath = context.rootFolder;
 

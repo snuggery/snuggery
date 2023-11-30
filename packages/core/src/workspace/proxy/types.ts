@@ -1,9 +1,9 @@
-import type {JsonPropertyPath, JsonValue} from '../types';
+import type {JsonPropertyPath, JsonValue} from "../types";
 
 export const enum ChangeType {
-	Add = 'add',
-	Delete = 'delete',
-	Modify = 'modify',
+	Add = "add",
+	Delete = "delete",
+	Modify = "modify",
 }
 
 export type Change =

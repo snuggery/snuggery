@@ -1,27 +1,27 @@
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 
 import {
 	createCombinedMiniWorkspaceHandle,
 	createCombinedWorkspaceHandle,
 	workspaceFilenames as combinedWorkspaceFilenames,
 	workspaceFileExtensions as combinedWorkspaceFileExtensions,
-} from './combined';
-import type {WorkspaceHost} from './file';
-import {findUp} from './find-up';
-import type {MiniWorkspaceOptions} from './mini';
-import {nodeFsHost} from './node';
-import {createSplitMiniWorkspaceHandle} from './split/mini';
+} from "./combined";
+import type {WorkspaceHost} from "./file";
+import {findUp} from "./find-up";
+import type {MiniWorkspaceOptions} from "./mini";
+import {nodeFsHost} from "./node";
+import {createSplitMiniWorkspaceHandle} from "./split/mini";
 import {
 	createSplitWorkspaceHandle,
 	workspaceFilenames as splitWorkspaceFilenames,
 	workspaceFileExtensions as splitWorkspaceFileExtensions,
-} from './split/workspace-handle';
+} from "./split/workspace-handle";
 import type {
 	ConvertibleWorkspaceDefinition,
 	WorkspaceDefinition,
-} from './types';
+} from "./types";
 
-export type {WorkspaceHost} from './file';
+export type {WorkspaceHost} from "./file";
 export {
 	type JsonObject,
 	type JsonPropertyName,
@@ -36,7 +36,7 @@ export {
 	type TargetDefinition,
 	TargetDefinitionCollection,
 	type WorkspaceDefinition,
-} from './types';
+} from "./types";
 
 export const workspaceFilenames = [
 	...combinedWorkspaceFilenames,

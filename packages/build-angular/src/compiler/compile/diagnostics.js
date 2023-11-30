@@ -1,7 +1,7 @@
-import {formatDiagnostics, exitCodeFromResult} from '@angular/compiler-cli';
-import {posix} from 'node:path';
+import {formatDiagnostics, exitCodeFromResult} from "@angular/compiler-cli";
+import {posix} from "node:path";
 
-import {BuildFailureError} from '../error.js';
+import {BuildFailureError} from "../error.js";
 
 /**
  * @param {import('typescript').Diagnostic} diagnostic
@@ -23,7 +23,7 @@ function isPartOfCompilationUnit({rootDir, rootDirs}, mainFile, file) {
 	if (rootDir || rootDirs) {
 		if (rootDir) {
 			const relative = posix.relative(rootDir, file);
-			if (!relative.startsWith('../')) {
+			if (!relative.startsWith("../")) {
 				return true;
 			}
 		}
@@ -31,7 +31,7 @@ function isPartOfCompilationUnit({rootDir, rootDirs}, mainFile, file) {
 		if (rootDirs) {
 			for (const rootDir of rootDirs) {
 				const relative = posix.relative(rootDir, file);
-				if (!relative.startsWith('../')) {
+				if (!relative.startsWith("../")) {
 					return true;
 				}
 			}
@@ -40,7 +40,7 @@ function isPartOfCompilationUnit({rootDir, rootDirs}, mainFile, file) {
 		return false;
 	}
 
-	return !posix.relative(posix.dirname(mainFile), file).startsWith('../');
+	return !posix.relative(posix.dirname(mainFile), file).startsWith("../");
 }
 
 /**
@@ -95,6 +95,6 @@ export function reportErrorsAndExit(diagnostics, logger) {
 	logger.info(formatDiagnostics(diagnostics));
 
 	if (exitCodeFromResult(diagnostics) !== 0) {
-		throw new BuildFailureError('Compilation failed, see errors above');
+		throw new BuildFailureError("Compilation failed, see errors above");
 	}
 }

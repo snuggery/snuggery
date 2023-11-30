@@ -1,6 +1,6 @@
-import type {Rule, RuleFactory} from '@angular-devkit/schematics';
+import type {Rule, RuleFactory} from "@angular-devkit/schematics";
 
-import {type Trip, createJourney} from './types';
+import {type Trip, createJourney} from "./types";
 
 export {
 	type Journey,
@@ -10,7 +10,7 @@ export {
 	registerGuide,
 	getContext,
 	getTree,
-} from './types';
+} from "./types";
 
 /**
  * Create a journey from the given trips

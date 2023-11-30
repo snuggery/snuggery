@@ -6,8 +6,8 @@ import type {
 	TaskExecutor,
 	TaskExecutorFactory,
 	Tree as NgTree,
-} from '@angular-devkit/schematics';
-import type {FileSystemEngineHostBase} from '@angular-devkit/schematics/tools';
+} from "@angular-devkit/schematics";
+import type {FileSystemEngineHostBase} from "@angular-devkit/schematics/tools";
 import type {
 	Tree as NxTree,
 	ProjectConfiguration,
@@ -17,23 +17,23 @@ import type {
 	FileChange,
 	Generator,
 	Workspace,
-} from '@nrwl/devkit';
+} from "@nrwl/devkit";
 import {
 	type BuilderContext,
 	type BuilderOutputLike,
 	createBuilder,
-} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
+} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
 
-import type {CliWorkspace} from '../command/context';
+import type {CliWorkspace} from "../command/context";
 
-import {Cached} from './decorator';
+import {Cached} from "./decorator";
 
 export {Executor, Generator};
 
 function isAsyncIterable(value: unknown): value is AsyncIterable<unknown> {
 	return (
-		typeof value === 'object' && value != null && Symbol.asyncIterator in value
+		typeof value === "object" && value != null && Symbol.asyncIterator in value
 	);
 }
 
@@ -142,8 +142,8 @@ class MappedContext implements ExecutorContext {
 								root: project.root,
 								generators: project.extensions.schematics as any,
 								projectType: project.extensions.projectType as
-									| 'library'
-									| 'application',
+									| "library"
+									| "application",
 								sourceRoot: project.sourceRoot,
 							},
 						];
@@ -190,7 +190,7 @@ class MappedTree implements NxTree {
 		this.#tree = tree;
 	}
 	changePermissions(): void {
-		throw new Error('Method not implemented.');
+		throw new Error("Method not implemented.");
 	}
 
 	read(filePath: string): Buffer | null;
@@ -233,23 +233,23 @@ class MappedTree implements NxTree {
 
 	listChanges(): FileChange[] {
 		const typeMap = {
-			c: 'CREATE',
-			o: 'UPDATE',
-			d: 'DELETE',
-			r: 'UPDATE',
+			c: "CREATE",
+			o: "UPDATE",
+			d: "DELETE",
+			r: "UPDATE",
 		} as const;
 
 		return this.#tree.actions.flatMap((action) => {
-			if (action.kind === 'r') {
+			if (action.kind === "r") {
 				return [
 					{
 						path: action.path,
-						type: 'DELETE',
+						type: "DELETE",
 						content: null,
 					},
 					{
 						path: action.to,
-						type: 'CREATE',
+						type: "CREATE",
 						content: this.read(action.to),
 					},
 				];
@@ -258,7 +258,7 @@ class MappedTree implements NxTree {
 			return {
 				path: action.path,
 				type: typeMap[action.kind],
-				content: action.kind === 'd' ? null : action.content,
+				content: action.kind === "d" ? null : action.content,
 			};
 		});
 	}
@@ -278,14 +278,14 @@ class ExecuteAfterSchematicTask
 
 	toConfiguration(): TaskConfiguration<ExecuteAfterSchematicOptions> {
 		return {
-			name: 'executeNxTaskAfterSchematic',
+			name: "executeNxTaskAfterSchematic",
 			options: {task: this.#task},
 		};
 	}
 }
 
 const executeAfterSchematicTaskFactory: TaskExecutorFactory<void> = {
-	name: 'executeNxTaskAfterSchematic',
+	name: "executeNxTaskAfterSchematic",
 
 	async create(): Promise<TaskExecutor<ExecuteAfterSchematicOptions>> {
 		return async ({task}: ExecuteAfterSchematicOptions = {}) => {
@@ -299,7 +299,7 @@ export function makeGeneratorIntoSchematic(
 	root: string,
 	engineHost: Pick<
 		FileSystemEngineHostBase,
-		'hasTaskExecutor' | 'registerTaskExecutor'
+		"hasTaskExecutor" | "registerTaskExecutor"
 	>,
 ): RuleFactory<JsonObject> {
 	return (options: JsonObject): Rule =>

@@ -1,4 +1,4 @@
-import {TransientTarget} from '@snuggery/architect';
+import {TransientTarget} from "@snuggery/architect";
 
 export interface BaseSchema {
 	include?: string | string[];

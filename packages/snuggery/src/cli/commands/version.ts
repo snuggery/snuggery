@@ -1,32 +1,32 @@
-import {isJsonObject} from '@snuggery/core';
-import {createRequire} from 'module';
-import {dirname, join} from 'path';
+import {isJsonObject} from "@snuggery/core";
+import {createRequire} from "module";
+import {dirname, join} from "path";
 
-import {AbstractCommand} from '../command/abstract-command';
-import {defaultSchematicCollection} from '../command/schematic';
-import {SetMap} from '../utils/collections';
+import {AbstractCommand} from "../command/abstract-command";
+import {defaultSchematicCollection} from "../command/schematic";
+import {SetMap} from "../utils/collections";
 
 export class VersionCommand extends AbstractCommand {
-	static override readonly paths = [['--version']];
+	static override readonly paths = [["--version"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Workspace information commands',
+		category: "Workspace information commands",
 		description: `Print version information`,
 	});
 
 	async execute(): Promise<void> {
 		const {report, format} = this;
 
-		report.reportInfo(`${format.bold('Snuggery')}\n`);
+		report.reportInfo(`${format.bold("Snuggery")}\n`);
 
-		const manifestPath = require.resolve('@snuggery/snuggery/package.json');
+		const manifestPath = require.resolve("@snuggery/snuggery/package.json");
 
 		report.reportInfo(
 			`@snuggery/snuggery  ${format.code(require(manifestPath).version)}`,
 		);
 		report.reportInfo(
 			`@angular-devkit/*   ${format.code(
-				require('@angular-devkit/core/package.json').version,
+				require("@angular-devkit/core/package.json").version,
 			)}`,
 		);
 
@@ -55,15 +55,15 @@ export class VersionCommand extends AbstractCommand {
 			return;
 		}
 
-		report.reportInfo(`${format.bold('Builders:')}\n`);
+		report.reportInfo(`${format.bold("Builders:")}\n`);
 
 		const builderVersions = new SetMap<string, string>();
 
 		for (const project of workspace.projects.values()) {
 			for (const target of project.targets.values()) {
-				const packageName = target.builder.split(':', 1)[0]!;
+				const packageName = target.builder.split(":", 1)[0]!;
 
-				if (packageName === '$direct') {
+				if (packageName === "$direct") {
 					continue;
 				}
 
@@ -74,10 +74,10 @@ export class VersionCommand extends AbstractCommand {
 		}
 
 		if (builderVersions.size === 0) {
-			report.reportInfo('No builders configured.\n');
+			report.reportInfo("No builders configured.\n");
 		} else {
 			report.reportInfo(
-				'Workspace configuration contains builders from these packages:\n',
+				"Workspace configuration contains builders from these packages:\n",
 			);
 
 			const longestPackageNameLength = Array.from(
@@ -86,17 +86,17 @@ export class VersionCommand extends AbstractCommand {
 
 			for (const [packageName, versions] of builderVersions) {
 				report.reportInfo(
-					`${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
+					`${packageName.padEnd(longestPackageNameLength, " ")}  ${Array.from(
 						versions,
 						(v) => format.code(v),
-					).join(', ')}`,
+					).join(", ")}`,
 				);
 			}
 
 			report.reportSeparator();
 		}
 
-		report.reportInfo(`${format.bold('Configured schematic packages:')}\n`);
+		report.reportInfo(`${format.bold("Configured schematic packages:")}\n`);
 
 		const schematicVersions = new SetMap<string, string>();
 
@@ -109,7 +109,7 @@ export class VersionCommand extends AbstractCommand {
 		]) {
 			if (
 				isJsonObject(extensions.cli) &&
-				typeof extensions.cli.defaultCollection === 'string'
+				typeof extensions.cli.defaultCollection === "string"
 			) {
 				const {defaultCollection} = extensions.cli;
 				schematicVersions
@@ -119,14 +119,14 @@ export class VersionCommand extends AbstractCommand {
 				// If the root doesn't have a default schematics package, use the global
 				// default IF it is installed.
 				const version = this.#getVersion(defaultSchematicCollection, null);
-				if (version !== '<error>') {
+				if (version !== "<error>") {
 					schematicVersions.get(defaultSchematicCollection).add(version);
 				}
 			}
 
 			if (isJsonObject(extensions.schematics)) {
 				for (const schematic of Object.keys(extensions.schematics)) {
-					const packageName = schematic.split(':', 1)[0]!;
+					const packageName = schematic.split(":", 1)[0]!;
 
 					schematicVersions
 						.get(packageName)
@@ -136,10 +136,10 @@ export class VersionCommand extends AbstractCommand {
 		}
 
 		if (schematicVersions.size === 0) {
-			report.reportInfo('No schematics configured.\n');
+			report.reportInfo("No schematics configured.\n");
 		} else {
 			report.reportInfo(
-				'Workspace configuration contains schematics from these packages:\n',
+				"Workspace configuration contains schematics from these packages:\n",
 			);
 
 			const longestPackageNameLength = Array.from(
@@ -148,10 +148,10 @@ export class VersionCommand extends AbstractCommand {
 
 			for (const [packageName, versions] of schematicVersions) {
 				report.reportInfo(
-					`${packageName.padEnd(longestPackageNameLength, ' ')}  ${Array.from(
+					`${packageName.padEnd(longestPackageNameLength, " ")}  ${Array.from(
 						versions,
 						(v) => format.code(v),
-					).join(', ')}`,
+					).join(", ")}`,
 				);
 			}
 
@@ -165,15 +165,15 @@ export class VersionCommand extends AbstractCommand {
 		for (const path of projectRoot
 			? [join(workspaceFolder, projectRoot), workspaceFolder]
 			: [workspaceFolder]) {
-			const require = createRequire(join(path, '<synthetic>'));
+			const require = createRequire(join(path, "<synthetic>"));
 
 			try {
-				return require(join(packageName, 'package.json')).version;
+				return require(join(packageName, "package.json")).version;
 			} catch {
 				// ignore
 			}
 		}
 
-		return '<error>';
+		return "<error>";
 	}
 }

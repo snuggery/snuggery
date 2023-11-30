@@ -1,14 +1,14 @@
-import {AbstractCommand} from '../../command/abstract-command';
-import {formatMarkdownish} from '../../utils/format';
-import {defaultMigrationFilename} from '../run/migrations';
+import {AbstractCommand} from "../../command/abstract-command";
+import {formatMarkdownish} from "../../utils/format";
+import {defaultMigrationFilename} from "../run/migrations";
 
 export class HelpUpdateCommand extends AbstractCommand {
-	static override readonly paths = [['help', 'update']];
+	static override readonly paths = [["help", "update"]];
 
 	static override readonly usage = AbstractCommand.Usage({
-		category: 'Update commands',
+		category: "Update commands",
 		description:
-			'Print extensive information on the update process and all steps to take',
+			"Print extensive information on the update process and all steps to take",
 	});
 
 	async execute(): Promise<void> {
@@ -81,7 +81,7 @@ export class HelpUpdateCommand extends AbstractCommand {
 		);
 		this.report.reportSeparator();
 		this.report.reportInfo(
-			'[1]: https://github.com/angular/angular-cli/blob/0ccc8d3ec7f4371a32945502bb0cf3aa240bcf57/docs/specifications/update.md',
+			"[1]: https://github.com/angular/angular-cli/blob/0ccc8d3ec7f4371a32945502bb0cf3aa240bcf57/docs/specifications/update.md",
 		);
 	}
 }

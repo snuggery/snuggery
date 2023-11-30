@@ -1,4 +1,4 @@
-import {WorkspaceHost} from '../../../file';
+import {WorkspaceHost} from "../../../file";
 
 export class TestSingleFileWorkspaceHost implements WorkspaceHost {
 	readonly #path: string;
@@ -23,7 +23,7 @@ export class TestSingleFileWorkspaceHost implements WorkspaceHost {
 	}
 
 	async readdir(): Promise<never> {
-		throw new Error('Unexpected readdir');
+		throw new Error("Unexpected readdir");
 	}
 
 	async read(path: string) {

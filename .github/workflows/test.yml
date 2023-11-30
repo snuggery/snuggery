@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 
-name: 'Test'
+name: "Test"
 jobs:
   build-unit:
     name: Build & Unit
@@ -38,7 +38,7 @@ jobs:
         run: |
           yarn sn build
 
-      - name: 'Run tests'
+      - name: "Run tests"
         shell: bash
         run: |
           yarn sn test
@@ -48,13 +48,13 @@ jobs:
         run: |
           yarn update-help validate
 
-      - name: 'Validate CLI dependencies'
+      - name: "Validate CLI dependencies"
         shell: bash
         run: |
           yarn sn --validate-cli-dependencies
 
   integration:
-    name: 'Integration tests on node.js ${{matrix.node}} on ${{matrix.os}}'
+    name: "Integration tests on node.js ${{matrix.node}} on ${{matrix.os}}"
     needs: build-unit
     runs-on: ${{matrix.os}}
     strategy:
@@ -70,7 +70,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: 'Use Node.js ${{matrix.node}}'
+      - name: "Use Node.js ${{matrix.node}}"
         uses: actions/setup-node@v3
         with:
           node-version: ${{matrix.node}}
@@ -82,7 +82,7 @@ jobs:
         run: |
           yarn install --immutable --immutable-cache
 
-      - name: 'Run tests'
+      - name: "Run tests"
         shell: bash
         run: |
           yarn sn test integration

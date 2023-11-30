@@ -1,8 +1,8 @@
-import type {ErrorMeta, ErrorWithMeta} from 'clipanion';
+import type {ErrorMeta, ErrorWithMeta} from "clipanion";
 
 export abstract class AbstractError extends Error implements ErrorWithMeta {
 	readonly clipanion: ErrorMeta = {
-		type: 'none',
+		type: "none",
 	};
 
 	constructor(message: string) {

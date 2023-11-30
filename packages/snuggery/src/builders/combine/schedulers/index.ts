@@ -1,12 +1,12 @@
-import type {BuilderContext} from '@snuggery/architect';
+import type {BuilderContext} from "@snuggery/architect";
 
-import {SchedulerType} from '../types';
+import {SchedulerType} from "../types";
 
-import type {Scheduler} from './abstract';
-import {InProcessScheduler} from './in-process';
-import {RespawnScheduler} from './respawn';
-import {SpawnScheduler} from './spawn';
-import {WorkerScheduler} from './worker';
+import type {Scheduler} from "./abstract";
+import {InProcessScheduler} from "./in-process";
+import {RespawnScheduler} from "./respawn";
+import {SpawnScheduler} from "./spawn";
+import {WorkerScheduler} from "./worker";
 
 export function createScheduler(
 	schedulerType: SchedulerType | undefined,

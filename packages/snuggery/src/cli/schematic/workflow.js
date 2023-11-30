@@ -1,5 +1,5 @@
-require('@snuggery-workspace/scripts/load-ts');
+require("@snuggery-workspace/scripts/load-ts");
 
-module.exports = require('./workflow.ts');
+module.exports = require("./workflow.ts");
 
 0 && (exports.SnuggeryWorkflow = void 0);

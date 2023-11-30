@@ -1,12 +1,12 @@
-import {Option, UsageError} from 'clipanion';
-import {promises as fs} from 'fs';
-import {resolve} from 'path';
-import type SemVer from 'semver/classes/semver.js';
-import * as t from 'typanion';
+import {Option, UsageError} from "clipanion";
+import {promises as fs} from "fs";
+import {resolve} from "path";
+import type SemVer from "semver/classes/semver.js";
+import * as t from "typanion";
 
-import {MigrationCommand} from '../../command/migration';
-import {formatMarkdownish} from '../../utils/format';
-import * as tExt from '../../utils/typanion';
+import {MigrationCommand} from "../../command/migration";
+import {formatMarkdownish} from "../../utils/format";
+import * as tExt from "../../utils/typanion";
 
 interface Migration {
 	package: string;
@@ -31,26 +31,26 @@ const validateMigrationFile: t.StrictValidator<unknown, Migration[]> =
 		}),
 	);
 
-export const defaultMigrationFilename = 'migrations.json';
+export const defaultMigrationFilename = "migrations.json";
 
 export class RunMigrationsCommand extends MigrationCommand {
-	static override readonly paths = [['run', 'migrations']];
+	static override readonly paths = [["run", "migrations"]];
 
 	static override readonly usage = MigrationCommand.Usage({
-		category: 'Update commands',
-		description: 'Run registered migrations',
+		category: "Update commands",
+		description: "Run registered migrations",
 		details: `
 			TODO
 		`,
 		examples: [
-			['Prepare the migrations file for review', '$0 run migrations --prepare'],
+			["Prepare the migrations file for review", "$0 run migrations --prepare"],
 			[
-				'Run all migrations registered in previous `$0 run update` executions',
-				'$0 run migrations',
+				"Run all migrations registered in previous `$0 run update` executions",
+				"$0 run migrations",
 			],
 			[
-				'Run all migrations registered in the `other-migrations.json` file',
-				'$0 run migrations other-migrations.json',
+				"Run all migrations registered in the `other-migrations.json` file",
+				"$0 run migrations other-migrations.json",
 			],
 		],
 	});
@@ -72,26 +72,26 @@ export class RunMigrationsCommand extends MigrationCommand {
 	 * `--help` when arguments are present and some commands throwing errors if arguments are present
 	 * and `--help` is passed.
 	 */
-	override help = Option.Boolean('--help,-h', false, {hidden: true});
+	override help = Option.Boolean("--help,-h", false, {hidden: true});
 
-	prepare = Option.Boolean('--prepare', false, {
-		description: 'Prepare the migrations file',
+	prepare = Option.Boolean("--prepare", false, {
+		description: "Prepare the migrations file",
 	});
 
-	dryRun = Option.Boolean('--dry-run', false, {
-		description: 'Run the schematics without writing the results to disk',
+	dryRun = Option.Boolean("--dry-run", false, {
+		description: "Run the schematics without writing the results to disk",
 	});
 
-	force = Option.Boolean('--force', false, {
-		description: 'Write the results to disk even if there are conflicts',
+	force = Option.Boolean("--force", false, {
+		description: "Write the results to disk even if there are conflicts",
 	});
 
-	showFileChanges = Option.Boolean('--show-file-changes', false, {
-		description: 'Print an overview of all file changes made by the schematic',
+	showFileChanges = Option.Boolean("--show-file-changes", false, {
+		description: "Print an overview of all file changes made by the schematic",
 	});
 
 	ignoreMissingMigrations = Option.Boolean(
-		'--ignore-missing-migrations',
+		"--ignore-missing-migrations",
 		false,
 		{
 			description:
@@ -100,7 +100,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 	);
 
 	filenameOverride = Option.String({
-		name: 'file',
+		name: "file",
 		required: false,
 	});
 
@@ -115,10 +115,10 @@ export class RunMigrationsCommand extends MigrationCommand {
 	async execute(): Promise<number | void> {
 		// Always make this command run as if it was executed in the workspace root
 		this.context.startCwd = this.root;
-		const JSON5 = await import('json5');
+		const JSON5 = await import("json5");
 
 		const migrationFile = JSON5.parse(
-			await fs.readFile(this.#filePath, 'utf8'),
+			await fs.readFile(this.#filePath, "utf8"),
 		) as unknown;
 
 		{
@@ -130,7 +130,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 					throw new UsageError(`Invalid migration file: ${errors[0]}`);
 				} else {
 					throw new UsageError(
-						`Invalid migration file:\n\n- ${errors.join('\n- ')}`,
+						`Invalid migration file:\n\n- ${errors.join("\n- ")}`,
 					);
 				}
 			}
@@ -166,8 +166,8 @@ export class RunMigrationsCommand extends MigrationCommand {
 		}
 
 		const [{tags}, {default: SemVer}] = await Promise.all([
-			import('@angular-devkit/core'),
-			import('semver/classes/semver.js'),
+			import("@angular-devkit/core"),
+			import("semver/classes/semver.js"),
 		]);
 
 		await fs.writeFile(
@@ -192,15 +192,15 @@ export class RunMigrationsCommand extends MigrationCommand {
 				 *
 				 * Run \`sn help update\` for more information on the update process, or
 				 * \`sn run migrations${
-						this.filenameOverride ? ` ${this.filenameOverride}` : ''
+						this.filenameOverride ? ` ${this.filenameOverride}` : ""
 					}\` to execute the configured migrations.
 				 */
 				` +
-				'\n' +
+				"\n" +
 				JSON.stringify(
 					migrationFile,
 					(_, value) => (value instanceof SemVer ? value.format() : value),
-					'\t',
+					"\t",
 				),
 		);
 	}
@@ -280,7 +280,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 
 				if (migrationResult) {
 					this.report.reportInfo(
-						'All successfully executed migrations have been removed from the migrations file, so you can pick up where it went wrong by executing this command again',
+						"All successfully executed migrations have been removed from the migrations file, so you can pick up where it went wrong by executing this command again",
 					);
 					return migrationResult;
 				}
@@ -296,7 +296,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 
 			if (!hasExecutedSomething) {
 				this.report.reportInfo(
-					'All migrations have been skipped, nothing to do.',
+					"All migrations have been skipped, nothing to do.",
 				);
 			}
 
@@ -356,7 +356,7 @@ export class RunMigrationsCommand extends MigrationCommand {
 		this.report.reportInfo(
 			formatMarkdownish(
 				`Running ${migrationsToExecute.length} migration${
-					migrationsToExecute.length > 1 ? 's' : ''
+					migrationsToExecute.length > 1 ? "s" : ""
 				} in package \`${migration.package}\``,
 				{
 					format: this.format,

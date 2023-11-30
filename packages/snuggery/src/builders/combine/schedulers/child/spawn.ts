@@ -1,7 +1,7 @@
-import type {BuilderOutput} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import {ChildProcess, fork} from 'child_process';
-import {Observable, Subscriber} from 'rxjs';
+import type {BuilderOutput} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import {ChildProcess, fork} from "child_process";
+import {Observable, Subscriber} from "rxjs";
 
 import {
 	Child,
@@ -11,10 +11,10 @@ import {
 	ExecuteTargetMessage,
 	Message,
 	MessageType,
-} from './shared';
+} from "./shared";
 
 export enum SpawnChildMessageType {
-	Done = 'done',
+	Done = "done",
 }
 
 export type ChildMessage = _ChildMessage | {type: SpawnChildMessageType.Done};
@@ -38,10 +38,10 @@ export class SpawnChild extends Child {
 			return this.#child;
 		}
 
-		const child = fork(require.resolve('./spawned.js'), [this.workspaceRoot]);
+		const child = fork(require.resolve("./spawned.js"), [this.workspaceRoot]);
 		this.#child = child;
 
-		child.on('exit', (code, signal) => {
+		child.on("exit", (code, signal) => {
 			this.#childExited = true;
 
 			if (code || signal) {
@@ -55,11 +55,11 @@ export class SpawnChild extends Child {
 			}
 		});
 
-		child.on('error', (err) => {
+		child.on("error", (err) => {
 			this.#currentObserver?.error(err);
 		});
 
-		child.on('message', (message: ChildMessage) => {
+		child.on("message", (message: ChildMessage) => {
 			switch (message.type) {
 				case ChildMessageType.Output:
 					this.#currentObserver?.next(message.output);
@@ -89,12 +89,12 @@ export class SpawnChild extends Child {
 	#start(message: Message) {
 		return new Observable<BuilderOutput>((observer) => {
 			if (this.#currentObserver != null) {
-				observer.error(new Error('Child is already working'));
+				observer.error(new Error("Child is already working"));
 				return;
 			}
 
 			if (this.#childExited) {
-				observer.error(new Error('Child has exited'));
+				observer.error(new Error("Child has exited"));
 				return;
 			}
 

@@ -1,15 +1,15 @@
-import {Document, Entry, Node} from '@bgotink/kdl';
+import {Document, Entry, Node} from "@bgotink/kdl";
 
 import {
 	isJsonArray,
 	isJsonObject,
 	type JsonObject,
 	type JsonValue,
-} from '../../../types';
-import {isArrayOfPrimitives} from '../json-utils';
-import {implicitPropertyKey} from '../kdl-utils';
+} from "../../../types";
+import {isArrayOfPrimitives} from "../json-utils";
+import {implicitPropertyKey} from "../kdl-utils";
 
-import {namelessName} from './utils';
+import {namelessName} from "./utils";
 
 export function fromJsonValue(
 	name: string,
@@ -31,13 +31,13 @@ function fromJsonArray(name: string, jsonValue: JsonValue[]): Node {
 	const node = Node.create(name);
 
 	if (jsonValue.length === 0) {
-		node.setTag('array');
+		node.setTag("array");
 		return node;
 	}
 
 	if (isArrayOfPrimitives(jsonValue)) {
 		if (jsonValue.length === 1) {
-			node.setTag('array');
+			node.setTag("array");
 		}
 
 		node.entries = jsonValue.map((item) => Entry.createArgument(item));
@@ -59,7 +59,7 @@ export function fromJsonObject(
 	const properties = Object.entries(jsonValue);
 
 	if (properties.length === 0) {
-		node.setTag('object');
+		node.setTag("object");
 		return node;
 	}
 

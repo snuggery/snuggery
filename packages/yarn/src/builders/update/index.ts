@@ -1,6 +1,6 @@
-import {createBuilder} from '@snuggery/architect';
+import {createBuilder} from "@snuggery/architect";
 
-import {executeUpdate} from './executor';
+import {executeUpdate} from "./executor";
 
 export {executeUpdate};
 

@@ -9,10 +9,10 @@ on:
 permissions:
   contents: read
 
-name: 'Validation'
+name: "Validation"
 jobs:
   code-style:
-    name: 'Code Style'
+    name: "Code Style"
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +34,7 @@ jobs:
         shell: bash
 
   dependencies:
-    name: 'Dependencies'
+    name: "Dependencies"
     runs-on: ubuntu-latest
 
     steps:
@@ -53,7 +53,7 @@ jobs:
         uses: actions/dependency-review-action@v1
 
   lint:
-    name: 'Lint'
+    name: "Lint"
     runs-on: ubuntu-latest
 
     permissions:

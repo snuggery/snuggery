@@ -1,9 +1,9 @@
-import {type BuilderContext, BuildFailureError} from '@snuggery/architect';
-import {isJsonObject, type JsonObject, type JsonValue} from '@snuggery/core';
-import {parseSyml} from '@yarnpkg/parsers';
-import {spawn} from 'node:child_process';
-import fs from 'node:fs/promises';
-import {dirname, join, parse as parsePath, resolve} from 'node:path';
+import {type BuilderContext, BuildFailureError} from "@snuggery/architect";
+import {isJsonObject, type JsonObject, type JsonValue} from "@snuggery/core";
+import {parseSyml} from "@yarnpkg/parsers";
+import {spawn} from "node:child_process";
+import fs from "node:fs/promises";
+import {dirname, join, parse as parsePath, resolve} from "node:path";
 
 export interface YarnPlugin {
 	name: string;
@@ -11,11 +11,11 @@ export interface YarnPlugin {
 }
 
 function isYarnPlugin(value: JsonObject): value is JsonObject & YarnPlugin {
-	return typeof value.name === 'string' && typeof value.builtin === 'boolean';
+	return typeof value.name === "string" && typeof value.builtin === "boolean";
 }
 
-export const snuggeryPluginName = '@yarnpkg/plugin-snuggery';
-const oldSnuggeryPluginName = '@yarnpkg/plugin-snuggery-workspace';
+export const snuggeryPluginName = "@yarnpkg/plugin-snuggery";
+const oldSnuggeryPluginName = "@yarnpkg/plugin-snuggery-workspace";
 
 class OutdatedYarnPluginError extends BuildFailureError {
 	constructor() {
@@ -36,20 +36,20 @@ function isAppliedVersion(
 	value: JsonObject,
 ): value is JsonObject & AppliedVersion {
 	return (
-		typeof value.cwd === 'string' &&
-		typeof value.ident === 'string' &&
-		typeof value.oldVersion === 'string' &&
-		typeof value.newVersion === 'string'
+		typeof value.cwd === "string" &&
+		typeof value.ident === "string" &&
+		typeof value.oldVersion === "string" &&
+		typeof value.newVersion === "string"
 	);
 }
 
 export interface LogLine {
-	type: 'info' | 'warning' | 'error';
+	type: "info" | "warning" | "error";
 	data: string;
 }
 
 function isLogLine(value: JsonObject): value is JsonObject & LogLine {
-	return typeof value.type === 'string' && typeof value.data === 'string';
+	return typeof value.type === "string" && typeof value.data === "string";
 }
 
 class Yarn {
@@ -108,13 +108,13 @@ class Yarn {
 				env: {
 					...process.env,
 					...env,
-					SNUGGERY_YARN: '1',
+					SNUGGERY_YARN: "1",
 				},
 				stdio: capture
-					? ['ignore', 'pipe', 'ignore']
+					? ["ignore", "pipe", "ignore"]
 					: quiet
-					? 'ignore'
-					: 'inherit',
+					? "ignore"
+					: "inherit",
 			});
 
 			const {stdout} = child;
@@ -123,12 +123,12 @@ class Yarn {
 				new Promise<Buffer>((resolve, reject) => {
 					const output: Buffer[] = [];
 
-					stdout.on('data', (buffer) => output.push(buffer));
-					stdout.on('close', () => resolve(Buffer.concat(output)));
-					stdout.on('error', reject);
+					stdout.on("data", (buffer) => output.push(buffer));
+					stdout.on("close", () => resolve(Buffer.concat(output)));
+					stdout.on("error", reject);
 				});
 
-			child.addListener('error', (err) =>
+			child.addListener("error", (err) =>
 				reject(
 					new BuildFailureError(
 						`Failed to start yarn: ${
@@ -138,7 +138,7 @@ class Yarn {
 				),
 			);
 
-			child.addListener('close', (code, signal) => {
+			child.addListener("close", (code, signal) => {
 				let rejectOrCall: (fn: () => void) => void;
 				if (signal) {
 					rejectOrCall = () =>
@@ -158,8 +158,8 @@ class Yarn {
 				output.then(
 					(buff) => {
 						const lines = buff
-							.toString('utf8')
-							.split('\n')
+							.toString("utf8")
+							.split("\n")
 							.filter((line) => line.trim())
 							.map((line) => {
 								try {
@@ -172,7 +172,7 @@ class Yarn {
 
 						if (!quiet) {
 							for (const {data, type} of lines.filter(isLogLine)) {
-								this.#context.logger[type === 'warning' ? 'warn' : type]?.(
+								this.#context.logger[type === "warning" ? "warn" : type]?.(
 									data,
 								);
 							}
@@ -194,7 +194,7 @@ class Yarn {
 
 	async listPlugins(): Promise<YarnPlugin[]> {
 		return (
-			await this.#exec(['plugin', 'runtime', '--json'], {
+			await this.#exec(["plugin", "runtime", "--json"], {
 				captureNdjson: true,
 			})
 		).filter(isYarnPlugin);
@@ -211,7 +211,7 @@ class Yarn {
 	}
 
 	async applyVersion(): Promise<AppliedVersion[]> {
-		const output = await this.#exec(['version', 'apply', '--all', '--json'], {
+		const output = await this.#exec(["version", "apply", "--all", "--json"], {
 			captureNdjson: true,
 		});
 
@@ -231,7 +231,7 @@ class Yarn {
 		directoryToPack: string;
 	}): Promise<void> {
 		await this.#exec(
-			['snuggery-workspace', 'pack', directoryToPack, '--json'],
+			["snuggery-workspace", "pack", directoryToPack, "--json"],
 			{
 				cwd: resolve(this.#context.workspaceRoot, cwd),
 				captureNdjson: true,
@@ -240,7 +240,7 @@ class Yarn {
 	}
 
 	async npmPack({cwd}: {cwd: string}): Promise<void> {
-		await this.#exec(['pack'], {
+		await this.#exec(["pack"], {
 			cwd: resolve(this.#context.workspaceRoot, cwd),
 		});
 	}
@@ -254,10 +254,10 @@ class Yarn {
 	}): Promise<void> {
 		await this.#exec(
 			[
-				'snuggery-workspace',
-				'publish',
-				...(typeof tag === 'string' ? ['--tag', tag] : []),
-				'--json',
+				"snuggery-workspace",
+				"publish",
+				...(typeof tag === "string" ? ["--tag", tag] : []),
+				"--json",
 			],
 			{cwd: resolve(this.#context.workspaceRoot, cwd), captureNdjson: true},
 		);
@@ -265,13 +265,13 @@ class Yarn {
 
 	async npmPublish({tag, cwd}: {tag?: string; cwd: string}): Promise<void> {
 		await this.#exec(
-			['npm', 'publish', ...(typeof tag === 'string' ? ['--tag', tag] : [])],
+			["npm", "publish", ...(typeof tag === "string" ? ["--tag", tag] : [])],
 			{cwd: resolve(this.#context.workspaceRoot, cwd)},
 		);
 	}
 
 	async snuggeryWorkspaceUp(packages: string[]): Promise<void> {
-		await this.#exec(['snuggery-workspace', 'up', ...packages], {
+		await this.#exec(["snuggery-workspace", "up", ...packages], {
 			cwd: this.#context.workspaceRoot,
 		});
 	}
@@ -281,7 +281,7 @@ export type {Yarn};
 
 export async function loadYarn(context: BuilderContext): Promise<Yarn> {
 	const yarnConfigurationPath = await findUp(
-		'.yarnrc.yml',
+		".yarnrc.yml",
 		context.workspaceRoot,
 	);
 
@@ -291,11 +291,11 @@ export async function loadYarn(context: BuilderContext): Promise<Yarn> {
 		);
 	}
 
-	const rawYarnConfiguration = await fs.readFile(yarnConfigurationPath, 'utf8');
+	const rawYarnConfiguration = await fs.readFile(yarnConfigurationPath, "utf8");
 
 	const yarnConfiguration = parseSyml(rawYarnConfiguration);
 
-	if (typeof yarnConfiguration.yarnPath !== 'string') {
+	if (typeof yarnConfiguration.yarnPath !== "string") {
 		throw new BuildFailureError(
 			`Couldn't find path to yarn in ${context.workspaceRoot}`,
 		);

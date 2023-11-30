@@ -4,11 +4,11 @@ import {
 	getProjectPath,
 	resolveProjectPath,
 	resolveWorkspacePath,
-} from '@snuggery/architect';
-import fs from 'node:fs/promises';
-import ts from 'typescript';
+} from "@snuggery/architect";
+import fs from "node:fs/promises";
+import ts from "typescript";
 
-import type {Schema} from './schema';
+import type {Schema} from "./schema";
 
 export interface TscInput {
 	/**
@@ -82,7 +82,7 @@ export async function tsc(
 	input: TscInput,
 ): Promise<TscOutput> {
 	if (input.compile === false) {
-		context.logger.debug('Typescript compilation was disabled explicitly');
+		context.logger.debug("Typescript compilation was disabled explicitly");
 		return {built: false};
 	}
 
@@ -96,12 +96,12 @@ export async function tsc(
 		}
 
 		context.logger.info(
-			'No typescript configuration found, skipping compilation',
+			"No typescript configuration found, skipping compilation",
 		);
 		return {built: false};
 	}
 
-	context.logger.debug('Compiling typescript...');
+	context.logger.debug("Compiling typescript...");
 
 	const tsconfig = ts.readConfigFile(tsconfigPath, (path) =>
 		ts.sys.readFile(path),
@@ -157,7 +157,7 @@ export async function tsc(
 			},
 		);
 
-		if ('JSDocParsingMode' in ts) {
+		if ("JSDocParsingMode" in ts) {
 			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
 		}
 
@@ -173,7 +173,7 @@ export async function tsc(
 				() => customTransformers,
 			) !== ts.ExitStatus.Success
 		) {
-			throw new BuildFailureError('Compilation failed');
+			throw new BuildFailureError("Compilation failed");
 		}
 	} else {
 		parsedConfig.options.outDir = input.outputFolder;
@@ -184,7 +184,7 @@ export async function tsc(
 				: ts.createCompilerHost
 		)(parsedConfig.options);
 
-		if ('JSDocParsingMode' in ts) {
+		if ("JSDocParsingMode" in ts) {
 			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
 		}
 
@@ -234,13 +234,13 @@ function combineCustomTransformers(
 
 async function getTsConfigPath(
 	ctx: BuilderContext,
-	{tsconfig}: Pick<Schema, 'tsconfig'>,
+	{tsconfig}: Pick<Schema, "tsconfig">,
 ) {
 	if (tsconfig) {
 		return resolveWorkspacePath(ctx, tsconfig);
 	}
 
-	const resolvedTsconfig = await resolveProjectPath(ctx, 'tsconfig.json');
+	const resolvedTsconfig = await resolveProjectPath(ctx, "tsconfig.json");
 
 	try {
 		await fs.stat(resolvedTsconfig);
@@ -269,7 +269,7 @@ function processResult(
 			.map((errorOrWarning) =>
 				ts.formatDiagnostic(errorOrWarning, formatDiagnosticsHost),
 			)
-			.join('\n'),
+			.join("\n"),
 	);
 }
 
@@ -282,13 +282,13 @@ function getFormatDiagnosticsHost(
 		// We need to normalize the path separators here because by default, TypeScript
 		// compiler hosts use posix canonical paths. In order to print consistent diagnostics,
 		// we also normalize the paths.
-		getCanonicalFileName: (fileName) => fileName.replace(/\\/g, '/'),
+		getCanonicalFileName: (fileName) => fileName.replace(/\\/g, "/"),
 		getNewLine: () => {
 			// Manually determine the proper new line string based on the passed compiler
 			// options. There is no public TypeScript function that returns the corresponding
 			// new line string. see: https://github.com/Microsoft/TypeScript/issues/29581
 			if (options && options.newLine !== undefined) {
-				return options.newLine === ts.NewLineKind.LineFeed ? '\n' : '\r\n';
+				return options.newLine === ts.NewLineKind.LineFeed ? "\n" : "\r\n";
 			}
 			return ts.sys.newLine;
 		},

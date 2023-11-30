@@ -1,4 +1,4 @@
-import process from 'node:process';
+import process from "node:process";
 
 // When using the ESM loader Node.js prints either of the following warnings
 //
@@ -12,11 +12,11 @@ const originalEmit = process.emit;
 // @ts-expect-error - TS complains about the return type of originalEmit.apply
 process.emit = function (...args: [string, unknown, ...unknown[]]) {
 	if (
-		args[0] === 'warning' &&
+		args[0] === "warning" &&
 		args[1] instanceof Error &&
-		args[1].name === 'ExperimentalWarning' &&
-		(args[1].message.includes('--experimental-loader') ||
-			args[1].message.includes('Custom ESM Loaders is an experimental feature'))
+		args[1].name === "ExperimentalWarning" &&
+		(args[1].message.includes("--experimental-loader") ||
+			args[1].message.includes("Custom ESM Loaders is an experimental feature"))
 	)
 		return false;
 

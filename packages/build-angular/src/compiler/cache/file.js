@@ -1,4 +1,4 @@
-import {getOrCreate} from '../utils.js';
+import {getOrCreate} from "../utils.js";
 
 /**
  * @typedef {object} File

@@ -1,6 +1,6 @@
-require('@snuggery-workspace/scripts/load-ts');
+require("@snuggery-workspace/scripts/load-ts");
 
-module.exports = require('./strategies.ts');
+module.exports = require("./strategies.ts");
 
 0 &&
 	((exports.changedFiles = void 0),

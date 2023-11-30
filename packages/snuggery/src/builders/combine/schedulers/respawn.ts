@@ -1,11 +1,11 @@
-import {BuilderOutput, targetStringFromTarget} from '@angular-devkit/architect';
-import {resolveTargetString, TargetSpecifier} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import type {Observable} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import {BuilderOutput, targetStringFromTarget} from "@angular-devkit/architect";
+import {resolveTargetString, TargetSpecifier} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import type {Observable} from "rxjs";
+import {finalize} from "rxjs/operators";
 
-import {RegularScheduler} from './abstract';
-import {SpawnChild} from './child/spawn';
+import {RegularScheduler} from "./abstract";
+import {SpawnChild} from "./child/spawn";
 
 export class RespawnScheduler extends RegularScheduler {
 	public runSingleTarget(
@@ -15,10 +15,10 @@ export class RespawnScheduler extends RegularScheduler {
 		let scheduled: Observable<BuilderOutput>;
 		const child = new SpawnChild(
 			this.context.workspaceRoot,
-			this.context.logger.createChild(''),
+			this.context.logger.createChild(""),
 		);
 
-		if (typeof targetSpec === 'string') {
+		if (typeof targetSpec === "string") {
 			const target = resolveTargetString(this.context, targetSpec);
 
 			scheduled = child.executeTarget(target, extraOptions);

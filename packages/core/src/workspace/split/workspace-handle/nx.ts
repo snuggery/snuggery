@@ -3,9 +3,9 @@
  * nx's configuration format version 2 (used by workspace.json)
  */
 
-import type {workspaces} from '@angular-devkit/core';
+import type {workspaces} from "@angular-devkit/core";
 
-import {proxyObject} from '../../proxy';
+import {proxyObject} from "../../proxy";
 import {
 	InvalidConfigurationError,
 	isJsonObject,
@@ -18,10 +18,10 @@ import {
 	TargetDefinitionCollection,
 	WorkspaceDefinition,
 	WorkspaceHandle,
-} from '../../types';
-import type {FileHandle} from '../file';
+} from "../../types";
+import type {FileHandle} from "../file";
 
-import {AngularWorkspaceDefinition} from './angular';
+import {AngularWorkspaceDefinition} from "./angular";
 
 type NxTargetDefinitionData = JsonObject & {
 	executor: string;
@@ -30,11 +30,11 @@ type NxTargetDefinitionData = JsonObject & {
 	configurations?: Record<string, JsonObject>;
 };
 
-const projectFilenames = ['project.json', '.project.json'];
+const projectFilenames = ["project.json", ".project.json"];
 
 class NxTargetDefinition implements TargetDefinition {
 	static fromConfiguration(path: JsonPropertyPath, data: JsonObject) {
-		if (typeof data.executor !== 'string') {
+		if (typeof data.executor !== "string") {
 			throw new InvalidConfigurationError(
 				'Property "executor" is required and must be a string',
 				path,
@@ -42,8 +42,8 @@ class NxTargetDefinition implements TargetDefinition {
 		}
 
 		if (
-			Reflect.has(data, 'defaultConfiguration') &&
-			typeof data.defaultConfiguration !== 'string'
+			Reflect.has(data, "defaultConfiguration") &&
+			typeof data.defaultConfiguration !== "string"
 		) {
 			throw new InvalidConfigurationError(
 				`Property "defaultConfiguration" must be a string if present`,
@@ -51,14 +51,14 @@ class NxTargetDefinition implements TargetDefinition {
 			);
 		}
 
-		if (Reflect.has(data, 'options') && typeof data.options !== 'object') {
+		if (Reflect.has(data, "options") && typeof data.options !== "object") {
 			throw new InvalidConfigurationError(
 				`Property "options" must be an object or null if present`,
 				path,
 			);
 		}
 
-		if (Reflect.has(data, 'configurations')) {
+		if (Reflect.has(data, "configurations")) {
 			if (!isJsonObject(data.configurations)) {
 				throw new InvalidConfigurationError(
 					`Property "configurations" must be an object or null if present`,
@@ -70,7 +70,7 @@ class NxTargetDefinition implements TargetDefinition {
 				if (value != null && !isJsonObject(value)) {
 					throw new InvalidConfigurationError(
 						`Configurations must be an object`,
-						[...path, 'configurations', name],
+						[...path, "configurations", name],
 					);
 				}
 			}
@@ -121,10 +121,10 @@ class NxTargetDefinition implements TargetDefinition {
 
 		this.extensions = proxyObject(data, {
 			remove: new Set([
-				'executor',
-				'defaultConfiguration',
-				'options',
-				'configurations',
+				"executor",
+				"defaultConfiguration",
+				"options",
+				"configurations",
 			]),
 		});
 	}
@@ -179,7 +179,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 		path: JsonPropertyPath,
 		raw: JsonObject | (() => JsonObject),
 	) {
-		if (typeof raw === 'function') {
+		if (typeof raw === "function") {
 			return new this(raw, undefined);
 		}
 
@@ -189,7 +189,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 				Object.entries(raw).map(([targetName, target]) => {
 					if (!isJsonObject(target)) {
 						throw new InvalidConfigurationError(
-							'Target configuration must be an object',
+							"Target configuration must be an object",
 							[...path, targetName],
 						);
 					}
@@ -238,7 +238,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	get #raw(): JsonObject {
-		if (typeof this.#_raw === 'function') {
+		if (typeof this.#_raw === "function") {
 			this.#_raw = this.#_raw();
 		}
 
@@ -260,21 +260,21 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 
 class NxProjectDefinition implements ProjectDefinition {
 	static fromConfiguration(path: JsonPropertyPath, raw: JsonObject) {
-		if (typeof raw.root !== 'string') {
+		if (typeof raw.root !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "root" is required and must be a string`,
 				path,
 			);
 		}
 
-		if (Reflect.has(raw, 'prefix') && typeof raw.prefix !== 'string') {
+		if (Reflect.has(raw, "prefix") && typeof raw.prefix !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "prefix" must be a string if present`,
 				path,
 			);
 		}
 
-		if (Reflect.has(raw, 'sourceRoot') && typeof raw.sourceRoot !== 'string') {
+		if (Reflect.has(raw, "sourceRoot") && typeof raw.sourceRoot !== "string") {
 			throw new InvalidConfigurationError(
 				`Property "sourceRoot" must be a string if present`,
 				path,
@@ -283,9 +283,9 @@ class NxProjectDefinition implements ProjectDefinition {
 
 		let targets;
 
-		if (!Reflect.has(raw, 'targets')) {
+		if (!Reflect.has(raw, "targets")) {
 			targets = NxTargetDefinitionCollection.fromConfiguration(
-				[...path, 'targets'],
+				[...path, "targets"],
 				() => {
 					raw.targets = {};
 					return raw.targets;
@@ -293,14 +293,14 @@ class NxProjectDefinition implements ProjectDefinition {
 			);
 		} else {
 			if (!isJsonObject(raw.targets)) {
-				throw new InvalidConfigurationError('Targets must be an object', [
+				throw new InvalidConfigurationError("Targets must be an object", [
 					...path,
-					'targets',
+					"targets",
 				]);
 			}
 
 			targets = NxTargetDefinitionCollection.fromConfiguration(
-				[...path, 'targets'],
+				[...path, "targets"],
 				raw.targets,
 			);
 		}
@@ -348,8 +348,8 @@ class NxProjectDefinition implements ProjectDefinition {
 		this.targets = targets;
 
 		this.extensions = proxyObject(raw, {
-			remove: new Set(['root', 'prefix', 'sourceRoot', 'targets', 'architect']),
-			rename: new Map([['schematics', 'generators']]),
+			remove: new Set(["root", "prefix", "sourceRoot", "targets", "architect"]),
+			rename: new Map([["schematics", "generators"]]),
 		});
 
 		this.#data = raw as JsonObject & {
@@ -399,7 +399,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 		file?: FileHandle,
 		objectsAndFiles?: [JsonObject, FileHandle][],
 	) {
-		if (typeof raw === 'function') {
+		if (typeof raw === "function") {
 			return new this(raw, undefined);
 		}
 
@@ -410,7 +410,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 					Object.entries(raw).map(async ([projectName, project]) => {
 						let projectFile: FileHandle | undefined;
 
-						if (file != null && typeof project == 'string') {
+						if (file != null && typeof project == "string") {
 							projectFile = await file.openRelative(project, projectFilenames);
 							project = await projectFile.read();
 
@@ -419,7 +419,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 						if (!isJsonObject(project)) {
 							throw new InvalidConfigurationError(
-								'Project configuration must be an object',
+								"Project configuration must be an object",
 								[...path, projectName],
 							);
 						}
@@ -472,7 +472,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	get #raw(): JsonObject {
-		if (typeof this.#_raw === 'function') {
+		if (typeof this.#_raw === "function") {
 			this.#_raw = this.#_raw();
 		}
 
@@ -494,14 +494,14 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 
 export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 	static async fromConfiguration(raw: JsonObject, file?: FileHandle) {
-		if (typeof raw.version !== 'number') {
-			throw new InvalidConfigurationError('Configuration must have a version');
+		if (typeof raw.version !== "number") {
+			throw new InvalidConfigurationError("Configuration must have a version");
 		}
 
 		if (raw.version !== 2) {
 			throw new InvalidConfigurationError(
-				'Unrecognized configuration version, expected version 2',
-				['version'],
+				"Unrecognized configuration version, expected version 2",
+				["version"],
 			);
 		}
 
@@ -510,9 +510,9 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 			? [[raw, file]]
 			: undefined;
 
-		if (!Reflect.has(raw, 'projects')) {
+		if (!Reflect.has(raw, "projects")) {
 			projects = await NxProjectDefinitionCollection.fromConfiguration(
-				['projects'],
+				["projects"],
 				() => {
 					raw.projects = {};
 					return raw.projects;
@@ -522,13 +522,13 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 			);
 		} else {
 			if (!isJsonObject(raw.projects)) {
-				throw new InvalidConfigurationError('Projects must be an object', [
-					'projects',
+				throw new InvalidConfigurationError("Projects must be an object", [
+					"projects",
 				]);
 			}
 
 			projects = await NxProjectDefinitionCollection.fromConfiguration(
-				['projects'],
+				["projects"],
 				raw.projects,
 				file,
 				projectsAndFiles,
@@ -580,8 +580,8 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		this.#files = files;
 
 		this.extensions = proxyObject(raw, {
-			remove: new Set(['projects', 'version', '$schema']),
-			rename: new Map([['schematics', 'generators']]),
+			remove: new Set(["projects", "version", "$schema"]),
+			rename: new Map([["schematics", "generators"]]),
 		});
 
 		this.data = raw;

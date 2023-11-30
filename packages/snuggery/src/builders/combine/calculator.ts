@@ -1,15 +1,15 @@
-import {cpus} from 'os';
+import {cpus} from "os";
 
 enum Operator {
-	Plus = '+',
-	Minus = '-',
-	Times = '*',
-	Divide = '/',
+	Plus = "+",
+	Minus = "-",
+	Times = "*",
+	Divide = "/",
 }
 
 enum Group {
-	Start = '(',
-	End = ')',
+	Start = "(",
+	End = ")",
 }
 
 const constants = {
@@ -31,7 +31,7 @@ export class InvalidCalculationError extends Error {
 			)}[HERE -->]${calculation.slice(index)}"`,
 		);
 
-		this.name = 'InvalidCalculationError';
+		this.name = "InvalidCalculationError";
 	}
 }
 
@@ -59,7 +59,7 @@ function tokenize(calculation: string) {
 
 		if (currentNumber.length) {
 			tokens.push({
-				token: parseFloat(currentNumber.join('')),
+				token: parseFloat(currentNumber.join("")),
 				start: startOfCurrentNumber,
 			});
 			currentNumber = [];
@@ -67,7 +67,7 @@ function tokenize(calculation: string) {
 
 		if (/\s/.test(current)) {
 			// ignore
-		} else if ('()+-*/'.includes(current)) {
+		} else if ("()+-*/".includes(current)) {
 			tokens.push({token: current as Group | Operator, start: i});
 		} else {
 			let found = false;
@@ -93,7 +93,7 @@ function tokenize(calculation: string) {
 
 	if (currentNumber.length) {
 		tokens.push({
-			token: parseFloat(currentNumber.join('')),
+			token: parseFloat(currentNumber.join("")),
 			start: startOfCurrentNumber,
 		});
 	}
@@ -158,7 +158,7 @@ function parse(
 	function parsePrimaryExpression(): number {
 		const {token, start} = pop();
 
-		if (typeof token === 'number') {
+		if (typeof token === "number") {
 			return token;
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} else if (constantNames.includes(token as any)) {
@@ -194,7 +194,7 @@ function parse(
 }
 
 export function calculate(value: string | number): number {
-	if (typeof value === 'number') {
+	if (typeof value === "number") {
 		return value;
 	}
 

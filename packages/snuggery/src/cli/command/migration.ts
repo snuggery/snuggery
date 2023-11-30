@@ -1,17 +1,17 @@
-import type {Collection} from '@angular-devkit/schematics';
-import {isJsonObject, type JsonObject} from '@snuggery/core';
-import {UsageError} from 'clipanion';
-import {createRequire} from 'module';
-import {join} from 'path';
+import type {Collection} from "@angular-devkit/schematics";
+import {isJsonObject, type JsonObject} from "@snuggery/core";
+import {UsageError} from "clipanion";
+import {createRequire} from "module";
+import {join} from "path";
 
-import {AbstractError} from '../../utils/error';
+import {AbstractError} from "../../utils/error";
 import type {
 	SnuggeryCollectionDescription,
 	SnuggerySchematic,
 	SnuggerySchematicDescription,
-} from '../schematic/engine-host';
+} from "../schematic/engine-host";
 
-import {SchematicCommand} from './schematic';
+import {SchematicCommand} from "./schematic";
 
 export class MigrationCollectionCannotBeResolvedError extends AbstractError {}
 
@@ -32,7 +32,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 		let pkgJson: JsonObject;
 		const {root} = this; // explicitly do this outside of the try-catch in case it throws
 		try {
-			const require = createRequire(join(root, '<synthetic>'));
+			const require = createRequire(join(root, "<synthetic>"));
 			pkgJsonPath = require.resolve(`${pkgName}/package.json`);
 			pkgJson = require(`${pkgName}/package.json`);
 		} catch {
@@ -44,8 +44,8 @@ export abstract class MigrationCommand extends SchematicCommand {
 		}
 
 		if (
-			!isJsonObject(pkgJson['ng-update']) ||
-			typeof pkgJson['ng-update'].migrations !== 'string'
+			!isJsonObject(pkgJson["ng-update"]) ||
+			typeof pkgJson["ng-update"].migrations !== "string"
 		) {
 			return null;
 		}
@@ -55,17 +55,17 @@ export abstract class MigrationCommand extends SchematicCommand {
 		let migrationJsonPath: string;
 		try {
 			migrationJsonPath = migrationRequire.resolve(
-				`./${pkgJson['ng-update'].migrations}`,
+				`./${pkgJson["ng-update"].migrations}`,
 			);
 		} catch {
 			try {
 				migrationJsonPath = migrationRequire.resolve(
-					pkgJson['ng-update'].migrations,
+					pkgJson["ng-update"].migrations,
 				);
 			} catch {
 				throw new MigrationCollectionCannotBeResolvedError(
 					`Couldn't find ${JSON.stringify(
-						pkgJson['ng-update'].migrations,
+						pkgJson["ng-update"].migrations,
 					)} in package "${pkgName}"`,
 				);
 			}
@@ -73,7 +73,7 @@ export abstract class MigrationCommand extends SchematicCommand {
 
 		const collection = await this.getCollection(migrationJsonPath);
 
-		if (typeof pkgJson.version === 'string') {
+		if (typeof pkgJson.version === "string") {
 			return Object.assign(collection, {version: pkgJson.version});
 		}
 
@@ -92,15 +92,15 @@ export abstract class MigrationCommand extends SchematicCommand {
 	> {
 		const [{default: Range}, {default: valid}, {default: compare}] =
 			await Promise.all([
-				import('semver/classes/range.js'),
-				import('semver/functions/valid.js'),
-				import('semver/functions/compare.js'),
+				import("semver/classes/range.js"),
+				import("semver/functions/valid.js"),
+				import("semver/functions/compare.js"),
 			]);
 		const range = new Range(`> ${from} <= ${to}`, {
 			includePrerelease: true,
 		});
 		const includedSchematics: Awaited<
-			ReturnType<MigrationCommand['getMigrationsInRange']>
+			ReturnType<MigrationCommand["getMigrationsInRange"]>
 		> = [];
 
 		for (const schematicName of collection.listSchematicNames()) {

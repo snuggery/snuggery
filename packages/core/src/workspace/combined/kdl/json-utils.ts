@@ -1,9 +1,9 @@
-import {isJsonArray, JsonObject, JsonValue} from '../../types';
+import {isJsonArray, JsonObject, JsonValue} from "../../types";
 
 export type JsonPrimitive = Exclude<JsonValue, JsonObject | JsonValue[]>;
 
 export function isPrimitive(value: JsonValue): value is JsonPrimitive {
-	return value == null || typeof value !== 'object';
+	return value == null || typeof value !== "object";
 }
 
 export function isArrayOfPrimitives(

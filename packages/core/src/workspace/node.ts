@@ -1,6 +1,6 @@
-import {promises as fs} from 'fs';
+import {promises as fs} from "fs";
 
-import type {WorkspaceHost} from './file';
+import type {WorkspaceHost} from "./file";
 
 export const nodeFsHost: WorkspaceHost = {
 	async isDirectory(path) {
@@ -18,7 +18,7 @@ export const nodeFsHost: WorkspaceHost = {
 		}
 	},
 	async read(path) {
-		return await fs.readFile(path, 'utf-8');
+		return await fs.readFile(path, "utf-8");
 	},
 	async readdir(path) {
 		return await fs.readdir(path);

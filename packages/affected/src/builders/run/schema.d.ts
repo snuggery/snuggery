@@ -1,4 +1,4 @@
-import {GlobSchema} from '@snuggery/snuggery/builders';
+import {GlobSchema} from "@snuggery/snuggery/builders";
 
 export type Schema = GlobSchema & {
 	printOnly?: boolean;

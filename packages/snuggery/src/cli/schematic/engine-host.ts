@@ -3,8 +3,8 @@ import {
 	normalize,
 	schema,
 	virtualFs,
-} from '@angular-devkit/core';
-import {NodeJsSyncHost} from '@angular-devkit/core/node';
+} from "@angular-devkit/core";
+import {NodeJsSyncHost} from "@angular-devkit/core/node";
 import {
 	type Collection,
 	type CollectionDescription,
@@ -19,8 +19,8 @@ import {
 	type TaskExecutorFactory,
 	type TypedSchematicContext,
 	UnregisteredTaskException,
-} from '@angular-devkit/schematics';
-import {BuiltinTaskExecutor} from '@angular-devkit/schematics/tasks/node';
+} from "@angular-devkit/schematics";
+import {BuiltinTaskExecutor} from "@angular-devkit/schematics/tasks/node";
 import {
 	FactoryCannotBeResolvedException,
 	FileSystemCollectionDescription,
@@ -30,17 +30,17 @@ import {
 	SchematicMissingFieldsException,
 	SchematicNameCollisionException,
 	validateOptionsWithSchema,
-} from '@angular-devkit/schematics/tools';
-import {isJsonObject, type JsonObject, type JsonValue} from '@snuggery/core';
-import {createRequire} from 'module';
-import {dirname, join, resolve} from 'path';
-import {defer, isObservable, type Observable} from 'rxjs';
-import type {Url} from 'url';
+} from "@angular-devkit/schematics/tools";
+import {isJsonObject, type JsonObject, type JsonValue} from "@snuggery/core";
+import {createRequire} from "module";
+import {dirname, join, resolve} from "path";
+import {defer, isObservable, type Observable} from "rxjs";
+import type {Url} from "url";
 
-import {loadJson} from '../../utils/json-resolver';
-import type {Context} from '../command/context';
-import {dynamicImport} from '../utils/dynamic-import';
-import {makeGeneratorIntoSchematic, Generator} from '../utils/tao';
+import {loadJson} from "../../utils/json-resolver";
+import type {Context} from "../command/context";
+import {dynamicImport} from "../utils/dynamic-import";
+import {makeGeneratorIntoSchematic, Generator} from "../utils/tao";
 
 export interface SnuggeryCollectionDescription
 	extends FileSystemCollectionDescription {
@@ -194,10 +194,10 @@ export class SnuggeryEngineHost
 		const from = requester?.path ?? this.#resolvePaths;
 
 		const [{extends: _rawExtends, version, schematics, generators}, path] =
-			loadJson(from, name, 'schematics', 'generators');
+			loadJson(from, name, "schematics", "generators");
 
 		const _extends =
-			typeof _rawExtends === 'string'
+			typeof _rawExtends === "string"
 				? [_rawExtends]
 				: (_rawExtends as string[] | undefined);
 
@@ -211,9 +211,9 @@ export class SnuggeryEngineHost
 				extends: _extends,
 				version: version as string | undefined,
 				schematics:
-					schematics as unknown as SnuggeryCollectionDescription['schematics'],
+					schematics as unknown as SnuggeryCollectionDescription["schematics"],
 				generators:
-					generators as unknown as SnuggeryCollectionDescription['generators'],
+					generators as unknown as SnuggeryCollectionDescription["generators"],
 				schematicAliasMap,
 				generatorAliasMap,
 				has: (name) =>
@@ -262,7 +262,7 @@ export class SnuggeryEngineHost
 
 		if (partialSchematic.extends != null) {
 			const [schematicName, collectionName] = partialSchematic.extends
-				.split(':', 2)
+				.split(":", 2)
 				.reverse() as [string] | [string, string];
 
 			if (collectionName != null) {
@@ -282,8 +282,8 @@ export class SnuggeryEngineHost
 		let factoryPath = partialSchematic.factory;
 		let factoryExport: string | null = null;
 
-		if (factoryPath.includes('#')) {
-			[factoryPath, factoryExport] = factoryPath.split('#', 2) as [
+		if (factoryPath.includes("#")) {
+			[factoryPath, factoryExport] = factoryPath.split("#", 2) as [
 				string,
 				string,
 			];
@@ -344,7 +344,7 @@ export class SnuggeryEngineHost
 	): RuleFactory<OptionT> {
 		if (
 			schematic.isNx ||
-			(schematic.isNx == null && schematic.schemaJson?.cli === 'nx')
+			(schematic.isNx == null && schematic.schemaJson?.cli === "nx")
 		) {
 			return makeGeneratorIntoSchematic(
 				schematic.factoryFn as unknown as Generator,
@@ -357,7 +357,7 @@ export class SnuggeryEngineHost
 	}
 
 	createSourceFromUrl(url: Url): Source | null {
-		if (url.protocol != null && url.protocol !== 'file:') {
+		if (url.protocol != null && url.protocol !== "file:") {
 			return null;
 		}
 
@@ -366,14 +366,14 @@ export class SnuggeryEngineHost
 				.description as SnuggerySchematicDescription;
 			if (description.path === undefined) {
 				throw new Error(
-					'Unsupported schematic context. Expected a SnuggerySchematicDescription.',
+					"Unsupported schematic context. Expected a SnuggerySchematicDescription.",
 				);
 			}
 
 			return new HostCreateTree(
 				new virtualFs.ScopedHost(
 					new NodeJsSyncHost(),
-					normalize(join(description.path, url.path || '')),
+					normalize(join(description.path, url.path || "")),
 				),
 			);
 		};

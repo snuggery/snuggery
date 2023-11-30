@@ -4,14 +4,14 @@ import {
 	BuildFailureError,
 	lastValueFrom,
 	TargetSpecifier,
-} from '@snuggery/architect';
-import type {JsonObject} from '@snuggery/core';
-import {type MonoTypeOperatorFunction, pipe, range, zip} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+} from "@snuggery/architect";
+import type {JsonObject} from "@snuggery/core";
+import {type MonoTypeOperatorFunction, pipe, range, zip} from "rxjs";
+import {map, tap} from "rxjs/operators";
 
-import {createScheduler} from './schedulers';
-import type {ParallelTarget, Schema, SerialTarget, Target} from './schema';
-import {Type} from './types';
+import {createScheduler} from "./schedulers";
+import type {ParallelTarget, Schema, SerialTarget, Target} from "./schema";
+import {Type} from "./types";
 
 function throwIfFailed(): MonoTypeOperatorFunction<BuilderOutput> {
 	return pipe(
@@ -47,8 +47,8 @@ export async function execute(
 	if (Object.keys(otherOptions).length > 0) {
 		const extraOptions = Object.fromEntries(
 			Array.from(Object.entries(otherOptions))
-				.filter(([key]) => key.startsWith('options.'))
-				.map(([key, value]) => [key.slice('options.'.length), value]),
+				.filter(([key]) => key.startsWith("options."))
+				.map(([key, value]) => [key.slice("options.".length), value]),
 		) as JsonObject;
 
 		options = {
@@ -67,7 +67,7 @@ export async function execute(
 }
 
 function isSingleTarget(target: Target): target is TargetSpecifier {
-	return typeof target === 'string' || 'builder' in target;
+	return typeof target === "string" || "builder" in target;
 }
 
 function countTargets({targets}: SerialTarget | ParallelTarget): number {

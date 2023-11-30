@@ -1,30 +1,30 @@
-import {Option, UsageError} from 'clipanion';
+import {Option, UsageError} from "clipanion";
 
-import {ArchitectCommand} from '../../command/architect';
-import {formatMarkdownish} from '../../utils/format';
+import {ArchitectCommand} from "../../command/architect";
+import {formatMarkdownish} from "../../utils/format";
 
 export const unsafeTargetNames: ReadonlySet<string> = new Set([
-	'generate',
-	'help',
-	'new',
-	'project',
-	'run',
+	"generate",
+	"help",
+	"new",
+	"project",
+	"run",
 ]);
 
 export class HelpTargetCommand extends ArchitectCommand {
-	static override readonly paths = [['help', 'target']];
+	static override readonly paths = [["help", "target"]];
 
 	static override readonly usage = ArchitectCommand.Usage({
-		category: 'Workspace information commands',
-		description: 'Show information about a target',
+		category: "Workspace information commands",
+		description: "Show information about a target",
 		examples: [
 			[
-				'Print information about `build` in the current project',
-				'$0 help target build',
+				"Print information about `build` in the current project",
+				"$0 help target build",
 			],
 			[
-				'Print information about `test` in the `app` project',
-				'$0 help target test app',
+				"Print information about `test` in the `app` project",
+				"$0 help target test app",
 			],
 		],
 	});
@@ -49,7 +49,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 			.targets.get(this.target);
 
 		if (target == null) {
-			const {UnknownTargetError} = await import('../../architect/index.js');
+			const {UnknownTargetError} = await import("../../architect/index.js");
 			throw new UnknownTargetError(
 				`Project ${JSON.stringify(
 					projectName,
@@ -64,7 +64,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 				`Run target \`${this.format.code(
 					this.target,
 				)}\` in project \`${this.format.code(projectName)}\`${
-					projectLabel ? ` ${projectLabel}` : ''
+					projectLabel ? ` ${projectLabel}` : ""
 				} via:`,
 				{format},
 			),
@@ -85,13 +85,13 @@ export class HelpTargetCommand extends ArchitectCommand {
 
 		report.reportInfo(
 			`Add \`${this.format.code(
-				'--help',
+				"--help",
 			)}\` to that command to see the available options.\n`,
 		);
 
 		const configurations = Object.keys(target.configurations ?? {});
 		if (configurations.length > 0) {
-			report.reportInfo(`${this.format.bold('Configurations:')}\n`);
+			report.reportInfo(`${this.format.bold("Configurations:")}\n`);
 
 			for (const config of configurations) {
 				report.reportInfo(`- ${config}`);
@@ -125,7 +125,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 
 		const {defaultProject} = this;
 
-		if (typeof defaultProject === 'string') {
+		if (typeof defaultProject === "string") {
 			const project = workspace.tryGetProjectByName(defaultProject);
 
 			if (project == null) {
@@ -170,7 +170,7 @@ export class HelpTargetCommand extends ArchitectCommand {
 			report,
 		} = this;
 
-		report.reportInfo(`${this.format.bold('Projects:')}\n`);
+		report.reportInfo(`${this.format.bold("Projects:")}\n`);
 
 		report.reportInfo(
 			`Target \`${this.format.code(
@@ -178,16 +178,16 @@ export class HelpTargetCommand extends ArchitectCommand {
 			)}\` is available in the following projects:\n`,
 		);
 		for (const project of projects) {
-			let label = '';
+			let label = "";
 			switch (project) {
 				case currentProject:
-					label = ' (project in current working directory)';
+					label = " (project in current working directory)";
 					break;
 				case defaultProject:
-					label = ' (default project)';
+					label = " (default project)";
 					break;
 				case selectedProject:
-					label = ' (selected project)';
+					label = " (selected project)";
 					break;
 			}
 

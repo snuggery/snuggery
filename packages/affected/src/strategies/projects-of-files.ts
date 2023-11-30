@@ -1,4 +1,4 @@
-import type {ChangeLocatorStrategy} from './interface';
+import type {ChangeLocatorStrategy} from "./interface";
 
 /**
  * Strategy that maps affected files onto affected projects
