@@ -153,6 +153,10 @@ export async function tsc(
 			}
 		});
 
+		if ('JSDocParsingMode' in ts) {
+			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
+		}
+
 		const builder = ts.createSolutionBuilder(host, [tsconfigPath], {
 			incremental: parsedConfig.options.incremental,
 		});
@@ -175,6 +179,10 @@ export async function tsc(
 				? ts.createIncrementalCompilerHost
 				: ts.createCompilerHost
 		)(parsedConfig.options);
+
+		if ('JSDocParsingMode' in ts) {
+			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
+		}
 
 		const program = (
 			parsedConfig.options.incremental
