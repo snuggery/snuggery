@@ -1,3 +1,4 @@
+import type {Patterns} from "@snuggery/core";
 import {Trip, getContext} from "@snuggery/journey";
 import {
 	VisitorFactory,
@@ -6,9 +7,12 @@ import {
 	getPath,
 } from "@snuggery/journey/agents/typescript";
 
+import {PatternKeyedMap} from "../utils";
+
 interface MapImportsInput {
 	moduleSpecifier: string;
 	imports: ReadonlyMap<string, {newName?: string; newFrom?: string}>;
+	patterns: Patterns | null;
 }
 
 /**
@@ -21,12 +25,14 @@ export function mapImports(
 	imports: Iterable<
 		[exportName: string, opts: {newName?: string; newFrom?: string}]
 	>,
+	patterns: Patterns | null = null,
 ): Trip {
 	return {
 		prepare(journey) {
 			visitTypescriptFiles(journey, createTypescriptTransform, {
 				moduleSpecifier,
 				imports: new Map(imports),
+				patterns,
 			});
 		},
 	};
@@ -38,15 +44,22 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 ) => {
 	const {logger} = getContext(journey);
 
-	const importsPerSpecifier = new Map(
-		input.map(({imports, moduleSpecifier}) => [moduleSpecifier, imports]),
+	const importsPerSpecifierPerFile = new PatternKeyedMap(
+		input.map(({imports, moduleSpecifier, patterns}) => [
+			moduleSpecifier,
+			patterns,
+			imports,
+		]),
 	);
-	const allSpecifiers = new Set(importsPerSpecifier.keys());
-	const allSpecifiersArray = Array.from(importsPerSpecifier.keys());
 
 	return (sourceFile, recorder) => {
+		const importsPerSpecifier = importsPerSpecifierPerFile.get(
+			sourceFile.fileName,
+		);
+
 		if (
-			!allSpecifiersArray.some((moduleSpecifier) =>
+			!importsPerSpecifier ||
+			!Array.from(importsPerSpecifier.keys()).some((moduleSpecifier) =>
 				sourceFile.text.includes(moduleSpecifier),
 			)
 		) {
@@ -54,6 +67,7 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 		}
 
 		const renames = new Map<string, string>();
+		const allSpecifiers = new Set(importsPerSpecifier.keys());
 
 		// 1. Look through the imports
 		//    - Track renames that need to be applied throughout the file
@@ -233,8 +247,8 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 				}
 
 				const info = importsPerSpecifier
-					.get(node.argument.literal.text)!
-					.get(identifier.text);
+					.get(node.argument.literal.text)
+					?.get(identifier.text);
 				if (info == null) {
 					return;
 				}
@@ -328,9 +342,9 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 
 			for (const specifier of namedBindings.elements) {
 				const exportName = (specifier.propertyName ?? specifier.name).text;
-				const renameOptions = importsPerSpecifier
-					.get(moduleSpecifier)!
-					.get(exportName);
+				const renameOptions = importsPerSpecifier!
+					.get(moduleSpecifier)
+					?.get(exportName);
 
 				if (renameOptions == null) {
 					getElements(moduleSpecifier).push(specifier);

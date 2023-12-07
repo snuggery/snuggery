@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import {matchesPatterns, type Patterns} from "@snuggery/core";
 
-export class Map<K, V extends {}> extends globalThis.Map<K, V> {
+export class MapWithDefault<K, V extends {}> extends globalThis.Map<K, V> {
 	readonly #factory: (key: K) => V;
 
 	constructor(factory: (key: K) => V) {
@@ -20,10 +21,45 @@ export class Map<K, V extends {}> extends globalThis.Map<K, V> {
 	}
 }
 
-export class WeakMap<K extends object, V extends {}> extends globalThis.WeakMap<
-	K,
-	V
-> {
+export class PatternKeyedMap<K, IK, V> {
+	readonly [Symbol.toStringTag] = "PatternKeyedMap";
+
+	readonly #maps: [Patterns | null, Map<K, ReadonlyMap<IK, V>>][];
+
+	constructor(iterable: Iterable<[K, Patterns | null, ReadonlyMap<IK, V>]>) {
+		this.#maps = [];
+
+		let lastPatterns: Patterns | null | undefined;
+		let lastMap: Map<K, ReadonlyMap<IK, V>> | undefined;
+
+		for (const [key, patterns, value] of iterable) {
+			if (patterns !== lastPatterns) {
+				lastPatterns = patterns;
+				lastMap = new Map();
+				this.#maps.push([patterns, lastMap]);
+			}
+
+			lastMap!.set(key, value);
+		}
+	}
+
+	get(path: string): ReadonlyMap<K, ReadonlyMap<IK, V>> | undefined {
+		let resultMap: ReadonlyMap<K, ReadonlyMap<IK, V>> | undefined;
+
+		for (const [pattern, map] of this.#maps) {
+			if (pattern === null || matchesPatterns(path, pattern)) {
+				resultMap = new Map(resultMap ? [...resultMap, ...map] : map);
+			}
+		}
+
+		return resultMap;
+	}
+}
+
+export class WeakMapWithDefault<
+	K extends object,
+	V extends {},
+> extends globalThis.WeakMap<K, V> {
 	readonly #factory: (key: K) => V;
 
 	constructor(factory: (key: K) => V) {

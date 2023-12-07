@@ -10,6 +10,11 @@
 			"factory": "./factory#replaceLoremIpsum",
 			"schema": "../../__tests__/accept-any-schema.json"
 		},
+		"partial-replace-lorem-ipsum": {
+			"description": "test replacement",
+			"factory": "./factory#partialReplaceLoremIpsum",
+			"schema": "../../__tests__/accept-any-schema.json"
+		},
 		"add-prefix": {
 			"description": "test replacement",
 			"factory": "./factory#addPrefix",

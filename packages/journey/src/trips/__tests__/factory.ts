@@ -65,6 +65,20 @@ export const init: RuleFactory<{}> = () => (tree) => {
 			export const var3 = renamed(moved, aliasedImport, unchanged);
 		`,
 	);
+
+	tree.create(
+		"other.ts",
+		tags.stripIndent`
+			import {unchanged, renamed, moved, renamedAndMoved as aliasedImport, Renamed, Moved, RenamedAndMoved} from '@lorem/ipsum';
+
+			export {Renamed as NewName, Renamed, Moved, Moved as Alias} from '@lorem/ipsum';
+			export {moved, moved as alias, renamed, renamed as newName};
+
+			export const var1: Renamed<import('@lorem/ipsum').Moved>;
+			export const var2: import('@lorem/ipsum').RenamedAndMoved<Moved, Renamed>;
+			export const var3 = renamed(moved, aliasedImport, unchanged);
+		`,
+	);
 };
 
 export const replaceLoremIpsum = journey(
@@ -76,6 +90,21 @@ export const replaceLoremIpsum = journey(
 		["Moved", {newFrom: "@dolor/sit"}],
 		["RenamedAndMoved", {newFrom: "@dolor/sit", newName: "Amet"}],
 	]),
+);
+
+export const partialReplaceLoremIpsum = journey(
+	mapImports(
+		"@lorem/ipsum",
+		[
+			["renamed", {newName: "newName"}],
+			["moved", {newFrom: "@dolor/sit"}],
+			["renamedAndMoved", {newFrom: "@dolor/sit", newName: "amet"}],
+			["Renamed", {newName: "NewName"}],
+			["Moved", {newFrom: "@dolor/sit"}],
+			["RenamedAndMoved", {newFrom: "@dolor/sit", newName: "Amet"}],
+		],
+		{include: "file.ts"},
+	),
 );
 
 export const addPrefix = journey(

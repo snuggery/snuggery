@@ -1,7 +1,7 @@
 import type {SchematicContext, Tree} from "@angular-devkit/schematics";
 
 import {Journey, getTree, registerGuide, getContext} from "../types";
-import {Map, WeakMap} from "../utils";
+import {MapWithDefault, WeakMapWithDefault} from "../utils";
 
 export interface TreeVisitor {
 	(tree: Tree, context: SchematicContext): void | Promise<void>;
@@ -11,10 +11,10 @@ export interface TreeVisitorWithInput<I> {
 	(input: I[], tree: Tree, context: SchematicContext): void | Promise<void>;
 }
 
-const visitors = new WeakMap<
+const visitors = new WeakMapWithDefault<
 	Journey,
-	Map<TreeVisitorWithInput<unknown>, unknown[]>
->(() => new Map(() => []));
+	MapWithDefault<TreeVisitorWithInput<unknown>, unknown[]>
+>(() => new MapWithDefault<TreeVisitorWithInput<unknown>, unknown[]>(() => []));
 
 async function treeVisitorGuide(journey: Journey): Promise<void> {
 	const tree = getTree(journey);

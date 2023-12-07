@@ -10,7 +10,7 @@ import {
 import {extname, join} from "node:path/posix";
 
 import {Journey, registerGuide, getContext, getTree} from "../types";
-import {Map, WeakMap} from "../utils";
+import {MapWithDefault, WeakMapWithDefault} from "../utils";
 
 export {ts, getPath};
 
@@ -38,16 +38,17 @@ export interface TransformerFactoryFactory<I> {
 	(input: I[], journey: Journey): TransformerFactory;
 }
 
-const visitors = new WeakMap<Journey, Map<VisitorFactory<unknown>, unknown[]>>(
-	() => new Map(() => []),
-);
-
-const transforms = new WeakMap<
+const visitors = new WeakMapWithDefault<
 	Journey,
-	Map<TransformerFactoryFactory<unknown>, unknown[]>
->(() => new Map(() => []));
+	MapWithDefault<VisitorFactory<unknown>, unknown[]>
+>(() => new MapWithDefault(() => []));
 
-const runners = new WeakMap<Journey, Runner>(createSimpleRunner);
+const transforms = new WeakMapWithDefault<
+	Journey,
+	MapWithDefault<TransformerFactoryFactory<unknown>, unknown[]>
+>(() => new MapWithDefault(() => []));
+
+const runners = new WeakMapWithDefault<Journey, Runner>(createSimpleRunner);
 
 const programs = new globalThis.WeakMap<
 	Journey,

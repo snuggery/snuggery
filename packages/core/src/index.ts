@@ -4,7 +4,7 @@ export {
 	extractExtraConfiguration,
 } from "./extract-extra-configuration";
 export {findUp} from "./workspace/find-up";
-export {filterByPatterns, matchesPatterns} from "./pattern";
+export {filterByPatterns, matchesPatterns, type Patterns} from "./pattern";
 export {
 	type ConvertibleWorkspaceDefinition,
 	type MiniWorkspaceOptions,

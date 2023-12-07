@@ -1,3 +1,8 @@
+export interface Patterns {
+	readonly include: string | readonly string[];
+	readonly exclude?: string | readonly string[];
+}
+
 /**
  * Filter the given list via the given inclusion and optional exclusion pattern(s)
  *
@@ -6,13 +11,7 @@
  */
 export function filterByPatterns(
 	list: string[],
-	{
-		include,
-		exclude,
-	}: {
-		include: string | readonly string[];
-		exclude?: string | readonly string[];
-	},
+	{include, exclude}: Patterns,
 ): string[] {
 	const match = require("micromatch") as typeof import("micromatch");
 
@@ -33,13 +32,7 @@ export function filterByPatterns(
  */
 export function matchesPatterns(
 	path: string,
-	{
-		include,
-		exclude,
-	}: {
-		include: string | readonly string[];
-		exclude?: string | readonly string[];
-	},
+	{include, exclude}: Patterns,
 ): boolean {
 	const match = require("micromatch") as typeof import("micromatch");
 
