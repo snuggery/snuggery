@@ -33,6 +33,7 @@ export async function executeBuild(
 		manifest,
 		main,
 
+		package: shouldRunPackage,
 		packager,
 		tsconfig,
 		outputFolder,
@@ -56,6 +57,7 @@ export async function executeBuild(
 	keepDevDependencies ??= configuration.keepDevDependencies;
 
 	packager ??= configuration.packager;
+	shouldRunPackage ??= !!packager;
 
 	inlineStyleLanguage ??= configuration.inlineStyleLanguage;
 
@@ -168,7 +170,7 @@ export async function executeBuild(
 		await copyAssets(context, outputFolder, assets);
 	}
 
-	if (packager != null) {
+	if (shouldRunPackage) {
 		context.logger.debug("Running packager...");
 		await runPackager(context, {
 			packager,

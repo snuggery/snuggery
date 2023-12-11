@@ -75,6 +75,7 @@ export async function executeBuild(
 	const keepDevDependencies =
 		input.keepDevDependencies ?? config.keepDevDependencies;
 	const packager = input.packager ?? config.packager;
+	const shouldRunPackager = input.package ?? !!packager;
 
 	const outputFolder = input.outputFolder
 		? resolveWorkspacePath(context, input.outputFolder)
@@ -119,7 +120,7 @@ export async function executeBuild(
 	context.logger.debug("Copying assets...");
 	await copyAssets(context, outputFolder, assets);
 
-	if (packager) {
+	if (shouldRunPackager) {
 		context.logger.debug("Running packager");
 		await runPackager(context, {packager, directory: outputFolder});
 	}

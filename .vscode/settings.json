@@ -27,7 +27,7 @@
 	},
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll": true
+		"source.fixAll": "explicit"
 	},
 	"eslint.nodePath": ".yarn/sdks",
 	"cSpell.enabled": true,

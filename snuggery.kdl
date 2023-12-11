@@ -13,7 +13,7 @@ project "all" root="" {
 		configuration "predeploy" {
 			exclude "@snuggery/yarn-plugin-*"
 			options {
-				packager "@snuggery/yarn"
+				package true
 			}
 		}
 	}

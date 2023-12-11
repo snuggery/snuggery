@@ -26,6 +26,11 @@ export interface Schema {
 	assets?: AssetSpec[];
 
 	/**
+	 * Whether to package the built... package
+	 */
+	package?: boolean | null;
+
+	/**
 	 * Packager to run after building, e.g. `@snuggery/yarn:pack`
 	 *
 	 * If the builder name is `pack` it can be left, out, e.g. `@snuggery/yarn` will run the same builder as `@snuggery/yarn:pack`.

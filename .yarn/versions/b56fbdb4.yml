@@ -1,0 +1,9 @@
+releases:
+  "@snuggery/architect": patch
+  "@snuggery/build-angular": patch
+  "@snuggery/build-node": patch
+
+declined:
+  - "@snuggery/affected"
+  - "@snuggery/snuggery"
+  - "@snuggery/yarn"
