@@ -88,6 +88,13 @@ Properties:
     Type: `boolean`
 
 
+- `package`
+  Whether to package the built... package
+  Default value is `null`
+  Types:
+  - `boolean`
+  - `null`
+
 - `packager`
   Packager to run after building, e.g. `@snuggery/yarn:pack`. If the builder
   name is `pack` it can be left, out, e.g. `@snuggery/yarn` will run the same
