@@ -1,17 +1,21 @@
 import type {BuilderContext} from "@snuggery/architect";
-import type {JsonObject} from "@snuggery/core";
 
 import {commitAndTag, validateWorktreeIsClean} from "./git";
+import type {Schema} from "./schema";
 import {applyVersion, VersionBuilderOutput} from "./yarn";
 
 export async function executeVersion(
-	_options: JsonObject,
+	{dryRun = false}: Schema,
 	context: BuilderContext,
 ): Promise<VersionBuilderOutput> {
-	await validateWorktreeIsClean(context);
+	if (!dryRun) {
+		await validateWorktreeIsClean(context);
+	}
 
-	const {yarn, appliedVersions} = await applyVersion(context);
-	await commitAndTag(appliedVersions, context);
+	const {yarn, appliedVersions} = await applyVersion(context, dryRun);
+	if (!dryRun) {
+		await commitAndTag(appliedVersions, context);
+	}
 
 	return {yarn, appliedVersions};
 }

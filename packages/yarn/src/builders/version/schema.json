@@ -1,7 +1,13 @@
 {
-	"$schema": "http://json-schema.org/schema",
+	"$schema": "http://json-schema.org/draft-07/schema#",
 	"title": "Create yarn version",
 	"description": "Target options for creating versions using yarn",
 	"type": "object",
+	"properties": {
+		"dryRun": {
+			"type": "boolean",
+			"description": "Only print what would happen, don't actually deploy anything"
+		}
+	},
 	"additionalProperties": false
 }

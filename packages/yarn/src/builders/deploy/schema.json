@@ -24,6 +24,10 @@
 		"distTag": {
 			"type": "string",
 			"description": "The tag to distribute this release under, defaults to 'latest'"
+		},
+		"dryRun": {
+			"type": "boolean",
+			"description": "Only print what would happen, don't actually deploy anything"
 		}
 	},
 	"additionalProperties": false,

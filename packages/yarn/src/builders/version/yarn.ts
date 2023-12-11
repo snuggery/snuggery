@@ -11,6 +11,7 @@ const versionPluginName = "@yarnpkg/plugin-version";
 
 export async function applyVersion(
 	context: BuilderContext,
+	dryRun: boolean,
 ): Promise<VersionBuilderOutput> {
 	const yarn = await loadYarn(context);
 	const plugins = await yarn.listPlugins();
@@ -21,7 +22,7 @@ export async function applyVersion(
 		);
 	}
 
-	const appliedVersions = await yarn.applyVersion();
+	const appliedVersions = await yarn.applyVersion(dryRun);
 
 	context.logger.info("Version updates:");
 	for (const {cwd, ident, oldVersion, newVersion} of appliedVersions) {

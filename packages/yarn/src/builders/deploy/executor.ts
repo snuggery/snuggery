@@ -16,10 +16,21 @@ import type {Schema} from "./schema";
 const snuggeryPluginName = "@yarnpkg/plugin-snuggery";
 
 export async function executeDeploy(
-	{buildTarget, distTag, useWorkspacePlugin, include = "**", exclude}: Schema,
+	{
+		buildTarget,
+		distTag,
+		useWorkspacePlugin,
+		include = "**",
+		exclude,
+		dryRun = false,
+	}: Schema,
 	context: BuilderContext,
 ): Promise<void> {
-	const {appliedVersions, yarn} = await executeVersion({}, context);
+	const {appliedVersions, yarn} = await executeVersion({dryRun}, context);
+
+	if (dryRun) {
+		return;
+	}
 
 	if (buildTarget) {
 		const buildResult = await firstValueFrom(

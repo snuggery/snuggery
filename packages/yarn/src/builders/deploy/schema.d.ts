@@ -8,4 +8,6 @@ export interface Schema {
 	exclude?: string | string[];
 
 	distTag?: string;
+
+	dryRun?: boolean;
 }
