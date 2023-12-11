@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/schematics",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -28,7 +28,7 @@
 	"dependencies": {
 		"@angular-devkit/core": "^17.0.0",
 		"@angular-devkit/schematics": "^17.0.0",
-		"@snuggery/core": "^0.7.0",
+		"@snuggery/core": "^0.7.1",
 		"ignore": "^5.2.4"
 	},
 	"devDependencies": {

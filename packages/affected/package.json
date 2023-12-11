@@ -14,9 +14,9 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.9.0",
-		"@snuggery/core": "^0.7.0",
-		"@snuggery/snuggery": "^0.11.0",
+		"@snuggery/architect": "^0.9.1",
+		"@snuggery/core": "^0.7.1",
+		"@snuggery/snuggery": "^0.11.1",
 		"glob": "7.2.0",
 		"rxjs": "^7.8.0",
 		"semver": "^7.3.7",
