@@ -25,6 +25,7 @@ export class RunBuilderCommand extends ArchitectCommand {
 			{
 				...(await this.getOptionsForBuilder(this.builder)),
 				values: this.args,
+				pathSuffix: [this.builder],
 			},
 			(options) => this.runBuilder({builder: this.builder, options}),
 		);
