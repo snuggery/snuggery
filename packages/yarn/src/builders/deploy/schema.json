@@ -25,6 +25,10 @@
 			"type": "string",
 			"description": "The tag to distribute this release under, defaults to 'latest'"
 		},
+		"prerelease": {
+			"oneOf": [{"type": "string"}, {"type": "boolean"}],
+			"description": "Add a prerelease identifier to new versions"
+		},
 		"dryRun": {
 			"type": "boolean",
 			"description": "Only print what would happen, don't actually deploy anything"

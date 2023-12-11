@@ -9,5 +9,7 @@ export interface Schema {
 
 	distTag?: string;
 
+	prerelease?: string | boolean;
+
 	dryRun?: boolean;
 }

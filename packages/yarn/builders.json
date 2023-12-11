@@ -15,6 +15,12 @@
 			"hidden": true,
 			"schema": "./src/builders/update/schema.json",
 			"description": "Actual implementation for `sn run update` for yarn projects"
+		},
+		"version": {
+			"implementation": "./src/builders/version/index.js",
+			"hidden": true,
+			"schema": "./src/builders/version/schema.json",
+			"description": "Create, commit and tag deferred releases using @yarnpkg/plugin-version"
 		}
 	}
 }

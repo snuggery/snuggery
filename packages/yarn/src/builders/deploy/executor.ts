@@ -22,11 +22,15 @@ export async function executeDeploy(
 		useWorkspacePlugin,
 		include = "**",
 		exclude,
+		prerelease = false,
 		dryRun = false,
 	}: Schema,
 	context: BuilderContext,
 ): Promise<void> {
-	const {appliedVersions, yarn} = await executeVersion({dryRun}, context);
+	const {appliedVersions, yarn} = await executeVersion(
+		{dryRun, prerelease},
+		context,
+	);
 
 	if (dryRun) {
 		return;

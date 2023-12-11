@@ -210,9 +210,25 @@ class Yarn {
 		return plugins.some((plugin) => plugin.name === snuggeryPluginName);
 	}
 
-	async applyVersion(dryRun?: boolean): Promise<AppliedVersion[]> {
+	async applyVersion(
+		dryRun?: boolean,
+		prerelease?: string | boolean,
+	): Promise<AppliedVersion[]> {
 		const output = await this.#exec(
-			["version", "apply", "--all", "--json", ...(dryRun ? ["--dry-run"] : [])],
+			[
+				"version",
+				"apply",
+				"--all",
+				"--json",
+				...(dryRun ? ["--dry-run"] : []),
+				...(prerelease
+					? [
+							typeof prerelease === "string"
+								? `--prerelease=${prerelease}`
+								: "--prerelease",
+					  ]
+					: []),
+			],
 			{
 				captureNdjson: true,
 			},
