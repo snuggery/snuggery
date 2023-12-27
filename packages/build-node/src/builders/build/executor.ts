@@ -155,6 +155,11 @@ async function writeManifest(
 			manifest.exports = manifest.publishConfig.exports;
 			delete manifest.publishConfig.exports;
 		}
+
+		if (manifest.publishConfig.imports !== undefined) {
+			manifest.imports = manifest.publishConfig.imports;
+			delete manifest.publishConfig.imports;
+		}
 	}
 
 	for (const plugin of plugins) {
