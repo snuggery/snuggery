@@ -1,0 +1,3 @@
+releases:
+  "@snuggery/build-angular": patch
+  "@snuggery/build-node": patch

@@ -5,7 +5,7 @@ import {
 	resolveWorkspacePath,
 	runPackager,
 } from "@snuggery/architect";
-import {readFile} from "node:fs/promises";
+import {readFile, stat} from "node:fs/promises";
 import {createRequire} from "node:module";
 import {join} from "node:path";
 import process from "node:process";
@@ -80,9 +80,29 @@ export async function executeBuild(
 		resolveWorkspacePath(context, manifest) ??
 		(await resolveProjectPath(context, manifestFilename));
 	main = resolveWorkspacePath(context, main);
-	tsconfig =
-		resolveWorkspacePath(context, tsconfig) ??
-		(await resolveProjectPath(context, "tsconfig.json"));
+
+	if (tsconfig) {
+		tsconfig = resolveWorkspacePath(context, tsconfig);
+	} else {
+		for (const filename of ["tsconfig.lib.json", "tsconfig.json"]) {
+			const resolvedTsconfig = await resolveProjectPath(context, filename);
+
+			try {
+				if ((await stat(resolvedTsconfig)).isFile()) {
+					tsconfig = resolvedTsconfig;
+					break;
+				}
+			} catch {
+				// ignore
+			}
+		}
+
+		if (!tsconfig) {
+			throw new BuildFailureError(
+				"No tsconfig could be found, try passing in the path to your tsconfig",
+			);
+		}
+	}
 
 	outputFolder =
 		resolveWorkspacePath(context, outputFolder) ??

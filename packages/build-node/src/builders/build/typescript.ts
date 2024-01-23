@@ -240,14 +240,19 @@ async function getTsConfigPath(
 		return resolveWorkspacePath(ctx, tsconfig);
 	}
 
-	const resolvedTsconfig = await resolveProjectPath(ctx, "tsconfig.json");
+	for (const filename of ["tsconfig.lib.json", "tsconfig.json"]) {
+		const resolvedTsconfig = await resolveProjectPath(ctx, filename);
 
-	try {
-		await fs.stat(resolvedTsconfig);
-		return resolvedTsconfig;
-	} catch {
-		return null;
+		try {
+			if ((await fs.stat(resolvedTsconfig)).isFile()) {
+				return resolvedTsconfig;
+			}
+		} catch {
+			// ignore
+		}
 	}
+
+	return null;
 }
 
 function processResult(
