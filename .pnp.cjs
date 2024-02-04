@@ -2137,8 +2137,7 @@ const RAW_RUNTIME_STATE =
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/node", "npm:18.18.9"],\
-          ["@yarnpkg/parsers", "npm:2.5.0"]\
+          ["@types/node", "npm:18.18.9"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -2849,15 +2848,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@yarnpkg/parsers", [\
-      ["npm:2.5.0", {\
-        "packageLocation": "./.yarn/cache/@yarnpkg-parsers-npm-2.5.0-80778f9c50-dfc141bd78.zip/node_modules/@yarnpkg/parsers/",\
-        "packageDependencies": [\
-          ["@yarnpkg/parsers", "npm:2.5.0"],\
-          ["js-yaml", "npm:3.14.1"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:3.0.0", {\
         "packageLocation": "./.yarn/cache/@yarnpkg-parsers-npm-3.0.0-f62f25a57b-cec2c6dd6e.zip/node_modules/@yarnpkg/parsers/",\
         "packageDependencies": [\

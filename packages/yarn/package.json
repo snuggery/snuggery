@@ -18,8 +18,7 @@
 	"dependencies": {
 		"@angular-devkit/schematics": "^17.0.0",
 		"@snuggery/architect": "^0.9.1",
-		"@snuggery/core": "^0.7.1",
-		"@yarnpkg/parsers": "^2.4.1"
+		"@snuggery/core": "^0.7.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

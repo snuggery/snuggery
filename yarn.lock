@@ -1661,7 +1661,6 @@ __metadata:
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"
     "@types/node": "npm:^18.17.15"
-    "@yarnpkg/parsers": "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -2163,16 +2162,6 @@ __metadata:
     "@yarnpkg/fslib": "npm:^3.0.0"
     "@yarnpkg/pnp": "npm:^4.0.0"
   checksum: 582138eb33819ea23cfe0a22f2048d704ab7cce5c1ffdfa2a3383045a68b9284a63d1f36ea96b9fbf7b801890c57bbfd64f451634b3d4da11ecaea5d24d5249a
-  languageName: node
-  linkType: hard
-
-"@yarnpkg/parsers@npm:^2.4.1":
-  version: 2.5.0
-  resolution: "@yarnpkg/parsers@npm:2.5.0"
-  dependencies:
-    js-yaml: "npm:^3.10.0"
-    tslib: "npm:^1.13.0"
-  checksum: dfc141bd7873dd208319b4dd731034f7052123950cd60b54d3fba237dce91816d0fc7beb4dad23ed2e295732c6627bed4f84f78861b29ea9abf8bb72307dceaf
   languageName: node
   linkType: hard
 

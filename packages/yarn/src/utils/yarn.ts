@@ -1,6 +1,5 @@
 import {type BuilderContext, BuildFailureError} from "@snuggery/architect";
 import {isJsonObject, type JsonObject, type JsonValue} from "@snuggery/core";
-import {parseSyml} from "@yarnpkg/parsers";
 import {spawn} from "node:child_process";
 import fs from "node:fs/promises";
 import {dirname, join, parse as parsePath, resolve} from "node:path";
@@ -54,9 +53,9 @@ function isLogLine(value: JsonObject): value is JsonObject & LogLine {
 
 class Yarn {
 	readonly #context: BuilderContext;
-	readonly #yarnPath: string;
+	readonly #yarnPath: string | null;
 
-	constructor(yarnPath: string, context: BuilderContext) {
+	constructor(yarnPath: string | null, context: BuilderContext) {
 		this.#yarnPath = yarnPath;
 		this.#context = context;
 	}
@@ -103,7 +102,13 @@ class Yarn {
 		},
 	): Promise<JsonObject[] | void> {
 		return new Promise((resolve, reject) => {
-			const child = spawn(process.execPath, [this.#yarnPath, ...args], {
+			let cmd = "yarn";
+			if (this.#yarnPath) {
+				cmd = process.execPath;
+				args = [this.#yarnPath, ...args];
+			}
+
+			const child = spawn(cmd, args, {
 				cwd,
 				env: {
 					...process.env,
@@ -299,31 +304,44 @@ class Yarn {
 export type {Yarn};
 
 export async function loadYarn(context: BuilderContext): Promise<Yarn> {
-	const yarnConfigurationPath = await findUp(
-		".yarnrc.yml",
-		context.workspaceRoot,
-	);
-
-	if (!yarnConfigurationPath) {
+	const lockFilePath = await findUp("yarn.lock", context.workspaceRoot);
+	if (!lockFilePath) {
 		throw new BuildFailureError(
-			`Couldn't find yarn configuration for ${context.workspaceRoot}`,
+			`Couldn't find yarn.lock for ${context.workspaceRoot}`,
 		);
 	}
 
+	const packageJsonPath = join(dirname(lockFilePath), "package.json");
+	try {
+		const packageJson = JSON.parse(
+			await fs.readFile(packageJsonPath, "utf-8"),
+		) as JsonObject;
+
+		if (
+			typeof packageJson.packageManager === "string" &&
+			packageJson.packageManager.startsWith("yarn@") &&
+			!packageJson.packageManager.startsWith("yarn@1.")
+		) {
+			return new Yarn(null, context);
+		}
+	} catch {
+		// ignore
+	}
+
+	const yarnConfigurationPath = join(dirname(lockFilePath), ".yarnrc.yml");
 	const rawYarnConfiguration = await fs.readFile(yarnConfigurationPath, "utf8");
 
-	const yarnConfiguration = parseSyml(rawYarnConfiguration);
+	const yarnPath = /^yarnPath:\s*(['"]?)([^"']+)\1/.exec(
+		rawYarnConfiguration,
+	)?.[2];
 
-	if (typeof yarnConfiguration.yarnPath !== "string") {
+	if (!yarnPath) {
 		throw new BuildFailureError(
 			`Couldn't find path to yarn in ${context.workspaceRoot}`,
 		);
 	}
 
-	return new Yarn(
-		resolve(dirname(yarnConfigurationPath), yarnConfiguration.yarnPath),
-		context,
-	);
+	return new Yarn(resolve(dirname(yarnConfigurationPath), yarnPath), context);
 }
 
 async function findUp(name: string, from: string): Promise<string | null> {
