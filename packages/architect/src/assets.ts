@@ -1,3 +1,4 @@
+import {cp} from "node:fs/promises";
 import {join} from "node:path";
 
 import {type BuilderContext, BuildFailureError} from "./create-builder";
@@ -35,7 +36,6 @@ export async function copyAssets(
 	outputFolder: string,
 	assets: string | string[] | AssetSpec[],
 ): Promise<void> {
-	const {copy} = await import("fs-extra");
 	const {glob} = await import("glob");
 
 	if (typeof assets === "string") {
@@ -70,8 +70,9 @@ export async function copyAssets(
 
 		try {
 			for (const relativeFile of files) {
-				await copy(join(from, relativeFile), join(to, relativeFile), {
-					errorOnExist: false,
+				await cp(join(from, relativeFile), join(to, relativeFile), {
+					recursive: true,
+					verbatimSymlinks: true,
 				});
 			}
 		} catch (e) {

@@ -1856,10 +1856,8 @@ const RAW_RUNTIME_STATE =
           ["@angular-devkit/core", "virtual:befa90195aa1f67dcb1a62dfa58bd5f42ab6cc4597230292165087f88af5704aae66a5fc3e76c354a586430a9d918886f268f024b94a07be497739eaa717b077#patch:@angular-devkit/core@npm%3A17.0.0#.yarn/patches/@angular-devkit__core.patch::version=17.0.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/core", "workspace:packages/core"],\
-          ["@types/fs-extra", "npm:11.0.1"],\
           ["@types/glob", "npm:8.1.0"],\
           ["@types/node", "npm:18.18.9"],\
-          ["fs-extra", "npm:11.1.1"],\
           ["glob", "npm:10.2.1"],\
           ["rxjs", "npm:7.8.1"],\
           ["uvu", "npm:0.5.6"]\
@@ -2226,17 +2224,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@types/fs-extra", [\
-      ["npm:11.0.1", {\
-        "packageLocation": "./.yarn/cache/@types-fs-extra-npm-11.0.1-f11620397b-a65f1fae47.zip/node_modules/@types/fs-extra/",\
-        "packageDependencies": [\
-          ["@types/fs-extra", "npm:11.0.1"],\
-          ["@types/jsonfile", "npm:6.1.1"],\
-          ["@types/node", "npm:18.18.9"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@types/glob", [\
       ["npm:7.1.3", {\
         "packageLocation": "./.yarn/cache/@types-glob-npm-7.1.3-44516e2aab-6908b75db6.zip/node_modules/@types/glob/",\
@@ -2280,16 +2267,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-json5-npm-0.0.29-f63a7916bd-6bf5337bc4.zip/node_modules/@types/json5/",\
         "packageDependencies": [\
           ["@types/json5", "npm:0.0.29"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/jsonfile", [\
-      ["npm:6.1.1", {\
-        "packageLocation": "./.yarn/cache/@types-jsonfile-npm-6.1.1-62ad833c58-96dfca37e8.zip/node_modules/@types/jsonfile/",\
-        "packageDependencies": [\
-          ["@types/jsonfile", "npm:6.1.1"],\
-          ["@types/node", "npm:18.18.9"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5649,16 +5626,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/fs-extra-npm-10.0.0-4f8c704115-85802f3d9e.zip/node_modules/fs-extra/",\
         "packageDependencies": [\
           ["fs-extra", "npm:10.0.0"],\
-          ["graceful-fs", "npm:4.2.11"],\
-          ["jsonfile", "npm:6.1.0"],\
-          ["universalify", "npm:2.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:11.1.1", {\
-        "packageLocation": "./.yarn/cache/fs-extra-npm-11.1.1-ca44602180-a2480243d7.zip/node_modules/fs-extra/",\
-        "packageDependencies": [\
-          ["fs-extra", "npm:11.1.1"],\
           ["graceful-fs", "npm:4.2.11"],\
           ["jsonfile", "npm:6.1.0"],\
           ["universalify", "npm:2.0.0"]\
