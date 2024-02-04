@@ -18,7 +18,6 @@
 		"@snuggery/core": "^0.7.1",
 		"@snuggery/snuggery": "^0.11.1",
 		"glob": "^10.2.1",
-		"rxjs": "^7.8.0",
 		"semver": "^7.3.7",
 		"typanion": "^3.7.1"
 	},

@@ -1839,7 +1839,6 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.18.9"],\
           ["@types/semver", "npm:7.5.4"],\
           ["glob", "npm:10.2.1"],\
-          ["rxjs", "npm:7.8.1"],\
           ["semver", "npm:7.5.4"],\
           ["typanion", "npm:3.14.0"],\
           ["uvu", "npm:0.5.6"]\
