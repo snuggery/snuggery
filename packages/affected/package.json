@@ -17,14 +17,14 @@
 		"@snuggery/architect": "^0.9.1",
 		"@snuggery/core": "^0.7.1",
 		"@snuggery/snuggery": "^0.11.1",
-		"glob": "7.2.0",
+		"glob": "^10.2.1",
 		"rxjs": "^7.8.0",
 		"semver": "^7.3.7",
 		"typanion": "^3.7.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/glob": "7.1.3",
+		"@types/glob": "8.1.0",
 		"@types/node": "^18.17.15",
 		"@types/semver": "^7",
 		"uvu": "^0.5.2"

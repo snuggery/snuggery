@@ -1,11 +1,8 @@
 import {createHash} from "crypto";
 import {promises as fs} from "fs";
-import _glob from "glob";
+import {glob} from "glob";
 import {dirname, posix, resolve} from "path";
 import satisfiesRange from "semver/functions/satisfies.js";
-import {promisify} from "util";
-
-const glob = promisify(_glob);
 
 export interface PackageInformation {
 	[packageName: string]: {
@@ -72,12 +69,10 @@ export async function getPackageInformation(
 		(
 			await Promise.all(
 				rootManifest.workspaces.map((path) =>
-					glob(`${path}/package.json`, {cwd: root}),
+					glob(`${path}/package.json`, {cwd: root, absolute: true}),
 				),
 			)
-		)
-			.flat()
-			.map((p) => resolve(root, p)),
+		).flat(),
 	);
 
 	// Start by reading all package manifests and adding the workspaces to the info object

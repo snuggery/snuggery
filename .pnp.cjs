@@ -1835,10 +1835,10 @@ const RAW_RUNTIME_STATE =
           ["@snuggery/architect", "workspace:packages/architect"],\
           ["@snuggery/core", "workspace:packages/core"],\
           ["@snuggery/snuggery", "workspace:packages/snuggery"],\
-          ["@types/glob", "npm:7.1.3"],\
+          ["@types/glob", "npm:8.1.0"],\
           ["@types/node", "npm:18.18.9"],\
           ["@types/semver", "npm:7.5.4"],\
-          ["glob", "npm:7.2.0"],\
+          ["glob", "npm:10.2.1"],\
           ["rxjs", "npm:7.8.1"],\
           ["semver", "npm:7.5.4"],\
           ["typanion", "npm:3.14.0"],\
@@ -2225,15 +2225,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/glob", [\
-      ["npm:7.1.3", {\
-        "packageLocation": "./.yarn/cache/@types-glob-npm-7.1.3-44516e2aab-6908b75db6.zip/node_modules/@types/glob/",\
-        "packageDependencies": [\
-          ["@types/glob", "npm:7.1.3"],\
-          ["@types/minimatch", "npm:5.1.2"],\
-          ["@types/node", "npm:18.18.9"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:8.1.0", {\
         "packageLocation": "./.yarn/cache/@types-glob-npm-8.1.0-bdb9d0520c-ded07aa0d7.zip/node_modules/@types/glob/",\
         "packageDependencies": [\
