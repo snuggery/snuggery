@@ -49,13 +49,14 @@
 		"which-pm-runs": "^1.1.0"
 	},
 	"devDependencies": {
-		"@nrwl/devkit": "^13.8.3",
+		"@nx/devkit": "^18.0.4",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/node": "^18.17.15",
 		"@types/prettier": "^2.7.2",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",
 		"@types/which-pm-runs": "^1.0.0",
+		"nx": "patch:nx@npm%3A18.0.4#~/.yarn/patches/nx-npm-18.0.4-1cebaa58e6.patch",
 		"uvu": "^0.5.6"
 	}
 }

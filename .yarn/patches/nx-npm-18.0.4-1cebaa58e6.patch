@@ -1,0 +1,63 @@
+diff --git a/package.json b/package.json
+index b5d0993a90aefe9b32276060e738c067cd98eafc..138b1cc24aa415640211d3fcfb14edc7df629c25 100644
+--- a/package.json
++++ b/package.json
+@@ -33,39 +33,6 @@
+   },
+   "homepage": "https://nx.dev",
+   "dependencies": {
+-    "@yarnpkg/lockfile": "^1.1.0",
+-    "@yarnpkg/parsers": "3.0.0-rc.46",
+-    "@zkochan/js-yaml": "0.0.6",
+-    "axios": "^1.6.0",
+-    "chalk": "^4.1.0",
+-    "cli-cursor": "3.1.0",
+-    "cli-spinners": "2.6.1",
+-    "cliui": "^8.0.1",
+-    "dotenv": "~16.3.1",
+-    "dotenv-expand": "~10.0.0",
+-    "enquirer": "~2.3.6",
+-    "figures": "3.2.0",
+-    "flat": "^5.0.2",
+-    "fs-extra": "^11.1.0",
+-    "ignore": "^5.0.4",
+-    "jest-diff": "^29.4.1",
+-    "js-yaml": "4.1.0",
+-    "jsonc-parser": "3.2.0",
+-    "lines-and-columns": "~2.0.3",
+-    "minimatch": "9.0.3",
+-    "npm-run-path": "^4.0.1",
+-    "open": "^8.4.0",
+-    "semver": "^7.5.3",
+-    "string-width": "^4.2.3",
+-    "strong-log-transformer": "^2.1.0",
+-    "tar-stream": "~2.2.0",
+-    "tmp": "~0.2.1",
+-    "tsconfig-paths": "^4.1.2",
+-    "tslib": "^2.3.0",
+-    "yargs": "^17.6.2",
+-    "yargs-parser": "21.1.1",
+-    "node-machine-id": "1.1.12",
+-    "ora": "5.3.0",
+     "@nrwl/tao": "18.0.4"
+   },
+   "peerDependencies": {
+@@ -80,18 +47,6 @@
+       "optional": true
+     }
+   },
+-  "optionalDependencies": {
+-    "@nx/nx-darwin-x64": "18.0.4",
+-    "@nx/nx-darwin-arm64": "18.0.4",
+-    "@nx/nx-linux-x64-gnu": "18.0.4",
+-    "@nx/nx-linux-x64-musl": "18.0.4",
+-    "@nx/nx-win32-x64-msvc": "18.0.4",
+-    "@nx/nx-linux-arm64-gnu": "18.0.4",
+-    "@nx/nx-linux-arm64-musl": "18.0.4",
+-    "@nx/nx-linux-arm-gnueabihf": "18.0.4",
+-    "@nx/nx-win32-arm64-msvc": "18.0.4",
+-    "@nx/nx-freebsd-x64": "18.0.4"
+-  },
+   "nx-migrations": {
+     "migrations": "./migrations.json",
+     "packageGroup": [

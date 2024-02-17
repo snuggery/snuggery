@@ -1,5 +1,5 @@
 import type {createBuilder, Target} from "@angular-devkit/architect";
-import type {Executor} from "@nrwl/devkit";
+import type {Executor} from "@nx/devkit";
 import type {
 	JsonObject,
 	ProjectDefinition,

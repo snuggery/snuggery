@@ -17,7 +17,9 @@ import type {
 	FileChange,
 	Generator,
 	Workspace,
-} from "@nrwl/devkit";
+	ProjectsConfigurations,
+	NxJsonConfiguration,
+} from "@nx/devkit";
 import {
 	type BuilderContext,
 	type BuilderOutputLike,
@@ -108,58 +110,65 @@ class MappedContext implements ExecutorContext {
 	}
 
 	@Cached()
-	get workspace(): Workspace {
-		/* eslint-disable @typescript-eslint/no-explicit-any */
+	get projectsConfigurations(): ProjectsConfigurations {
 		return {
 			version: 2,
 			projects: Object.fromEntries(
 				Array.from(
 					this.#snuggeryWorkspace?.projects ?? [],
-					([projectName, project]): [string, ProjectConfiguration] => {
-						return [
-							projectName,
-							{
-								targets: Object.fromEntries(
-									Array.from(
-										project.targets,
-										([
+					([projectName, project]): [string, ProjectConfiguration] => [
+						projectName,
+						{
+							targets: Object.fromEntries(
+								Array.from(
+									project.targets,
+									([
+										targetName,
+										{builder, configurations, options, defaultConfiguration},
+									]): [string, TargetConfiguration] => {
+										return [
 											targetName,
-											{builder, configurations, options, defaultConfiguration},
-										]): [string, TargetConfiguration] => {
-											return [
-												targetName,
-												{
-													executor: builder,
-													configurations,
-													options,
-													defaultConfiguration,
-												},
-											];
-										},
-									),
+											{
+												executor: builder,
+												configurations,
+												options,
+												defaultConfiguration,
+											},
+										];
+									},
 								),
+							),
 
-								root: project.root,
-								generators: project.extensions.schematics as any,
-								projectType: project.extensions.projectType as
-									| "library"
-									| "application",
-								sourceRoot: project.sourceRoot,
-							},
-						];
-					},
+							name: projectName,
+							root: project.root,
+							generators: project.extensions.schematics as
+								| Record<string, JsonObject>
+								| undefined,
+							projectType: project.extensions.projectType as
+								| "library"
+								| "application",
+							sourceRoot: project.sourceRoot,
+						},
+					],
 				),
 			),
+		};
+	}
 
+	@Cached()
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	get nxJsonConfiguration(): NxJsonConfiguration {
+		return {
 			defaultProject: this.workspace?.defaultProject ?? undefined,
 			cli: this.#snuggeryWorkspace?.extensions.cli as any,
 			generators: this.#snuggeryWorkspace?.extensions.schematics as any,
-
-			// npmScope is required, but we only have it certain cases... pass null and hope for the best
-			npmScope: (this.#snuggeryWorkspace?.extensions.npmScope ??
-				null!) as string,
 		};
-		/* eslint-enable @typescript-eslint/no-explicit-any */
+	}
+	/* eslint-enable @typescript-eslint/no-explicit-any */
+
+	@Cached()
+	get workspace(): Workspace {
+		return {...this.projectsConfigurations, ...this.nxJsonConfiguration};
 	}
 
 	get cwd(): string {

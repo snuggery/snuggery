@@ -27,8 +27,8 @@ export class RunSchematicCommand extends SchematicCommand {
 				"$0 run schematic --dry-run application",
 			],
 			[
-				"Show all available command line options for the `@nrwl/react:application` schematic",
-				"$0 run schematic @nrwl/react:application --help",
+				"Show all available command line options for the `@nx/react:application` schematic",
+				"$0 run schematic @nx/react:application --help",
 			],
 		],
 	});
