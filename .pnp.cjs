@@ -132,7 +132,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@angular-eslint/builder", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:13.0.1"],\
-          ["@bgotink/prettier-plugin-kdl", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:0.1.3"],\
           ["@microsoft/eslint-formatter-sarif", "npm:3.0.0"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/affected", "workspace:packages/affected"],\
@@ -754,33 +753,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@bgotink/kdl", [\
-      ["npm:0.1.6", {\
-        "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.1.6-ff2ce76b00-a04f09648c.zip/node_modules/@bgotink/kdl/",\
+      ["npm:0.2.0-next.0", {\
+        "packageLocation": "./.yarn/cache/@bgotink-kdl-npm-0.2.0-next.0-78b6db6430-7a0c364337.zip/node_modules/@bgotink/kdl/",\
         "packageDependencies": [\
-          ["@bgotink/kdl", "npm:0.1.6"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@bgotink/prettier-plugin-kdl", [\
-      ["npm:0.1.3", {\
-        "packageLocation": "./.yarn/cache/@bgotink-prettier-plugin-kdl-npm-0.1.3-2059c26d7d-2cebe54874.zip/node_modules/@bgotink/prettier-plugin-kdl/",\
-        "packageDependencies": [\
-          ["@bgotink/prettier-plugin-kdl", "npm:0.1.3"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:0.1.3", {\
-        "packageLocation": "./.yarn/__virtual__/@bgotink-prettier-plugin-kdl-virtual-5d85b37bf6/0/cache/@bgotink-prettier-plugin-kdl-npm-0.1.3-2059c26d7d-2cebe54874.zip/node_modules/@bgotink/prettier-plugin-kdl/",\
-        "packageDependencies": [\
-          ["@bgotink/prettier-plugin-kdl", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:0.1.3"],\
-          ["@bgotink/kdl", "npm:0.1.6"],\
-          ["@types/prettier", null],\
-          ["prettier", "npm:3.0.3"]\
-        ],\
-        "packagePeers": [\
-          "@types/prettier",\
-          "prettier"\
+          ["@bgotink/kdl", "npm:0.2.0-next.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2148,7 +2124,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@snuggery/core", "workspace:packages/core"],\
           ["@angular-devkit/core", "virtual:befa90195aa1f67dcb1a62dfa58bd5f42ab6cc4597230292165087f88af5704aae66a5fc3e76c354a586430a9d918886f268f024b94a07be497739eaa717b077#patch:@angular-devkit/core@npm%3A17.0.0#.yarn/patches/@angular-devkit__core.patch::version=17.0.0&hash=5fd900&locator=snuggery-workspace%40workspace%3A."],\
-          ["@bgotink/kdl", "npm:0.1.6"],\
+          ["@bgotink/kdl", "npm:0.2.0-next.0"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@types/micromatch", "npm:4.0.2"],\
           ["@types/node", "npm:18.18.9"],\
@@ -9095,7 +9071,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["snuggery-workspace", "workspace:."],\
           ["@angular-eslint/builder", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:13.0.1"],\
-          ["@bgotink/prettier-plugin-kdl", "virtual:3ef496621ceed21b6514e6560c1aa0ea09e42203cb77c4df7992927d7e0c64bb7d76ba9a9619025ec5b63021c84f72ab31eecf0175d03911e84a4e4d4931ae6d#npm:0.1.3"],\
           ["@microsoft/eslint-formatter-sarif", "npm:3.0.0"],\
           ["@snuggery-workspace/scripts", "workspace:scripts"],\
           ["@snuggery/affected", "workspace:packages/affected"],\

@@ -38,7 +38,7 @@ test("toJsonObject should work for when passing arrays", () => {
 				parse(
 					String.raw`parent {
 						node {
-							- "lorem" object=true
+							- "lorem" object=#true
 							- "ipsum"
 						}
 					}`,
@@ -67,10 +67,10 @@ test("parseWorkspace supports extending projects", () => {
 				target "build" builder="@lorem/ipsum:dolor" {
 					options {
 						configFile (project-relative)"build.config.json"
-						verbose false
+						verbose #false
 					}
 					configuration "verbose" {
-						verbose true
+						verbose #true
 					}
 				}
 			}
@@ -79,10 +79,10 @@ test("parseWorkspace supports extending projects", () => {
 				target "test" builder="@lorem/ipsum:sit" {
 					options {
 						(array)configFiles (project-relative)"test.config.js"
-						coverage false
+						coverage #false
 					}
 					configuration "coverage" {
-						coverage true
+						coverage #true
 					}
 				}
 			}

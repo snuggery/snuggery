@@ -539,21 +539,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bgotink/kdl@npm:^0.1.4, @bgotink/kdl@npm:^0.1.6":
-  version: 0.1.6
-  resolution: "@bgotink/kdl@npm:0.1.6"
-  checksum: a04f09648c3ec6ecba65322cdab63617af93590475eca31bf0e0f5601d2fc56d7ebd40eaa83546ff2632d728d988043b797c5638ab16c913c07c16d7ec56a7ae
-  languageName: node
-  linkType: hard
-
-"@bgotink/prettier-plugin-kdl@npm:0.1.3":
-  version: 0.1.3
-  resolution: "@bgotink/prettier-plugin-kdl@npm:0.1.3"
-  dependencies:
-    "@bgotink/kdl": "npm:^0.1.4"
-  peerDependencies:
-    prettier: ^2.7.1 || ^3.0.3
-  checksum: 2cebe548745b2a422196cd5252b61818e553d7055653014dbc4a33d32cfdbca0cd2061483a6dd481b9117e14daace50edefd064da0f7e931810813586c7ea220
+"@bgotink/kdl@npm:0.2.0-next.0":
+  version: 0.2.0-next.0
+  resolution: "@bgotink/kdl@npm:0.2.0-next.0"
+  checksum: 7a0c3643370b1a79b4e8a516957a804e3186cf13e5d58c3d073a2a031e6e79d0aed476423627da9f813d6955497758b18b64db5676245933a54d88c0bdcf582c
   languageName: node
   linkType: hard
 
@@ -1636,7 +1625,7 @@ __metadata:
   resolution: "@snuggery/core@workspace:packages/core"
   dependencies:
     "@angular-devkit/core": "npm:^17.0.0"
-    "@bgotink/kdl": "npm:^0.1.6"
+    "@bgotink/kdl": "npm:0.2.0-next.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": "npm:^4.0.2"
     "@types/node": "npm:^18.17.15"
@@ -7519,7 +7508,6 @@ __metadata:
   resolution: "snuggery-workspace@workspace:."
   dependencies:
     "@angular-eslint/builder": "npm:13.0.1"
-    "@bgotink/prettier-plugin-kdl": "npm:0.1.3"
     "@microsoft/eslint-formatter-sarif": "npm:^3.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/affected": "workspace:packages/affected"

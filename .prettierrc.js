@@ -2,5 +2,6 @@
 module.exports = {
 	bracketSpacing: false,
 
-	plugins: [require.resolve("@bgotink/prettier-plugin-kdl")],
+	// Re-enable once the plugin supports KDL 2
+	// plugins: [require.resolve("@bgotink/prettier-plugin-kdl")],
 };

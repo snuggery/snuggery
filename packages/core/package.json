@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@angular-devkit/core": "^17.0.0",
-		"@bgotink/kdl": "^0.1.6",
+		"@bgotink/kdl": "0.2.0-next.0",
 		"jsonc-parser": "^3.2.0",
 		"micromatch": "^4.0.5",
 		"typanion": "^3.12.1",

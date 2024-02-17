@@ -17,14 +17,14 @@ const document = clearFormat(
 							- (project-relative)"test.config.json"
 							- (project-relative)"test2.config.json"
 						}
-						verbose false
+						verbose #false
 					}
 				}
 			}
 
 			project "lorem" extends="parent" root="packages/lorem" {
 				target "build" builder="@lorem/ipsum:build" {
-					options debug=true
+					options debug=#true
 				}
 
 				target "test" {
@@ -44,15 +44,15 @@ const document = clearFormat(
 			project "ipsum" root="packages/ipsum" {
 				target "build" builder="@lorem/ipsum:build" {
 					configuration "production" {
-						optimize true
-						debug false
+						optimize #true
+						debug #false
 					}
 				}
 			}
 
 			schematics {
 				"@lorem/ipsum:schematic" {
-					configured true
+					configured #true
 				}
 			}
 		`,
@@ -115,7 +115,7 @@ test("add configuration", (value, expected) => {
 		.appendNode(
 			parse(String.raw`
 				configuration "test" {
-					added true
+					added #true
 				}
 			`),
 		);
@@ -134,7 +134,7 @@ test("add options", (value, expected) => {
 		.appendNode(
 			parse(String.raw`
 				options {
-					added true
+					added #true
 				}
 			`),
 		);
@@ -151,7 +151,7 @@ test("add options", (value, expected) => {
 		.findNodeByName("options")!
 		.appendNode(
 			parse(String.raw`
-				added true
+				added #true
 			`),
 		);
 
@@ -165,9 +165,9 @@ test("add options", (value, expected) => {
 test("add target", (value, expected) => {
 	expected.findParameterizedNode("project", "lorem")!.appendNode(
 		parse(String.raw`
-			target "added" builder="@lorem/ipsum:added" {
+			target added builder="@lorem/ipsum:added" {
 				options {
-					added true
+					added #true
 				}
 			}
 		`),
@@ -186,10 +186,10 @@ test("add target", (value, expected) => {
 test("add project", (value, expected) => {
 	expected.appendNode(
 		parse(String.raw`
-			project "added" root="packages/added" {
-				target "added" builder="@lorem/ipsum:added" {
+			project added root="packages/added" {
+				target added builder="@lorem/ipsum:added" {
 					options {
-						added true
+						added #true
 					}
 				}
 			}
@@ -300,7 +300,7 @@ test("modify workspace extension", (value, expected) => {
 	const schematics = expected.findNodeByName("schematics")!;
 	schematics.replaceNode(
 		schematics.findNodeByName("@lorem/ipsum:schematic")!,
-		parse(String.raw`"@lorem/ipsum:schematic" {modified true;}`),
+		parse(String.raw`"@lorem/ipsum:schematic" {modified #true;}`),
 	);
 
 	applyChangeToWorkspace(value, value, [value], {
@@ -335,8 +335,8 @@ test("modify configuration", (value, expected) => {
 	target.replaceNode(
 		target.findParameterizedNode("configuration", "production")!,
 		parse(String.raw`
-			configuration "production" {
-				modified true
+			configuration production {
+				modified #true
 			}
 		`),
 	);
@@ -367,7 +367,7 @@ test("modify options", (value, expected) => {
 		buildTarget.findNodeByName("options")!,
 		parse(String.raw`
 			options {
-				modified true
+				modified #true
 			}
 		`),
 	);
@@ -386,7 +386,7 @@ test("modify options", (value, expected) => {
 		testTarget.findNodeByName("options")!,
 		parse(String.raw`
 			(overwrite)options {
-				modified true
+				modified #true
 			}
 		`),
 	);
@@ -404,9 +404,9 @@ test("modify target", (value, expected) => {
 	project.replaceNode(
 		project.findParameterizedNode("target", "build")!,
 		parse(String.raw`
-			target "build" builder="@lorem/ipsum:modified" {
+			target build builder="@lorem/ipsum:modified" {
 				options {
-					modified true
+					modified #true
 				}
 			}
 		`),
@@ -427,8 +427,8 @@ test("modify project", (value, expected) => {
 	expected.replaceNode(
 		expected.findParameterizedNode("project", "ipsum")!,
 		parse(String.raw`
-			project "ipsum" root="packages/modified" {
-				target "test" builder="@lorem/ipsum:modified"
+			project ipsum root="packages/modified" {
+				target test builder="@lorem/ipsum:modified"
 			}
 		`),
 	);

@@ -18,7 +18,7 @@ test("fromJsonObject should work for objects", () => {
 	assert.deepEqual(
 		fromJsonObject("parent", {node: "lorem", is: {deep: true}}),
 		clearFormat(
-			parse(String.raw`parent node="lorem" { is deep=true; }`, {as: "node"}),
+			parse(String.raw`parent node=lorem { is deep=#true; }`, {as: "node"}),
 		),
 	);
 });
@@ -38,8 +38,8 @@ test("fromJsonObject should work for when passing arrays", () => {
 			parse(
 				String.raw`parent {
 					node {
-						- "lorem" object=true
-						- "ipsum"
+						- lorem object=#true
+						- ipsum
 					}
 				}`,
 				{as: "node"},
@@ -120,44 +120,44 @@ test("serializeWorkspace should work", () => {
 			parse(String.raw`
 				version 0
 	
-				project "parent" root="projects/parent" {
-					target "build" builder="@lorem/ipsum:dolor" {
+				project parent root="projects/parent" {
+					target build builder="@lorem/ipsum:dolor" {
 						options {
 							configFile "projects/parent/build.config.json"
-							verbose false
+							verbose #false
 						}
-						configuration "verbose" {
-							verbose true
+						configuration verbose {
+							verbose #true
 						}
 					}
-					target "test" builder="@lorem/ipsum:sit" {
+					target test builder="@lorem/ipsum:sit" {
 						options {
 							configFile "projects/parent/test.config.js"
-							coverage false
+							coverage #false
 						}
-						configuration "coverage" {
-							coverage true
+						configuration coverage {
+							coverage #true
 						}
 					}
 				}
 	
-				project "child" root="projects/child" {
-					target "build" builder="@lorem/ipsum:dolor" {
+				project child root="projects/child" {
+					target build builder="@lorem/ipsum:dolor" {
 						options {
 							configFile "projects/child/build.config.json"
-							verbose false
+							verbose #false
 						}
-						configuration "verbose" {
-							verbose true
+						configuration verbose {
+							verbose #true
 						}
 					}
-					target "test" builder="@lorem/ipsum:sit" {
+					target test builder="@lorem/ipsum:sit" {
 						options {
 							configFile "projects/child/test.config.js" "projects/child/test2.config.js"
-							coverage false
+							coverage #false
 						}
-						configuration "coverage" {
-							coverage true
+						configuration coverage {
+							coverage #true
 						}
 					}
 				}
