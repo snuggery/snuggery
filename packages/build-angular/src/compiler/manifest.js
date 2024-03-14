@@ -30,31 +30,6 @@ function relative(from, to) {
 /**
  * @param {string} manifestFile
  * @param {Manifest} manifest
- * @returns {string=}
- */
-export function findPrimaryEntryFile(manifestFile, manifest) {
-	if (manifest.exports != null) {
-		const exports = normalizeExports(manifest.exports);
-
-		if (exports["."] !== undefined) {
-			const relativeExport = findSnuggeryExport(exports["."]);
-
-			return relativeExport != null
-				? join(dirname(manifestFile), relativeExport)
-				: undefined;
-		}
-	}
-
-	if (manifest.main != null) {
-		return join(dirname(manifestFile), manifest.main);
-	}
-
-	return join(dirname(manifestFile), "index.ts");
-}
-
-/**
- * @param {string} manifestFile
- * @param {Manifest} manifest
  * @param {string} [mainFile]
  * @returns {Generator<[name: string, path: string]>}
  */
