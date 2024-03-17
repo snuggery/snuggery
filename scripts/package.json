@@ -1,7 +1,7 @@
 {
 	"name": "@snuggery-workspace/scripts",
 	"dependencies": {
-		"esbuild": "^0.19.5",
+		"esbuild": "^0.20.2",
 		"esbuild-register": "^3.4.2"
 	}
 }
