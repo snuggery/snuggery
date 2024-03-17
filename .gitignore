@@ -1,10 +1,11 @@
 /.yarn/*
-!/.yarn/cache
 !/.yarn/plugins
 !/.yarn/releases
 !/.yarn/sdks
 !/.yarn/versions
 !/.yarn/patches
+
+.pnp.*
 
 /packages/*/dist
 /dist

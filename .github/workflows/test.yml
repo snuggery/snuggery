@@ -16,40 +16,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.x
+          cache: yarn
 
       - name: Install
-        shell: bash
-        env:
-          YARN_ENABLE_NETWORK: 0
         run: |
-          yarn install --immutable --immutable-cache
+          yarn install --immutable
 
       - name: Type-Check
-        shell: bash
         run: |
           yarn tsc -b
 
       - name: Build
-        shell: bash
         run: |
           yarn sn build
 
       - name: "Run tests"
-        shell: bash
         run: |
           yarn sn test
 
       - name: 'Validate help statements (fix w/ "yarn update-help")'
-        shell: bash
         run: |
           yarn update-help validate
 
       - name: "Validate CLI dependencies"
-        shell: bash
         run: |
           yarn sn --validate-cli-dependencies
 
@@ -69,20 +62,17 @@ jobs:
           - 20.x
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "Use Node.js ${{matrix.node}}"
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{matrix.node}}
+          cache: yarn
 
       - name: Install
-        shell: bash
-        env:
-          YARN_ENABLE_NETWORK: 0
         run: |
-          yarn install --immutable --immutable-cache
+          yarn install --immutable
 
       - name: "Run tests"
-        shell: bash
         run: |
           yarn sn test integration

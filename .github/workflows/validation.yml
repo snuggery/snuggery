@@ -16,41 +16,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.x
+          cache: yarn
 
       - name: Install
-        shell: bash
-        env:
-          YARN_ENABLE_NETWORK: 0
         run: |
-          yarn install --immutable --immutable-cache
+          yarn install --immutable
 
       - name: 'Check for formatting errors (fix w/ "yarn prettier --write path/to/file")'
         run: |
           yarn prettier --check .
-        shell: bash
 
   dependencies:
+    if: ${{ github.event_name == 'pull_request' }}
     name: "Dependencies"
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.x
+          cache: yarn
 
       - name: Validate dependency cache
-        shell: bash
         run: |
-          yarn install --immutable --immutable-cache --check-cache
+          yarn install --immutable
 
-      - if: ${{ github.event_name == 'pull_request' }}
-        name: Review Dependencies
-        uses: actions/dependency-review-action@v1
+      - name: Review Dependencies
+        uses: actions/dependency-review-action@v4
 
   lint:
     name: "Lint"
@@ -60,25 +57,22 @@ jobs:
       security-events: write
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.x
+          cache: yarn
 
       - name: Install
-        shell: bash
-        env:
-          YARN_ENABLE_NETWORK: 0
         run: |
-          yarn install --immutable --immutable-cache
+          yarn install --immutable
 
       - name: 'Check for linting errors (fix w/ "yarn lint -c fix")'
         run: |
           yarn sn lint --configuration ci > eslint-results.sarif
-        shell: bash
 
       - name: Upload analysis results to GitHub
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
           wait-for-processing: true
