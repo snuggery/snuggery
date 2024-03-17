@@ -2,8 +2,9 @@ diff --git a/index.d.ts b/index.d.ts
 index e5f5699b811eb29337ed680b722295dbae68e8ba..5e50a930e155d7a5de02b4c589d55998a1088bde 100755
 --- a/index.d.ts
 +++ b/index.d.ts
-@@ -1,8 +1,8 @@
+@@ -1,9 +1,9 @@
  export { VERSION } from './src/version';
+ export * from './src/transformers/jit_transforms';
 -export * from './src/transformers/api';
 -export * from './src/transformers/entry_points';
 -export * from './src/perform_compile';

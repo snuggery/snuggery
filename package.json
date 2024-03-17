@@ -34,7 +34,7 @@
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
 		"prettier": "^3.0.3",
-		"typescript": "5.3.2",
+		"typescript": "5.4.2",
 		"uvu": "^0.5.6"
 	},
 	"dependenciesMeta": {
@@ -49,5 +49,5 @@
 		"@angular/compiler-cli@^17.1.0-next": "patch:@angular/compiler-cli@npm%3A^17.1.0-next#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch",
 		"nx@npm:18.0.4": "patch:nx@npm%3A18.0.4#~/.yarn/patches/nx-npm-18.0.4-1cebaa58e6.patch"
 	},
-	"packageManager": "yarn@4.0.2"
+	"packageManager": "yarn@4.1.1"
 }
