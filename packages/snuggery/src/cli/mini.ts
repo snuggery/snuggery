@@ -1,19 +1,19 @@
 import type {MiniWorkspaceOptions} from "@snuggery/core";
 import {Cli, Command, RunContext} from "clipanion";
 
-import type {AbstractCommand} from "./command/abstract-command";
-import type {Context} from "./command/context";
-import {EntryCommand} from "./mini-commands/entry";
-import {HelpCommand} from "./mini-commands/help";
-import {Report} from "./utils/report";
+import type {AbstractCommand} from "./command/abstract-command.js";
+import type {Context} from "./command/context.js";
+import {EntryCommand} from "./mini-commands/entry.js";
+import {HelpCommand} from "./mini-commands/help.js";
+import {Report} from "./utils/report.js";
 
 export {workspaceFilenames} from "@snuggery/core";
 
-export type {SnuggeryArchitectHost} from "./architect";
+export type {SnuggeryArchitectHost} from "./architect/index.js";
 export {
 	CliWorkspace,
 	findMiniWorkspace as findWorkspace,
-} from "./command/context";
+} from "./command/context.js";
 
 export {Cli, Context};
 

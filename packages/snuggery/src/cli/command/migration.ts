@@ -4,14 +4,14 @@ import {UsageError} from "clipanion";
 import {createRequire} from "module";
 import {join} from "path";
 
-import {AbstractError} from "../../utils/error";
+import {AbstractError} from "../../utils/error.js";
 import type {
 	SnuggeryCollectionDescription,
 	SnuggerySchematic,
 	SnuggerySchematicDescription,
-} from "../schematic/engine-host";
+} from "../schematic/engine-host.js";
 
-import {SchematicCommand} from "./schematic";
+import {SchematicCommand} from "./schematic.js";
 
 export class MigrationCollectionCannotBeResolvedError extends AbstractError {}
 

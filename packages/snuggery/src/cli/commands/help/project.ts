@@ -3,9 +3,9 @@ import {Option} from "clipanion";
 import {createRequire} from "module";
 import {join, posix} from "path";
 
-import {AbstractCommand} from "../../command/abstract-command";
-import {defaultSchematicCollection} from "../../command/schematic";
-import {formatMarkdownish} from "../../utils/format";
+import {AbstractCommand} from "../../command/abstract-command.js";
+import {defaultSchematicCollection} from "../../command/schematic.js";
+import {formatMarkdownish} from "../../utils/format.js";
 
 export class HelpProjectCommand extends AbstractCommand {
 	static override readonly paths = [["help", "project"]];

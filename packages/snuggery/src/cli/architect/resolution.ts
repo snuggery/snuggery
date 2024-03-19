@@ -3,11 +3,11 @@ import {createRequire} from "module";
 import {basename, extname, join} from "path";
 import {pathToFileURL} from "url";
 
-import {loadJson} from "../../utils/json-resolver";
-import type {Context} from "../command/context";
+import {loadJson} from "../../utils/json-resolver.js";
+import type {Context} from "../command/context.js";
 
-import {InvalidBuilderError, UnknownBuilderError} from "./errors";
-import {Builder, isBuilder, ResolverFacade, WorkspaceFacade} from "./host";
+import {InvalidBuilderError, UnknownBuilderError} from "./errors.js";
+import {Builder, isBuilder, ResolverFacade, WorkspaceFacade} from "./host.js";
 
 const {hasOwnProperty} = Object.prototype;
 

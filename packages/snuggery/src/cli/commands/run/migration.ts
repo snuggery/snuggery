@@ -1,9 +1,12 @@
 import {Option, UsageError} from "clipanion";
 import type SemVer from "semver/classes/semver.js";
 
-import {MigrationCollection, MigrationCommand} from "../../command/migration";
-import {formatMarkdownish} from "../../utils/format";
-import {isSemVer} from "../../utils/typanion";
+import {
+	MigrationCollection,
+	MigrationCommand,
+} from "../../command/migration.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import {isSemVer} from "../../utils/typanion.js";
 
 export class RunMigrationCommand extends MigrationCommand {
 	static override readonly paths = [["run", "migration"]];

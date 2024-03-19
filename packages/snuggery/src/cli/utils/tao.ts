@@ -27,9 +27,9 @@ import {
 } from "@snuggery/architect";
 import type {JsonObject} from "@snuggery/core";
 
-import type {CliWorkspace} from "../command/context";
+import type {CliWorkspace} from "../command/context.js";
 
-import {Cached} from "./decorator";
+import {Cached} from "./decorator.js";
 
 export {Executor, Generator};
 

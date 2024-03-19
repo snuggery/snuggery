@@ -1,6 +1,7 @@
 import {Option} from "clipanion";
 
-import {SchematicCommand} from "../command/schematic";
+import {SchematicCommand} from "../command/schematic.js";
+import {createRequire} from "module";
 
 export class NewCommand extends SchematicCommand {
 	static override readonly paths = [["new"]];
@@ -43,6 +44,7 @@ export class NewCommand extends SchematicCommand {
 			description,
 		} = await this.getOptions(schematic);
 
+		const require = createRequire(import.meta.url);
 		workflow.registry.addSmartDefaultProvider(
 			"ng-cli-version",
 			() => require("@angular-devkit/core/package.json").version,

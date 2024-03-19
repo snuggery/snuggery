@@ -1,8 +1,8 @@
 import {Option} from "clipanion";
 
-import {SchematicCommand} from "../../command/schematic";
-import type {SnuggeryCollection} from "../../schematic/engine-host";
-import {formatMarkdownish} from "../../utils/format";
+import {SchematicCommand} from "../../command/schematic.js";
+import type {SnuggeryCollection} from "../../schematic/engine-host.js";
+import {formatMarkdownish} from "../../utils/format.js";
 
 export class HelpSchematicsCommand extends SchematicCommand {
 	static override readonly paths = [["help", "schematics"]];

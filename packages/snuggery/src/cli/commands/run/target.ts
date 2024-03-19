@@ -1,7 +1,7 @@
 import type {Target} from "@angular-devkit/architect";
 import {Option} from "clipanion";
 
-import {ArchitectCommand} from "../../command/architect";
+import {ArchitectCommand} from "../../command/architect.js";
 
 export class RunTargetCommand extends ArchitectCommand {
 	static override readonly paths = [["run", "target"], ["run"]];

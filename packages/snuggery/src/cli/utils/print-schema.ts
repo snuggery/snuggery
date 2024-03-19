@@ -1,9 +1,9 @@
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
 import type {ColorFormat} from "clipanion";
 
-import {formatMarkdownish} from "./format";
-import {tryDereference} from "./parse-schema";
-import type {Report} from "./report";
+import {formatMarkdownish} from "./format.js";
+import {tryDereference} from "./parse-schema.js";
+import type {Report} from "./report.js";
 
 export function printSchema(
 	schema: JsonObject,

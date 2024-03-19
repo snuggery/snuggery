@@ -2,7 +2,7 @@ import {isJsonObject, type JsonObject} from "@snuggery/core";
 import {createRequire} from "module";
 import {join} from "path";
 
-import {AbstractError} from "./error";
+import {AbstractError} from "./error.js";
 
 export class CyclicDependencyError extends AbstractError {
 	constructor(

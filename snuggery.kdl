@@ -31,7 +31,6 @@ project all root="" {
 
 	target test builder="@snuggery/build-node:uvu" {
 		options {
-			require "@snuggery-workspace/scripts/load-ts"
 			ignore integration
 		}
 	}

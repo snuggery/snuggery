@@ -8,12 +8,12 @@ import {promises as fs} from "fs";
 import {tmpdir} from "os";
 import {join} from "path";
 
-import {AbstractError} from "../../utils/error";
-import {Cached} from "../utils/decorator";
-import {Option, parseSchema, Type} from "../utils/parse-schema";
+import {AbstractError} from "../../utils/error.js";
+import {Cached} from "../utils/decorator.js";
+import {Option, parseSchema, Type} from "../utils/parse-schema.js";
 
-import {AbstractCommand} from "./abstract-command";
-import type {Context} from "./context";
+import {AbstractCommand} from "./abstract-command.js";
+import type {Context} from "./context.js";
 
 /**
  * Architect commands share a `--configuration` / `-c` option

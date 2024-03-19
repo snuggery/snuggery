@@ -2,9 +2,9 @@ import {isJsonObject} from "@snuggery/core";
 import {createRequire} from "module";
 import {dirname, join} from "path";
 
-import {AbstractCommand} from "../command/abstract-command";
-import {defaultSchematicCollection} from "../command/schematic";
-import {SetMap} from "../utils/collections";
+import {AbstractCommand} from "../command/abstract-command.js";
+import {defaultSchematicCollection} from "../command/schematic.js";
+import {SetMap} from "../utils/collections.js";
 
 export class VersionCommand extends AbstractCommand {
 	static override readonly paths = [["--version"]];
@@ -16,6 +16,7 @@ export class VersionCommand extends AbstractCommand {
 
 	async execute(): Promise<void> {
 		const {report, format} = this;
+		const require = createRequire(import.meta.url);
 
 		report.reportInfo(`${format.bold("Snuggery")}\n`);
 

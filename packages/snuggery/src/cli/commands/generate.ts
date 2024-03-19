@@ -1,6 +1,6 @@
 import {Option} from "clipanion";
 
-import {AbstractCommand} from "../command/abstract-command";
+import {AbstractCommand} from "../command/abstract-command.js";
 
 export class GenerateCommand extends AbstractCommand {
 	static override readonly paths = [["generate"]];

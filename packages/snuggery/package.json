@@ -2,6 +2,7 @@
 	"name": "@snuggery/snuggery",
 	"version": "0.11.1",
 	"private": true,
+	"type": "module",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
@@ -45,8 +46,7 @@
 		"rxjs": "^7.8.0",
 		"semver": "^7.5.0",
 		"strip-ansi": "^6.0.1",
-		"typanion": "^3.12.1",
-		"which-pm-runs": "^1.1.0"
+		"typanion": "^3.12.1"
 	},
 	"devDependencies": {
 		"@nx/devkit": "^18.0.4",
@@ -55,7 +55,6 @@
 		"@types/prettier": "^2.7.2",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",
-		"@types/which-pm-runs": "^1.0.0",
 		"nx": "patch:nx@npm%3A18.0.4#~/.yarn/patches/nx-npm-18.0.4-1cebaa58e6.patch",
 		"uvu": "^0.5.6"
 	}

@@ -1,5 +1,5 @@
-import {ArchitectCommand} from "../../command/architect";
-import {formatMarkdownish} from "../../utils/format";
+import {ArchitectCommand} from "../../command/architect.js";
+import {formatMarkdownish} from "../../utils/format.js";
 
 export class HelpTargetsCommand extends ArchitectCommand {
 	static override readonly paths = [["help", "targets"]];

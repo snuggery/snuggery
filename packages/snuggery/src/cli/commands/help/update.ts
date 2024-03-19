@@ -1,6 +1,6 @@
-import {AbstractCommand} from "../../command/abstract-command";
-import {formatMarkdownish} from "../../utils/format";
-import {defaultMigrationFilename} from "../run/migrations";
+import {AbstractCommand} from "../../command/abstract-command.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import {defaultMigrationFilename} from "../run/migrations.js";
 
 export class HelpUpdateCommand extends AbstractCommand {
 	static override readonly paths = [["help", "update"]];

@@ -9,9 +9,9 @@ import type {JsonObject} from "@snuggery/core";
 import {type MonoTypeOperatorFunction, pipe, range, zip} from "rxjs";
 import {map, tap} from "rxjs/operators";
 
-import {createScheduler} from "./schedulers";
-import type {ParallelTarget, Schema, SerialTarget, Target} from "./schema";
-import {Type} from "./types";
+import {createScheduler} from "./schedulers/index.js";
+import type {ParallelTarget, Schema, SerialTarget, Target} from "./schema.js";
+import {Type} from "./types.js";
 
 function throwIfFailed(): MonoTypeOperatorFunction<BuilderOutput> {
 	return pipe(

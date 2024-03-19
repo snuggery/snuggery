@@ -4,9 +4,9 @@ import {resolve} from "path";
 import type SemVer from "semver/classes/semver.js";
 import * as t from "typanion";
 
-import {MigrationCommand} from "../../command/migration";
-import {formatMarkdownish} from "../../utils/format";
-import * as tExt from "../../utils/typanion";
+import {MigrationCommand} from "../../command/migration.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import * as tExt from "../../utils/typanion.js";
 
 interface Migration {
 	package: string;

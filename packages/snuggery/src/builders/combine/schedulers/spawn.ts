@@ -1,6 +1,6 @@
-import {ChildScheduler} from "./abstract";
-import type {Child} from "./child/shared";
-import {SpawnChild} from "./child/spawn";
+import {ChildScheduler} from "./abstract.js";
+import type {Child} from "./child/shared.js";
+import {SpawnChild} from "./child/spawn.js";
 
 export class SpawnScheduler extends ChildScheduler {
 	protected createChild(): Child {

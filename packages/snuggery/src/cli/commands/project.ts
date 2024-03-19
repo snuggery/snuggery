@@ -1,7 +1,7 @@
 import {Option} from "clipanion";
 import {join} from "path";
 
-import {AbstractCommand} from "../command/abstract-command";
+import {AbstractCommand} from "../command/abstract-command.js";
 
 export class ProjectCommand extends AbstractCommand {
 	static override readonly paths = [["project"]];

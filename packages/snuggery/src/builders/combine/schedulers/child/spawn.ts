@@ -11,7 +11,7 @@ import {
 	ExecuteTargetMessage,
 	Message,
 	MessageType,
-} from "./shared";
+} from "./shared.js";
 
 export enum SpawnChildMessageType {
 	Done = "done",

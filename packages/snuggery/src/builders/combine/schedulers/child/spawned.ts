@@ -2,15 +2,15 @@ import {logging} from "@angular-devkit/core";
 import type {BuilderOutput} from "@snuggery/architect";
 import type {Observable} from "rxjs";
 
-import {ChildArchitect} from "./architect";
+import {ChildArchitect} from "./architect.js";
 import {
 	ChildBuilderOutputMessage,
 	ChildLoggingMessage,
 	ChildMessageType,
 	Message,
 	MessageType,
-} from "./shared";
-import {ChildMessage, SpawnChildMessageType} from "./spawn";
+} from "./shared.js";
+import {ChildMessage, SpawnChildMessageType} from "./spawn.js";
 
 const workspaceRoot = process.argv[2]!;
 

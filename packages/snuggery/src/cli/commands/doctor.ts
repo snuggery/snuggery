@@ -1,5 +1,5 @@
-import {AbstractCommand} from "../command/abstract-command";
-import type {Report} from "../utils/report";
+import {AbstractCommand} from "../command/abstract-command.js";
+import type {Report} from "../utils/report.js";
 
 export class DoctorCommand extends AbstractCommand {
 	static override readonly paths = [["--doctor"]];

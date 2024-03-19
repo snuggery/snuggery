@@ -4,19 +4,19 @@ import {promises as fs} from "fs";
 import {tmpdir} from "os";
 import path, {posix, join, normalize, relative} from "path";
 
-import {AbstractError} from "../../utils/error";
-import {UnableToResolveError} from "../../utils/json-resolver";
+import {AbstractError} from "../../utils/error.js";
+import {UnableToResolveError} from "../../utils/json-resolver.js";
 import type {
 	SnuggeryCollection,
 	SnuggeryEngineHost,
 	SnuggerySchematic,
 	SnuggerySchematicDescription,
-} from "../schematic/engine-host";
-import type {SnuggeryWorkflow} from "../schematic/workflow";
-import {Cached} from "../utils/decorator";
-import {parseSchema, Option, Type} from "../utils/parse-schema";
+} from "../schematic/engine-host.js";
+import type {SnuggeryWorkflow} from "../schematic/workflow.js";
+import {Cached} from "../utils/decorator.js";
+import {parseSchema, Option, Type} from "../utils/parse-schema.js";
 
-import {AbstractCommand} from "./abstract-command";
+import {AbstractCommand} from "./abstract-command.js";
 
 export const forceOption: Option = {
 	name: "force",

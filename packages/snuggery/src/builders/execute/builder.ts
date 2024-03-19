@@ -4,9 +4,9 @@ import {
 	resolveWorkspacePath,
 } from "@snuggery/architect";
 
-import {exec} from "./exec";
-import {resolvePackageBin} from "./resolve-package-bin";
-import type {Schema, PackageBinarySchema} from "./schema";
+import {exec} from "./exec.js";
+import {resolvePackageBin} from "./resolve-package-bin.js";
+import type {Schema, PackageBinarySchema} from "./schema.js";
 
 /**
  * Execute a binary, depending on config either globally installed or installed in a node package

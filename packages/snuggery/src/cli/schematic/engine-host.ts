@@ -20,7 +20,7 @@ import {
 	type TypedSchematicContext,
 	UnregisteredTaskException,
 } from "@angular-devkit/schematics";
-import {BuiltinTaskExecutor} from "@angular-devkit/schematics/tasks/node";
+import {BuiltinTaskExecutor} from "@angular-devkit/schematics/tasks/node/index.js";
 import {
 	FactoryCannotBeResolvedException,
 	FileSystemCollectionDescription,
@@ -30,17 +30,17 @@ import {
 	SchematicMissingFieldsException,
 	SchematicNameCollisionException,
 	validateOptionsWithSchema,
-} from "@angular-devkit/schematics/tools";
+} from "@angular-devkit/schematics/tools/index.js";
 import {isJsonObject, type JsonObject, type JsonValue} from "@snuggery/core";
 import {createRequire} from "module";
 import {dirname, join, resolve} from "path";
 import {defer, isObservable, type Observable} from "rxjs";
 import type {Url} from "url";
 
-import {loadJson} from "../../utils/json-resolver";
-import type {Context} from "../command/context";
-import {dynamicImport} from "../utils/dynamic-import";
-import {makeGeneratorIntoSchematic, Generator} from "../utils/tao";
+import {loadJson} from "../../utils/json-resolver.js";
+import type {Context} from "../command/context.js";
+import {dynamicImport} from "../utils/dynamic-import.js";
+import {makeGeneratorIntoSchematic, Generator} from "../utils/tao.js";
 
 export interface SnuggeryCollectionDescription
 	extends FileSystemCollectionDescription {

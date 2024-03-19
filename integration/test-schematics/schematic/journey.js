@@ -1,5 +1,4 @@
 /* cspell:ignore merol muspi rolod */
-require("@snuggery-workspace/scripts/load-ts");
 
 const {journey} = require("@snuggery/journey");
 const {mapImports} = require("@snuggery/journey/trips/map-imports");

@@ -12,8 +12,8 @@ import {
 import {type BaseContext, UsageError} from "clipanion";
 import {basename, dirname, normalize, relative, resolve, sep} from "node:path";
 
-import type {Report} from "../utils/report";
-import {createWorkspaceTransform} from "../utils/schema";
+import type {Report} from "../utils/report.js";
+import {createWorkspaceTransform} from "../utils/schema.js";
 
 export interface Context extends BaseContext {
 	/**

@@ -1,6 +1,6 @@
 import {isJsonObject} from "@snuggery/core";
 
-import {AbstractCommand} from "../../command/abstract-command";
+import {AbstractCommand} from "../../command/abstract-command.js";
 
 export class HelpProjectsCommand extends AbstractCommand {
 	static override readonly paths = [["help", "projects"]];

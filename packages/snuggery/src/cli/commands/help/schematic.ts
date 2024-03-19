@@ -1,8 +1,8 @@
 import {Option} from "clipanion";
 
-import {SchematicCommand} from "../../command/schematic";
-import {formatMarkdownish} from "../../utils/format";
-import {printSchema} from "../../utils/print-schema";
+import {SchematicCommand} from "../../command/schematic.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import {printSchema} from "../../utils/print-schema.js";
 
 export class HelpSchematicCommand extends SchematicCommand {
 	static override readonly paths = [["help", "schematic"]];

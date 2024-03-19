@@ -11,7 +11,7 @@ import {
 	ExecuteBuilderMessage as _ExecuteBuilderMessage,
 	ExecuteTargetMessage as _ExecuteTargetMessage,
 	MessageType,
-} from "./shared";
+} from "./shared.js";
 
 export interface ExecuteTargetMessage extends _ExecuteTargetMessage {
 	port: MessagePort;

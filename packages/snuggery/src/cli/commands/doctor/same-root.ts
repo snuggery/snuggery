@@ -1,8 +1,8 @@
 import {posix} from "path";
 
-import {SetMap} from "../../utils/collections";
+import {SetMap} from "../../utils/collections.js";
 
-import type {DoctorContext} from "./context";
+import type {DoctorContext} from "./context.js";
 
 export function checkProjectsWithSameRoot({workspace, report}: DoctorContext) {
 	const projectPathToName = new SetMap<string, string>();

@@ -4,8 +4,8 @@ import type {JsonObject} from "@snuggery/core";
 import type {Observable} from "rxjs";
 import {finalize} from "rxjs/operators";
 
-import {RegularScheduler} from "./abstract";
-import {SpawnChild} from "./child/spawn";
+import {RegularScheduler} from "./abstract.js";
+import {SpawnChild} from "./child/spawn.js";
 
 export class RespawnScheduler extends RegularScheduler {
 	public runSingleTarget(

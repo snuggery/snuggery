@@ -1,6 +1,6 @@
 import {Option, UsageError} from "clipanion";
 
-import {ArchitectCommand} from "../../command/architect";
+import {ArchitectCommand} from "../../command/architect.js";
 
 export class RunUpdateCommand extends ArchitectCommand {
 	static override readonly paths = [["run", "update"]];

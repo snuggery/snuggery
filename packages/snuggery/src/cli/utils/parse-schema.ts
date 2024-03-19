@@ -1,7 +1,7 @@
 import type {json} from "@angular-devkit/core";
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
 
-import {isNotNull} from "./varia";
+import {isNotNull} from "./varia.js";
 
 export enum Type {
 	String = "string",

@@ -10,7 +10,7 @@
 	},
 	"main": "index.js",
 	"exports": {
-		".": "./src/index.js",
+		".": "./src/index.ts",
 		"./package.json": "./package.json"
 	},
 	"dependencies": {

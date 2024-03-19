@@ -1,23 +1,23 @@
 {
 	"builders": {
 		"deploy": {
-			"implementation": "./src/builders/deploy/index.js",
+			"implementation": "./src/builders/deploy/index.ts",
 			"schema": "./src/builders/deploy/schema.json",
 			"description": "Create, commit, tag and publish deferred releases using @yarnpkg/plugin-version"
 		},
 		"pack": {
-			"implementation": "./src/builders/pack/index.js",
+			"implementation": "./src/builders/pack/index.ts",
 			"schema": "./src/builders/pack/schema.json",
 			"description": "Pack a package tarball"
 		},
 		"update": {
-			"implementation": "./src/builders/update/index.js",
+			"implementation": "./src/builders/update/index.ts",
 			"hidden": true,
 			"schema": "./src/builders/update/schema.json",
 			"description": "Actual implementation for `sn run update` for yarn projects"
 		},
 		"version": {
-			"implementation": "./src/builders/version/index.js",
+			"implementation": "./src/builders/version/index.ts",
 			"hidden": true,
 			"schema": "./src/builders/version/schema.json",
 			"description": "Create, commit and tag deferred releases using @yarnpkg/plugin-version"

@@ -13,11 +13,11 @@ import type {JsonObject} from "@snuggery/core";
 import {concat, merge, Observable} from "rxjs";
 import {finalize} from "rxjs/operators";
 
-import {calculate} from "../calculator";
-import type {ParallelTarget, SerialTarget, Target} from "../schema";
-import {Type} from "../types";
+import {calculate} from "../calculator.js";
+import type {ParallelTarget, SerialTarget, Target} from "../schema.js";
+import {Type} from "../types.js";
 
-import type {Child} from "./child/shared";
+import type {Child} from "./child/shared.js";
 
 export function isSingleTarget(target: Target): target is TargetSpecifier {
 	return (

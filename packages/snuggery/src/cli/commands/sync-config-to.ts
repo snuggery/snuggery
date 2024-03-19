@@ -15,12 +15,12 @@ import {
 import {Option} from "clipanion";
 import {join} from "path";
 
-import {AbstractCommand} from "../command/abstract-command";
-import {CliWorkspace} from "../command/context";
-import {formatMarkdownish} from "../utils/format";
-import {memoize} from "../utils/memoize";
-import type {CompiledSchema} from "../utils/schema-registry";
-import {isEnum} from "../utils/typanion";
+import {AbstractCommand} from "../command/abstract-command.js";
+import {CliWorkspace} from "../command/context.js";
+import {formatMarkdownish} from "../utils/format.js";
+import {memoize} from "../utils/memoize.js";
+import type {CompiledSchema} from "../utils/schema-registry.js";
+import {isEnum} from "../utils/typanion.js";
 
 // We are handling proxies here, and structuredClone doesn't support proxies
 function cloneJson<T extends JsonValue>(value: T): T {

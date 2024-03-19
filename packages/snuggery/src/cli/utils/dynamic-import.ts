@@ -1,4 +1,7 @@
-import {pathToFileURL} from "url";
+import {createRequire} from "node:module";
+import {pathToFileURL} from "node:url";
+
+const require = createRequire(import.meta.url);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function dynamicImport(path: string): Promise<any> {

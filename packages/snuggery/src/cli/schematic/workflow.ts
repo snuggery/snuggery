@@ -2,13 +2,13 @@ import {normalize, virtualFs} from "@angular-devkit/core";
 import {NodeJsSyncHost} from "@angular-devkit/core/node";
 import {type Engine, workflow} from "@angular-devkit/schematics";
 
-import type {SchemaRegistry} from "../utils/schema-registry";
+import type {SchemaRegistry} from "../utils/schema-registry.js";
 
 import type {
 	SnuggeryCollectionDescription,
 	SnuggeryEngineHost,
 	SnuggerySchematicDescription,
-} from "./engine-host";
+} from "./engine-host.js";
 
 /**
  * A workflow specifically for Node tools.

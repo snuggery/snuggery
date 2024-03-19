@@ -3,14 +3,14 @@ import type {BuilderOutput} from "@snuggery/architect";
 import type {Observable} from "rxjs";
 import {isMainThread, parentPort, workerData} from "worker_threads";
 
-import {ChildArchitect} from "./architect";
+import {ChildArchitect} from "./architect.js";
 import {
 	ChildBuilderOutputMessage,
 	ChildLoggingMessage,
 	ChildMessageType,
 	MessageType,
-} from "./shared";
-import type {Message} from "./worker";
+} from "./shared.js";
+import type {Message} from "./worker.js";
 
 if (isMainThread) {
 	throw new Error(`Don't import ${__filename}, load it via a worker thread`);

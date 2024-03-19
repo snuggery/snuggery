@@ -5,8 +5,8 @@ export abstract class AbstractError extends Error implements ErrorWithMeta {
 		type: "none",
 	};
 
-	constructor(message: string) {
-		super(message);
+	constructor(message: string, options?: ErrorOptions) {
+		super(message, options);
 
 		this.name = new.target.name;
 	}

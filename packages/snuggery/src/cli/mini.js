@@ -1,33 +1,17 @@
-require("@snuggery-workspace/scripts/load-ts");
+import process from "node:process";
+
+export * from "./mini.ts";
 
 const traceCli =
 	process.argv.length === 3 &&
 	process.argv[2] === "--validate-cli-dependencies";
 
-if (!traceCli) {
-	module.exports = require("./mini.ts");
-} else {
-	const start = Date.now();
-	const alreadyLoadedFiles = new Set(Object.keys(require.cache));
+if (traceCli) {
+	const {allDependencies, newDependencies, time} = await import(
+		"snuggery:cli-dependencies"
+	);
 
-	module.exports = require("./mini.ts");
-
-	console.log("time:", Date.now() - start);
-
-	const allDependencies = new Set();
-	const newDependencies = new Set();
-	for (const file of Object.keys(require.cache)) {
-		const dependency = /(?<=node_modules[/\\])(?:@[^/\\]+[/\\])?[^/\\]+/.exec(
-			file,
-		)?.[0];
-		allDependencies.add(dependency);
-		if (!alreadyLoadedFiles.has(file)) {
-			newDependencies.add(dependency);
-		}
-	}
-
-	allDependencies.delete(undefined);
-	newDependencies.delete(undefined);
+	console.log("time:", time);
 
 	const disallowedDependencies = new Set([
 		"@angular-devkit/architect",
@@ -55,13 +39,16 @@ if (!traceCli) {
 		"typanion",
 		"semver",
 
+		// Needed to load the workspace configuration
+		"@snuggery/core",
+
 		// Utilities used in the Report
 		"@arcanis/slice-ansi",
 		"kleur",
 		"strip-ansi",
 		// transitive dependencies
-		"ansi-regex",
-		"grapheme-splitter",
+		// "ansi-regex", (required so not intercepted by our loader)
+		// "grapheme-splitter", (required so not intercepted by our loader)
 	]);
 
 	console.log("Dependencies loaded in CLI:");
@@ -76,5 +63,3 @@ if (!traceCli) {
 
 	process.exit();
 }
-
-0 && ((exports.findWorkspace = void 0), (exports.run = void 0));

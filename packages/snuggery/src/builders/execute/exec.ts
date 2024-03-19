@@ -2,7 +2,7 @@ import type {BuilderContext, BuilderOutput} from "@snuggery/architect";
 import {fork, spawn, ForkOptions, ChildProcess} from "child_process";
 import {extname} from "path";
 
-import type {Schema} from "./schema";
+import type {Schema} from "./schema.js";
 
 /**
  * Execute a binary

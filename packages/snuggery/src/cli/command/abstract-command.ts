@@ -8,20 +8,21 @@ import {
 	Option as CommandOption,
 	UsageError,
 } from "clipanion";
-import path, {dirname, normalize, posix, relative} from "path";
+import path, {dirname, normalize, posix, relative} from "node:path";
+import process from "node:process";
 
-import type {SnuggeryArchitectHost} from "../architect/index";
-import {Cached} from "../utils/decorator";
-import {memoize} from "../utils/memoize";
+import type {SnuggeryArchitectHost} from "../architect/index.js";
+import {Cached} from "../utils/decorator.js";
+import {memoize} from "../utils/memoize.js";
 import {
 	ParsedArguments,
 	parseFreeFormArguments,
 	parseOptions,
-} from "../utils/parse-options";
-import type {Option} from "../utils/parse-schema";
-import type {Report} from "../utils/report";
+} from "../utils/parse-options.js";
+import type {Option} from "../utils/parse-schema.js";
+import type {Report} from "../utils/report.js";
 
-import type {CliWorkspace, Context} from "./context";
+import type {CliWorkspace, Context} from "./context.js";
 
 /**
  * An error that won't show a stack trace
@@ -177,7 +178,19 @@ export abstract class AbstractCommand extends Command<Context> {
 			return cliExtension.packageManager;
 		}
 
-		return (require("which-pm-runs") as typeof import("which-pm-runs"))()?.name;
+		const userAgent = process.env.npm_config_user_agent;
+		if (userAgent == null) {
+			return undefined;
+		}
+
+		const packageManagerSpec = userAgent.split(" ")[0]!;
+		const separatorPos = packageManagerSpec.lastIndexOf("/");
+		const name =
+			separatorPos !== -1
+				? packageManagerSpec.substring(0, separatorPos)
+				: packageManagerSpec;
+		// cspell:ignore npminstall
+		return name === "npminstall" ? "cnpm" : name;
 	}
 
 	// Basic setup for Architects, can be used in non-architect commands like --doctor or --sync-config-to
@@ -409,6 +422,12 @@ export abstract class AbstractCommand extends Command<Context> {
 			// The name of the error is probably already useful
 			// e.g. IllegalArgumentException, SchemaValidationException, BuildFailedError
 			error.name = error.name.replace(/(?:Error|Exception)$/, "");
+		}
+
+		if (error.cause && error.cause instanceof Error) {
+			const cause = this.prettifyError(error.cause);
+
+			error.message += `\n\nCaused by ${cause.name}: ${cause.message}`;
 		}
 
 		return error;

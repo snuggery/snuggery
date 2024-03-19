@@ -3,9 +3,9 @@ import assert from "node:assert/strict";
 import {Writable} from "node:stream";
 import {suite} from "uvu";
 
-import {AbstractCommand} from "../../command/abstract-command";
-import {parseFreeFormArguments} from "../parse-options";
-import {Option, Type} from "../parse-schema";
+import {AbstractCommand} from "../../command/abstract-command.js";
+import {parseFreeFormArguments} from "../parse-options.js";
+import {Option, Type} from "../parse-schema.js";
 
 const test = suite<{
 	context: Context;

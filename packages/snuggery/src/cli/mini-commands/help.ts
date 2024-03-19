@@ -1,4 +1,4 @@
-import {AbstractCommand} from "../command/abstract-command";
+import {AbstractCommand} from "../command/abstract-command.js";
 
 export class HelpCommand extends AbstractCommand {
 	static override readonly paths = [

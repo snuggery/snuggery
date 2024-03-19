@@ -1,11 +1,11 @@
 import type {JsonObject, JsonValue} from "@snuggery/core";
 import {Cli, Command, Option as CommandOption} from "clipanion";
 
-import type {AbstractCommand} from "../command/abstract-command";
+import type {AbstractCommand} from "../command/abstract-command.js";
 
-import {Option, Type} from "./parse-schema";
-import * as strings from "./strings";
-import * as t from "./typanion";
+import {Option, Type} from "./parse-schema.js";
+import * as strings from "./strings.js";
+import * as t from "./typanion.js";
 
 export type ParsedArguments =
 	| [success: true, value: JsonObject | null]

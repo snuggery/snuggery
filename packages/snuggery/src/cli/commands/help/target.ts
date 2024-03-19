@@ -1,7 +1,7 @@
 import {Option, UsageError} from "clipanion";
 
-import {ArchitectCommand} from "../../command/architect";
-import {formatMarkdownish} from "../../utils/format";
+import {ArchitectCommand} from "../../command/architect.js";
+import {formatMarkdownish} from "../../utils/format.js";
 
 export const unsafeTargetNames: ReadonlySet<string> = new Set([
 	"generate",

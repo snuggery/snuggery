@@ -1,45 +1,50 @@
 import {Cli, Command, RunContext} from "clipanion";
+import {createRequire} from "node:module";
 
-import type {AbstractCommand} from "./command/abstract-command";
-import type {Context} from "./command/context";
-import {DoctorCommand} from "./commands/doctor";
-import {EntryCommand} from "./commands/entry";
-import {EntryWithProjectCommand} from "./commands/entry-with-project";
-import {GenerateCommand} from "./commands/generate";
-import {HelpCommand} from "./commands/help";
-import {HelpBuilderCommand} from "./commands/help/builder";
-import {HelpBuildersCommand} from "./commands/help/builders";
-import {HelpMigrationsCommand} from "./commands/help/migrations";
-import {HelpProjectCommand} from "./commands/help/project";
-import {HelpProjectsCommand} from "./commands/help/projects";
-import {HelpSchematicCommand} from "./commands/help/schematic";
-import {HelpSchematicsCommand} from "./commands/help/schematics";
-import {HelpTargetCommand} from "./commands/help/target";
-import {HelpTargetsCommand} from "./commands/help/targets";
-import {HelpUpdateCommand} from "./commands/help/update";
-import {NewCommand} from "./commands/new";
-import {ProjectCommand} from "./commands/project";
-import {RunBuilderCommand} from "./commands/run/builder";
-import {RunMigrationCommand} from "./commands/run/migration";
-import {RunMigrationsCommand} from "./commands/run/migrations";
-import {RunSchematicCommand} from "./commands/run/schematic";
-import {RunTargetCommand} from "./commands/run/target";
-import {RunUpdateCommand} from "./commands/run/update";
-import {SyncConfigToCommand} from "./commands/sync-config-to";
-import {VersionCommand} from "./commands/version";
-import {Report} from "./utils/report";
+import type {AbstractCommand} from "./command/abstract-command.js";
+import type {CliWorkspace, Context} from "./command/context.js";
+import {DoctorCommand} from "./commands/doctor.js";
+import {EntryCommand} from "./commands/entry.js";
+import {EntryWithProjectCommand} from "./commands/entry-with-project.js";
+import {GenerateCommand} from "./commands/generate.js";
+import {HelpCommand} from "./commands/help.js";
+import {HelpBuilderCommand} from "./commands/help/builder.js";
+import {HelpBuildersCommand} from "./commands/help/builders.js";
+import {HelpMigrationsCommand} from "./commands/help/migrations.js";
+import {HelpProjectCommand} from "./commands/help/project.js";
+import {HelpProjectsCommand} from "./commands/help/projects.js";
+import {HelpSchematicCommand} from "./commands/help/schematic.js";
+import {HelpSchematicsCommand} from "./commands/help/schematics.js";
+import {HelpTargetCommand} from "./commands/help/target.js";
+import {HelpTargetsCommand} from "./commands/help/targets.js";
+import {HelpUpdateCommand} from "./commands/help/update.js";
+import {NewCommand} from "./commands/new.js";
+import {ProjectCommand} from "./commands/project.js";
+import {RunBuilderCommand} from "./commands/run/builder.js";
+import {RunMigrationCommand} from "./commands/run/migration.js";
+import {RunMigrationsCommand} from "./commands/run/migrations.js";
+import {RunSchematicCommand} from "./commands/run/schematic.js";
+import {RunTargetCommand} from "./commands/run/target.js";
+import {RunUpdateCommand} from "./commands/run/update.js";
+import {SyncConfigToCommand} from "./commands/sync-config-to.js";
+import {VersionCommand} from "./commands/version.js";
+import {Report} from "./utils/report.js";
+import type {SnuggeryArchitectHost} from "./architect/index.js";
 
 export {workspaceFilenames} from "@snuggery/core";
 
-export type {SnuggeryArchitectHost} from "./architect";
-export {CliWorkspace, findWorkspace} from "./command/context";
+export type {SnuggeryArchitectHost} from "./architect/index.js";
+export {CliWorkspace, findWorkspace} from "./command/context.js";
 
 export {Cli, Context};
 
-export const createArchitectHost: typeof import("./architect").createArchitectHost =
-	(...args) => {
-		return require("./architect").createArchitectHost(...args);
-	};
+export async function createArchitectHost(
+	context: Pick<Context, "startCwd">,
+	workspace?: CliWorkspace | null,
+): Promise<SnuggeryArchitectHost> {
+	const {createArchitectHost} = await import("./architect/index.js");
+	return createArchitectHost(context, workspace);
+}
 
 export function run(
 	args: string[],
@@ -48,7 +53,9 @@ export function run(
 	const cli = new Cli<Context>({
 		binaryLabel: "Snuggery",
 		binaryName: "sn",
-		binaryVersion: require("@snuggery/snuggery/package.json").version,
+		binaryVersion: createRequire(import.meta.url)(
+			"@snuggery/snuggery/package.json",
+		).version,
 		enableColors: context.colorDepth ? context.colorDepth > 1 : undefined,
 	});
 

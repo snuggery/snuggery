@@ -11,9 +11,9 @@ import {
 	TargetSpecifier,
 } from "@snuggery/architect";
 
-import {execute as executeCombine} from "../combine";
+import {execute as executeCombine} from "../combine/index.js";
 
-import type {Schema} from "./schema";
+import type {Schema} from "./schema.js";
 
 function stringifyArray(values: string[]) {
 	return values.map((value) => JSON.stringify(value)).join(", ");

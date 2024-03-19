@@ -1,6 +1,6 @@
 import {Option} from "clipanion";
 
-import {SchematicCommand} from "../../command/schematic";
+import {SchematicCommand} from "../../command/schematic.js";
 
 export class RunSchematicCommand extends SchematicCommand {
 	static override readonly paths = [["run", "schematic"]];

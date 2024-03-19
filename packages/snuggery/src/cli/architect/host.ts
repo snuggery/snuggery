@@ -16,7 +16,7 @@ import {
 	type ArchitectHost,
 	type Builder,
 	BuilderSymbol,
-} from "@angular-devkit/architect/src/internal";
+} from "@angular-devkit/architect/src/internal.js";
 import {
 	isJsonObject,
 	type JsonObject,
@@ -24,13 +24,14 @@ import {
 	type ProjectDefinition,
 	type TargetDefinition,
 } from "@snuggery/core";
-import {dirname, join} from "path";
+import {readFile} from "node:fs/promises";
+import {dirname, join} from "node:path";
 
-import type {Context} from "../command/context";
-import {dynamicImport} from "../utils/dynamic-import";
-import type {Executor} from "../utils/tao";
+import type {Context} from "../command/context.js";
+import {dynamicImport} from "../utils/dynamic-import.js";
+import type {Executor} from "../utils/tao.js";
 
-import {InvalidBuilderError, InvalidBuilderSpecifiedError} from "./errors";
+import {InvalidBuilderError, InvalidBuilderSpecifiedError} from "./errors.js";
 
 export {Builder};
 
@@ -247,10 +248,11 @@ export class SnuggeryArchitectHost
 		} else {
 			const schemaPath = join(dirname(builderPath), builderInfo.schema);
 			try {
-				optionSchema = require(schemaPath);
-			} catch {
+				optionSchema = JSON.parse(await readFile(schemaPath, "utf8"));
+			} catch (e) {
 				throw new InvalidBuilderError(
 					`Couldn't load schema "${schemaPath}" for builder "${builderName}" in package "${packageName}"`,
+					{cause: e},
 				);
 			}
 

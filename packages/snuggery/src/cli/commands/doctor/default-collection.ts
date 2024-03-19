@@ -1,7 +1,7 @@
 import {isJsonObject, JsonObject} from "@snuggery/core";
 
-import {hasConfiguredCollection} from "./configured-collections";
-import type {DoctorContext} from "./context";
+import {hasConfiguredCollection} from "./configured-collections.js";
+import type {DoctorContext} from "./context.js";
 
 export async function checkDefaultCollections({
 	workspace,

@@ -13,7 +13,7 @@ export async function execute(
 	context: BuilderContext,
 ): Promise<void> {
 	try {
-		await import("uvu");
+		await import("uvu/parse");
 	} catch {
 		throw new BuildFailureError("Couldn't import uvu, did you install it?");
 	}
@@ -49,14 +49,14 @@ export async function execute(
 		}
 	}
 
-	const {parse} = require("uvu/parse") as typeof import("uvu/parse");
+	const {parse} = await import("uvu/parse");
 
 	const {suites} = await parse(input.dir, input.pattern, {
 		cwd: input.dir ? context.workspaceRoot : await getProjectPath(context),
 		ignore: input.ignore?.length ? input.ignore : undefined,
 	});
 
-	const {run} = require("uvu/run") as typeof import("uvu/run");
+	const {run} = await import("uvu/run");
 
 	await run(suites, {bail: input.bail ?? true});
 }

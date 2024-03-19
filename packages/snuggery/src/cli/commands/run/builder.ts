@@ -1,6 +1,6 @@
 import {Option} from "clipanion";
 
-import {ArchitectCommand} from "../../command/architect";
+import {ArchitectCommand} from "../../command/architect.js";
 
 export class RunBuilderCommand extends ArchitectCommand {
 	static override readonly paths = [["run", "builder"]];

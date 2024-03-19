@@ -6,7 +6,7 @@ import {
 import type {JsonObject} from "@snuggery/core";
 import type {Observable} from "rxjs";
 
-import {RegularScheduler} from "./abstract";
+import {RegularScheduler} from "./abstract.js";
 
 export class InProcessScheduler extends RegularScheduler {
 	public runSingleTarget(

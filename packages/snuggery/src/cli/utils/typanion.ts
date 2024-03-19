@@ -1,8 +1,11 @@
 import type {JsonObject} from "@snuggery/core";
+import {createRequire} from "module";
 import type SemVer from "semver/classes/semver.js";
 import {makeValidator, type StrictValidator} from "typanion";
 
 export {isNumber, type StrictValidator} from "typanion";
+
+const require = createRequire(import.meta.url);
 
 export const isJSON5 = (): StrictValidator<unknown, JsonObject> => {
 	const JSON5: typeof import("json5") = require("json5");
@@ -54,13 +57,14 @@ export const isEnum = <T extends (number | string | boolean | null)[]>(
 };
 
 export const isSemVer = (): StrictValidator<unknown, SemVer> => {
-	const valid =
-		require("semver/functions/valid.js") as typeof import("semver/functions/valid.js");
 	const SemVer =
 		require("semver/classes/semver.js") as typeof import("semver/classes/semver.js");
+	const validSemver =
+		require("semver/functions/valid.js") as typeof import("semver/functions/valid.js");
+
 	return makeValidator({
 		test(value, state): value is SemVer {
-			if (typeof value === "string" && valid(value)) {
+			if (typeof value === "string" && validSemver(value)) {
 				if (state?.coercions != null && state.coercion != null) {
 					state.coercions.push([
 						state.p ?? ".",

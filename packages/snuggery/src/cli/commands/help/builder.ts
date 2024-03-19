@@ -1,8 +1,8 @@
 import {Option} from "clipanion";
 
-import {ArchitectCommand} from "../../command/architect";
-import {formatMarkdownish} from "../../utils/format";
-import {printSchema} from "../../utils/print-schema";
+import {ArchitectCommand} from "../../command/architect.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import {printSchema} from "../../utils/print-schema.js";
 
 export class HelpBuilderCommand extends ArchitectCommand {
 	static override readonly paths = [["help", "builder"]];

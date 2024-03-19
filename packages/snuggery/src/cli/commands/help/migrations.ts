@@ -1,9 +1,9 @@
 import {Option, UsageError} from "clipanion";
 import * as t from "typanion";
 
-import {MigrationCommand} from "../../command/migration";
-import {formatMarkdownish} from "../../utils/format";
-import {isSemVer} from "../../utils/typanion";
+import {MigrationCommand} from "../../command/migration.js";
+import {formatMarkdownish} from "../../utils/format.js";
+import {isSemVer} from "../../utils/typanion.js";
 
 export class HelpMigrationsCommand extends MigrationCommand {
 	static override readonly paths = [["help", "migrations"]];

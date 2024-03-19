@@ -1529,6 +1529,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
+    cjs-module-lexer: "npm:^1.2.3"
     esbuild: "npm:^0.20.2"
     esbuild-register: "npm:^3.4.2"
   languageName: unknown
@@ -1725,7 +1726,6 @@ __metadata:
     "@types/prettier": "npm:^2.7.2"
     "@types/prompts": "npm:^2.4.4"
     "@types/semver": "npm:^7.3.13"
-    "@types/which-pm-runs": "npm:^1.0.0"
     ajv: "npm:^8.12.0"
     ajv-formats: "npm:^2.1.1"
     clipanion: "npm:3.2.0"
@@ -1738,7 +1738,6 @@ __metadata:
     strip-ansi: "npm:^6.0.1"
     typanion: "npm:^3.12.1"
     uvu: "npm:^0.5.6"
-    which-pm-runs: "npm:^1.1.0"
   bin:
     sn: bin.js
   languageName: unknown
@@ -1978,13 +1977,6 @@ __metadata:
   version: 1.0.0
   resolution: "@types/treeify@npm:1.0.0"
   checksum: 10c0/8a279d0f1897e47cc02b4b5a570141ab70de6bc5d95cafe976aaee78740c13c2e80dae69f7ae9ca1c735c653b65a4ec59a7eed6970683cd04fc0ddf4b98794ff
-  languageName: node
-  linkType: hard
-
-"@types/which-pm-runs@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@types/which-pm-runs@npm:1.0.0"
-  checksum: 10c0/37eeb24c648e85def5408276404c443293bf789833156e857a0546e2f2606e2fd2f4cb168200caab6ab8f80af6ced43acf25a017e7fe769b08f20141d23ba026
   languageName: node
   linkType: hard
 
@@ -3354,6 +3346,13 @@ __metadata:
   version: 3.2.0
   resolution: "ci-info@npm:3.2.0"
   checksum: 10c0/9479fb1d835c277b388f02b6f46f1a9355c8dbc07b33b896552949ed0d4708b317bf7221ef9a3c86e975549982f76d3b84b2c7c99a8b26220218c2f3a9b657d4
+  languageName: node
+  linkType: hard
+
+"cjs-module-lexer@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "cjs-module-lexer@npm:1.2.3"
+  checksum: 10c0/0de9a9c3fad03a46804c0d38e7b712fb282584a9c7ef1ed44cae22fb71d9bb600309d66a9711ac36a596fd03422f5bb03e021e8f369c12a39fa1786ae531baab
   languageName: node
   linkType: hard
 
@@ -8190,13 +8189,6 @@ __metadata:
     is-string: "npm:^1.0.5"
     is-symbol: "npm:^1.0.3"
   checksum: 10c0/0a62a03c00c91dd4fb1035b2f0733c341d805753b027eebd3a304b9cb70e8ce33e25317add2fe9b5fea6f53a175c0633ae701ff812e604410ddd049777cd435e
-  languageName: node
-  linkType: hard
-
-"which-pm-runs@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "which-pm-runs@npm:1.1.0"
-  checksum: 10c0/b8f2f230aa49babe21cb93f169f5da13937f940b8cc7a47d2078d9d200950c0dba5ac5659bc01bdbe401e6db3adec6a97b6115215a4ca8e87fd714aebd0cabc6
   languageName: node
   linkType: hard
 

@@ -6,11 +6,11 @@ import type {
 	TargetDefinition,
 } from "@snuggery/core";
 
-import type {CliWorkspace} from "../command/context";
-import {makeExecutorIntoBuilder} from "../utils/tao";
+import type {CliWorkspace} from "../command/context.js";
+import {makeExecutorIntoBuilder} from "../utils/tao.js";
 
-import {UnknownConfigurationError, UnknownTargetError} from "./errors";
-import type {WorkspaceFacade} from "./host";
+import {UnknownConfigurationError, UnknownTargetError} from "./errors.js";
+import type {WorkspaceFacade} from "./host.js";
 
 export class CliWorkspaceFacade implements WorkspaceFacade {
 	readonly #workspace: CliWorkspace | null;

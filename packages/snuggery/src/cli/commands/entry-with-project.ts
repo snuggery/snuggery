@@ -4,7 +4,7 @@ import {
 	ArchitectCommand,
 	configurationOption,
 	addConfigurationsToTarget,
-} from "../command/architect";
+} from "../command/architect.js";
 
 export class EntryWithProjectCommand extends ArchitectCommand {
 	static override readonly paths = [ArchitectCommand.Default];

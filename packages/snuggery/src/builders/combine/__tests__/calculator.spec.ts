@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {cpus} from "node:os";
 import {suite} from "uvu";
 
-import {calculate} from "../calculator";
+import {calculate} from "../calculator.js";
 
 const test = suite("parallel calculator");
 

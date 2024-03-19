@@ -1,0 +1,11 @@
+releases:
+  "@snuggery/global": minor
+  "@snuggery/snuggery": minor
+
+declined:
+  - "@snuggery/affected"
+  - "@snuggery/architect"
+  - "@snuggery/build-node"
+  - "@snuggery/core"
+  - "@snuggery/journey"
+  - "@snuggery/yarn"
