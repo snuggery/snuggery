@@ -10,7 +10,7 @@ export function run(options: MiniCliOptions): Promise<never> {
 		string,
 	];
 
-	if (parseInt(major) < 16 || (major === "16" && parseInt(minor) < 10)) {
+	if (parseInt(major) < 18 || (major === "18" && parseInt(minor) < 19)) {
 		process.stderr.write(
 			`${options.binaryLabel} requires at least node version 16.10\n`,
 		);
