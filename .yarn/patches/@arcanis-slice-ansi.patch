@@ -1,0 +1,11 @@
+diff --git a/index.d.ts b/index.d.ts
+index 77a05dfe59b36ee5d0ad82445f61fa3bcc7e1989..b6ebd18fb4989547302a9aeb074f9eb745fba059 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -1,4 +1,5 @@
+-export default function sliceAnsi(orig: string, at?: number, until?: number): {
++declare function sliceAnsi(orig: string, at?: number, until?: number): {
+     slice: string;
+     visible: number;
+ };
++export = sliceAnsi;

@@ -5,6 +5,13 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@aashutoshrathi/word-wrap@npm:^1.2.3":
+  version: 1.2.6
+  resolution: "@aashutoshrathi/word-wrap@npm:1.2.6"
+  checksum: 10c0/53c2b231a61a46792b39a0d43bc4f4f776bb4542aa57ee04930676802e5501282c2fc8aac14e4cd1f1120ff8b52616b6ff5ab539ad30aa2277d726444b71619f
+  languageName: node
+  linkType: hard
+
 "@algolia/cache-browser-local-storage@npm:4.20.0":
   version: 4.20.0
   resolution: "@algolia/cache-browser-local-storage@npm:4.20.0"
@@ -305,12 +312,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arcanis/slice-ansi@npm:1.1.1, @arcanis/slice-ansi@npm:^1.1.1":
+"@arcanis/slice-ansi@npm:^1.1.1":
   version: 1.1.1
   resolution: "@arcanis/slice-ansi@npm:1.1.1"
   dependencies:
     grapheme-splitter: "npm:^1.0.4"
   checksum: 10c0/2f222b121b8aaf67e8495e27d60ebfc34e2472033445c3380e93fb06aba9bfef6ab3096aca190a181b3dd505ed4c07f4dc7243fc9cb5369008b649cd1e39e8d8
+  languageName: node
+  linkType: hard
+
+"@arcanis/slice-ansi@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "@arcanis/slice-ansi@npm:2.0.1"
+  checksum: 10c0/4be982d31e5aeeb1a8a06469537f26d954a856eecc741a60704cfe37acc3f5a2d439ec475dbe2f581ac2853a32e531ef5de3e8f977e31938c45c4edbe21d70e0
+  languageName: node
+  linkType: hard
+
+"@arcanis/slice-ansi@patch:@arcanis/slice-ansi@npm%3A^2.0.1#~/.yarn/patches/@arcanis-slice-ansi.patch":
+  version: 2.0.1
+  resolution: "@arcanis/slice-ansi@patch:@arcanis/slice-ansi@npm%3A2.0.1#~/.yarn/patches/@arcanis-slice-ansi.patch::version=2.0.1&hash=b050b5"
+  checksum: 10c0/e1395756bf5dc2c73c0199f8a880badb1494c7f95be380a5a80cedf91018a8566b3efb60fc5119b2463d9ae0cd337b68a78966d1aaed3dc7f074373875429382
   languageName: node
   linkType: hard
 
@@ -1717,7 +1738,7 @@ __metadata:
     "@angular-devkit/architect": "npm:>= 0.1700.0 < 0.1800.0"
     "@angular-devkit/core": "npm:^17.0.0"
     "@angular-devkit/schematics": "npm:^17.0.0"
-    "@arcanis/slice-ansi": "npm:1.1.1"
+    "@arcanis/slice-ansi": "npm:^2.0.1"
     "@nx/devkit": "npm:^18.0.4"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.1"
@@ -2809,6 +2830,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ajv-formats@patch:ajv-formats@npm%3A^2.1.1#.yarn/patches/ajv-formats.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 2.1.1
+  resolution: "ajv-formats@patch:ajv-formats@npm%3A2.1.1#.yarn/patches/ajv-formats.patch::version=2.1.1&hash=75875c&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    ajv: "npm:^8.0.0"
+  peerDependencies:
+    ajv: ^8.0.0
+  peerDependenciesMeta:
+    ajv:
+      optional: true
+  checksum: 10c0/ec052af07755628667679217056fcac572d907c22c7264c6a726001f529fcb6d342384f97dce2b4a2fb62ba514393290ba9e000a1696d8a1f3e14dac9de717a2
+  languageName: node
+  linkType: hard
+
 "ajv@npm:8.12.0, ajv@npm:^8.0.0, ajv@npm:^8.12.0":
   version: 8.12.0
   resolution: "ajv@npm:8.12.0"
@@ -2821,7 +2856,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.10.0, ajv@npm:^6.12.4, ajv@npm:~6.12.6":
+"ajv@npm:^6.12.4, ajv@npm:~6.12.6":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -2830,6 +2865,18 @@ __metadata:
     json-schema-traverse: "npm:^0.4.1"
     uri-js: "npm:^4.2.2"
   checksum: 10c0/41e23642cbe545889245b9d2a45854ebba51cda6c778ebced9649420d9205f2efb39cb43dbc41e358409223b1ea43303ae4839db682c848b891e4811da1a5a71
+  languageName: node
+  linkType: hard
+
+"ajv@patch:ajv@npm%3A8.12.0#.yarn/patches/ajv.patch::locator=snuggery-workspace%40workspace%3A.":
+  version: 8.12.0
+  resolution: "ajv@patch:ajv@npm%3A8.12.0#.yarn/patches/ajv.patch::version=8.12.0&hash=674da8&locator=snuggery-workspace%40workspace%3A."
+  dependencies:
+    fast-deep-equal: "npm:^3.1.1"
+    json-schema-traverse: "npm:^1.0.0"
+    require-from-string: "npm:^2.0.2"
+    uri-js: "npm:^4.2.2"
+  checksum: 10c0/3670547b38194cad0514a8297ada82510fa00a80d47a83e4cc63b8b457a19f867baa01806cbc1d5784faaa546137207978f94e559e6d844f038abd65c5234c50
   languageName: node
   linkType: hard
 

@@ -116,7 +116,7 @@ export async function resolve(specifier, context, nextResolve) {
 	}
 
 	const url = new URL(result.url);
-	if (url.protocol !== "file:") {
+	if (url.protocol !== "file:" || url.pathname.includes("/node_modules/")) {
 		return result;
 	}
 

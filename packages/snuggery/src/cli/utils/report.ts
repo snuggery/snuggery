@@ -127,7 +127,7 @@ class BaseReport {
 		// The -1 is to account for terminals that would wrap after
 		// the last column rather before the first overwrite
 		if (truncate)
-			str = sliceAnsi(str, 0, (this.#stdout as WriteStream).columns - 1);
+			str = sliceAnsi(str, 0, (this.#stdout as WriteStream).columns - 1).slice;
 
 		return str;
 	}

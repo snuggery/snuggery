@@ -1,6 +1,5 @@
 import type {BuilderContext} from "@snuggery/architect";
 import {filterByPatterns} from "@snuggery/core";
-import {glob} from "@snuggery/snuggery/builders";
 
 import {findAffectedProjects} from "../../changes";
 
@@ -37,6 +36,7 @@ export async function execute(
 		return;
 	}
 
+	const {glob} = await import("@snuggery/snuggery/builders");
 	await glob(
 		{
 			...opts,

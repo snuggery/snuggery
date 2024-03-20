@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import type {PnpApi} from "@yarnpkg/pnp";
-import {promises as fs} from "fs";
-import {createRequire} from "module";
-import {dirname, join, parse as parsePath} from "path";
+import {promises as fs} from "node:fs";
+import {createRequire} from "node:module";
+import {dirname, join, parse as parsePath} from "node:path";
 
 const [major, minor] = process.version.replace(/^v/, "").split(".") as [
 	string,

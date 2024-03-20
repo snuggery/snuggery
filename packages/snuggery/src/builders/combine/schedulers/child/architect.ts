@@ -22,13 +22,13 @@ export class ChildArchitect {
 		const workspace = findWorkspace(workspaceRoot).then((w) => w!.workspace());
 		this.#workspace = workspace;
 
-		this.#architect = workspace.then((workspace) => {
+		this.#architect = workspace.then(async (workspace) => {
 			const registry = new schema.CoreSchemaRegistry();
 			registry.addPreTransform(workspace.createWorkspaceDataVisitor());
 			registry.addPostTransform(schema.transforms.addUndefinedDefaults);
 
 			return new Architect(
-				createArchitectHost({startCwd: process.cwd()}, workspace),
+				await createArchitectHost({startCwd: process.cwd()}, workspace),
 				registry,
 			);
 		});

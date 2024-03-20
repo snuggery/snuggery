@@ -34,7 +34,7 @@
 		"@angular-devkit/architect": ">= 0.1700.0 < 0.1800.0",
 		"@angular-devkit/core": "^17.0.0",
 		"@angular-devkit/schematics": "^17.0.0",
-		"@arcanis/slice-ansi": "1.1.1",
+		"@arcanis/slice-ansi": "^2.0.1",
 		"@snuggery/architect": "^0.9.1",
 		"@snuggery/core": "^0.7.1",
 		"ajv": "^8.12.0",
