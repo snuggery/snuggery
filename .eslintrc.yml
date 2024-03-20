@@ -35,11 +35,10 @@ rules:
         order: asc
 
 overrides:
-  - files: ["**/*.mjs"]
-    parserOptions:
-      ecmaVersion: 2022
-      sourceType: module
-  - files: ["packages/build-angular/src/**/*.js"]
+  - files:
+      - "**/*.mjs"
+      - "packages/build-angular/src/**/*.js"
+      - "packages/snuggery/src/**/*.js"
     parserOptions:
       ecmaVersion: 2022
       sourceType: module
