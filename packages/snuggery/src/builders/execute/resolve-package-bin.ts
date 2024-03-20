@@ -4,6 +4,7 @@ import {
 	getProjectPath,
 	resolveWorkspacePath,
 } from "@snuggery/architect";
+import {readFile} from "node:fs/promises";
 import {createRequire} from "node:module";
 import {dirname, join} from "node:path";
 
@@ -93,7 +94,9 @@ export async function resolvePackageBin(
 		return join(packageFolder, binary);
 	}
 
-	const manifest = require(manifestPath) as Manifest;
+	const manifest = JSON.parse(
+		await readFile(manifestPath, "utf-8"),
+	) as Manifest;
 
 	if (!manifest.bin) {
 		throw new BuildFailureError(

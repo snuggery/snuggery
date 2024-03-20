@@ -1,0 +1,7 @@
+releases:
+  "@snuggery/build-node": minor
+  "@snuggery/snuggery": patch
+
+declined:
+  - "@snuggery/affected"
+  - "@snuggery/global"

@@ -1,17 +1,17 @@
 {
 	"builders": {
 		"combine": {
-			"implementation": "./src/builders/combine/index.js",
+			"implementation": "./src/builders/combine/index.ts",
 			"schema": "./src/builders/combine/schema.json",
 			"description": "Combine multiple targets into one"
 		},
 		"execute": {
-			"implementation": "./src/builders/execute/index.js",
+			"implementation": "./src/builders/execute/index.ts",
 			"schema": "./src/builders/execute/schema.json",
 			"description": "Execute a command from a dependency"
 		},
 		"glob": {
-			"implementation": "./src/builders/glob/index.js",
+			"implementation": "./src/builders/glob/index.ts",
 			"schema": "./src/builders/glob/schema.json",
 			"description": "Run a target in all projects matching a glob"
 		}

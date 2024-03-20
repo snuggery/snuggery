@@ -6,7 +6,7 @@ import {
 import {createRequire} from "node:module";
 import path from "node:path";
 
-import type {Schema} from "./schema";
+import type {Schema} from "./schema.js";
 
 export async function execute(
 	input: Schema,

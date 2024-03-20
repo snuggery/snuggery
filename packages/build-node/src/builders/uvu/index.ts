@@ -1,6 +1,6 @@
 import {createBuilder} from "@snuggery/architect";
 
-import {execute} from "./executor";
+import {execute} from "./executor.js";
 
 export {execute};
 

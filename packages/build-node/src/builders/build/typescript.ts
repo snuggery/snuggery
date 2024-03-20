@@ -8,7 +8,7 @@ import {
 import fs from "node:fs/promises";
 import ts from "typescript";
 
-import type {Schema} from "./schema";
+import type {Schema} from "./schema.js";
 
 export interface TscInput {
 	/**

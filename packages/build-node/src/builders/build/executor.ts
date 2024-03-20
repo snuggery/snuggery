@@ -12,10 +12,10 @@ import {createRequire} from "node:module";
 import {join} from "node:path";
 import {pathToFileURL} from "node:url";
 
-import {loadConfiguration} from "./config";
-import {createPlugin, PluginFactory, WrappedPlugin} from "./plugin";
-import type {Schema} from "./schema";
-import {tsc} from "./typescript";
+import {loadConfiguration} from "./config.js";
+import {createPlugin, PluginFactory, WrappedPlugin} from "./plugin.js";
+import type {Schema} from "./schema.js";
+import {tsc} from "./typescript.js";
 
 const manifestFilename = "package.json";
 

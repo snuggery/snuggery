@@ -2,6 +2,7 @@
 	"name": "@snuggery/build-node",
 	"version": "0.9.1",
 	"private": true,
+	"type": "module",
 	"license": "MIT",
 	"repository": {
 		"type": "git",

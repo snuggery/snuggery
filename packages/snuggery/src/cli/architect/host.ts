@@ -297,8 +297,22 @@ export class SnuggeryArchitectHost
 		try {
 			implementation = await dynamicImport(info.implementationPath).then(
 				info.implementationExport != null
-					? (module) => module[info.implementationExport!]
-					: (module) => module.default ?? module,
+					? (module) => {
+							while (!module[info.implementationExport!] && module.default) {
+								module = module.default;
+							}
+							return module[info.implementationExport!];
+					  }
+					: (module) => {
+							// Normally there'd only be one level of `.default`, but if the
+							// target is CJS but also TypeScript then it might be a CJS
+							// module with a default property and wait did things just
+							// explode in our face?
+							while (module.default) {
+								module = module.default;
+							}
+							return module;
+					  },
 			);
 		} catch (e) {
 			throw new InvalidBuilderError(

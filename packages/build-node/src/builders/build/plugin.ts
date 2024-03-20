@@ -6,7 +6,7 @@ import type {
 	TransformerFactory,
 } from "typescript";
 
-import type {Schema} from "./schema";
+import type {Schema} from "./schema.js";
 
 /**
  * A plugin for the `@snuggery/build-node` library compiler
