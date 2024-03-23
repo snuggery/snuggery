@@ -1,7 +1,6 @@
 {
 	"name": "@snuggery-workspace/scripts",
 	"exports": {
-		"./loader": "./loader.mjs",
 		"./load-ts": "./load-ts.js",
 		"./package.json": "./package.json"
 	},
