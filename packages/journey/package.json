@@ -11,7 +11,7 @@
 	"bin": "./bin.mjs",
 	"exports": {
 		".": "./src/index.ts",
-		"./bin": "./bin.mjs",
+		"./test-cli": "./src/cli.mjs",
 		"./agents/*": "./src/agents/*.ts",
 		"./trips/*": "./src/trips/*.ts",
 		"./package.json": "./package.json"
@@ -33,7 +33,6 @@
 	},
 	"dependencies": {
 		"@angular-devkit/schematics": "^17.0.0",
-		"@pkgjs/parseargs": "^0.11.0",
 		"@snuggery/core": "^0.7.1",
 		"@snuggery/schematics": "^0.9.1",
 		"kleur": "^4.1.5",
@@ -44,7 +43,6 @@
 		"@angular-devkit/core": "^17.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/node": "^18.17.15",
-		"@types/pkgjs__parseargs": "^0.10.0",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",
 		"typescript": "5.4.2",

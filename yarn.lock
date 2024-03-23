@@ -1685,12 +1685,10 @@ __metadata:
   dependencies:
     "@angular-devkit/core": "npm:^17.0.0"
     "@angular-devkit/schematics": "npm:^17.0.0"
-    "@pkgjs/parseargs": "npm:^0.11.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": "npm:^0.7.1"
     "@snuggery/schematics": "npm:^0.9.1"
     "@types/node": "npm:^18.17.15"
-    "@types/pkgjs__parseargs": "npm:^0.10.0"
     "@types/prompts": "npm:^2.4.4"
     "@types/semver": "npm:^7.3.13"
     kleur: "npm:^4.1.5"
@@ -1951,13 +1949,6 @@ __metadata:
   version: 4.0.0
   resolution: "@types/parse-json@npm:4.0.0"
   checksum: 10c0/1d3012ab2fcdad1ba313e1d065b737578f6506c8958e2a7a5bdbdef517c7e930796cb1599ee067d5dee942fb3a764df64b5eef7e9ae98548d776e86dcffba985
-  languageName: node
-  linkType: hard
-
-"@types/pkgjs__parseargs@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "@types/pkgjs__parseargs@npm:0.10.0"
-  checksum: 10c0/eeb0e4b47545946ba203d99671e8e6609856815fa6edbbd0bca84a07ab3de2567bcfa153cd02d14cd3aca8b490eb445e206e7de8db0508e976a642f1bb72e951
   languageName: node
   linkType: hard
 
@@ -5295,6 +5286,7 @@ __metadata:
     "@snuggery/journey": "workspace:packages/journey"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@types/node": "npm:^18.17.15"
+    strip-ansi: "npm:^6.0.1"
     test-builders: "workspace:*"
     test-schematics: "workspace:*"
     uvu: "npm:^0.5.6"

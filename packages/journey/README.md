@@ -28,15 +28,15 @@ Usage: journey [options] <package>
        journey [options] --from <version> <package>
 
 Options:
-  -f, --force   		overwrite files that the journeys try to create if they already exist
-  -d, --dry-run 		only show files that would be changed, don't make any actual changes
-  -v, --verbose 		include debug logging
-  -h, --help    		print this help message
+	-f, --force   		overwrite files that the journeys try to create if they already exist
+	-d, --dry-run 		only show files that would be changed, don't make any actual changes
+	-v, --verbose 		include debug logging
+	-h, --help    		print this help message
 
 Options when using --from:
-  --from        		version to journey from
-  --to          		version to journey towards, defaults to the currently installed version
-  --partial      		pick and choose which journeys to run
+	--from        		version to journey from
+	--to          		version to journey towards, defaults to the currently installed version
+	--partial     		pick and choose which journeys to run
 ```
 
 ## Creating journeys

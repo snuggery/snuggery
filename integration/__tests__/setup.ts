@@ -56,7 +56,7 @@ export function inFixture(
 	};
 }
 
-class EmptyReadable extends Readable {
+export class EmptyReadable extends Readable {
 	constructor() {
 		super({
 			read: () => {
@@ -66,7 +66,7 @@ class EmptyReadable extends Readable {
 	}
 }
 
-class CollectingWritable extends Writable {
+export class CollectingWritable extends Writable {
 	readonly #buffers: Buffer[] = [];
 
 	constructor() {
@@ -80,6 +80,10 @@ class CollectingWritable extends Writable {
 
 	getContent() {
 		return Buffer.concat(this.#buffers);
+	}
+
+	reset() {
+		this.#buffers.length = 0;
 	}
 }
 
