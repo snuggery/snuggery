@@ -1,13 +1,13 @@
 import {Cli, Command, RunContext} from "clipanion";
 import {createRequire} from "node:module";
 
+import type {SnuggeryArchitectHost} from "./architect/index.js";
 import type {AbstractCommand} from "./command/abstract-command.js";
 import type {CliWorkspace, Context} from "./command/context.js";
 import {DoctorCommand} from "./commands/doctor.js";
-import {EntryCommand} from "./commands/entry.js";
 import {EntryWithProjectCommand} from "./commands/entry-with-project.js";
+import {EntryCommand} from "./commands/entry.js";
 import {GenerateCommand} from "./commands/generate.js";
-import {HelpCommand} from "./commands/help.js";
 import {HelpBuilderCommand} from "./commands/help/builder.js";
 import {HelpBuildersCommand} from "./commands/help/builders.js";
 import {HelpMigrationsCommand} from "./commands/help/migrations.js";
@@ -18,6 +18,7 @@ import {HelpSchematicsCommand} from "./commands/help/schematics.js";
 import {HelpTargetCommand} from "./commands/help/target.js";
 import {HelpTargetsCommand} from "./commands/help/targets.js";
 import {HelpUpdateCommand} from "./commands/help/update.js";
+import {HelpCommand} from "./commands/help.js";
 import {NewCommand} from "./commands/new.js";
 import {ProjectCommand} from "./commands/project.js";
 import {RunBuilderCommand} from "./commands/run/builder.js";
@@ -29,7 +30,6 @@ import {RunUpdateCommand} from "./commands/run/update.js";
 import {SyncConfigToCommand} from "./commands/sync-config-to.js";
 import {VersionCommand} from "./commands/version.js";
 import {Report} from "./utils/report.js";
-import type {SnuggeryArchitectHost} from "./architect/index.js";
 
 export {workspaceFilenames} from "@snuggery/core";
 

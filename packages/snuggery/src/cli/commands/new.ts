@@ -1,7 +1,7 @@
 import {Option} from "clipanion";
+import {createRequire} from "module";
 
 import {SchematicCommand} from "../command/schematic.js";
-import {createRequire} from "module";
 
 export class NewCommand extends SchematicCommand {
 	static override readonly paths = [["new"]];

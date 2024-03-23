@@ -6,11 +6,11 @@ import {mkdtempSync} from "node:fs";
 import {mkdir, readFile, rm, writeFile} from "node:fs/promises";
 import {tmpdir} from "node:os";
 import {join} from "node:path";
+import {Readable} from "node:stream";
 import stripAnsi from "strip-ansi";
 import {suite} from "uvu";
 
 import {CollectingWritable} from "./setup";
-import {Readable} from "node:stream";
 
 async function exec(
 	args: [string, ...string[]],
@@ -44,7 +44,7 @@ async function exec(
 	const stdout = new CollectingWritable();
 	const stderr = new CollectingWritable();
 
-	// @ts-ignore
+	// @ts-expect-error we didn't provide types
 	const {run} = await import("@snuggery/journey/test-cli");
 
 	const result = await run({

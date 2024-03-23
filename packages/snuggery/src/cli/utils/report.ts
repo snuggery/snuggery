@@ -10,8 +10,8 @@ import sliceAnsi from "@arcanis/slice-ansi";
 import type {JsonValue} from "@snuggery/core";
 import $ from "kleur";
 import type {Writable} from "node:stream";
-import stripAnsi from "strip-ansi";
 import type {WriteStream} from "node:tty";
+import stripAnsi from "strip-ansi";
 
 export type ReportOptions = {
 	enableColors: boolean;
