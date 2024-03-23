@@ -295,25 +295,25 @@ export class SnuggeryArchitectHost
 	): Promise<Builder<JsonObject> | null> {
 		let implementation;
 		try {
-			implementation = await dynamicImport(info.implementationPath).then(
-				info.implementationExport != null
-					? (module) => {
-							while (!module[info.implementationExport!] && module.default) {
-								module = module.default;
-							}
-							return module[info.implementationExport!];
-					  }
-					: (module) => {
-							// Normally there'd only be one level of `.default`, but if the
-							// target is CJS but also TypeScript then it might be a CJS
-							// module with a default property and wait did things just
-							// explode in our face?
-							while (module.default) {
-								module = module.default;
-							}
-							return module;
-					  },
-			);
+			implementation = await dynamicImport(info.implementationPath);
+
+			// Normally there'd only be one level of `.default`, but if the
+			// target is CJS compiled from ESM/TypeScript then it might be a CJS
+			// module with a default property which is then exposed as default
+			// export and wait did things just explode in our face?
+			if (info.implementationExport) {
+				while (
+					!implementation[info.implementationExport] &&
+					implementation.default
+				) {
+					implementation = implementation.default;
+				}
+				implementation = implementation[info.implementationExport];
+			} else {
+				while (implementation.default) {
+					implementation = implementation.default;
+				}
+			}
 		} catch (e) {
 			throw new InvalidBuilderError(
 				`Failed to load implementation for builder "${
