@@ -19,6 +19,7 @@ if (traceCli) {
 		"@angular-devkit/schematics",
 
 		"rxjs",
+		"yaml",
 	]);
 
 	for (const dependency of disallowedDependencies) {

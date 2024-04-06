@@ -24,7 +24,7 @@
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/glob": "8.1.0",
-		"@types/node": "^18.17.15",
+		"@types/node": "^20.11.30",
 		"@types/semver": "^7",
 		"uvu": "^0.5.2"
 	},

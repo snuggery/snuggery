@@ -55,7 +55,7 @@
 		"@microsoft/api-extractor": "7.24.1",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/less": "^3.0.3",
-		"@types/node": "^18.17.15",
+		"@types/node": "^20.11.30",
 		"less": "^4.1.3",
 		"sass": "^1.62.0",
 		"typescript": "5.4.2"

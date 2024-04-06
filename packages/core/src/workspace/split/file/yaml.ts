@@ -43,10 +43,10 @@ function processParseErrors(errors: readonly YAML.YAMLError[]) {
 export class YamlFileHandle extends AbstractFileHandle<
 	YAML.Document.Parsed<YAML.ParsedNode>
 > {
-	#YAML: typeof YAML = require("yaml");
+	readonly #YAML = import("yaml");
 
 	async parse(source: string): Promise<YAML.Document.Parsed<YAML.ParsedNode>> {
-		const document = this.#YAML.parseDocument(source, yamlOptions);
+		const document = (await this.#YAML).parseDocument(source, yamlOptions);
 
 		processParseErrors(document.errors);
 
@@ -63,20 +63,20 @@ export class YamlFileHandle extends AbstractFileHandle<
 		return value;
 	}
 
-	stringify(value: JsonObject): string {
-		return this.#YAML.stringify(value, yamlOptions);
+	async stringify(value: JsonObject): Promise<string> {
+		return (await this.#YAML).stringify(value, yamlOptions);
 	}
 
 	createHeader(header: string | string[]): string {
 		return `# ${[header].flat().join("\n# ")}\n`;
 	}
 
-	applyChanges(
+	async applyChanges(
 		_source: string,
 		document: YAML.Document.Parsed<YAML.ParsedNode>,
 		changes: readonly Change[],
-	): string {
-		const YAML = this.#YAML;
+	): Promise<string> {
+		const YAML = await this.#YAML;
 		function assertIsCollection(
 			node: YAML.ParsedNode | YAML.Node | null | undefined,
 			path: JsonPropertyPath,

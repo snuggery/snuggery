@@ -7,7 +7,7 @@ import {
 	NodeModulesEngineHost,
 	NodeWorkflow,
 } from "@angular-devkit/schematics/tools";
-import kleur from "kleur";
+import {bold, green, yellow, red, cyan, blue} from "kleur/colors";
 import {stat, readFile} from "node:fs/promises";
 import {createRequire} from "node:module";
 import {join, resolve} from "node:path";
@@ -277,12 +277,12 @@ export async function run({
 	}
 
 	const logger = createConsoleLogger(options.verbose, stdout, stderr, {
-		warn: (message) => kleur.bold().yellow(message),
-		error: (message) => kleur.bold().red(message),
-		fatal: (message) => kleur.bold().red(message),
+		warn: (message) => bold(yellow(message)),
+		error: (message) => bold(red(message)),
+		fatal: (message) => bold(red(message)),
 	});
 
-	logger.info(kleur.cyan(`Executing ${positionals[0]} journey\n`));
+	logger.info(cyan(`Executing ${positionals[0]} journey\n`));
 
 	for (const migration of migrations) {
 		let error = false;
@@ -291,9 +291,7 @@ export async function run({
 		/** @type {string[]} */
 		let logs = [];
 
-		logger.info(
-			kleur.bold(`** ${getMigrationTitleAndDescription(migration).title}`),
-		);
+		logger.info(bold(`** ${getMigrationTitleAndDescription(migration).title}`));
 
 		const reporterSubscription = !options["dry-run"]
 			? workflow.reporter.subscribe((event) => {
@@ -324,23 +322,21 @@ export async function run({
 							break;
 						}
 						case "update":
-							logs.push(`${kleur.cyan("Update")} ${eventPath}`);
+							logs.push(`${cyan("Update")} ${eventPath}`);
 							files.add(eventPath);
 							break;
 						case "create":
-							logs.push(`${kleur.green("Create")} ${eventPath}`);
+							logs.push(`${green("Create")} ${eventPath}`);
 							files.add(eventPath);
 							break;
 						case "delete":
-							logs.push(`${kleur.yellow("Delete")} ${eventPath}`);
+							logs.push(`${yellow("Delete")} ${eventPath}`);
 							files.add(eventPath);
 							break;
 						case "rename": {
 							const eventToPath =
 								event.to.charAt(0) === "/" ? event.to.substring(1) : event.to;
-							logs.push(
-								`${kleur.blue("Rename")} ${eventPath} => ${eventToPath}`,
-							);
+							logs.push(`${blue("Rename")} ${eventPath} => ${eventToPath}`);
 							files.add(eventPath);
 							break;
 						}

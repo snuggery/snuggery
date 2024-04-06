@@ -1565,7 +1565,7 @@ __metadata:
     "@snuggery/core": "npm:^0.7.1"
     "@snuggery/snuggery": "npm:^0.11.1"
     "@types/glob": "npm:8.1.0"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@types/semver": "npm:^7"
     glob: "npm:^10.2.1"
     semver: "npm:^7.3.7"
@@ -1583,7 +1583,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": "npm:^0.7.1"
     "@types/glob": "npm:8.1.0"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     glob: "npm:^10.2.1"
     rxjs: "npm:^7.8.0"
     uvu: "npm:^0.5.6"
@@ -1601,7 +1601,7 @@ __metadata:
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"
     "@types/less": "npm:^3.0.3"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     autoprefixer: "npm:^10.4.14"
     browserslist: "npm:^4.21.5"
     esbuild: "npm:^0.20.2"
@@ -1634,7 +1634,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     typanion: "npm:^3.12.1"
     typescript: "npm:5.4.2"
     uvu: "npm:^0.5.6"
@@ -1657,12 +1657,12 @@ __metadata:
     "@bgotink/kdl": "npm:0.2.0-next.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@types/micromatch": "npm:^4.0.2"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     jsonc-parser: "npm:^3.2.0"
     micromatch: "npm:^4.0.5"
     typanion: "npm:^3.12.1"
     uvu: "npm:^0.5.6"
-    yaml: "npm:^2.2.1"
+    yaml: "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -1672,7 +1672,7 @@ __metadata:
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/snuggery": "npm:^0.11.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@yarnpkg/pnp": "npm:3.2.0"
   bin:
     sn: bin.sh
@@ -1688,7 +1688,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": "npm:^0.7.1"
     "@snuggery/schematics": "npm:^0.9.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@types/prompts": "npm:^2.4.4"
     "@types/semver": "npm:^7.3.13"
     kleur: "npm:^4.1.5"
@@ -1716,7 +1716,7 @@ __metadata:
     "@angular-devkit/schematics": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": "npm:^0.7.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     ignore: "npm:^5.2.4"
     typescript: "npm:5.4.2"
   peerDependencies:
@@ -1741,7 +1741,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@types/prettier": "npm:^2.7.2"
     "@types/prompts": "npm:^2.4.4"
     "@types/semver": "npm:^7.3.13"
@@ -1766,7 +1766,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/yarn-plugin-snuggery@workspace:packages/yarn-plugin-snuggery"
   dependencies:
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@types/semver": "npm:^7.3.8"
     "@yarnpkg/builder": "npm:4.0.0"
     "@yarnpkg/cli": "npm:4.0.1"
@@ -1799,7 +1799,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
   languageName: unknown
   linkType: soft
 
@@ -1922,12 +1922,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:^18.17.15":
-  version: 18.18.9
-  resolution: "@types/node@npm:18.18.9"
+"@types/node@npm:*, @types/node@npm:^20.11.30":
+  version: 20.11.30
+  resolution: "@types/node@npm:20.11.30"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10c0/8d58fba5eede0df009412ee188bc96f4baf340f4fafbda1bc66fb680fa775aedc88f0cb154a2455966443d9538af402fff022fb0632bddb1bd0648e5a86e5db9
+  checksum: 10c0/867cfaf969c6d8850d8d7304e7ab739898a50ecb1395b61ff2335644f5f48d7a46fbc4a14cee967aed65ec134b61a746edae70d1f32f11321ccf29165e3bc4e6
   languageName: node
   linkType: hard
 
@@ -1942,6 +1942,15 @@ __metadata:
   version: 13.13.38
   resolution: "@types/node@npm:13.13.38"
   checksum: 10c0/b1afb5ba49afdc29dfa198dd83f41ee1a1ce25c1dd5c8ad79cbf518433430b1a83613008d070487d5e6b428904937b7df2d810fe5199964a76f229377e307835
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^18.17.15":
+  version: 18.18.9
+  resolution: "@types/node@npm:18.18.9"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/8d58fba5eede0df009412ee188bc96f4baf340f4fafbda1bc66fb680fa775aedc88f0cb154a2455966443d9538af402fff022fb0632bddb1bd0648e5a86e5db9
   languageName: node
   linkType: hard
 
@@ -2807,7 +2816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-formats@npm:2.1.1, ajv-formats@npm:^2.1.1":
+"ajv-formats@npm:^2.1.1":
   version: 2.1.1
   resolution: "ajv-formats@npm:2.1.1"
   dependencies:
@@ -2835,7 +2844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.12.0, ajv@npm:^8.0.0, ajv@npm:^8.12.0":
+"ajv@npm:8.12.0, ajv@npm:^8.0.0":
   version: 8.12.0
   resolution: "ajv@npm:8.12.0"
   dependencies:
@@ -5285,7 +5294,7 @@ __metadata:
     "@snuggery/core": "workspace:packages/core"
     "@snuggery/journey": "workspace:packages/journey"
     "@snuggery/snuggery": "workspace:packages/snuggery"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     strip-ansi: "npm:^6.0.1"
     test-builders: "workspace:*"
     test-schematics: "workspace:*"
@@ -6893,7 +6902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1, picomatch@npm:^2.3.1":
+"picomatch@npm:^2.0.4, picomatch@npm:^2.2.1":
   version: 2.3.1
   resolution: "picomatch@npm:2.3.1"
   checksum: 10c0/26c02b8d06f03206fc2ab8d16f19960f2ff9e81a658f831ecb656d8f17d9edc799e8364b1f4a7873e89d9702dff96204be0fa26fe4181f6843f040f819dac4be
@@ -7561,7 +7570,7 @@ __metadata:
     "@snuggery/build-node": "workspace:packages/build-node"
     "@snuggery/snuggery": "workspace:packages/snuggery"
     "@snuggery/yarn": "workspace:packages/yarn"
-    "@types/node": "npm:^18.17.15"
+    "@types/node": "npm:^20.11.30"
     "@typescript-eslint/eslint-plugin": "npm:^7.3.1"
     "@typescript-eslint/parser": "npm:^7.3.1"
     cspell-lib: "npm:^5.12.6"
@@ -8364,10 +8373,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:^2.2.1":
-  version: 2.2.1
-  resolution: "yaml@npm:2.2.1"
-  checksum: 10c0/12f3a73f2d28970d146184b1425d32a63f65e9f4840eeab09155a4d23a15be8401ac7a3a09b6626895ccf853c1b9069450957c0ad82cfe591369aaa58d1593d6
+"yaml@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "yaml@npm:2.4.1"
+  bin:
+    yaml: bin.mjs
+  checksum: 10c0/816057dbaea16a7dfb0b868ace930f143dece96bbb4c4fbb6f38aa389166f897240d9fa535dbfd6b1b0d9442416f4abcc698e63f82394d0c67b329aa6c2be576
   languageName: node
   linkType: hard
 

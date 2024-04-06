@@ -19,12 +19,12 @@
 		"jsonc-parser": "^3.2.0",
 		"micromatch": "^4.0.5",
 		"typanion": "^3.12.1",
-		"yaml": "^2.2.1"
+		"yaml": "^2.4.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/micromatch": "^4.0.2",
-		"@types/node": "^18.17.15",
+		"@types/node": "^20.11.30",
 		"uvu": "^0.5.6"
 	},
 	"publishConfig": {

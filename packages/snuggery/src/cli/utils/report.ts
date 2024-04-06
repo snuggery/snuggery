@@ -8,7 +8,7 @@
 
 import sliceAnsi from "@arcanis/slice-ansi";
 import type {JsonValue} from "@snuggery/core";
-import $ from "kleur";
+import {gray, white, yellow, red} from "kleur/colors";
 import type {Writable} from "node:stream";
 import type {WriteStream} from "node:tty";
 import stripAnsi from "strip-ansi";
@@ -54,7 +54,7 @@ class BaseReport {
 		}
 
 		if (!this.#json) {
-			this.#writeLine(text, {color: $.gray});
+			this.#writeLine(text, {color: gray});
 		} else {
 			this.reportJson({
 				type: `debug`,
@@ -66,7 +66,7 @@ class BaseReport {
 	reportInfo(text: string): void {
 		if (!this.#json) {
 			this.#writeLine(text, {
-				color: $.white,
+				color: white,
 			});
 		} else {
 			this.reportJson({
@@ -79,7 +79,7 @@ class BaseReport {
 	reportWarning(text: string): void {
 		if (!this.#json) {
 			this.#writeLine(text, {
-				color: $.yellow,
+				color: yellow,
 			});
 		} else {
 			this.reportJson({
@@ -93,7 +93,7 @@ class BaseReport {
 		if (!this.#json) {
 			this.#writeLine(text, {
 				truncate: false,
-				color: $.red,
+				color: red,
 			});
 		} else {
 			this.reportJson({
