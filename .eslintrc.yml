@@ -39,6 +39,7 @@ overrides:
       - "**/*.mjs"
       - "packages/build-angular/src/**/*.js"
       - "packages/snuggery/src/**/*.js"
+      - "packages/snuggery/*.js"
     parserOptions:
       ecmaVersion: 2022
       sourceType: module

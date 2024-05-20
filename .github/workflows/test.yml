@@ -61,6 +61,10 @@ jobs:
         node:
           - 18.x
           - 20.x
+        include:
+          # Test on future node LTS
+          - os: ubuntu-latest
+            node: 22.x
 
     steps:
       - uses: actions/checkout@v4

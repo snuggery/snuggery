@@ -1,11 +1,10 @@
+import * as lexer from "cjs-module-lexer";
+import {transform} from "esbuild";
 import {readFileSync} from "node:fs";
 import {readFile} from "node:fs/promises";
 import {isBuiltin} from "node:module";
 import {dirname, extname, basename} from "node:path/posix";
 import process from "node:process";
-import * as lexer from "cjs-module-lexer";
-
-import {transform} from "esbuild";
 
 const tsToJs = {
 	".cts": ".cjs",

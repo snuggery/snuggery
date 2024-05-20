@@ -3,6 +3,7 @@
 
 /dist
 /packages/*/dist
+/packages/*/out-tsc
 /integration/__fixtures__/angular/dist
 /integration/__fixtures__/angular/packages/*/dist
 

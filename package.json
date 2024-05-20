@@ -54,7 +54,9 @@
 		"ajv-formats@^2.1.1": "patch:ajv-formats@npm%3A^2.1.1#.yarn/patches/ajv-formats.patch",
 		"ajv-formats@2.1.1": "patch:ajv-formats@npm%3A^2.1.1#.yarn/patches/ajv-formats.patch",
 		"nx@npm:18.0.4": "patch:nx@npm%3A18.0.4#~/.yarn/patches/nx-npm-18.0.4-1cebaa58e6.patch",
-		"micromatch/picomatch": "3.0.1"
+		"micromatch/picomatch": "3.0.1",
+		"import-fresh@npm:^3.3.0": "patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch",
+		"import-fresh@npm:^3.2.1": "patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch"
 	},
 	"packageManager": "yarn@4.1.1"
 }

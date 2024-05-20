@@ -1,8 +1,6 @@
 const {register} = require("node:module");
 const {pathToFileURL} = require("node:url");
 
-const jsLoader = require.extensions[".js"];
-
 require("esbuild-register/dist/node").register({
 	extensions: [".cts", ".ts"],
 	format: "cjs",

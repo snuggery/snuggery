@@ -5201,13 +5201,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"import-fresh@npm:^3.2.1, import-fresh@npm:^3.3.0":
+"import-fresh@npm:3.3.0":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
   dependencies:
     parent-module: "npm:^1.0.0"
     resolve-from: "npm:^4.0.0"
   checksum: 10c0/7f882953aa6b740d1f0e384d0547158bc86efbf2eea0f1483b8900a6f65c5a5123c2cf09b0d542cc419d0b98a759ecaeb394237e97ea427f2da221dc3cd80cc3
+  languageName: node
+  linkType: hard
+
+"import-fresh@patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch":
+  version: 3.3.0
+  resolution: "import-fresh@patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch::version=3.3.0&hash=37feea"
+  dependencies:
+    parent-module: "npm:^1.0.0"
+    resolve-from: "npm:^4.0.0"
+  checksum: 10c0/4d7478bdd6675a0f9e328aaac04e9d032f09429115f4306b70273513a1e9bdfbe2691b75c8573e39d391a6e22495e838e94bc07ba74b24e94e4ffec0239770cc
   languageName: node
   linkType: hard
 
