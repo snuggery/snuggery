@@ -1581,7 +1581,7 @@ __metadata:
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.10.1"
     "@snuggery/core": "npm:^0.8.1"
-    "@snuggery/snuggery": "npm:^0.12.2"
+    "@snuggery/snuggery": "npm:^0.12.3"
     "@types/glob": "npm:8.1.0"
     "@types/node": "npm:^20.11.30"
     "@types/semver": "npm:^7"
@@ -1698,7 +1698,7 @@ __metadata:
   resolution: "@snuggery/global@workspace:packages/global"
   dependencies:
     "@snuggery-workspace/scripts": "workspace:scripts"
-    "@snuggery/snuggery": "npm:^0.12.2"
+    "@snuggery/snuggery": "npm:^0.12.3"
     "@types/node": "npm:^20.11.30"
     "@yarnpkg/pnp": "npm:3.2.0"
   bin:
@@ -1758,7 +1758,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@snuggery/snuggery@npm:^0.12.2, @snuggery/snuggery@workspace:packages/snuggery":
+"@snuggery/snuggery@npm:^0.12.3, @snuggery/snuggery@workspace:packages/snuggery":
   version: 0.0.0-use.local
   resolution: "@snuggery/snuggery@workspace:packages/snuggery"
   dependencies:
