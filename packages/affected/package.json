@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/affected",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -14,9 +14,9 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.10.0",
-		"@snuggery/core": "^0.8.0",
-		"@snuggery/snuggery": "^0.12.0",
+		"@snuggery/architect": "^0.10.1",
+		"@snuggery/core": "^0.8.1",
+		"@snuggery/snuggery": "^0.12.1",
 		"glob": "^10.2.1",
 		"semver": "^7.3.7",
 		"typanion": "^3.7.1"
