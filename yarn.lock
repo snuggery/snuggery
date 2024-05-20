@@ -1597,7 +1597,6 @@ __metadata:
   resolution: "@snuggery/architect@workspace:packages/architect"
   dependencies:
     "@angular-devkit/architect": "npm:>= 0.1700.0 < 0.1800.0"
-    "@angular-devkit/core": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/core": "npm:^0.7.1"
     "@types/glob": "npm:8.1.0"
@@ -1605,6 +1604,11 @@ __metadata:
     glob: "npm:^10.2.1"
     rxjs: "npm:^7.8.0"
     uvu: "npm:^0.5.6"
+  peerDependencies:
+    "@angular-devkit/core": ^17.0.0
+  peerDependenciesMeta:
+    "@angular-devkit/core":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -1681,6 +1685,11 @@ __metadata:
     typanion: "npm:^3.12.1"
     uvu: "npm:^0.5.6"
     yaml: "npm:^2.4.1"
+  peerDependencies:
+    "@angular-devkit/core": ^17.0.0
+  peerDependenciesMeta:
+    "@angular-devkit/core":
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -1742,6 +1751,8 @@ __metadata:
     "@angular-devkit/schematics": ^17.0.0
     typescript: ">= 4.0.0 < 5.5.0"
   peerDependenciesMeta:
+    "@angular-devkit/core":
+      optional: true
     typescript:
       optional: true
   languageName: unknown

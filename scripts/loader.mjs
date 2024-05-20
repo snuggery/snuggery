@@ -131,7 +131,7 @@ export async function resolve(specifier, context, nextResolve) {
 	const extension = extname(url.pathname);
 	const jsExtension = tsToJs[extension];
 
-	if (!jsExtension ?? !(extension in jsToTs)) {
+	if (!jsExtension && !(extension in jsToTs)) {
 		return result;
 	}
 
@@ -192,14 +192,14 @@ export async function load(urlString, context, nextLoad) {
 
 	const url = new URL(urlString);
 
-	if (url.protocol !== "file:" || isBuiltin(urlString) || !context.format) {
+	if (url.protocol !== "file:" || isBuiltin(urlString)) {
 		return await nextLoad(urlString, context);
 	}
 
 	const extension = extname(url.pathname);
 
 	// Ensure no warnings by node.js for packages calling require() for JSON files
-	if (extension === ".json" && context.conditions.includes("require")) {
+	if (extension === ".json") {
 		return {
 			shortCircuit: true,
 			format: "commonjs",

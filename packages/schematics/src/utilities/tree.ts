@@ -1,4 +1,4 @@
-import {fragment} from "@angular-devkit/core";
+import type {PathFragment} from "@angular-devkit/core";
 import type {DirEntry, Tree} from "@angular-devkit/schematics";
 import {matchesPatterns} from "@snuggery/core";
 import mkIgnore from "ignore";
@@ -23,7 +23,7 @@ export function* walkTree(
 	}
 }
 
-const ignoreFile = fragment(".gitignore");
+const ignoreFile = ".gitignore" as PathFragment;
 
 function* walkDir(
 	dir: DirEntry,

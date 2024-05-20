@@ -3,8 +3,13 @@
  * angular's configuration format version 1 (used by angular.json, workspace.json and snuggery.json)
  */
 
-import type {workspaces} from "@angular-devkit/core";
-
+import type {
+	UpstreamProjectDefinition,
+	UpstreamProjectDefinitionCollection,
+	UpstreamTargetDefinition,
+	UpstreamTargetDefinitionCollection,
+	UpstreamWorkspaceDefinition,
+} from "../../../types";
 import {proxyObject} from "../../proxy";
 import {
 	InvalidConfigurationError,
@@ -82,9 +87,7 @@ export class AngularTargetDefinition implements TargetDefinition {
 			defaultConfiguration,
 			options,
 			extensions = {},
-		}:
-			| TargetDefinition
-			| (workspaces.TargetDefinition & {extensions?: undefined}),
+		}: TargetDefinition | (UpstreamTargetDefinition & {extensions?: undefined}),
 		raw: JsonObject,
 	) {
 		raw.builder = builder;
@@ -203,7 +206,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	static fromValue(
-		value: workspaces.TargetDefinitionCollection,
+		value: UpstreamTargetDefinitionCollection,
 		getRaw: () => JsonObject,
 	) {
 		if (value.size === 0) {
@@ -247,7 +250,7 @@ class AngularTargetDefinitionCollection extends TargetDefinitionCollection {
 
 	protected override _wrapValue(
 		key: string,
-		value: TargetDefinition | workspaces.TargetDefinition,
+		value: TargetDefinition | UpstreamTargetDefinition,
 	): TargetDefinition {
 		this.#raw[key] = {};
 		return AngularTargetDefinition.fromValue(
@@ -323,7 +326,7 @@ class AngularProjectDefinition implements ProjectDefinition {
 	}
 
 	static fromValue(
-		value: ProjectDefinition | workspaces.ProjectDefinition,
+		value: ProjectDefinition | UpstreamProjectDefinition,
 		raw: JsonObject,
 	) {
 		raw.root = value.root;
@@ -441,7 +444,7 @@ class AngularProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	static fromValue(
-		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
+		value: ProjectDefinitionCollection | UpstreamProjectDefinitionCollection,
 		getRaw: () => JsonObject,
 	) {
 		if (value.size === 0) {
@@ -537,9 +540,7 @@ export class AngularWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		return new this(projects, raw);
 	}
 
-	static fromValue(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
-	) {
+	static fromValue(value: WorkspaceDefinition | UpstreamWorkspaceDefinition) {
 		if (value instanceof AngularWorkspaceDefinition) {
 			return value;
 		}
@@ -596,7 +597,7 @@ export class AngularWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async write(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		value: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 		options: {header?: string | string[]},
 	): Promise<void> {
 		await this.#file.write(

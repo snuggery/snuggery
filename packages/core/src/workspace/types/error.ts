@@ -8,12 +8,3 @@ export class InvalidConfigurationError extends Error {
 		this.name = this.constructor.name;
 	}
 }
-
-export class UnsupportedOperationError extends Error {
-	readonly clipanion = {type: "none"} as const;
-
-	constructor(message: string) {
-		super(message);
-		this.name = this.constructor.name;
-	}
-}

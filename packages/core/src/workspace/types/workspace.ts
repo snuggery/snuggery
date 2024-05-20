@@ -1,4 +1,8 @@
-import type {workspaces} from "@angular-devkit/core";
+import type {
+	UpstreamProjectDefinition,
+	UpstreamTargetDefinition,
+	UpstreamWorkspaceDefinition,
+} from "../../types";
 
 import type {JsonObject} from "./json";
 
@@ -108,13 +112,13 @@ export abstract class ConvertibleWorkspaceDefinition
 	 * onto the return value reflect on this workspace definition, making it safe to pass along and
 	 * modify.
 	 */
-	toAngularWorkspaceDefinition(): workspaces.WorkspaceDefinition {
+	toAngularWorkspaceDefinition(): UpstreamWorkspaceDefinition {
 		// This method might look pointless, but it isn't. We've patched the @angular-devkit/core types
 		// to remove some private properties on the workspace types which allow us to pass off snuggery
 		// types as if they're angular types.
 		// Downstream projects won't include the same patch, so they won't be able to pass off a
 		// snuggery workspace definition as an angular workspace definition. This method allows these
-		// projects to cast without having to do `as unknown as workspaces.WorkspaceDefinition`.
+		// projects to cast without having to do `as unknown as UpstreamWorkspaceDefinition`.
 		return this;
 	}
 }
@@ -209,11 +213,11 @@ abstract class DefinitionCollection<T, N> implements ReadonlyMap<string, T> {
 
 export class ProjectDefinitionCollection extends DefinitionCollection<
 	ProjectDefinition,
-	workspaces.ProjectDefinition
+	UpstreamProjectDefinition
 > {
 	protected _wrapValue(
 		_key: string,
-		value: ProjectDefinition | workspaces.ProjectDefinition,
+		value: ProjectDefinition | UpstreamProjectDefinition,
 	): ProjectDefinition {
 		const clonedValue: ProjectDefinition = {
 			...(value as ProjectDefinition),
@@ -243,14 +247,18 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 	 * collection.add(project);
 	 * project.root = 'packages/ipsum';
 	 *
-	 * assert(collection.get(project.name).root === 'lorem');
+	 * assert(collection.get(project.name).root === 'packages/lorem');
 	 * ```
 	 *
 	 * @throws if a project with the given name is already present
 	 */
-	add(
-		...project: Parameters<workspaces.ProjectDefinitionCollection["add"]>
-	): ProjectDefinition;
+	add(definition: {
+		name: string;
+		root: string;
+		sourceRoot?: string;
+		prefix?: string;
+		targets?: Record<string, UpstreamTargetDefinition | undefined>;
+	}): ProjectDefinition;
 	/**
 	 * Add a new project to the collection
 	 *
@@ -262,7 +270,7 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 	 * collection.add(project);
 	 * project.root = 'packages/ipsum';
 	 *
-	 * assert(collection.get(project.name).root === 'lorem');
+	 * assert(collection.get(project.name).root === 'packages/lorem');
 	 * ```
 	 *
 	 * @throws if a project with the given name is already present
@@ -273,7 +281,7 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 			root: string;
 			prefix?: string;
 			sourceRoot?: string;
-			targets: Record<string, TargetDefinition | workspaces.TargetDefinition>;
+			targets: Record<string, TargetDefinition | UpstreamTargetDefinition>;
 		},
 	): ProjectDefinition;
 	add({
@@ -288,7 +296,7 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 		root: string;
 		prefix?: string;
 		sourceRoot?: string;
-		targets: Record<string, TargetDefinition | workspaces.TargetDefinition>;
+		targets: Record<string, TargetDefinition | UpstreamTargetDefinition>;
 	}): ProjectDefinition {
 		if (this.has(name)) {
 			throw new Error(`Project ${JSON.stringify(name)} already exists`);
@@ -316,11 +324,11 @@ export class ProjectDefinitionCollection extends DefinitionCollection<
 
 export class TargetDefinitionCollection extends DefinitionCollection<
 	TargetDefinition,
-	workspaces.TargetDefinition
+	UpstreamTargetDefinition
 > {
 	protected _wrapValue(
 		_key: string,
-		value: TargetDefinition | workspaces.TargetDefinition,
+		value: TargetDefinition | UpstreamTargetDefinition,
 	): TargetDefinition {
 		// @ts-expect-error There's no cast that makes typescript happy here
 		return {extensions: {}, ...value};
@@ -375,7 +383,7 @@ export interface WorkspaceHandle {
 	read(): Promise<ConvertibleWorkspaceDefinition>;
 
 	write(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		value: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 		options: {header?: string | string[]},
 	): Promise<void>;
 

@@ -30,3 +30,8 @@ export {
 	type JsonPropertyPath,
 	type JsonValue,
 } from "./workspace";
+export type {
+	UpstreamProjectDefinition,
+	UpstreamTargetDefinition,
+	UpstreamWorkspaceDefinition,
+} from "./types";

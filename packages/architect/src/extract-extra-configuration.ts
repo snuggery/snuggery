@@ -1,9 +1,9 @@
-import type {workspaces} from "@angular-devkit/core";
 import {
 	type ExtraConfigurationDefinition,
 	type ExtraConfigurationDefinitionWithType,
 	type JsonValue,
 	extractExtraConfiguration as _extractExtraConfiguration,
+	type UpstreamWorkspaceDefinition,
 	type WorkspaceDefinition,
 } from "@snuggery/core";
 
@@ -35,14 +35,14 @@ export function extractExtraConfiguration<
 >(
 	definition: T,
 	context: BuilderContext,
-	workspace?: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	workspace?: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 ): T extends ExtraConfigurationDefinitionWithType<infer U>
 	? Promise<U[]>
 	: Promise<JsonValue[]>;
 export async function extractExtraConfiguration(
 	configurationDefinition: ExtraConfigurationDefinition,
 	context: BuilderContext,
-	workspace?: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	workspace?: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 ): Promise<JsonValue[]> {
 	if (workspace == null) {
 		workspace = await findWorkspace(context);

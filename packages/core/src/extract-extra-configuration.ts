@@ -1,6 +1,10 @@
-import type {workspaces} from "@angular-devkit/core";
 import type {StrictValidator} from "typanion";
 
+import type {
+	UpstreamProjectDefinition,
+	UpstreamTargetDefinition,
+	UpstreamWorkspaceDefinition,
+} from "./types";
 import type {
 	JsonValue,
 	ProjectDefinition,
@@ -46,7 +50,7 @@ export function extractExtraConfiguration<
 		Partial<ExtraConfigurationDefinitionWithType<JsonValue>>,
 >(
 	definition: T,
-	workspace: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	workspace: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 	projectName?: string,
 	targetName?: string,
 ): T extends ExtraConfigurationDefinitionWithType<infer U> ? U[] : JsonValue[];
@@ -56,7 +60,7 @@ export function extractExtraConfiguration(
 		test,
 	}: ExtraConfigurationDefinition &
 		Partial<ExtraConfigurationDefinitionWithType<JsonValue>>,
-	workspace: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	workspace: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 	projectName?: string,
 	targetName?: string,
 ): JsonValue[] {
@@ -67,7 +71,7 @@ export function extractExtraConfiguration(
 	if (projectName != null) {
 		const project = workspace.projects.get(projectName) as
 			| ProjectDefinition
-			| workspaces.ProjectDefinition
+			| UpstreamProjectDefinition
 			| undefined;
 		if (project == null) {
 			throw new Error(
@@ -83,7 +87,7 @@ export function extractExtraConfiguration(
 		if (targetName != null) {
 			const target = project.targets.get(targetName) as
 				| TargetDefinition
-				| workspaces.TargetDefinition
+				| UpstreamTargetDefinition
 				| undefined;
 			if (target == null) {
 				throw new Error(

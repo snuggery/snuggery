@@ -3,8 +3,13 @@
  * nx's configuration format version 2 (used by workspace.json)
  */
 
-import type {workspaces} from "@angular-devkit/core";
-
+import type {
+	UpstreamProjectDefinition,
+	UpstreamProjectDefinitionCollection,
+	UpstreamTargetDefinition,
+	UpstreamTargetDefinitionCollection,
+	UpstreamWorkspaceDefinition,
+} from "../../../types";
 import {proxyObject} from "../../proxy";
 import {
 	InvalidConfigurationError,
@@ -86,9 +91,7 @@ class NxTargetDefinition implements TargetDefinition {
 			defaultConfiguration,
 			options,
 			extensions,
-		}:
-			| TargetDefinition
-			| (workspaces.TargetDefinition & {extensions?: undefined}),
+		}: TargetDefinition | (UpstreamTargetDefinition & {extensions?: undefined}),
 		raw: JsonObject,
 	) {
 		raw.executor = builder;
@@ -204,7 +207,7 @@ class NxTargetDefinitionCollection extends TargetDefinitionCollection {
 	}
 
 	static fromValue(
-		value: TargetDefinitionCollection | workspaces.TargetDefinitionCollection,
+		value: TargetDefinitionCollection | UpstreamTargetDefinitionCollection,
 		getRaw: () => JsonObject,
 	) {
 		if (value.size === 0) {
@@ -309,7 +312,7 @@ class NxProjectDefinition implements ProjectDefinition {
 	}
 
 	static fromValue(
-		value: ProjectDefinition | workspaces.ProjectDefinition,
+		value: ProjectDefinition | UpstreamProjectDefinition,
 		raw: JsonObject,
 	) {
 		raw.root = value.root;
@@ -438,7 +441,7 @@ class NxProjectDefinitionCollection extends ProjectDefinitionCollection {
 	}
 
 	static fromValue(
-		value: ProjectDefinitionCollection | workspaces.ProjectDefinitionCollection,
+		value: ProjectDefinitionCollection | UpstreamProjectDefinitionCollection,
 		getRaw: () => JsonObject,
 	) {
 		if (value.size === 0) {
@@ -538,9 +541,7 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		return new this(projects, raw, projectsAndFiles);
 	}
 
-	static fromValue(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
-	) {
+	static fromValue(value: WorkspaceDefinition | UpstreamWorkspaceDefinition) {
 		if (value instanceof NxWorkspaceDefinition) {
 			return value;
 		}
@@ -618,7 +619,7 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async write(
-		value: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+		value: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 		options: {header?: string | string[]},
 	): Promise<void> {
 		if (value instanceof NxWorkspaceDefinition) {

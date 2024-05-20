@@ -1,5 +1,4 @@
-import type {workspaces} from "@angular-devkit/core";
-
+import type {UpstreamWorkspaceDefinition} from "../../types";
 import type {TextFileHandle} from "../file";
 import {
 	InvalidConfigurationError,
@@ -68,7 +67,7 @@ export class SnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async write(
-		value: workspaces.WorkspaceDefinition | WorkspaceDefinition,
+		value: UpstreamWorkspaceDefinition | WorkspaceDefinition,
 		options: {header?: string | string[]},
 	): Promise<void> {
 		const HandleFactory = (await import("./kdl/v0.js"))
@@ -150,7 +149,7 @@ export class MiniSnuggeryKdlWorkspaceHandle implements WorkspaceHandle {
 	}
 
 	async write(
-		value: workspaces.WorkspaceDefinition | WorkspaceDefinition,
+		value: UpstreamWorkspaceDefinition | WorkspaceDefinition,
 		options: {header?: string | string[]},
 	): Promise<void> {
 		const HandleFactory = (await import("./kdl/v0-mini.js"))

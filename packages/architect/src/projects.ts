@@ -1,8 +1,8 @@
-import type {workspaces} from "@angular-devkit/core";
 import {
 	filterByPatterns,
 	readWorkspace,
-	WorkspaceDefinition,
+	type WorkspaceDefinition,
+	type UpstreamWorkspaceDefinition,
 } from "@snuggery/core";
 
 import type {BuilderContext} from "./create-builder";
@@ -14,7 +14,7 @@ export async function findProjects(
 		include,
 		exclude,
 	}: {
-		workspace?: WorkspaceDefinition | workspaces.WorkspaceDefinition | null;
+		workspace?: WorkspaceDefinition | UpstreamWorkspaceDefinition | null;
 		include: string | string[];
 		exclude?: string | string[];
 	},

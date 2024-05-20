@@ -1,7 +1,4 @@
-export {
-	InvalidConfigurationError,
-	UnsupportedOperationError,
-} from "./types/error";
+export {InvalidConfigurationError} from "./types/error";
 export {
 	type JsonObject,
 	type JsonPropertyName,

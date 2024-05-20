@@ -1,4 +1,4 @@
-import type {workspaces} from "@angular-devkit/core";
+import type {UpstreamWorkspaceDefinition} from "../types";
 
 import {
 	createCombinedMiniWorkspaceHandle,
@@ -36,6 +36,7 @@ export {
 	type TargetDefinition,
 	TargetDefinitionCollection,
 	type WorkspaceDefinition,
+	InvalidConfigurationError,
 } from "./types";
 
 export const workspaceFilenames = [
@@ -147,7 +148,7 @@ export async function findMiniWorkspace(
  */
 export async function writeWorkspace(
 	path: string,
-	workspace: WorkspaceDefinition | workspaces.WorkspaceDefinition,
+	workspace: WorkspaceDefinition | UpstreamWorkspaceDefinition,
 	{
 		host = nodeFsHost,
 		header,
