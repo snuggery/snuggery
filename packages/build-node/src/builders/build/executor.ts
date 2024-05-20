@@ -19,6 +19,8 @@ import {tsc} from "./typescript.js";
 
 const manifestFilename = "package.json";
 
+let hasTypescript: boolean | undefined;
+
 export async function executeBuild(
 	input: Schema,
 	context: BuilderContext,
@@ -62,12 +64,14 @@ export async function executeBuild(
 		),
 	);
 
-	let hasTypescript: boolean;
-	try {
-		require.resolve("typescript/package.json");
-		hasTypescript = true;
-	} catch {
-		hasTypescript = false;
+	if (typeof hasTypescript !== "boolean") {
+		const require = createRequire(import.meta.url);
+		try {
+			require.resolve("typescript/package.json");
+			hasTypescript = true;
+		} catch {
+			hasTypescript = false;
+		}
 	}
 
 	const tsconfig = input.tsconfig ?? config.tsconfig;
