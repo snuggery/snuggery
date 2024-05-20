@@ -16,7 +16,7 @@
 	"dependencies": {
 		"@snuggery/architect": "^0.10.1",
 		"@snuggery/core": "^0.8.1",
-		"@snuggery/snuggery": "^0.12.1",
+		"@snuggery/snuggery": "^0.12.2",
 		"glob": "^10.2.1",
 		"semver": "^7.3.7",
 		"typanion": "^3.7.1"
