@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/yarn",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -16,8 +16,8 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.9.1",
-		"@snuggery/core": "^0.7.1"
+		"@snuggery/architect": "^0.10.0",
+		"@snuggery/core": "^0.8.0"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
