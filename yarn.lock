@@ -1813,7 +1813,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery/yarn@workspace:packages/yarn"
   dependencies:
-    "@angular-devkit/schematics": "npm:^17.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/architect": "npm:^0.9.1"
     "@snuggery/core": "npm:^0.7.1"

@@ -16,7 +16,6 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@angular-devkit/schematics": "^17.0.0",
 		"@snuggery/architect": "^0.9.1",
 		"@snuggery/core": "^0.7.1"
 	},
