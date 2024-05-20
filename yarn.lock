@@ -567,6 +567,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bgotink/kdl@npm:0.2.0-next.4":
+  version: 0.2.0-next.4
+  resolution: "@bgotink/kdl@npm:0.2.0-next.4"
+  checksum: 10c0/579cb7dcb82397d5d31cfc1fb8f551b10cffe9e90649287a421f46c9c7503cd69988c815325c7267196fb05dd7fb99f336eef9636cffff9b8884e716f717332b
+  languageName: node
+  linkType: hard
+
+"@bgotink/prettier-plugin-kdl@npm:0.2.0-next.0":
+  version: 0.2.0-next.0
+  resolution: "@bgotink/prettier-plugin-kdl@npm:0.2.0-next.0"
+  dependencies:
+    "@bgotink/kdl": "npm:0.2.0-next.4"
+  peerDependencies:
+    prettier: ^3.0.3
+  checksum: 10c0/f5d15330e8ccd5596c2f8185a886552fd995c222f4bf912ab79e27111364568b605fb8dc29f9f47ebd12ed4f9dea44a0e7308bfcc9007c7be9e773628178040a
+  languageName: node
+  linkType: hard
+
 "@cspell/cspell-bundled-dicts@npm:^5.12.6":
   version: 5.12.6
   resolution: "@cspell/cspell-bundled-dicts@npm:5.12.6"
@@ -7564,6 +7582,7 @@ __metadata:
   resolution: "snuggery-workspace@workspace:."
   dependencies:
     "@angular-eslint/builder": "npm:13.0.1"
+    "@bgotink/prettier-plugin-kdl": "npm:0.2.0-next.0"
     "@microsoft/eslint-formatter-sarif": "npm:^3.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/affected": "workspace:packages/affected"

@@ -16,6 +16,7 @@
 	},
 	"devDependencies": {
 		"@angular-eslint/builder": "13.0.1",
+		"@bgotink/prettier-plugin-kdl": "0.2.0-next.0",
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/affected": "workspace:packages/affected",

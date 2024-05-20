@@ -5,12 +5,12 @@ cli {
 	packageManager "yarn"
 }
 
-project all root="" {
-	target build builder="@snuggery/snuggery:glob" {
+project "all" root="" {
+	target "build" builder="@snuggery/snuggery:glob" {
 		options {
 			include "@snuggery/*"
 		}
-		configuration predeploy {
+		configuration "predeploy" {
 			exclude "@snuggery/yarn-plugin-*"
 			options {
 				package #true
@@ -20,43 +20,43 @@ project all root="" {
 
 	target "build-affected" builder="@snuggery/affected:run" {
 		options {
-			target build
-			unknownTarget skip
+			target "build"
+			unknownTarget "skip"
 		}
 
-		configuration without-yarn-plugins {
+		configuration "without-yarn-plugins" {
 			exclude "@snuggery/yarn-plugin-*"
 		}
 	}
 
-	target test builder="@snuggery/build-node:uvu" {
+	target "test" builder="@snuggery/build-node:uvu" {
 		options {
-			ignore integration
+			ignore "integration"
 		}
 	}
 
-	target deploy builder="@snuggery/yarn:deploy" {
+	target "deploy" builder="@snuggery/yarn:deploy" {
 		options {
 			useWorkspacePlugin #true
 			buildTarget ":build:predeploy"
 			exclude {
 				- "@snuggery/yarn-plugin-*"
-				- integration
-				- all
+				- "integration"
+				- "all"
 			}
 		}
-		configuration next {
-			distTag next
+		configuration "next" {
+			distTag "next"
 		}
 	}
 
-	target lint builder="@angular-eslint/builder:lint" {
+	target "lint" builder="@angular-eslint/builder:lint" {
 		options {
 			eslintConfig ".eslintrc.yml"
 			ignorePath ".eslintignore"
 			lintFilePatterns "packages/*/src/**/*.[tj]s" "integration"
 		}
-		configuration ci {
+		configuration "ci" {
 			silent #true
 			// cspell:ignore sarif
 			format "@microsoft/eslint-formatter-sarif"
@@ -72,8 +72,8 @@ project all root="" {
 	}
 }
 
-(abstract)project parent {
-	target build builder="@snuggery/build-node:build" {
+(abstract)project "parent" {
+	target "build" builder="@snuggery/build-node:build" {
 		options {
 			assets {
 				- "README.md" "NOTICE.md"
@@ -87,10 +87,10 @@ project all root="" {
 	}
 }
 
-project "@snuggery/snuggery" extends=parent root="packages/snuggery"
+project "@snuggery/snuggery" extends="parent" root="packages/snuggery"
 
-project "@snuggery/global" extends=parent root="packages/global" {
-	target build {
+project "@snuggery/global" extends="parent" root="packages/global" {
+	target "build" {
 		options {
 			assets {
 				super
@@ -100,13 +100,16 @@ project "@snuggery/global" extends=parent root="packages/global" {
 	}
 }
 
-project "@snuggery/affected" extends=parent root="packages/affected"
+project "@snuggery/affected" extends="parent" root="packages/affected"
 
-project "@snuggery/architect" extends=parent root="packages/architect"
+project "@snuggery/architect" extends="parent" root="packages/architect"
 
-project "@snuggery/core" extends=parent root="packages/core"
+project "@snuggery/core" extends="parent" root="packages/core"
 
-project "@snuggery/build-angular" extends=parent root="packages/build-angular" {
+project "@snuggery/build-angular" \
+        extends="parent" \
+        root="packages/build-angular" \
+        {
 	target "build" {
 		options {
 			assets {
@@ -118,14 +121,14 @@ project "@snuggery/build-angular" extends=parent root="packages/build-angular" {
 	}
 }
 
-project "@snuggery/build-node" extends=parent root="packages/build-node"
+project "@snuggery/build-node" extends="parent" root="packages/build-node"
 
-project "@snuggery/schematics" extends=parent root="packages/schematics"
+project "@snuggery/schematics" extends="parent" root="packages/schematics"
 
-project "@snuggery/yarn" extends=parent root="packages/yarn"
+project "@snuggery/yarn" extends="parent" root="packages/yarn"
 
-project "@snuggery/journey" extends=parent root="packages/journey" {
-	target build {
+project "@snuggery/journey" extends="parent" root="packages/journey" {
+	target "build" {
 		options {
 			assets {
 				super
@@ -136,20 +139,20 @@ project "@snuggery/journey" extends=parent root="packages/journey" {
 }
 
 project "@snuggery/yarn-plugin-snuggery" root="packages/yarn-plugin-snuggery" {
-	target build builder="@snuggery/snuggery:execute" {
+	target "build" builder="@snuggery/snuggery:execute" {
 		options {
 			package "@yarnpkg/builder"
-			arguments build plugin
+			arguments "build" "plugin"
 		}
 
-		configuration dev {
-			arguments build plugin "--no-minify"
+		configuration "dev" {
+			arguments "build" "plugin" "--no-minify"
 		}
 	}
 }
 
-project integration root="integration" {
-	target test builder="@snuggery/build-node:uvu" {
+project "integration" root="integration" {
+	target "test" builder="@snuggery/build-node:uvu" {
 		options {
 			require "@snuggery-workspace/scripts/load-ts"
 		}
