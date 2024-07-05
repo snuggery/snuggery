@@ -24,7 +24,7 @@
 	"peerDependencies": {
 		"@snuggery/core": "^0.8.1",
 		"@snuggery/schematics": "^0.10.1",
-		"typescript": ">= 5.0.4 < 5.5.0"
+		"typescript": ">= 5.0.4 < 5.6.0"
 	},
 	"peerDependenciesMeta": {
 		"typescript": {
@@ -45,7 +45,7 @@
 		"@types/node": "^20.11.30",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",
-		"typescript": "5.4.2",
+		"typescript": "5.5.3",
 		"uvu": "^0.5.6"
 	},
 	"publishConfig": {
