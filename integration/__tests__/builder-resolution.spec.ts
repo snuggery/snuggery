@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
-import {suite} from "uvu";
+import {test} from "uvu";
 
 import {inFixture} from "./setup";
-
-const test = suite("builder resolution");
 
 function matchObject(actual: unknown, expected: Record<string, unknown>) {
 	assert.equal(typeof actual, "object");

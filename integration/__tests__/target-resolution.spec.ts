@@ -1,9 +1,7 @@
 import assert from "node:assert/strict";
-import {suite} from "uvu";
+import {test} from "uvu";
 
 import {inFixture} from "./setup";
-
-const test = suite("target resolution");
 
 function matchObject(actual: unknown, expected: Record<string, unknown>) {
 	assert.equal(typeof actual, "object");
@@ -26,6 +24,7 @@ test(
 		matchObject(await runJson(["build", "fixture"]), {
 			project: "fixture",
 			target: "build",
+			builderName: "log-target",
 		});
 		matchObject(await runJson(["test", "fixture"]), {
 			project: "fixture",
@@ -36,6 +35,23 @@ test(
 			project: "fixture",
 			target: "lint",
 			configuration: "foo",
+		});
+	}),
+);
+
+test(
+	"it supports aliased builders",
+	inFixture("single-project", async ({runJson}) => {
+		matchObject(await runJson(["build-aliased"]), {
+			project: "fixture",
+			target: "build-aliased",
+			builderName: "log-target",
+		});
+
+		matchObject(await runJson(["build-aliased-short"]), {
+			project: "fixture",
+			target: "build-aliased-short",
+			builderName: "log-target",
 		});
 	}),
 );

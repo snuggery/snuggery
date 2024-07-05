@@ -12,10 +12,10 @@ import type {
 	createBuilder,
 } from "@angular-devkit/architect";
 // It would be great if we could have access to these without going through `/src/internal/`.
-import {
-	type ArchitectHost,
-	type Builder,
-	BuilderSymbol,
+import type {
+	ArchitectHost,
+	Builder,
+	BuilderSymbol as AngularBuilderSymbol,
 } from "@angular-devkit/architect/src/internal.js";
 import {
 	isJsonObject,
@@ -35,8 +35,16 @@ import {InvalidBuilderError, InvalidBuilderSpecifiedError} from "./errors.js";
 
 export {Builder};
 
+// Would be useful if angular exported this, but using `Symbol.for()` we are guaranteed
+// to get the same symbol & this is not something they can change without making that a
+// huge breaking change, so we're good.
+const BuilderSymbol = Symbol.for("@angular-devkit/architect:builder") as symbol;
+
 export function isBuilder(value: object): value is Builder {
-	return BuilderSymbol in value && (value as Builder)[BuilderSymbol];
+	return (
+		BuilderSymbol in value &&
+		(value as Builder)[BuilderSymbol as typeof AngularBuilderSymbol]
+	);
 }
 
 export interface SnuggeryBuilderInfo extends BuilderInfo {
@@ -203,7 +211,18 @@ export class SnuggeryArchitectHost
 	}
 
 	/** @override */
-	async resolveBuilder(builderSpec: string): Promise<SnuggeryBuilderInfo> {
+	async resolveBuilder(
+		builderSpec: string,
+		seenBuilders?: Set<string>,
+	): Promise<SnuggeryBuilderInfo> {
+		if (seenBuilders?.has(builderSpec)) {
+			throw new InvalidBuilderError(
+				`Detected cycle in builder aliases: ${Array.from(seenBuilders).join(
+					" -> ",
+				)} -> ${builderSpec}`,
+			);
+		}
+
 		const [packageName, builderName] = builderSpec.split(":", 2) as [
 			string,
 			string | undefined,
@@ -226,6 +245,19 @@ export class SnuggeryArchitectHost
 			[builderPath, builderInfo, isNx] = await this.#resolver.resolveBuilder(
 				packageName,
 				builderName,
+			);
+		}
+
+		if (typeof builderInfo === "string") {
+			if (!builderInfo.includes(":")) {
+				builderInfo = `${packageName}:${builderInfo}`;
+			} else if (builderInfo.startsWith(":")) {
+				builderInfo = packageName + builderInfo;
+			}
+
+			return await this.resolveBuilder(
+				builderInfo,
+				(seenBuilders ??= new Set()).add(builderSpec),
 			);
 		}
 

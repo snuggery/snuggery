@@ -7,6 +7,12 @@
 				"build": {
 					"builder": "test-builders:log-target"
 				},
+				"build-aliased": {
+					"builder": "test-builders:alias-log-target"
+				},
+				"build-aliased-short": {
+					"builder": "test-builders:short-alias-log-target"
+				},
 				"test": {
 					"builder": "test-builders:log-target"
 				},
