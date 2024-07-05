@@ -3,12 +3,8 @@
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
-		"emitDeclarationOnly": true,
-		"outDir": "dist",
-		"rootDir": "src",
-		"types": ["node"]
+		"emitDeclarationOnly": true
 	},
 	"include": ["src/**/*.js"],
-	"exclude": ["**/__tests__/**"],
 	"references": []
 }

@@ -36,6 +36,12 @@
 
 		"experimentalDecorators": true,
 		"skipLibCheck": true,
-		"declaration": true
-	}
+		"declaration": true,
+
+		"outDir": "${configDir}/dist",
+		"rootDir": "${configDir}/src",
+		"types": ["node"]
+	},
+	"include": ["${configDir}/src/**/*.ts"],
+	"exclude": ["${configDir}/**/__tests__/**"]
 }
