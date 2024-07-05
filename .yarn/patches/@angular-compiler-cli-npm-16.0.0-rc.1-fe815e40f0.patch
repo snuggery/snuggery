@@ -93,7 +93,7 @@ index 4dce8c769f54aed9c4c1938d2c47cf4552789fe6..b199be847ffa839e9b4c9dfc2adac696
 -import { CompilerHost, CompilerOptions } from './api';
 +import { CompilerHost, CompilerOptions } from './api.js';
  export declare function setWrapHostForTest(wrapFn: ((host: ts.CompilerHost) => ts.CompilerHost) | null): void;
- export declare function createCompilerHost({ options, tsHost }: {
+ export declare function createCompilerHost({ options, tsHost, }: {
      options: CompilerOptions;
 diff --git a/src/transformers/entry_points.d.ts b/src/transformers/entry_points.d.ts
 index d21dbff44ad7e25e0b7140904d22292ee98358f5..0dd693687829eb29c89914b46e17079e517ce3b5 100755
@@ -117,6 +117,6 @@ index f26f1768bd46bc02667ec19e4171282b6d217b3d..fefd80db8fead08036876bd427302072
   */
 -import { CompilerHost, CompilerOptions, Program } from './api';
 +import { CompilerHost, CompilerOptions, Program } from './api.js';
- export declare function createProgram({ rootNames, options, host, oldProgram }: {
+ export declare function createProgram({ rootNames, options, host, oldProgram, }: {
      rootNames: ReadonlyArray<string>;
      options: CompilerOptions;

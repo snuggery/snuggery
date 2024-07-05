@@ -14,13 +14,13 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.1700.0 < 0.1800.0",
+		"@angular-devkit/architect": ">= 0.1800.0 < 0.1900.0",
 		"@snuggery/core": "^0.8.1",
 		"glob": "^10.2.1",
 		"rxjs": "^7.8.0"
 	},
 	"peerDependencies": {
-		"@angular-devkit/core": "^17.0.0"
+		"@angular-devkit/core": "^17.0.0 || ^18.0.0"
 	},
 	"peerDependenciesMeta": {
 		"@angular-devkit/core": {

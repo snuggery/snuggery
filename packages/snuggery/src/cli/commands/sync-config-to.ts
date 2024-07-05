@@ -734,7 +734,8 @@ export class SyncConfigToCommand extends AbstractCommand {
 								[string, JsonObject]
 							> => {
 								if (!isJsonObject(config)) {
-									return [collectionOrName, config];
+									// eslint-disable-next-line @typescript-eslint/no-explicit-any
+									return [collectionOrName, config as any];
 								}
 
 								if (collectionOrName.includes(":")) {
