@@ -1635,7 +1635,7 @@ __metadata:
     "@microsoft/api-extractor": ^7.24.1
     less: ^4.1.3
     sass: ^1.62.0
-    typescript: ">=4.9.3 <5.6.0"
+    typescript: ">=4.9.3 <5.7.0"
   peerDependenciesMeta:
     "@microsoft/api-extractor":
       optional: true
@@ -1655,10 +1655,10 @@ __metadata:
     "@snuggery/core": "npm:^0.9.0"
     "@types/node": "npm:^20.11.30"
     typanion: "npm:^3.12.1"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6.2"
     uvu: "npm:^0.5.6"
   peerDependencies:
-    typescript: ">= 4.0.0 < 5.6.0"
+    typescript: ">= 4.0.0 < 5.7.0"
     uvu: ^0.5.6
   peerDependenciesMeta:
     typescript:
@@ -1723,7 +1723,7 @@ __metadata:
   peerDependencies:
     "@snuggery/core": ^0.9.0
     "@snuggery/schematics": ^0.11.0
-    typescript: ">= 5.0.4 < 5.6.0"
+    typescript: ">= 5.0.4 < 5.7.0"
   peerDependenciesMeta:
     typescript:
       optional: true
@@ -1742,11 +1742,11 @@ __metadata:
     "@snuggery/core": "npm:^0.9.0"
     "@types/node": "npm:^20.11.30"
     ignore: "npm:^5.2.4"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6.2"
   peerDependencies:
     "@angular-devkit/core": ^18.0.0
     "@angular-devkit/schematics": ^18.0.0
-    typescript: ">= 4.0.0 < 5.6.0"
+    typescript: ">= 4.0.0 < 5.7.0"
   peerDependenciesMeta:
     "@angular-devkit/core":
       optional: true
@@ -1804,7 +1804,7 @@ __metadata:
     "@yarnpkg/plugin-pack": "npm:4.0.0"
     clipanion: "npm:4.0.0-rc.2"
     semver: "npm:^7.3.1"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6.2"
   peerDependencies:
     "@yarnpkg/cli": ^4.0.1
     "@yarnpkg/core": ^4.0.1
@@ -7658,7 +7658,7 @@ __metadata:
     husky: "npm:^8.0.3"
     is-ci: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6.2"
     uvu: "npm:^0.5.6"
   dependenciesMeta:
     esbuild:
@@ -7930,7 +7930,7 @@ __metadata:
     "@angular-devkit/schematics": "npm:^18.0.0"
     "@snuggery-workspace/scripts": "workspace:scripts"
     "@snuggery/journey": "workspace:packages/journey"
-    typescript: "npm:5.5.3"
+    typescript: "npm:5.6.2"
   languageName: unknown
   linkType: soft
 
@@ -8131,6 +8131,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.6.2":
+  version: 5.6.2
+  resolution: "typescript@npm:5.6.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/3ed8297a8c7c56b7fec282532503d1ac795239d06e7c4966b42d4330c6cf433a170b53bcf93a130a7f14ccc5235de5560df4f1045eb7f3550b46ebed16d3c5e5
+  languageName: node
+  linkType: hard
+
 "typescript@npm:~4.6.3":
   version: 4.6.4
   resolution: "typescript@npm:4.6.4"
@@ -8148,6 +8158,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/911c7811d61f57f07df79c4a35f56a0f426a65426a020e5fcd792f66559f399017205f5f10255329ab5a3d8c2d1f1d19530aeceffda70758a521fae1d469432e
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>":
+  version: 5.6.2
+  resolution: "typescript@patch:typescript@npm%3A5.6.2#optional!builtin<compat/typescript>::version=5.6.2&hash=8c6c40"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/94eb47e130d3edd964b76da85975601dcb3604b0c848a36f63ac448d0104e93819d94c8bdf6b07c00120f2ce9c05256b8b6092d23cf5cf1c6fa911159e4d572f
   languageName: node
   linkType: hard
 

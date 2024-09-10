@@ -1,8 +1,5 @@
 {
 	"compilerOptions": {
-		// importsNotUsedAsValues is nice, verbatimModuleSyntax doesn't look to be...
-		"ignoreDeprecations": "5.0",
-
 		// Node 16.10 and up support ± all of the syntax of ES2022
 		// Notable exceptions are
 		// - static initializers
@@ -25,7 +22,6 @@
 
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
-		"importsNotUsedAsValues": "error",
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,

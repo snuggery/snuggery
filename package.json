@@ -35,7 +35,7 @@
 		"husky": "^8.0.3",
 		"is-ci": "^3.0.1",
 		"prettier": "^3.0.3",
-		"typescript": "5.5.3",
+		"typescript": "5.6.2",
 		"uvu": "^0.5.6"
 	},
 	"dependenciesMeta": {
@@ -58,5 +58,5 @@
 		"import-fresh@npm:^3.3.0": "patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch",
 		"import-fresh@npm:^3.2.1": "patch:import-fresh@npm%3A3.3.0#~/.yarn/patches/import-fresh-npm-3.3.0-3e34265ca9.patch"
 	},
-	"packageManager": "yarn@4.3.1"
+	"packageManager": "yarn@4.4.1"
 }
