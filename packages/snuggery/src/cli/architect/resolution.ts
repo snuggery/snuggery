@@ -25,8 +25,8 @@ export class Resolver implements ResolverFacade {
 	): Promise<
 		[
 			path: string,
-			builders: Record<string, JsonObject>,
-			executors?: Record<string, JsonObject>,
+			builders: Record<string, JsonValue>,
+			executors?: Record<string, JsonValue>,
 		]
 	> {
 		const [json, path] = loadJson(
@@ -38,8 +38,8 @@ export class Resolver implements ResolverFacade {
 
 		return [
 			path,
-			(json.builders as Record<string, JsonObject>) ?? {},
-			(json.executors as Record<string, JsonObject>) ?? {},
+			(json.builders as Record<string, JsonValue>) ?? {},
+			(json.executors as Record<string, JsonValue>) ?? {},
 		];
 	}
 

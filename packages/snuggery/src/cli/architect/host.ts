@@ -87,8 +87,8 @@ export interface ResolverFacade {
 	): Promise<
 		[
 			path: string,
-			builders: Record<string, JsonObject>,
-			executors?: Record<string, JsonObject>,
+			builders: Record<string, JsonValue>,
+			executors?: Record<string, JsonValue>,
 		]
 	>;
 
@@ -199,8 +199,13 @@ export class SnuggeryArchitectHost
 		]);
 
 		return Array.from(names, (name) => {
+			const builder = builderJson[name] ?? executorsJson?.[name];
 			const description =
-				builderJson[name]?.description ?? executorsJson?.[name]?.description;
+				typeof builder === "string"
+					? `Alias for ${builder}`
+					: isJsonObject(builder)
+					? builder.description
+					: null;
 
 			if (typeof description === "string") {
 				return {name, description};
