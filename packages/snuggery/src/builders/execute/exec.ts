@@ -1,4 +1,8 @@
-import type {BuilderContext, BuilderOutput} from "@snuggery/architect";
+import {
+	BuildFailureError,
+	type BuilderContext,
+	type BuilderOutput,
+} from "@snuggery/architect";
 import {fork, spawn, ForkOptions, ChildProcess} from "child_process";
 import {extname} from "path";
 
@@ -41,18 +45,12 @@ export async function exec(
 		child.kill();
 	});
 
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
 		child.addListener("close", (code, signal) => {
 			if (signal) {
-				resolve({
-					success: false,
-					error: `Command exited with signal ${signal}`,
-				});
+				reject(new BuildFailureError(`Command exited with signal ${signal}`));
 			} else if (code) {
-				resolve({
-					success: false,
-					error: `Command exited with exit code ${code}`,
-				});
+				reject(new BuildFailureError(`Command exited with exit code ${code}`));
 			} else {
 				resolve({
 					success: true,
