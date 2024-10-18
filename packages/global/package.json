@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/global",
-	"version": "0.13.0",
+	"version": "0.13.1",
 	"type": "module",
 	"private": true,
 	"license": "MIT",
@@ -19,7 +19,7 @@
 		"*.md"
 	],
 	"dependencies": {
-		"@snuggery/snuggery": "^0.13.0"
+		"@snuggery/snuggery": "^0.13.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
