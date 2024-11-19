@@ -59,4 +59,9 @@ export async function execute(
 	const {run} = await import("uvu/run");
 
 	await run(suites, {bail: input.bail ?? true});
+	// It would be nice if uvu could expose the result in another way than
+	// by setting the exitCode of the process to a non-zero value
+	if (process.exitCode !== 0) {
+		throw new BuildFailureError("Tests failed");
+	}
 }
