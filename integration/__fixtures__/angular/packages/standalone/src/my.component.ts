@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component} from "@angular/core";
 
 @Component({
+	standalone: false,
 	selector: "my-component",
 	templateUrl: "./my.component.html",
 	styles: [

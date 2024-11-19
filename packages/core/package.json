@@ -14,7 +14,7 @@
 		"./package.json": "./package.json"
 	},
 	"peerDependencies": {
-		"@angular-devkit/core": "^17.0.0 || ^18.0.0"
+		"@angular-devkit/core": "^17.0.0 || ^18.0.0 || ^19.0.0"
 	},
 	"peerDependenciesMeta": {
 		"@angular-devkit/core": {
@@ -23,13 +23,13 @@
 	},
 	"dependencies": {
 		"@bgotink/kdl": "0.2.0-next.0",
-		"jsonc-parser": "^3.2.0",
+		"jsonc-parser": "^3.3.1",
 		"micromatch": "^4.0.5",
 		"typanion": "^3.12.1",
 		"yaml": "^2.4.1"
 	},
 	"devDependencies": {
-		"@angular-devkit/core": "^18.0.0",
+		"@angular-devkit/core": "^19.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/micromatch": "^4.0.2",
 		"@types/node": "^20.11.30",
