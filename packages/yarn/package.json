@@ -16,8 +16,8 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.11.0",
-		"@snuggery/core": "^0.9.0"
+		"@snuggery/architect": "^0.11.1",
+		"@snuggery/core": "^0.9.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",

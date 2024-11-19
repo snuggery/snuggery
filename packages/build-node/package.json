@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/build-node",
-	"version": "0.11.1",
+	"version": "0.11.2",
 	"private": true,
 	"type": "module",
 	"license": "MIT",
@@ -29,12 +29,12 @@
 		}
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.11.0",
+		"@snuggery/architect": "^0.11.1",
 		"typanion": "^3.12.1"
 	},
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@snuggery/core": "^0.9.0",
+		"@snuggery/core": "^0.9.1",
 		"@types/node": "^20.11.30",
 		"typescript": "5.6.2",
 		"uvu": "^0.5.6"

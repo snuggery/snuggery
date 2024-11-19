@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/journey",
-	"version": "0.4.1",
+	"version": "0.4.2",
 	"private": true,
 	"license": "MIT",
 	"repository": {
@@ -22,8 +22,8 @@
 		"test": "sn test"
 	},
 	"peerDependencies": {
-		"@snuggery/core": "^0.9.0",
-		"@snuggery/schematics": "^0.11.1",
+		"@snuggery/core": "^0.9.1",
+		"@snuggery/schematics": "^0.11.2",
 		"typescript": ">= 5.0.4 < 5.7.0"
 	},
 	"peerDependenciesMeta": {
@@ -34,8 +34,8 @@
 	"dependencies": {
 		"@angular-devkit/core": "^19.0.0",
 		"@angular-devkit/schematics": "^19.0.0",
-		"@snuggery/core": "^0.9.0",
-		"@snuggery/schematics": "^0.11.1",
+		"@snuggery/core": "^0.9.1",
+		"@snuggery/schematics": "^0.11.2",
 		"kleur": "^4.1.5",
 		"prompts": "^2.4.2",
 		"semver": "^7.5.0"
