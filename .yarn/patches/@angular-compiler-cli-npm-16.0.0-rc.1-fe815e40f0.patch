@@ -4,7 +4,7 @@ index e5f5699b811eb29337ed680b722295dbae68e8ba..5e50a930e155d7a5de02b4c589d55998
 +++ b/index.d.ts
 @@ -1,9 +1,9 @@
  export { VERSION } from './src/version';
- export * from './src/transformers/jit_transforms';
+ export * from './src/ngtsc/transform/jit';
 -export * from './src/transformers/api';
 -export * from './src/transformers/entry_points';
 -export * from './src/perform_compile';
@@ -21,7 +21,7 @@ index 20ace5ec3ca22214c9d82be2e2bb88ac868dd122..0f45983679d3d78c97d0b93cb2124947
 --- a/src/ngtsc/core/api/index.d.ts
 +++ b/src/ngtsc/core/api/index.d.ts
 @@ -6,6 +6,6 @@
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
  export * from './src/adapter';
 -export * from './src/interfaces';
@@ -48,7 +48,7 @@ index 3149f4b38b947652058f97e731ae472d602d442f..25da0318cdfb9e741737f15a7ec08386
 --- a/src/ngtsc/core/api/src/options.d.ts
 +++ b/src/ngtsc/core/api/src/options.d.ts
 @@ -6,7 +6,7 @@
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
  import ts from 'typescript';
 -import { BazelAndG3Options, DiagnosticOptions, I18nOptions, LegacyNgcOptions, MiscOptions, StrictTemplateOptions, TargetOptions } from './public_options';
@@ -68,13 +68,13 @@ index 1a2c99661b8e06953430d8c8cee5df237d3fb6f4..30a7da87e87cd3d627febf78452c983a
 +import * as api from './transformers/api.js';
  export declare function formatDiagnostics(diags: ReadonlyArray<ts.Diagnostic>, host?: ts.FormatDiagnosticsHost): string;
  /** Used to read configuration files. */
- export type ConfigurationHost = Pick<ReadonlyFileSystem, 'readFile' | 'exists' | 'lstat' | 'resolve' | 'join' | 'dirname' | 'extname' | 'pwd'>;
+ export type ConfigurationHost = Pick<ReadonlyFileSystem, 'readFile' | 'exists' | 'lstat' | 'resolve' | 'join' | 'dirname' | 'extname' | 'pwd' | 'readdir'>;
 diff --git a/src/transformers/api.d.ts b/src/transformers/api.d.ts
 index c10eb3701ddcda6836cdf17d5f3ab7c37754cb8c..806352e73d4d14f711870b8878333c4e578f4805 100755
 --- a/src/transformers/api.d.ts
 +++ b/src/transformers/api.d.ts
 @@ -6,7 +6,7 @@
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
  import ts from 'typescript';
 -import { ExtendedTsCompilerHost, NgCompilerOptions } from '../ngtsc/core/api';
@@ -87,7 +87,7 @@ index 4dce8c769f54aed9c4c1938d2c47cf4552789fe6..b199be847ffa839e9b4c9dfc2adac696
 --- a/src/transformers/compiler_host.d.ts
 +++ b/src/transformers/compiler_host.d.ts
 @@ -6,7 +6,7 @@
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
  import ts from 'typescript';
 -import { CompilerHost, CompilerOptions } from './api';
@@ -101,7 +101,7 @@ index d21dbff44ad7e25e0b7140904d22292ee98358f5..0dd693687829eb29c89914b46e17079e
 +++ b/src/transformers/entry_points.d.ts
 @@ -5,5 +5,5 @@
   * Use of this source code is governed by an MIT-style license that can be
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
 -export { createCompilerHost } from './compiler_host';
 -export { createProgram } from './program';
@@ -113,7 +113,7 @@ index f26f1768bd46bc02667ec19e4171282b6d217b3d..fefd80db8fead08036876bd427302072
 +++ b/src/transformers/program.d.ts
 @@ -5,7 +5,7 @@
   * Use of this source code is governed by an MIT-style license that can be
-  * found in the LICENSE file at https://angular.io/license
+  * found in the LICENSE file at https://angular.dev/license
   */
 -import { CompilerHost, CompilerOptions, Program } from './api';
 +import { CompilerHost, CompilerOptions, Program } from './api.js';

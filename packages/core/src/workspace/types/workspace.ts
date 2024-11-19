@@ -194,19 +194,19 @@ abstract class DefinitionCollection<T, N> implements ReadonlyMap<string, T> {
 		return this.#map.size;
 	}
 
-	entries(): IterableIterator<[string, T]> {
+	entries(): MapIterator<[string, T]> {
 		return this.#map.entries();
 	}
 
-	keys(): IterableIterator<string> {
+	keys(): MapIterator<string> {
 		return this.#map.keys();
 	}
 
-	values(): IterableIterator<T> {
+	values(): MapIterator<T> {
 		return this.#map.values();
 	}
 
-	[Symbol.iterator](): IterableIterator<[string, T]> {
+	[Symbol.iterator](): MapIterator<[string, T]> {
 		return this.#map[Symbol.iterator]();
 	}
 }
