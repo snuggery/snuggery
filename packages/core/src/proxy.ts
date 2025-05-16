@@ -40,9 +40,9 @@ export function aliasProperties(
 				return undefined;
 			}
 
-			return base.get
-				? base.get(target, key, receiver)
-				: Reflect.get(target, key, receiver);
+			return base.get ?
+					base.get(target, key, receiver)
+				:	Reflect.get(target, key, receiver);
 		},
 		has(target, property) {
 			const key = toSourceKey(property);
@@ -84,9 +84,9 @@ export function aliasProperties(
 				return undefined;
 			}
 
-			return base.getOwnPropertyDescriptor
-				? base.getOwnPropertyDescriptor(target, key)
-				: Reflect.getOwnPropertyDescriptor(target, key);
+			return base.getOwnPropertyDescriptor ?
+					base.getOwnPropertyDescriptor(target, key)
+				:	Reflect.getOwnPropertyDescriptor(target, key);
 		},
 		ownKeys(target) {
 			return Array.from(base.ownKeys?.(target) ?? Reflect.ownKeys(target))

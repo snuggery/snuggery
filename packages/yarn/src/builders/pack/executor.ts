@@ -21,9 +21,8 @@ export async function executePack(
 	}
 
 	const cwd = await getProjectPath(context);
-	const directoryToPack = directory
-		? resolveWorkspacePath(context, directory)
-		: cwd;
+	const directoryToPack =
+		directory ? resolveWorkspacePath(context, directory) : cwd;
 
 	if (
 		useWorkspacePlugin === true ||

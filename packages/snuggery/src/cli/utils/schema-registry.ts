@@ -462,14 +462,15 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 				let multiselect;
 				if (type === "list") {
 					multiselect =
-						schema.multiselect === undefined
-							? propertyTypes.size === 1 && propertyTypes.has("array")
-							: schema.multiselect;
+						schema.multiselect === undefined ?
+							propertyTypes.size === 1 && propertyTypes.has("array")
+						:	schema.multiselect;
 
-					const enumValues = multiselect
-						? (parentSchema as JsonObject).items &&
-						  ((parentSchema as JsonObject).items as JsonObject).enum
-						: (parentSchema as JsonObject).enum;
+					const enumValues =
+						multiselect ?
+							(parentSchema as JsonObject).items &&
+							((parentSchema as JsonObject).items as JsonObject).enum
+						:	(parentSchema as JsonObject).enum;
 					if (!items && Array.isArray(enumValues)) {
 						items = [];
 						for (const value of enumValues) {
@@ -493,11 +494,13 @@ export class SchemaRegistry implements schema.SchemaRegistry {
 					multiselect,
 					propertyTypes,
 					default:
-						typeof (parentSchema as JsonObject).default == "object" &&
-						(parentSchema as JsonObject).default !== null &&
-						!Array.isArray((parentSchema as JsonObject).default)
-							? undefined
-							: ((parentSchema as JsonObject).default as string[]),
+						(
+							typeof (parentSchema as JsonObject).default == "object" &&
+							(parentSchema as JsonObject).default !== null &&
+							!Array.isArray((parentSchema as JsonObject).default)
+						) ?
+							undefined
+						:	((parentSchema as JsonObject).default as string[]),
 					async validator(data: JsonValue) {
 						try {
 							const result = (await it.self.validate(

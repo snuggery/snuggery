@@ -107,8 +107,9 @@ export async function tsc(
 		ts.sys.readFile(path),
 	);
 	const customTransformers = (
-		input.transformers ? [input.transformers].flat() : []
-	).reduce(combineCustomTransformers, {});
+		input.transformers ?
+			[input.transformers].flat()
+		:	[]).reduce(combineCustomTransformers, {});
 
 	if (tsconfig.error) {
 		processResult(context, undefined, [tsconfig.error]);
@@ -179,20 +180,18 @@ export async function tsc(
 		parsedConfig.options.outDir = input.outputFolder;
 
 		const host = (
-			parsedConfig.options.incremental
-				? ts.createIncrementalCompilerHost
-				: ts.createCompilerHost
-		)(parsedConfig.options);
+			parsedConfig.options.incremental ?
+				ts.createIncrementalCompilerHost
+			:	ts.createCompilerHost)(parsedConfig.options);
 
 		if ("JSDocParsingMode" in ts) {
 			host.jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeErrors;
 		}
 
 		const program = (
-			parsedConfig.options.incremental
-				? ts.createEmitAndSemanticDiagnosticsBuilderProgram
-				: ts.createAbstractBuilder
-		)(
+			parsedConfig.options.incremental ?
+				ts.createEmitAndSemanticDiagnosticsBuilderProgram
+			:	ts.createAbstractBuilder)(
 			parsedConfig.fileNames,
 			parsedConfig.options,
 			host,

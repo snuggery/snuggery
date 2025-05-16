@@ -36,9 +36,9 @@ export class HelpProjectsCommand extends AbstractCommand {
 		for (const [projectName, {root, extensions}] of projects) {
 			report.reportInfo(
 				`- \`${format.code(projectName)}\`: a \`${format.code(
-					typeof extensions.projectType === "string"
-						? extensions.projectType
-						: "library",
+					typeof extensions.projectType === "string" ?
+						extensions.projectType
+					:	"library",
 				)}\` project at \`${format.code(root)}\``,
 			);
 

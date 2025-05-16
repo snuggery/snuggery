@@ -121,7 +121,7 @@ function createTypescriptUpdateRecorder(
 }
 
 export function visitTypescriptFiles(journey: Journey, visitor: Visitor): void;
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function visitTypescriptFiles<I extends {}>(
 	journey: Journey,
 	visitor: VisitorFactory<I>,
@@ -164,7 +164,7 @@ export function transformTypescriptFiles(
 	journey: Journey,
 	transform: TransformerFactory,
 ): void;
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function transformTypescriptFiles<I extends {}>(
 	journey: Journey,
 	transform: TransformerFactoryFactory<I>,

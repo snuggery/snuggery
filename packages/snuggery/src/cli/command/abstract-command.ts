@@ -186,9 +186,9 @@ export abstract class AbstractCommand extends Command<Context> {
 		const packageManagerSpec = userAgent.split(" ")[0]!;
 		const separatorPos = packageManagerSpec.lastIndexOf("/");
 		const name =
-			separatorPos !== -1
-				? packageManagerSpec.substring(0, separatorPos)
-				: packageManagerSpec;
+			separatorPos !== -1 ?
+				packageManagerSpec.substring(0, separatorPos)
+			:	packageManagerSpec;
 		// cspell:ignore npminstall
 		return name === "npminstall" ? "cnpm" : name;
 	}
@@ -277,9 +277,9 @@ export abstract class AbstractCommand extends Command<Context> {
 			registry: await this.schematicsSchemaRegistry,
 			resolvePaths: [
 				root,
-				...(resolveSelf
-					? [dirname(require.resolve("@snuggery/snuggery/package.json"))]
-					: []),
+				...(resolveSelf ?
+					[dirname(require.resolve("@snuggery/snuggery/package.json"))]
+				:	[]),
 			],
 			schemaValidation: true,
 		});
@@ -401,16 +401,16 @@ export abstract class AbstractCommand extends Command<Context> {
 			const errors = (error as schema.SchemaValidationException).errors
 				.filter((error) => error.message)
 				.map((error) =>
-					error.instancePath
-						? `  - Input property ${error.instancePath} ${error.message}`
-						: `  - Input ${error.message}`,
+					error.instancePath ?
+						`  - Input property ${error.instancePath} ${error.message}`
+					:	`  - Input ${error.message}`,
 				);
 
 			error = new PrettiedError(
 				error.name,
-				errors.length > 0
-					? `Schema validation failed:\n${errors.join("\n")}`
-					: error.message,
+				errors.length > 0 ?
+					`Schema validation failed:\n${errors.join("\n")}`
+				:	error.message,
 			);
 		}
 

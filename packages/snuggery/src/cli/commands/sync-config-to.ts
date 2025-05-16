@@ -362,24 +362,26 @@ export class SyncConfigToCommand extends AbstractCommand {
 		} = this;
 
 		const sourceName = this.source ?? workspaceFilename;
-		const source = this.source
-			? new CliWorkspace(
+		const source =
+			this.source ?
+				new CliWorkspace(
 					await readWorkspace(join(workspaceFolder, this.source)),
 					join(workspaceFolder, this.source),
-			  )
-			: this.workspace;
+				)
+			:	this.workspace;
 
 		if (this.validate || this.merge) {
 			let isValid = true;
-			const host = this.validate
-				? {
+			const host =
+				this.validate ?
+					{
 						...nodeFsHost,
 						async write(path: string) {
 							report.reportError(`Configuration file ${path} is out of sync`);
 							isValid = false;
 						},
-				  }
-				: nodeFsHost;
+					}
+				:	nodeFsHost;
 
 			await updateWorkspace(
 				join(workspaceFolder, this.target),
@@ -826,11 +828,12 @@ export class SyncConfigToCommand extends AbstractCommand {
 							await getCompiledSchematicSchemas(collectionOrName);
 
 						appliedAliases.clear();
-						const processedTargetOptions = compiledSchema
-							? ((await compiledSchema.applyPreTransforms(
+						const processedTargetOptions =
+							compiledSchema ?
+								((await compiledSchema.applyPreTransforms(
 									cloneJson(targetOptions),
-							  )) as JsonObject)
-							: targetOptions;
+								)) as JsonObject)
+							:	targetOptions;
 
 						merge(
 							createChangeApplier(targetOptions, appliedAliases),
@@ -862,11 +865,12 @@ export class SyncConfigToCommand extends AbstractCommand {
 						);
 
 						appliedAliases.clear();
-						const processedTargetSchematicConfig = compiledSchema
-							? ((await compiledSchema.applyPreTransforms(
+						const processedTargetSchematicConfig =
+							compiledSchema ?
+								((await compiledSchema.applyPreTransforms(
 									cloneJson(targetSchematicConfig),
-							  )) as JsonObject)
-							: targetSchematicConfig;
+								)) as JsonObject)
+							:	targetSchematicConfig;
 
 						merge(
 							createChangeApplier(targetOptions, appliedAliases),

@@ -58,9 +58,10 @@ export function createCompilerHost(
 		options: compilerOptions,
 	});
 
-	const writeFile = isUsingNodeResolution(compilerOptions)
-		? disallowCjsWriteFileFactory(context, compilerHost)
-		: compilerHost.writeFile.bind(compilerHost);
+	const writeFile =
+		isUsingNodeResolution(compilerOptions) ?
+			disallowCjsWriteFileFactory(context, compilerHost)
+		:	compilerHost.writeFile.bind(compilerHost);
 
 	return {
 		...compilerHost,
@@ -231,9 +232,9 @@ export function createCompilerHost(
 				relativeImportedFile,
 			);
 
-			return relativeImportPath.startsWith("../")
-				? relativeImportPath
-				: `./${relativeImportPath}`;
+			return relativeImportPath.startsWith("../") ? relativeImportPath : (
+					`./${relativeImportPath}`
+				);
 		},
 
 		// Disallow CJS in case the node-compliant typescript module resolution is used

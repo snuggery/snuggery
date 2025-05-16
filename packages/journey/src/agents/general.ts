@@ -31,7 +31,7 @@ async function treeVisitorGuide(journey: Journey): Promise<void> {
 }
 
 export function visitTree(journey: Journey, visitor: TreeVisitor): void;
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function visitTree<I extends {}>(
 	journey: Journey,
 	visitor: TreeVisitorWithInput<I>,

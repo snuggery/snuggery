@@ -52,14 +52,15 @@ export const tslib = {
 						);
 					} else {
 						logger.info("Adding tslib dependency...");
-						manifest.dependencies = isJsonObject(manifest.dependencies)
-							? {
+						manifest.dependencies =
+							isJsonObject(manifest.dependencies) ?
+								{
 									...manifest.dependencies,
 									tslib: version,
-							  }
-							: {
+								}
+							:	{
 									tslib: version,
-							  };
+								};
 					}
 				} else {
 					if (

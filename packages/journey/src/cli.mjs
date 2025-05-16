@@ -195,9 +195,9 @@ export async function run({
 
 		const migrationRange = new semver.Range(
 			">" +
-				(semver.prerelease(options.from)
-					? options.from.split("-")[0] + "-0"
-					: options.from) +
+				(semver.prerelease(options.from) ?
+					options.from.split("-")[0] + "-0"
+				:	options.from) +
 				" <=" +
 				to.split("-")[0],
 		);
@@ -218,9 +218,9 @@ export async function run({
 					includePrerelease: true,
 				})
 			) {
-				(options.partial || description.optional
-					? optionalMigrations
-					: migrations
+				(options.partial || description.optional ?
+					optionalMigrations
+				:	migrations
 				).push(description);
 			}
 		}
@@ -293,20 +293,21 @@ export async function run({
 
 		logger.info(bold(`** ${getMigrationTitleAndDescription(migration).title}`));
 
-		const reporterSubscription = !options["dry-run"]
-			? workflow.reporter.subscribe((event) => {
+		const reporterSubscription =
+			!options["dry-run"] ?
+				workflow.reporter.subscribe((event) => {
 					if (event.kind === "error") {
 						error = true;
 						reporterSubscription.unsubscribe();
 					} else {
 						const eventPath =
-							event.path.charAt(0) === "/"
-								? event.path.substring(1)
-								: event.path;
+							event.path.charAt(0) === "/" ?
+								event.path.substring(1)
+							:	event.path;
 						files.add(eventPath);
 					}
-			  })
-			: workflow.reporter.subscribe((event) => {
+				})
+			:	workflow.reporter.subscribe((event) => {
 					// Strip leading slash to prevent confusion.
 					const eventPath =
 						event.path.charAt(0) === "/" ? event.path.substring(1) : event.path;
@@ -315,9 +316,9 @@ export async function run({
 						case "error": {
 							error = true;
 							const desc =
-								event.description == "alreadyExist"
-									? "already exists"
-									: "does not exist";
+								event.description == "alreadyExist" ?
+									"already exists"
+								:	"does not exist";
 							logger.error(`Error: ${eventPath} ${desc}`);
 							break;
 						}
@@ -341,7 +342,7 @@ export async function run({
 							break;
 						}
 					}
-			  });
+				});
 
 		const lifecycleSubscription = workflow.lifeCycle.subscribe((event) => {
 			if (event.kind == "end" || event.kind == "post-tasks-start") {

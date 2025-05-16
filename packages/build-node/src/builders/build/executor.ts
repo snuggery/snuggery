@@ -55,9 +55,10 @@ export async function executeBuild(
 				const loadedPluginModule = await import(
 					pathToFileURL(resolvedPlugin).href
 				);
-				const loadedPlugin: PluginFactory = exportName
-					? loadedPluginModule[exportName]
-					: loadedPluginModule.default ?? loadedPluginModule;
+				const loadedPlugin: PluginFactory =
+					exportName ?
+						loadedPluginModule[exportName]
+					:	(loadedPluginModule.default ?? loadedPluginModule);
 
 				return createPlugin(context, loadedPlugin, input, config);
 			},
@@ -81,9 +82,10 @@ export async function executeBuild(
 	const packager = input.packager ?? config.packager;
 	const shouldRunPackager = input.package ?? !!packager;
 
-	const outputFolder = input.outputFolder
-		? resolveWorkspacePath(context, input.outputFolder)
-		: await resolveProjectPath(context, "dist");
+	const outputFolder =
+		input.outputFolder ?
+			resolveWorkspacePath(context, input.outputFolder)
+		:	await resolveProjectPath(context, "dist");
 
 	const manifest = await resolveProjectPath(context, manifestFilename)
 		.then((path) => fs.readFile(path, "utf8"))

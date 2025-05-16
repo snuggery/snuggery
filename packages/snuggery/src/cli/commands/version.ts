@@ -163,9 +163,9 @@ export class VersionCommand extends AbstractCommand {
 	#getVersion(packageName: string, projectRoot: string | null): string {
 		const {workspaceFolder} = this.workspace;
 
-		for (const path of projectRoot
-			? [join(workspaceFolder, projectRoot), workspaceFolder]
-			: [workspaceFolder]) {
+		for (const path of projectRoot ?
+			[join(workspaceFolder, projectRoot), workspaceFolder]
+		:	[workspaceFolder]) {
 			const require = createRequire(join(path, "<synthetic>"));
 
 			try {

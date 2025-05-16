@@ -4,9 +4,10 @@ import {
 } from "node:perf_hooks";
 import process from "node:process";
 
-export const performance = process.env.SNUGGERY_PERF
-	? _realPerformance
-	: {
+export const performance =
+	process.env.SNUGGERY_PERF ?
+		_realPerformance
+	:	{
 			mark() {
 				// no-op
 			},
@@ -16,7 +17,7 @@ export const performance = process.env.SNUGGERY_PERF
 			measure() {
 				// no-op
 			},
-	  };
+		};
 
 if (performance === _realPerformance) {
 	/** @type {Map<string, number>} */

@@ -327,10 +327,9 @@ function getTypesSimple(
 		return [property.type];
 	}
 
-	const alternatives = isJsonArray(property.oneOf)
-		? property.oneOf
-		: isJsonArray(property.anyOf)
-		? property.anyOf
+	const alternatives =
+		isJsonArray(property.oneOf) ? property.oneOf
+		: isJsonArray(property.anyOf) ? property.anyOf
 		: null;
 
 	if (alternatives == null) {
@@ -380,9 +379,10 @@ function getTypesComplex(
 	}
 
 	if (property.type === "array") {
-		const innerType = isJsonObject(property.items)
-			? getTypesComplex(tryDereference(property.items, schema), schema)
-			: null;
+		const innerType =
+			isJsonObject(property.items) ?
+				getTypesComplex(tryDereference(property.items, schema), schema)
+			:	null;
 
 		return innerType && {...innerType, isArray: true};
 	}
@@ -391,10 +391,9 @@ function getTypesComplex(
 		return {isArray: false, rest: [property.type]};
 	}
 
-	const alternatives = isJsonArray(property.oneOf)
-		? property.oneOf
-		: isJsonArray(property.anyOf)
-		? property.anyOf
+	const alternatives =
+		isJsonArray(property.oneOf) ? property.oneOf
+		: isJsonArray(property.anyOf) ? property.anyOf
 		: null;
 
 	if (alternatives == null) {
@@ -402,9 +401,9 @@ function getTypesComplex(
 	}
 
 	const types = alternatives.map((alt) =>
-		isJsonObject(alt)
-			? getTypesComplex(tryDereference(alt, schema), schema)
-			: null,
+		isJsonObject(alt) ?
+			getTypesComplex(tryDereference(alt, schema), schema)
+		:	null,
 	);
 
 	let rest: string[] = [];

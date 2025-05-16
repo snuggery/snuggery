@@ -509,9 +509,8 @@ export class NxWorkspaceDefinition extends ConvertibleWorkspaceDefinition {
 		}
 
 		let projects;
-		const projectsAndFiles: [JsonObject, FileHandle][] | undefined = file
-			? [[raw, file]]
-			: undefined;
+		const projectsAndFiles: [JsonObject, FileHandle][] | undefined =
+			file ? [[raw, file]] : undefined;
 
 		if (!Reflect.has(raw, "projects")) {
 			projects = await NxProjectDefinitionCollection.fromConfiguration(
@@ -645,9 +644,9 @@ export class NxWorkspaceHandle implements WorkspaceHandle {
 		// written, we do not have to track anything extra here.
 		await this.#file.update(async (data) =>
 			updater(
-				data.version === 1
-					? AngularWorkspaceDefinition.fromConfiguration(data)
-					: await NxWorkspaceDefinition.fromConfiguration(data, this.#file),
+				data.version === 1 ?
+					AngularWorkspaceDefinition.fromConfiguration(data)
+				:	await NxWorkspaceDefinition.fromConfiguration(data, this.#file),
 			),
 		);
 	}

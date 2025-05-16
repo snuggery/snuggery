@@ -82,9 +82,9 @@ export class Resolver implements ResolverFacade {
 		path: string,
 	): Promise<[path: string, info: JsonObject]> {
 		for (const folder of new Set(
-			this.#workspace.workspaceFolder != null
-				? [this.#context.startCwd, this.#workspace.workspaceFolder]
-				: [this.#context.startCwd],
+			this.#workspace.workspaceFolder != null ?
+				[this.#context.startCwd, this.#workspace.workspaceFolder]
+			:	[this.#context.startCwd],
 		)) {
 			const require = createRequire(join(folder, "<synthetic>"));
 
@@ -98,11 +98,11 @@ export class Resolver implements ResolverFacade {
 			let schemaOrBuilder: JsonObject | Builder;
 			try {
 				schemaOrBuilder =
-					extname(resolvedPath) === ".json"
-						? require(resolvedPath)
-						: await import(pathToFileURL(resolvedPath).href).then(
-								(module) => module.default ?? module,
-						  );
+					extname(resolvedPath) === ".json" ?
+						require(resolvedPath)
+					:	await import(pathToFileURL(resolvedPath).href).then(
+							(module) => module.default ?? module,
+						);
 			} catch {
 				throw new InvalidBuilderError(
 					`Failed to load builder file "${resolvedPath}" for builder "${path}"`,

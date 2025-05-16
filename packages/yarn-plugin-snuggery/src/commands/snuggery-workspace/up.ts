@@ -251,9 +251,9 @@ export class UpCommand extends BaseCommand {
 			);
 
 			const version =
-				"version" in locator && locator.version
-					? locator.version
-					: semver.clean(structUtils.parseRange(locator.reference).selector);
+				"version" in locator && locator.version ?
+					locator.version
+				:	semver.clean(structUtils.parseRange(locator.reference).selector);
 
 			const versionInfo = registryData.versions[version!];
 

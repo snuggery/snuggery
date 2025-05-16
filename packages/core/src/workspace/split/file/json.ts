@@ -77,11 +77,9 @@ export class JsonFileHandle extends AbstractFileHandle<JsonObject> {
 		);
 
 		const shortestIndentation =
-			indentations.size > 0
-				? Array.from(indentations).reduce((a, b) =>
-						a.length < b.length ? a : b,
-				  )
-				: "  ";
+			indentations.size > 0 ?
+				Array.from(indentations).reduce((a, b) => (a.length < b.length ? a : b))
+			:	"  ";
 
 		const formattingOptions: FormattingOptions = {
 			insertSpaces: shortestIndentation[0] === " ",

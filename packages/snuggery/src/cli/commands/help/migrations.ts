@@ -130,9 +130,9 @@ export class HelpMigrationsCommand extends MigrationCommand {
 			report.reportInfo(
 				formatMarkdownish(
 					`Migrations for \`${this.package}\` (${
-						currentVersion
-							? `currently at \`${currentVersion}\``
-							: "version number not found"
+						currentVersion ?
+							`currently at \`${currentVersion}\``
+						:	"version number not found"
 					}):`,
 					{
 						format,
@@ -168,9 +168,9 @@ export class HelpMigrationsCommand extends MigrationCommand {
 				);
 				report.reportInfo(
 					formatMarkdownish(
-						schematic.version
-							? `Version \`${schematic.version}\``
-							: "Not linked to a version",
+						schematic.version ?
+							`Version \`${schematic.version}\``
+						:	"Not linked to a version",
 						{
 							format,
 							maxLineLength: Infinity,

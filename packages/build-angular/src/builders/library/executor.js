@@ -61,15 +61,16 @@ export async function executeBuild(
 
 	inlineStyleLanguage ??= configuration.inlineStyleLanguage;
 
-	flags = flags
-		? {
+	flags =
+		flags ?
+			{
 				enableApiExtractor:
 					flags.enableApiExtractor ?? configuration.flags?.enableApiExtractor,
 				usePrivateApiAsImportIssueWorkaround:
 					flags.usePrivateApiAsImportIssueWorkaround ??
 					configuration.flags?.usePrivateApiAsImportIssueWorkaround,
-		  }
-		: configuration.flags;
+			}
+		:	configuration.flags;
 
 	const useCentralOutputFolder =
 		flags?.useCentralOutputFolder ??
@@ -106,12 +107,12 @@ export async function executeBuild(
 
 	outputFolder =
 		resolveWorkspacePath(context, outputFolder) ??
-		(useCentralOutputFolder
-			? resolveWorkspacePath(
-					context,
-					join("dist", JSON.parse(await readFile(manifest, "utf8")).name),
-			  )
-			: await resolveProjectPath(context, "dist"));
+		(useCentralOutputFolder ?
+			resolveWorkspacePath(
+				context,
+				join("dist", JSON.parse(await readFile(manifest, "utf8")).name),
+			)
+		:	await resolveProjectPath(context, "dist"));
 
 	const workspaceRequire = createRequire(
 		resolveWorkspacePath(context, "<workspace>"),
@@ -147,9 +148,10 @@ export async function executeBuild(
 				pathToFileURL(resolvedPlugin).href
 			);
 			/** @type {import('../../compiler.js').CompilerPluginFactory} */
-			const loadedPlugin = exportName
-				? loadedPluginModule[exportName]
-				: loadedPluginModule.default ?? loadedPluginModule;
+			const loadedPlugin =
+				exportName ?
+					loadedPluginModule[exportName]
+				:	(loadedPluginModule.default ?? loadedPluginModule);
 
 			if (config) {
 				return /** @type {const} */ ([loadedPlugin, config]);

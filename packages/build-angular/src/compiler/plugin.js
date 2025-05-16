@@ -76,10 +76,9 @@ export function createPlugin(logger, name, factory, ...input) {
 			/** @type {import('./resource-processor.js').StyleProcessor[]} */ ([]);
 	} else {
 		styleProcessor = (
-			isArray(plugin.styleProcessor)
-				? plugin.styleProcessor
-				: [plugin.styleProcessor]
-		).map((processor) => {
+			isArray(plugin.styleProcessor) ?
+				plugin.styleProcessor
+			:	[plugin.styleProcessor]).map((processor) => {
 			return {
 				...processor,
 				process: wrap(processor.process, processor),
@@ -88,8 +87,9 @@ export function createPlugin(logger, name, factory, ...input) {
 	}
 
 	/** @type {import('typescript').CustomTransformers} */
-	const typescriptTransformers = plugin.typescriptTransformers
-		? {
+	const typescriptTransformers =
+		plugin.typescriptTransformers ?
+			{
 				before: plugin.typescriptTransformers.before?.map(
 					wrapTransformerFactory,
 				),
@@ -97,12 +97,11 @@ export function createPlugin(logger, name, factory, ...input) {
 				afterDeclarations: plugin.typescriptTransformers.afterDeclarations?.map(
 					wrapTransformerFactory,
 				),
-		  }
-		: {};
+			}
+		:	{};
 
-	const processManifest = plugin.processManifest
-		? wrap(plugin.processManifest, plugin)
-		: noop;
+	const processManifest =
+		plugin.processManifest ? wrap(plugin.processManifest, plugin) : noop;
 
 	const esbuildPlugin = {name, setup: plugin.esbuildPlugin ?? noop};
 

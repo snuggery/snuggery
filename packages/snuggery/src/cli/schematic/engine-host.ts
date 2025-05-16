@@ -197,9 +197,9 @@ export class SnuggeryEngineHost
 			loadJson(from, name, "schematics", "generators");
 
 		const _extends =
-			typeof _rawExtends === "string"
-				? [_rawExtends]
-				: (_rawExtends as string[] | undefined);
+			typeof _rawExtends === "string" ?
+				[_rawExtends]
+			:	(_rawExtends as string[] | undefined);
 
 		const schematicAliasMap = createAliasMap(schematics);
 		const generatorAliasMap = createAliasMap(generators);
@@ -307,15 +307,15 @@ export class SnuggeryEngineHost
 			schemaJson = require(partialSchematic.schema);
 		}
 
-		// eslint-disable-next-line @typescript-eslint/ban-types
+		// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 		const realFactoryFn: Promise<RuleFactory<{}>> = dynamicImport(
 			factoryPath,
 		).then((module) => {
-			return factoryExport != null
-				? module[factoryExport!]
-				: module.default ?? module;
+			return factoryExport != null ?
+					module[factoryExport!]
+				:	(module.default ?? module);
 		});
-		// eslint-disable-next-line @typescript-eslint/ban-types
+		// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 		const factoryFn: RuleFactory<{}> = (options) => () =>
 			realFactoryFn.then((factory) => factory(options));
 
@@ -400,9 +400,10 @@ export class SnuggeryEngineHost
 					transformedOptions,
 					context,
 				);
-				transformedOptions = isObservable(transformerResult)
-					? await transformerResult.toPromise()
-					: await transformerResult;
+				transformedOptions =
+					isObservable(transformerResult) ?
+						await transformerResult.toPromise()
+					:	await transformerResult;
 			}
 			return transformedOptions;
 		});
@@ -421,7 +422,7 @@ export class SnuggeryEngineHost
 		);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-types
+	// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 	registerTaskExecutor<O = {}>(
 		factory: TaskExecutorFactory<O>,
 		options?: O,

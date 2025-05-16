@@ -153,11 +153,11 @@ export abstract class SchematicCommand extends AbstractCommand {
 			relativeCwd = relativeCwd.replace(/\\/g, "/");
 		}
 
-		return relativeCwd
-			? {
+		return relativeCwd ?
+				{
 					path: relativeCwd,
-			  }
-			: {};
+				}
+			:	{};
 	}
 
 	protected async getOptions(schematic: SnuggerySchematic): Promise<{
@@ -183,9 +183,9 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 		const projectName = this.currentProject;
 		const project =
-			projectName != null
-				? this.workspace.tryGetProjectByName(projectName)
-				: null;
+			projectName != null ?
+				this.workspace.tryGetProjectByName(projectName)
+			:	null;
 
 		const options: JsonObject = {};
 		const collectionName = schematic.collection.name;
@@ -393,9 +393,9 @@ export abstract class SchematicCommand extends AbstractCommand {
 				hasError = true;
 				this.context.report.reportWarning(
 					`Error: ${path} ${
-						event.description == "alreadyExist"
-							? "already exists"
-							: "does not exist"
+						event.description == "alreadyExist" ?
+							"already exists"
+						:	"does not exist"
 					}.`,
 				);
 			} else if (shouldPrintFileChanges) {

@@ -119,7 +119,7 @@ async function createCombinedStrategy(
 
 		strategies.push(
 			import(pathToFileURL(require.resolve(path)).href).then((mod) => {
-				const strategy = exportName ? mod[exportName] : mod.default ?? mod;
+				const strategy = exportName ? mod[exportName] : (mod.default ?? mod);
 
 				if (strategy == null) {
 					throw new Error(`Failed to load strategy ${name}`);

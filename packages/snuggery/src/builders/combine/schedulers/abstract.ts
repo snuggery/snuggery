@@ -30,12 +30,12 @@ export abstract class Scheduler {
 	public constructor(protected readonly context: BuilderContext) {}
 
 	protected getTarget(projectOverride?: string): ArchitectTarget | undefined {
-		return projectOverride
-			? ({
+		return projectOverride ?
+				({
 					...this.context.target,
 					project: projectOverride,
-			  } as ArchitectTarget)
-			: this.context.target;
+				} as ArchitectTarget)
+			:	this.context.target;
 	}
 
 	protected get currentProject(): string | null {

@@ -187,17 +187,19 @@ export async function parseSchema({
 
 					const type = types.shift()!;
 
-					const aliases = isJsonArray(property.aliases)
-						? property.aliases.map((x) => String(x))
-						: property.alias
-						? [String(property.alias)]
+					const aliases =
+						isJsonArray(property.aliases) ?
+							property.aliases.map((x) => String(x))
+						: property.alias ? [String(property.alias)]
 						: [];
 
 					const $defaultIndex =
-						isJsonObject(property.$default) &&
-						property.$default.$source == "argv"
-							? property.$default.index
-							: undefined;
+						(
+							isJsonObject(property.$default) &&
+							property.$default.$source == "argv"
+						) ?
+							property.$default.index
+						:	undefined;
 					const positional: number | undefined =
 						typeof $defaultIndex == "number" ? $defaultIndex : undefined;
 
@@ -207,16 +209,15 @@ export async function parseSchema({
 						!!property.hidden || !!property["x-deprecated"] || !visible;
 
 					const description =
-						typeof property.description === "string"
-							? property.description
-							: undefined;
+						typeof property.description === "string" ?
+							property.description
+						:	undefined;
 
 					const format =
 						typeof property.format === "string" ? property.format : undefined;
 
-					const _enum = isValidatableEnum(property.enum)
-						? property.enum
-						: undefined;
+					const _enum =
+						isValidatableEnum(property.enum) ? property.enum : undefined;
 
 					return {
 						aliases,

@@ -46,9 +46,10 @@ export async function copyAssets(
 		const asset: AssetSpec =
 			typeof rawAsset === "string" ? {include: rawAsset} : rawAsset;
 
-		const from = asset.from
-			? resolveWorkspacePath(context, asset.from)
-			: await getProjectPath(context);
+		const from =
+			asset.from ?
+				resolveWorkspacePath(context, asset.from)
+			:	await getProjectPath(context);
 		const to = asset.to ? join(outputFolder, asset.to) : outputFolder;
 
 		let files;
@@ -87,9 +88,8 @@ export async function copyAssets(
 		cwd: string,
 		asset: AssetSpec,
 	): Promise<Set<string>> {
-		const include = Array.isArray(asset.include)
-			? asset.include
-			: [asset.include];
+		const include =
+			Array.isArray(asset.include) ? asset.include : [asset.include];
 
 		return new Set(
 			(

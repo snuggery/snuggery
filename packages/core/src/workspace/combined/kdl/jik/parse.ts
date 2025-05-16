@@ -90,9 +90,9 @@ function isEntryContext(
 
 function toJsonArray(context: ParserContext): JsonValue[] {
 	return getArrayItems(context).map((item) =>
-		isEntryContext(item)
-			? parseTaggedValue(item, item.node)
-			: toJsonValue(item),
+		isEntryContext(item) ?
+			parseTaggedValue(item, item.node)
+		:	toJsonValue(item),
 	);
 }
 
@@ -110,15 +110,15 @@ export function toJsonObject(
 ): JsonObject {
 	const {node} = context;
 	const extendedProperties = new Map(
-		context.extends && node.getTag() !== tagOverwrite
-			? Object.entries(
-					toJsonObject(context.extends, {
-						ignoreArguments,
-						ignoreChildren,
-						ignoreProperties,
-					}),
-			  )
-			: undefined,
+		context.extends && node.getTag() !== tagOverwrite ?
+			Object.entries(
+				toJsonObject(context.extends, {
+					ignoreArguments,
+					ignoreChildren,
+					ignoreProperties,
+				}),
+			)
+		:	undefined,
 	);
 	const ownProperties = new Map<string, JsonValue>();
 

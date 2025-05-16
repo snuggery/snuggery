@@ -202,9 +202,10 @@ async function expandDocument(
 				const path = importNode.getName();
 				// Node package names can't start with . and relative paths have to start
 				// with . (./, ../, .\ and ..\)
-				const importedHandle = path.startsWith(".")
-					? await handle.openRelative(path)
-					: await handle.openDependency(path);
+				const importedHandle =
+					path.startsWith(".") ?
+						await handle.openRelative(path)
+					:	await handle.openDependency(path);
 
 				const importedDocument = await importedHandle.readDocument();
 

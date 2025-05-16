@@ -201,11 +201,9 @@ export class SnuggeryArchitectHost
 		return Array.from(names, (name) => {
 			const builder = builderJson[name] ?? executorsJson?.[name];
 			const description =
-				typeof builder === "string"
-					? `Alias for ${builder}`
-					: isJsonObject(builder)
-					? builder.description
-					: null;
+				typeof builder === "string" ? `Alias for ${builder}`
+				: isJsonObject(builder) ? builder.description
+				: null;
 
 			if (typeof description === "string") {
 				return {name, description};
@@ -273,9 +271,9 @@ export class SnuggeryArchitectHost
 				typeof builderInfo.schema !== "boolean")
 		) {
 			throw new InvalidBuilderError(
-				packageName !== "$direct"
-					? `Invalid configuration for builder "${builderName}" in package "${packageName}"`
-					: `Invalid configuration for builder "${builderName}"`,
+				packageName !== "$direct" ?
+					`Invalid configuration for builder "${builderName}" in package "${packageName}"`
+				:	`Invalid configuration for builder "${builderName}"`,
 			);
 		}
 
@@ -301,9 +299,9 @@ export class SnuggeryArchitectHost
 		}
 
 		const description =
-			typeof builderInfo.description === "string"
-				? builderInfo.description
-				: undefined!;
+			typeof builderInfo.description === "string" ?
+				builderInfo.description
+			:	undefined!;
 
 		let implementationPath = builderInfo.implementation;
 		let implementationExport: string | null = null;
@@ -405,9 +403,9 @@ export class SnuggeryArchitectHost
 		projectNameOrTarget: string | Target,
 	): Promise<JsonObject> {
 		return this.#workspace.getProjectMetadata(
-			typeof projectNameOrTarget === "string"
-				? projectNameOrTarget
-				: projectNameOrTarget.project,
+			typeof projectNameOrTarget === "string" ? projectNameOrTarget : (
+				projectNameOrTarget.project
+			),
 		);
 	}
 }

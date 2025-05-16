@@ -57,9 +57,9 @@ function applyChangeToNamedMap(
 	}
 	const firstExistingNode = context.node.findNodeByName(nodeName);
 	const document =
-		context.node instanceof Document
-			? context.node
-			: context.node.children ?? (context.node.children = new Document());
+		context.node instanceof Document ?
+			context.node
+		:	(context.node.children ?? (context.node.children = new Document()));
 
 	let added = false;
 
@@ -225,9 +225,10 @@ function applyChangeToProjects(
 		project = addProjectRelativeTag(
 			{
 				...project,
-				extends: project.node.hasProperty("extends")
-					? projects.get(project.node.getProperty("extends") as string)
-					: undefined,
+				extends:
+					project.node.hasProperty("extends") ?
+						projects.get(project.node.getProperty("extends") as string)
+					:	undefined,
 			},
 			getSingleStringValue(project, "root"),
 		);

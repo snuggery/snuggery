@@ -36,9 +36,8 @@ export function extractExtraConfiguration<
 	definition: T,
 	context: BuilderContext,
 	workspace?: WorkspaceDefinition | UpstreamWorkspaceDefinition,
-): T extends ExtraConfigurationDefinitionWithType<infer U>
-	? Promise<U[]>
-	: Promise<JsonValue[]>;
+): T extends ExtraConfigurationDefinitionWithType<infer U> ? Promise<U[]>
+:	Promise<JsonValue[]>;
 export async function extractExtraConfiguration(
 	configurationDefinition: ExtraConfigurationDefinition,
 	context: BuilderContext,

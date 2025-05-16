@@ -59,7 +59,7 @@ onto a journey description.
 		// via `journey <package name>`
 		"rename-lorem": {
 			"factory": "./schematic/journey.js#lorem",
-			"description": "Rename export `lorem` from mock package `@integration/test`"
+			"description": "Rename export `lorem` from mock package `@integration/test`",
 		},
 		// A journey with a "version" property is traveled using `journey --from <from> <package name>`
 		// if the configured version is higher than the `--from` version and no higher than the
@@ -67,7 +67,7 @@ onto a journey description.
 		"rename-ipsum": {
 			"version": "2.0.0",
 			"factory": "./schematic/journey.js#ipsum",
-			"description": "Rename export `ipsum` from mock package `@integration/test`"
+			"description": "Rename export `ipsum` from mock package `@integration/test`",
 		},
 		// Optional properties with a version can optionally be traveled along with
 		// the required journeys.
@@ -75,9 +75,9 @@ onto a journey description.
 			"version": "2.0.0",
 			"optional": true,
 			"factory": "./schematic/journey.js#dolor",
-			"description": "Rename export `dolor` from mock package `@integration/test`"
-		}
-	}
+			"description": "Rename export `dolor` from mock package `@integration/test`",
+		},
+	},
 }
 ```
 

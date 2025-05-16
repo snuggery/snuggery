@@ -106,9 +106,9 @@ export abstract class MigrationCommand extends SchematicCommand {
 		for (const schematicName of collection.listSchematicNames()) {
 			const schematic = collection.createSchematic(schematicName);
 			const version =
-				schematic.description.version != null
-					? valid(schematic.description.version)
-					: null;
+				schematic.description.version != null ?
+					valid(schematic.description.version)
+				:	null;
 
 			if (version == null || !range.test(version)) {
 				continue;

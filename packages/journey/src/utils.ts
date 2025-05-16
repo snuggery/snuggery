@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import {matchesPatterns, type Patterns} from "@snuggery/core";
 
 export class MapWithDefault<K, V extends {}> extends globalThis.Map<K, V> {

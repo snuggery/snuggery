@@ -16,9 +16,9 @@ export function getPackageName(moduleSpecifier) {
 	}
 
 	const secondSlash = moduleSpecifier.indexOf("/", firstSlash + 1);
-	return secondSlash === -1
-		? moduleSpecifier
-		: moduleSpecifier.slice(0, secondSlash);
+	return secondSlash === -1 ? moduleSpecifier : (
+			moduleSpecifier.slice(0, secondSlash)
+		);
 }
 
 /**
@@ -35,17 +35,17 @@ const PATH_REGEXP = new RegExp("\\" + path.sep, "g");
  * @type {<T extends string | null>(path: T) => T}
  */
 export const ensureUnixPath =
-	path.sep !== path.posix.sep
-		? (p) => {
-				if (typeof p !== "string") {
-					return /** @type {typeof p} */ (null);
-				}
+	path.sep !== path.posix.sep ?
+		(p) => {
+			if (typeof p !== "string") {
+				return /** @type {typeof p} */ (null);
+			}
 
-				// we use a regex instead of the character literal due to a bug in some versions of node.js
-				// the path separator needs to be preceded by an escape character
-				return /** @type {typeof p} */ (p.replace(PATH_REGEXP, path.posix.sep));
-		  }
-		: (path) => path;
+			// we use a regex instead of the character literal due to a bug in some versions of node.js
+			// the path separator needs to be preceded by an escape character
+			return /** @type {typeof p} */ (p.replace(PATH_REGEXP, path.posix.sep));
+		}
+	:	(path) => path;
 
 /**
  * @template K, V

@@ -55,9 +55,9 @@ export async function compile(
 			fileCache: cache.files,
 			markWrittenFile: (writtenFile, sourceFile) => {
 				if (!writtenFile.endsWith(".map")) {
-					(/\.d\.[cm]?ts$/.test(writtenFile)
-						? writtenDeclarationFiles
-						: writtenFiles
+					(/\.d\.[cm]?ts$/.test(writtenFile) ?
+						writtenDeclarationFiles
+					:	writtenFiles
 					).set(sourceFile.fileName, writtenFile);
 				}
 			},

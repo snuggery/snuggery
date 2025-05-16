@@ -206,9 +206,9 @@ class MappedTree implements NxTree {
 	read(filePath: string, encoding: BufferEncoding): string | null;
 	read(filePath: string, encoding?: BufferEncoding): Buffer | string | null {
 		const buffer = this.#tree.read(filePath);
-		return encoding != null && buffer != null
-			? buffer.toString(encoding)
-			: buffer;
+		return encoding != null && buffer != null ?
+				buffer.toString(encoding)
+			:	buffer;
 	}
 
 	write(filePath: string, content: string | Buffer): void {

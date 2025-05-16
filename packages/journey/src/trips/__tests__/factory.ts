@@ -8,7 +8,7 @@ import {mapImports} from "../map-imports";
 import {updatePackageJsons} from "../update-package-jsons";
 import {updateWorkspace} from "../update-workspace";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export const init: RuleFactory<{}> = () => (tree) => {
 	tree.create(
 		".gitignore",

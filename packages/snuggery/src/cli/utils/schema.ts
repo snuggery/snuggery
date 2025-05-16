@@ -98,9 +98,9 @@ function supportImplicit(
 	const configuredImplicitProperty = Object.entries(schema.properties).find(
 		([, property]) =>
 			isJsonObject(property) &&
-			(isJsonArray(property.aliases)
-				? property.aliases.includes(implicitPropertyKey)
-				: property.alias === implicitPropertyKey),
+			(isJsonArray(property.aliases) ?
+				property.aliases.includes(implicitPropertyKey)
+			:	property.alias === implicitPropertyKey),
 	);
 
 	if (!configuredImplicitProperty) {

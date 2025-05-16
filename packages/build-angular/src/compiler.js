@@ -230,11 +230,10 @@ export async function build({
 		logger,
 		plugins,
 		compileCache:
-			typeof cache === "boolean"
-				? cache
-					? globalCache
-					: createCompileCache()
-				: cache,
+			typeof cache === "boolean" ?
+				cache ? globalCache
+				:	createCompileCache()
+			:	cache,
 		resourceProcessor: new ResourceProcessor(
 			logger,
 			plugins,
@@ -254,9 +253,10 @@ export async function build({
 	performance.mark("cleaned");
 	performance.measure("clean", "prepared", "cleaned");
 
-	tsConfigFile = tsConfigFile
-		? resolve(rootFolder, tsConfigFile)
-		: join(dirname(manifestFile), "tsconfig.json");
+	tsConfigFile =
+		tsConfigFile ?
+			resolve(rootFolder, tsConfigFile)
+		:	join(dirname(manifestFile), "tsconfig.json");
 
 	// Start by compiling all entryPoints
 	logger.info(`Building ${mainPackageName}...`);

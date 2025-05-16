@@ -160,9 +160,9 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 							ts.factory.updateExportSpecifier(
 								specifier,
 								specifier.isTypeOnly,
-								renamedExportName === specifier.name.text
-									? undefined
-									: ts.factory.createIdentifier(renamedExportName),
+								renamedExportName === specifier.name.text ?
+									undefined
+								:	ts.factory.createIdentifier(renamedExportName),
 								specifier.name,
 							),
 						);
@@ -392,9 +392,9 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 							specifier,
 							specifier.isTypeOnly,
 							// If the alias is the new name, we can remove the alias
-							specifier.name.text === newExportName
-								? undefined
-								: ts.factory.createIdentifier(newExportName),
+							specifier.name.text === newExportName ?
+								undefined
+							:	ts.factory.createIdentifier(newExportName),
 							specifier.name,
 						),
 					);
@@ -421,9 +421,9 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 
 				recorder.insertRight(
 					location,
-					ms === moduleSpecifier
-						? updateDeclaration(isTypeOnly || clause.isTypeOnly, specifiers)
-						: createDeclaration(ms, isTypeOnly, specifiers),
+					ms === moduleSpecifier ?
+						updateDeclaration(isTypeOnly || clause.isTypeOnly, specifiers)
+					:	createDeclaration(ms, isTypeOnly, specifiers),
 				);
 			}
 		}

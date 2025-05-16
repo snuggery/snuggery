@@ -154,8 +154,8 @@ These can be configured for the entire workspace by placing them inside a `@snug
 	},
 	"@snuggery/build-angular": {
 		"tsconfig": "./tsconfig.json",
-		"inlineStyleLanguage": "scss"
-	}
+		"inlineStyleLanguage": "scss",
+	},
 }
 ```
 
@@ -184,8 +184,8 @@ This plugin ensures that `tslib` is a dependency of the package if and only if i
 		// Use the default version of tslib provided in the plugin
 		"@snuggery/build-angular/plugins#tslib",
 		// Or define the version to use:
-		["@snuggery/build-angular/plugins#tslib", {"version": "^2.3.1"}]
-	]
+		["@snuggery/build-angular/plugins#tslib", {"version": "^2.3.1"}],
+	],
 	/* ... */
 }
 ```

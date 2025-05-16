@@ -52,9 +52,10 @@ export function isUsingNodeResolution(compilerOptions) {
  */
 export function parseConfiguration(context, input) {
 	const defaultConfiguration = readConfiguration(defaultTsConfigFile);
-	const configuration = input.tsConfigFile
-		? readConfiguration(input.tsConfigFile)
-		: defaultConfiguration;
+	const configuration =
+		input.tsConfigFile ?
+			readConfiguration(input.tsConfigFile)
+		:	defaultConfiguration;
 
 	const compilerOptions = configuration.options;
 

@@ -65,10 +65,9 @@ export class BuildContext {
 		this.resourceProcessor = resourceProcessor;
 
 		this.compileCache =
-			typeof compileCache === "boolean"
-				? compileCache
-					? globalCompileCache
-					: createCompileCache()
-				: compileCache;
+			typeof compileCache === "boolean" ?
+				compileCache ? globalCompileCache
+				:	createCompileCache()
+			:	compileCache;
 	}
 }

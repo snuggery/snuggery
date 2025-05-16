@@ -115,10 +115,9 @@ class Yarn {
 					...env,
 					SNUGGERY_YARN: "1",
 				},
-				stdio: capture
-					? ["ignore", "pipe", "ignore"]
-					: quiet
-					? "ignore"
+				stdio:
+					capture ? ["ignore", "pipe", "ignore"]
+					: quiet ? "ignore"
 					: "inherit",
 			});
 
@@ -226,13 +225,13 @@ class Yarn {
 				"--all",
 				"--json",
 				...(dryRun ? ["--dry-run"] : []),
-				...(prerelease
-					? [
-							typeof prerelease === "string"
-								? `--prerelease=${prerelease}`
-								: "--prerelease",
-					  ]
-					: []),
+				...(prerelease ?
+					[
+						typeof prerelease === "string" ?
+							`--prerelease=${prerelease}`
+						:	"--prerelease",
+					]
+				:	[]),
 			],
 			{
 				captureNdjson: true,

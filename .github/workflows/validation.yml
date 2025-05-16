@@ -73,7 +73,7 @@ jobs:
       - name: 'Check for linting errors (fix w/ "yarn lint -c fix")'
         continue-on-error: true
         run: |
-          yarn sn lint --configuration ci > eslint-results.sarif
+          yarn eslint --format "@microsoft/eslint-formatter-sarif" > eslint-results.sarif
 
       - name: Upload analysis results to GitHub
         uses: github/codeql-action/upload-sarif@v3

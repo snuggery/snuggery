@@ -8,9 +8,9 @@ import {UpCommand} from "./commands/snuggery-workspace/up";
 const plugin: Plugin<Hooks> = {
 	commands: [
 		SnCommand,
-		...(process.env.SNUGGERY_YARN === "1"
-			? [PackCommand, PublishCommand, UpCommand]
-			: []),
+		...(process.env.SNUGGERY_YARN === "1" ?
+			[PackCommand, PublishCommand, UpCommand]
+		:	[]),
 	],
 	hooks: {
 		setupScriptEnvironment(_project, _env, makePathWrapper) {

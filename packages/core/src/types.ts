@@ -2,17 +2,17 @@ import type {workspaces} from "@angular-devkit/core";
 
 import type * as self from "./workspace";
 
-export type UpstreamWorkspaceDefinition = true extends typeof workspaces
-	? self.WorkspaceDefinition
-	: workspaces.WorkspaceDefinition;
+export type UpstreamWorkspaceDefinition =
+	true extends typeof workspaces ? self.WorkspaceDefinition
+	:	workspaces.WorkspaceDefinition;
 
-export type UpstreamProjectDefinition = true extends typeof workspaces
-	? self.ProjectDefinition
-	: workspaces.ProjectDefinition;
+export type UpstreamProjectDefinition =
+	true extends typeof workspaces ? self.ProjectDefinition
+	:	workspaces.ProjectDefinition;
 
-export type UpstreamTargetDefinition = true extends typeof workspaces
-	? self.TargetDefinition
-	: workspaces.TargetDefinition;
+export type UpstreamTargetDefinition =
+	true extends typeof workspaces ? self.TargetDefinition
+	:	workspaces.TargetDefinition;
 
 export interface UpstreamTargetDefinitionCollection
 	extends Iterable<readonly [string, UpstreamTargetDefinition]> {

@@ -131,9 +131,9 @@ export class PublishCommand extends BaseCommand {
 						throw error;
 					} else {
 						const message =
-							error.response.body && error.response.body.error
-								? error.response.body.error
-								: `The remote server answered with HTTP ${error.response.statusCode} ${error.response.statusMessage}`;
+							error.response.body && error.response.body.error ?
+								error.response.body.error
+							:	`The remote server answered with HTTP ${error.response.statusCode} ${error.response.statusMessage}`;
 
 						report.reportError(MessageName.NETWORK_ERROR, message);
 					}

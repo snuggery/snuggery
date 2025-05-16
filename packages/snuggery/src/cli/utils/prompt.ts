@@ -5,12 +5,12 @@ function extractChoices({
 	items,
 }: json.schema.PromptDefinition): prompts.Choice[] | undefined {
 	return items?.map((item) => {
-		return typeof item == "string"
-			? {title: item, value: item}
-			: {
+		return typeof item == "string" ?
+				{title: item, value: item}
+			:	{
 					title: item.label,
 					value: item.value as string,
-			  };
+				};
 	});
 }
 

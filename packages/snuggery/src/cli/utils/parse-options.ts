@@ -173,9 +173,9 @@ export function parseOptions({
 			super();
 
 			const claimedNames = new Set(
-				reservedNames
-					? [...reservedNames, ...globalReservedNames]
-					: globalReservedNames,
+				reservedNames ?
+					[...reservedNames, ...globalReservedNames]
+				:	globalReservedNames,
 			);
 
 			let restOption: Option | null = null;

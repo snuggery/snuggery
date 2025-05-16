@@ -137,9 +137,9 @@ export async function execute(
 			throw new BuildFailureError(
 				tags.stripIndent`
 					${
-						missingTargets.length === 1
-							? `Project ${stringifyArray(missingTargets)} does`
-							: `Projects ${stringifyArray(missingTargets)} do`
+						missingTargets.length === 1 ?
+							`Project ${stringifyArray(missingTargets)} does`
+						:	`Projects ${stringifyArray(missingTargets)} do`
 					} not declare a target ${JSON.stringify(target)}.
 					Set the "unknownTarget" option to "skip" to skip these projects.
 				`,

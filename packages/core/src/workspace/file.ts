@@ -64,23 +64,25 @@ export async function createTextFileHandle(
 		}
 	}
 
-	const read = (await source.isFile(path))
-		? () => source.read(path)
-		: async () => {
+	const read =
+		(await source.isFile(path)) ?
+			() => source.read(path)
+		:	async () => {
 				throw new InvalidConfigurationError(
 					`Cannot find configuration at ${path}`,
 				);
-		  };
+			};
 
 	return {
 		basename: basename(path),
 		dirname: dirname(path),
 		read,
-		write: !readonly
-			? (value) => source.write(path, value)
-			: async () => {
+		write:
+			!readonly ?
+				(value) => source.write(path, value)
+			:	async () => {
 					throw new Error(`File ${path} cannot be modified`);
-			  },
+				},
 		openRelative: (p, sf) =>
 			createTextFileHandle(source, join(dirname(path), p), sf, readonly),
 		openDependency: (p, sf) =>

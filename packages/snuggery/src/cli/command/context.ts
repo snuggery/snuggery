@@ -69,9 +69,9 @@ export class CliWorkspace implements WorkspaceDefinition {
 	}
 
 	get defaultProject(): string | null {
-		return typeof this.extensions.defaultProject === "string"
-			? this.extensions.defaultProject
-			: null;
+		return typeof this.extensions.defaultProject === "string" ?
+				this.extensions.defaultProject
+			:	null;
 	}
 
 	tryGetProjectNameByCwd(

@@ -47,9 +47,10 @@ import("@snuggery/snuggery/cli")
 				const pnpRequire = `--require ${
 					/\s/.test(pnpFile) ? JSON.stringify(pnpFile) : pnpFile
 				}`;
-				process.env.NODE_OPTIONS = process.env.NODE_OPTIONS
-					? `${process.env.NODE_OPTIONS} ${pnpRequire}`
-					: pnpRequire;
+				process.env.NODE_OPTIONS =
+					process.env.NODE_OPTIONS ?
+						`${process.env.NODE_OPTIONS} ${pnpRequire}`
+					:	pnpRequire;
 			}
 		}
 

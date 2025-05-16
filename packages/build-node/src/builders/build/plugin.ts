@@ -72,24 +72,20 @@ export function createPlugin<T = unknown>(
 	const finalize = plugin.finalize ? wrap(plugin.finalize, plugin) : noop;
 
 	const typescriptTransformers: CustomTransformers =
-		plugin.typescriptTransformers
-			? {
-					before: plugin.typescriptTransformers.before?.map(
-						wrapTransformerFactory,
-					),
-					after: plugin.typescriptTransformers.after?.map(
-						wrapTransformerFactory,
-					),
-					afterDeclarations:
-						plugin.typescriptTransformers.afterDeclarations?.map(
-							wrapTransformerFactory,
-						),
-			  }
-			: {};
+		plugin.typescriptTransformers ?
+			{
+				before: plugin.typescriptTransformers.before?.map(
+					wrapTransformerFactory,
+				),
+				after: plugin.typescriptTransformers.after?.map(wrapTransformerFactory),
+				afterDeclarations: plugin.typescriptTransformers.afterDeclarations?.map(
+					wrapTransformerFactory,
+				),
+			}
+		:	{};
 
-	const processManifest = plugin.processManifest
-		? wrap(plugin.processManifest, plugin)
-		: noop;
+	const processManifest =
+		plugin.processManifest ? wrap(plugin.processManifest, plugin) : noop;
 
 	return {finalize, typescriptTransformers, processManifest};
 

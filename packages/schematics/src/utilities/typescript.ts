@@ -75,11 +75,10 @@ export function createSystem({
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	type SystemMethod = {
 		[key in keyof ts.System]-?: ts.System[key] extends (
-			path: string,
-			...args: any[]
-		) => any
-			? key
-			: never;
+			(path: string, ...args: any[]) => any
+		) ?
+			key
+		:	never;
 	}[keyof ts.System];
 
 	function proxy<K extends SystemMethod>(

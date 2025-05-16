@@ -15,9 +15,10 @@ export async function execute(
 	config: Schema,
 	context: BuilderContext,
 ): Promise<void> {
-	const cwd = config.cwd
-		? resolveWorkspacePath(context, config.cwd)
-		: await getProjectPath(context);
+	const cwd =
+		config.cwd ?
+			resolveWorkspacePath(context, config.cwd)
+		:	await getProjectPath(context);
 
 	let binary: string;
 
