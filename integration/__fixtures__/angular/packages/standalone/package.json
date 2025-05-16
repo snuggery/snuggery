@@ -13,10 +13,10 @@
 		"tslib": "^2.4.0"
 	},
 	"peerDependencies": {
-		"@angular/core": "^19.0.0"
+		"@angular/core": "^20.0.0-rc"
 	},
 	"devDependencies": {
-		"@angular/core": "^19.0.0",
+		"@angular/core": "^20.0.0-rc",
 		"rxjs": "^7.8.0",
 		"zone.js": "0.15.0"
 	}

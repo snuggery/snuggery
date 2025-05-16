@@ -115,7 +115,8 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 							ts.factory.createNamedImports(elements),
 						),
 						node.moduleSpecifier,
-						node.assertClause,
+						// TS ≥ 5.7 uses attributes, TS < 5.7 uses assertClause
+						node.attributes ?? node.assertClause,
 					),
 				(moduleSpecifier, isTypeOnly, elements) =>
 					ts.factory.createImportDeclaration(
@@ -197,7 +198,8 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 								elements,
 							),
 							node.moduleSpecifier,
-							node.assertClause,
+							// TS ≥ 5.7 uses attributes, TS < 5.7 uses assertClause
+							node.attributes ?? node.assertClause,
 						),
 					(moduleSpecifier, isTypeOnly, elements) =>
 						ts.factory.createExportDeclaration(
@@ -325,8 +327,8 @@ const createTypescriptTransform: VisitorFactory<MapImportsInput> = (
 			updateElement: (
 				node: T["elements"][number],
 				isTypeOnly: boolean,
-				propertyName: ts.Identifier | undefined,
-				name: ts.Identifier,
+				propertyName: T["elements"][number]["propertyName"] | undefined,
+				name: T["elements"][number]["name"],
 			) => T["elements"][number],
 			renames?: Map<string, string>,
 		): void {
