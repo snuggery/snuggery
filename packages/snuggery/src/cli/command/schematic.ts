@@ -402,12 +402,12 @@ export abstract class SchematicCommand extends AbstractCommand {
 				switch (event.kind) {
 					case "update":
 						loggingQueue.push(
-							`${"UPDATE"} ${path} (${event.content.length} bytes)`,
+							`${"UPDATE"} ${path} (${event.content.byteLength} bytes)`,
 						);
 						break;
 					case "create":
 						loggingQueue.push(
-							`${"CREATE"} ${path} (${event.content.length} bytes)`,
+							`${"CREATE"} ${path} (${event.content.byteLength} bytes)`,
 						);
 						break;
 					case "delete":

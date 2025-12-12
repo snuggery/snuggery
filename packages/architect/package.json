@@ -14,13 +14,13 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.2000.0-rc < 0.2100.0",
+		"@angular-devkit/architect": ">= 0.2100.0 < 0.2200.0",
 		"@snuggery/core": "^0.10.0",
 		"glob": "^10.2.1",
 		"rxjs": "^7.8.0"
 	},
 	"peerDependencies": {
-		"@angular-devkit/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0-rc"
+		"@angular-devkit/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0 || ^21.0.0"
 	},
 	"peerDependenciesMeta": {
 		"@angular-devkit/core": {
@@ -30,7 +30,7 @@
 	"devDependencies": {
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@types/glob": "8.1.0",
-		"@types/node": "^20.11.30",
+		"@types/node": "^24",
 		"uvu": "^0.5.6"
 	},
 	"publishConfig": {

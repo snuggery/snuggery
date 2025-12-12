@@ -1,0 +1,11 @@
+releases:
+  "@snuggery/affected": minor
+  "@snuggery/architect": minor
+  "@snuggery/build-angular": minor
+  "@snuggery/build-node": minor
+  "@snuggery/core": minor
+  "@snuggery/global": minor
+  "@snuggery/journey": minor
+  "@snuggery/schematics": minor
+  "@snuggery/snuggery": minor
+  "@snuggery/yarn": minor

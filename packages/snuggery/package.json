@@ -31,9 +31,9 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@angular-devkit/architect": ">= 0.2000.0-rc < 0.2100.0",
-		"@angular-devkit/core": "^20.0.0-rc",
-		"@angular-devkit/schematics": "^20.0.0-rc",
+		"@angular-devkit/architect": ">= 0.2100.0 < 0.2200.0",
+		"@angular-devkit/core": "^21.0.0",
+		"@angular-devkit/schematics": "^21.0.0",
 		"@arcanis/slice-ansi": "^2.0.1",
 		"@snuggery/architect": "^0.12.0",
 		"@snuggery/core": "^0.10.0",
@@ -51,7 +51,7 @@
 	"devDependencies": {
 		"@nx/devkit": "^18.0.4",
 		"@snuggery-workspace/scripts": "workspace:scripts",
-		"@types/node": "^20.11.30",
+		"@types/node": "^24",
 		"@types/prettier": "^2.7.2",
 		"@types/prompts": "^2.4.4",
 		"@types/semver": "^7.3.13",

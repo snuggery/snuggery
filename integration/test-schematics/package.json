@@ -3,9 +3,9 @@
 	"schematics": "./collection.json",
 	"journey": "./journey.json",
 	"dependencies": {
-		"@angular-devkit/schematics": "^20.0.0-rc",
+		"@angular-devkit/schematics": "^21.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/journey": "workspace:packages/journey",
-		"typescript": "5.8.3"
+		"typescript": "5.9.3"
 	}
 }

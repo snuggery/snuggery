@@ -9,6 +9,7 @@
 
 /packages/*/dist
 /dist
+/.idea
 
 *.tsbuildinfo
 /packages/yarn-plugin-*/out-tsc

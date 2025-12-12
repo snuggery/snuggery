@@ -12,7 +12,7 @@
 		"semver": "^7.3.1"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.30",
+		"@types/node": "^24",
 		"@types/semver": "^7.3.8",
 		"@yarnpkg/builder": "4.0.0",
 		"@yarnpkg/cli": "4.0.1",
@@ -24,6 +24,6 @@
 		"@yarnpkg/plugin-pack": "4.0.0",
 		"clipanion": "4.0.0-rc.2",
 		"semver": "^7.3.1",
-		"typescript": "5.8.3"
+		"typescript": "5.9.3"
 	}
 }
