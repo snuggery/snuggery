@@ -179,15 +179,6 @@ export async function load(urlString, context, nextLoad) {
 
 	const extension = extname(url.pathname);
 
-	// Ensure no warnings by node.js for packages calling require() for JSON files
-	if (extension === ".json") {
-		return {
-			shortCircuit: true,
-			format: "commonjs",
-			source: `module.exports = ${await readFile(url, "utf-8")}`,
-		};
-	}
-
 	if (!(extension in tsToJs)) {
 		return nextLoad(urlString, context);
 	}
