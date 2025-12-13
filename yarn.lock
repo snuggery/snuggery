@@ -1632,9 +1632,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@snuggery-workspace/scripts@workspace:scripts"
   dependencies:
-    cjs-module-lexer: "npm:^1.2.3"
     esbuild: "npm:^0.20.2"
-    esbuild-register: "npm:^3.4.2"
+    esbuild-register: "npm:^3.6.0"
   languageName: unknown
   linkType: soft
 
@@ -3619,13 +3618,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cjs-module-lexer@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "cjs-module-lexer@npm:1.2.3"
-  checksum: 10c0/0de9a9c3fad03a46804c0d38e7b712fb282584a9c7ef1ed44cae22fb71d9bb600309d66a9711ac36a596fd03422f5bb03e021e8f369c12a39fa1786ae531baab
-  languageName: node
-  linkType: hard
-
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -4490,14 +4482,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild-register@npm:^3.4.2":
-  version: 3.4.2
-  resolution: "esbuild-register@npm:3.4.2"
+"esbuild-register@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "esbuild-register@npm:3.6.0"
   dependencies:
     debug: "npm:^4.3.4"
   peerDependencies:
     esbuild: ">=0.12 <1"
-  checksum: 10c0/a7cb278126cf46fee04dad05e362c47e586aaa4bbaa43fc74931f85929b756077a01ee30ebec05c4096c915a980d2d2e75ec7df55685de5a58fa90595a0a1153
+  checksum: 10c0/77193b7ca32ba9f81b35ddf3d3d0138efb0b1429d71b39480cfee932e1189dd2e492bd32bf04a4d0bc3adfbc7ec7381ceb5ffd06efe35f3e70904f1f686566d5
   languageName: node
   linkType: hard
 

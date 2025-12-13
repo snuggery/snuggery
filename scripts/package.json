@@ -5,8 +5,7 @@
 		"./package.json": "./package.json"
 	},
 	"dependencies": {
-		"cjs-module-lexer": "^1.2.3",
 		"esbuild": "^0.20.2",
-		"esbuild-register": "^3.4.2"
+		"esbuild-register": "^3.6.0"
 	}
 }

@@ -6,7 +6,7 @@ import {UnsuccessfulWorkflowExecution} from "@angular-devkit/schematics";
 import {
 	NodeModulesEngineHost,
 	NodeWorkflow,
-} from "@angular-devkit/schematics/tools";
+} from "@angular-devkit/schematics/tools/index.js";
 import {bold, green, yellow, red, cyan, blue} from "kleur/colors";
 import {stat, readFile} from "node:fs/promises";
 import {createRequire} from "node:module";

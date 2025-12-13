@@ -4,7 +4,7 @@ const {pathToFileURL} = require("node:url");
 require("esbuild-register/dist/node").register({
 	extensions: [".cts", ".ts"],
 	format: "cjs",
-	target: ["node18"],
+	target: ["node20"],
 	tsconfigRaw: {
 		compilerOptions: {
 			experimentalDecorators: true,

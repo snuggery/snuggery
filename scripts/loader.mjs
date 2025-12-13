@@ -1,10 +1,8 @@
-import * as lexer from "cjs-module-lexer";
 import {transform} from "esbuild";
 import {readFileSync} from "node:fs";
 import {readFile} from "node:fs/promises";
 import {isBuiltin} from "node:module";
-import {dirname, extname, basename} from "node:path/posix";
-import process from "node:process";
+import {dirname, extname} from "node:path/posix";
 
 const tsToJs = {
 	".cts": ".cjs",
@@ -52,14 +50,8 @@ let hasResolvedCli = false;
 let traceCli = false;
 const start = Date.now();
 
-const insertEsmReExports = parseInt(process.version.replace(/^v/, "")) < 20;
-
 export async function initialize(data) {
 	traceCli = !!data.traceCli;
-
-	if (insertEsmReExports) {
-		await lexer.init();
-	}
 }
 
 /** @type {import('node:module').ResolveHook} */
@@ -147,16 +139,6 @@ export async function resolve(specifier, context, nextResolve) {
 			format = getPackageFormat(url);
 	}
 
-	if (
-		insertEsmReExports &&
-		format === "commonjs" &&
-		context.conditions.includes("import") &&
-		!context.parentURL?.endsWith("?inserted")
-	) {
-		url.search = "?inserted";
-		format = "module";
-	}
-
 	return {
 		url: url.href,
 		format,
@@ -206,52 +188,36 @@ export async function load(urlString, context, nextLoad) {
 		};
 	}
 
-	const result = await nextLoad(urlString, context);
-	const source = result.source ?? (await readFile(url));
-
 	if (!(extension in tsToJs)) {
-		return {
-			...result,
-			source,
-		};
+		return nextLoad(urlString, context);
 	}
 
-	if (url.searchParams.has("inserted")) {
-		const cjsSource = (
-			await transform(source, {
-				sourcefile: urlString,
-				platform: "node",
-				loader: "ts",
-				format: "cjs",
-				target: "node18",
-				tsconfigRaw: '{"compilerOptions": {"experimentalDecorators": true}}',
-			})
-		).code;
-
-		const {exports} = lexer.parse(cjsSource);
-
-		const cjsUrl = `./${basename(url.pathname)}`;
-
-		return {
-			format: "module",
-			source: [
-				`import mod from ${JSON.stringify(cjsUrl)};`,
-				"",
-				...exports.map((exp) => `export const ${exp} = mod.${exp}`),
-				"",
-			].join("\n"),
-		};
+	let {format} = context;
+	if (!format) {
+		switch (extension) {
+			case ".mts":
+				format = "module";
+				break;
+			case ".cts":
+				format = "commonjs";
+				break;
+			default:
+				format = getPackageFormat(url);
+		}
 	}
+
+	const source = await readFile(url);
 
 	return {
-		...result,
+		shortCircuit: true,
+		format,
 		source: (
 			await transform(source, {
 				sourcefile: urlString,
 				platform: "node",
 				loader: "ts",
-				format: result.format === "commonjs" ? "cjs" : "esm",
-				target: "node18",
+				format: format === "commonjs" ? "cjs" : "esm",
+				target: "node20",
 				tsconfigRaw: '{"compilerOptions": {"experimentalDecorators": true}}',
 			})
 		).code,
