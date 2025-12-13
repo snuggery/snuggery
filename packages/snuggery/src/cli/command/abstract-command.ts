@@ -8,7 +8,7 @@ import {
 	Option as CommandOption,
 	UsageError,
 } from "clipanion";
-import path, {dirname, normalize, posix, relative} from "node:path";
+import path, {dirname, join, normalize, posix, relative} from "node:path";
 import process from "node:process";
 
 import type {SnuggeryArchitectHost} from "../architect/index.js";
@@ -23,6 +23,8 @@ import type {Option} from "../utils/parse-schema.js";
 import type {Report} from "../utils/report.js";
 
 import type {CliWorkspace, Context} from "./context.js";
+import {mkdtemp, writeFile} from "node:fs/promises";
+import {tmpdir} from "node:os";
 
 /**
  * An error that won't show a stack trace
@@ -424,6 +426,11 @@ export abstract class AbstractCommand extends Command<Context> {
 			error.name = error.name.replace(/(?:Error|Exception)$/, "");
 		}
 
+		if ("code" in error) {
+			// It's probably helpful to log the properties of a nodejs "ErrnoException", e.g. the error code
+			error.message += "\n" + JSON.stringify(error);
+		}
+
 		if (error.cause && error.cause instanceof Error) {
 			const cause = this.prettifyError(error.cause);
 
@@ -432,4 +439,43 @@ export abstract class AbstractCommand extends Command<Context> {
 
 		return error;
 	}
+}
+
+export async function createErrorDetailsFile(
+	error: Error,
+): Promise<string | null> {
+	if (!error.stack) {
+		return null;
+	}
+
+	const file = join(await mkdtemp(join(tmpdir(), "snuggery-")), "error.log");
+
+	function stringify(error: unknown): string {
+		if (!(error instanceof Error)) {
+			return typeof error === "symbol" ? error.toString() : String(error);
+		}
+
+		let stringified;
+		if ("code" in error) {
+			// It's probably helpful to log the properties of a nodejs "ErrnoException", e.g. the error code
+			const message = String(error);
+			stringified =
+				message +
+				"\n" +
+				JSON.stringify(error) +
+				(error.stack?.slice(message.length) ?? "");
+		} else {
+			stringified = error.stack ?? error.message;
+		}
+
+		if (!error.cause) {
+			return stringified;
+		}
+
+		return stringified + "\nCaused by: " + stringify(error.cause);
+	}
+
+	await writeFile(file, stringify(error));
+
+	return file;
 }

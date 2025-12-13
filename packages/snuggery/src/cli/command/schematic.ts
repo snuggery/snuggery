@@ -1,8 +1,6 @@
 import type {DryRunEvent} from "@angular-devkit/schematics";
 import {isJsonArray, isJsonObject, JsonObject, JsonValue} from "@snuggery/core";
-import {promises as fs} from "fs";
-import {tmpdir} from "os";
-import path, {posix, join, normalize, relative} from "path";
+import path, {posix, normalize, relative} from "path";
 
 import {AbstractError} from "../../utils/error.js";
 import {UnableToResolveError} from "../../utils/json-resolver.js";
@@ -16,7 +14,7 @@ import type {SnuggeryWorkflow} from "../schematic/workflow.js";
 import {Cached} from "../utils/decorator.js";
 import {parseSchema, Option, Type} from "../utils/parse-schema.js";
 
-import {AbstractCommand} from "./abstract-command.js";
+import {AbstractCommand, createErrorDetailsFile} from "./abstract-command.js";
 
 export const forceOption: Option = {
 	name: "force",
@@ -468,14 +466,9 @@ export abstract class SchematicCommand extends AbstractCommand {
 
 			let message = `The schematic failed with underlying ${e.name}: ${e.message}`;
 
-			if (e.stack) {
-				const file = join(
-					await fs.mkdtemp(join(tmpdir(), "snuggery-")),
-					"error.log",
-				);
-				await fs.writeFile(file, e.stack);
-
-				message += `\nSee ${file} for more information on the error`;
+			const detailsFile = await createErrorDetailsFile(e);
+			if (detailsFile) {
+				message += `\nSee ${detailsFile} for more information on the error`;
 			}
 
 			throw new SchematicFailedError(message);

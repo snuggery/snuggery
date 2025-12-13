@@ -4,15 +4,12 @@ import type {
 	Target,
 } from "@angular-devkit/architect";
 import {isJsonArray, JsonObject} from "@snuggery/core";
-import {promises as fs} from "fs";
-import {tmpdir} from "os";
-import {join} from "path";
 
 import {AbstractError} from "../../utils/error.js";
 import {Cached} from "../utils/decorator.js";
 import {Option, parseSchema, Type} from "../utils/parse-schema.js";
 
-import {AbstractCommand} from "./abstract-command.js";
+import {AbstractCommand, createErrorDetailsFile} from "./abstract-command.js";
 import type {Context} from "./context.js";
 
 /**
@@ -46,14 +43,9 @@ async function handleBuilderRun(run: BuilderRun, context: Context) {
 
 		let message = `Build failed with underlying ${e.name}: ${e.message}`;
 
-		if (e.stack) {
-			const file = join(
-				await fs.mkdtemp(join(tmpdir(), "snuggery-")),
-				"error.log",
-			);
-			await fs.writeFile(file, e.stack);
-
-			message += `\nSee ${file} for more information on the error`;
+		const detailsFile = await createErrorDetailsFile(e);
+		if (detailsFile) {
+			message += `\nSee ${detailsFile} for more information on the error`;
 		}
 
 		throw new BuilderFailedError(message);
