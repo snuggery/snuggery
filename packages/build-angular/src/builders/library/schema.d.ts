@@ -53,6 +53,11 @@ export interface Schema {
 	keepDevDependencies?: boolean;
 
 	/**
+	 * Whether to bundle dependencies in the output, defaults to `false`
+	 */
+	bundleDependencies?: boolean;
+
+	/**
 	 * Plugins to load
 	 */
 	plugins?: (string | [string, JsonObject])[];

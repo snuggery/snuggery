@@ -61,7 +61,8 @@ async function exec(
 		stdout: stripAnsi(stdout.getContent().toString()).trim(),
 		stderr: stripAnsi(stderr.getContent().toString())
 			.trim()
-			.replace(/^.*✔/s, "✔"),
+			.replace(/^.*[✔√]/s, "✔")
+			.replace(/»/g, "›"),
 	};
 }
 

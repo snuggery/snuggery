@@ -50,6 +50,10 @@ Properties:
   Whether to keep the devDependencies in package.json, defaults to false
   Type: `boolean`
 
+- `bundleDependencies`
+  Whether to bundle dependencies in the output, defaults to false
+  Type: `boolean`
+
 - `inlineStyleLanguage`
   Language for inline styles in components, defaults to `css`
   Type: `string`

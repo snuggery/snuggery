@@ -42,6 +42,7 @@ export async function executeBuild(
 
 		keepDevDependencies,
 		keepScripts,
+		bundleDependencies,
 
 		flags,
 	},
@@ -55,6 +56,7 @@ export async function executeBuild(
 
 	keepScripts ??= configuration.keepScripts;
 	keepDevDependencies ??= configuration.keepDevDependencies;
+	bundleDependencies ??= configuration.bundleDependencies;
 
 	packager ??= configuration.packager;
 	shouldRunPackage ??= !!packager;
@@ -174,6 +176,7 @@ export async function executeBuild(
 
 			keepDevDependencies,
 			keepScripts,
+			bundleDependencies,
 			outputFolder,
 			plugins: loadedPlugins,
 			inlineStyleLanguage,

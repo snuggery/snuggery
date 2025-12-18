@@ -11,6 +11,7 @@ import {BuildFailureError} from "../error.js";
  * @typedef {object} FlattenCodeInput
  * @property {string} outputFolder
  * @property {string} target
+ * @property {boolean} [bundleDependencies]
  */
 
 /**
@@ -46,7 +47,7 @@ function resolveOnlySelf(entryPoints) {
 					//                                         [A-Za-z][^:]                // A drive letter but then not a colon
 					//                                                      [^./\\A-Za-z]  // not a dot, slash or drive letter
 					filter:
-						/^(?:\.\.[^/\\]|\.[^./\\]|[A-Za-z]:[^\\]|[A-Za-z][^:]|[^./\\A-Za-z])/,
+						/^(?:\.\.[^/\\]|\.[^./\\]|[A-Za-z]:[^\\/]|[A-Za-z][^:]|[^./\\A-Za-z])/,
 				},
 				({path: specifier}) => {
 					const path = ownImports.get(specifier);
@@ -105,7 +106,9 @@ export async function flattenCode(context, input) {
 			target: [input.target],
 			format: "esm",
 			plugins: [
-				resolveOnlySelf(context.entryPoints),
+				...(input.bundleDependencies ?
+					[]
+				:	[resolveOnlySelf(context.entryPoints)]),
 				...context.plugins.map((plugin) => plugin.esbuildPlugin),
 			],
 			sourcemap: "linked",

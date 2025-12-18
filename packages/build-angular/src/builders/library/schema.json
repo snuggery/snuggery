@@ -24,6 +24,10 @@
 			"type": "boolean",
 			"description": "Whether to keep the devDependencies in package.json, defaults to false"
 		},
+		"bundleDependencies": {
+			"type": "boolean",
+			"description": "Whether to bundle dependencies in the output, defaults to false"
+		},
 		"inlineStyleLanguage": {
 			"type": "string",
 			"description": "Language for inline styles in components, defaults to `css`"

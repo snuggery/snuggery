@@ -98,6 +98,10 @@ export {BuildFailureError, createCompileCache};
  *
  * Defaults to `false`.
  *
+ * @property {boolean} [bundleDependencies] Whether to bundle dependencies in the output
+ *
+ * Defaults to `false`.
+ *
  * @property {string} [inlineStyleLanguage] The language to use for inline styles
  *
  * The default value is `'css'`.
@@ -137,6 +141,7 @@ export async function build({
 	plugins: pluginFactories = [],
 	keepScripts = false,
 	keepDevDependencies = keepScripts,
+	bundleDependencies = false,
 	inlineStyleLanguage = "css",
 	flags: {
 		usePrivateApiAsImportIssueWorkaround = flags.usePrivateApiAsImportIssueWorkaround,
@@ -175,7 +180,7 @@ export async function build({
 			return {
 				packageName,
 				exportName,
-				mainFile,
+				mainFile: ensureUnixPath(mainFile),
 
 				esmFile: null,
 				fesmFile: join(fesmOutputFolder, `${getUnscopedName(packageName)}.js`),
@@ -215,6 +220,7 @@ export async function build({
 				logger,
 				keepScripts,
 				keepDevDependencies,
+				bundleDependencies,
 				inlineStyleLanguage,
 				flags: {enableApiExtractor, usePrivateApiAsImportIssueWorkaround},
 			},
@@ -277,6 +283,7 @@ export async function build({
 	await flattenCode(buildContext, {
 		target: `es${targetLanguageLevel}`,
 		outputFolder: fesmOutputFolder,
+		bundleDependencies,
 	});
 
 	performance.mark("code-flattened");

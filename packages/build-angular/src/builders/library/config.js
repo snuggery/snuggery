@@ -7,6 +7,7 @@ const testConfiguration = t.isObject({
 
 	keepScripts: t.isOptional(t.isBoolean()),
 	keepDevDependencies: t.isOptional(t.isBoolean()),
+	bundleDependencies: t.isOptional(t.isBoolean()),
 
 	packager: t.isOptional(t.isString()),
 
