@@ -32,10 +32,12 @@ export function targetFromTargetString(targetString: string): Target {
  *
  * @param context The builder context
  * @param targetString The unresolved target
+ * @param options Resolution options
  */
 export function resolveTargetString(
 	context: BuilderContext,
 	targetString: string,
+	{defaultTarget}: {defaultTarget?: string} = {},
 ): string {
 	let target: Target;
 
@@ -51,6 +53,16 @@ export function resolveTargetString(
 		}
 
 		target.project = context.target.project;
+	}
+
+	if (!target.target) {
+		if (defaultTarget) {
+			target.target = defaultTarget;
+		} else if (context.target?.target) {
+			target.target = context.target.target;
+		} else {
+			throw new Error(`Target is required to resolve spec "${targetString}"`);
+		}
 	}
 
 	return targetStringFromTarget(target);
