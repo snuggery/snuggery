@@ -1,6 +1,7 @@
 /* cspell:ignore ngfactory bazel */
 
 import {readConfiguration} from "@angular/compiler-cli";
+import path from "node:path";
 import {fileURLToPath, URL} from "node:url";
 import ts from "typescript";
 
@@ -65,8 +66,7 @@ export function parseConfiguration(context, input) {
 		compilerOptions.module >= ts.ModuleKind.ES2015 &&
 		compilerOptions.module <= ts.ModuleKind.ESNext
 	) {
-		compilerOptions.moduleResolution =
-			compilerOptions.moduleResolution ?? ts.ModuleResolutionKind.Node10;
+		compilerOptions.moduleResolution ??= ts.ModuleResolutionKind.Bundler;
 	} else if (isUsingNodeResolution(compilerOptions)) {
 		const primaryType = context.manifest.type ?? "commonjs";
 
@@ -121,6 +121,9 @@ export function parseConfiguration(context, input) {
 	configuration.rootNames = context.entryPoints.map(
 		(entryPoint) => entryPoint.mainFile,
 	);
+	configuration.options.rootDir ??= getLongestCommonPrefixDirectory(
+		configuration.rootNames,
+	);
 	if (input.usePrivateApiAsImportIssueWorkaround) {
 		// Uh oh, a private property: "This option is internal and is used by the ng_module.bzl rule to switch behavior between Bazel and Blaze."
 		compilerOptions._useHostForImportGeneration = true;
@@ -130,4 +133,27 @@ export function parseConfiguration(context, input) {
 	compilerOptions.importHelpers = true;
 
 	return configuration;
+}
+
+/**
+ * @param {readonly string[]} files
+ * @returns {string}
+ */
+function getLongestCommonPrefixDirectory(files) {
+	let longestPrefix = path.normalize(
+		path.dirname(files[0] ?? path.resolve("/")) + path.sep,
+	);
+
+	for (const file of files.slice(1)) {
+		const directory = path.dirname(file) + path.sep;
+
+		while (
+			longestPrefix !== path.dirname(longestPrefix) &&
+			!directory.startsWith(longestPrefix)
+		) {
+			longestPrefix = path.normalize(path.dirname(longestPrefix) + path.sep);
+		}
+	}
+
+	return longestPrefix;
 }

@@ -60,6 +60,30 @@ function excludeSelfFromModuleCache(cache, context) {
 				);
 			},
 
+			getOrCreateCacheForNonRelativeName(
+				nonRelativeModuleName,
+				mode,
+				redirectedReference,
+			) {
+				if (
+					ownPackageNames.has(nonRelativeModuleName) ||
+					isInsidePackage(nonRelativeModuleName)
+				) {
+					return selfCache.getOrCreateCacheForNonRelativeName(
+						nonRelativeModuleName,
+						mode,
+						redirectedReference,
+					);
+				}
+
+				return cache.moduleResolution.getOrCreateCacheForNonRelativeName(
+					nonRelativeModuleName,
+					mode,
+					redirectedReference,
+				);
+			},
+
+			/** @deprecated */
 			getOrCreateCacheForModuleName(
 				nonRelativeModuleName,
 				redirectedReference,
