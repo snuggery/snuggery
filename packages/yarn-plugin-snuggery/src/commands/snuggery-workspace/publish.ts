@@ -124,6 +124,7 @@ export class PublishCommand extends BaseCommand {
 						registry,
 						ident,
 						jsonResponse: true,
+						allowOidc: true,
 					});
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				} catch (error: any) {
