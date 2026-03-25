@@ -3,8 +3,8 @@ on:
   workflow_dispatch:
 
 permissions:
-  # to clone the repo
-  contents: read
+  # to push to the repo
+  contents: write
   # for NPM provenance & NPM trusted publisher
   id-token: write
 
