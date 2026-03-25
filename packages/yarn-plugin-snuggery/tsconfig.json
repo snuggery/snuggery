@@ -1,8 +1,8 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
-		"module": "ES2022",
-		"moduleResolution": "Node10",
+		"module": "Preserve",
+		"moduleResolution": "bundler",
 		"outDir": "out-tsc",
 		"rootDir": "src"
 	},

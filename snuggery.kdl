@@ -52,8 +52,7 @@ project "all" root="" {
 
 	target "lint" builder="@angular-eslint/builder:lint" {
 		options {
-			eslintConfig ".eslintrc.yml"
-			ignorePath ".eslintignore"
+			eslintConfig "eslint.config.js"
 			lintFilePatterns "packages/*/src/**/*.[tj]s" "integration"
 		}
 		configuration "ci" {

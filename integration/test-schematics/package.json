@@ -6,6 +6,6 @@
 		"@angular-devkit/schematics": "^21.0.0",
 		"@snuggery-workspace/scripts": "workspace:scripts",
 		"@snuggery/journey": "workspace:packages/journey",
-		"typescript": "5.9.3"
+		"typescript": "6.0.2"
 	}
 }

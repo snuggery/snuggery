@@ -16,7 +16,7 @@
 		"update-help": "node ./scripts/update-help.mjs"
 	},
 	"devDependencies": {
-		"@angular-eslint/builder": "13.0.1",
+		"@angular-eslint/builder": "21.3.1",
 		"@bgotink/prettier-plugin-kdl": "0.2.0-next.0",
 		"@eslint/js": "^9.26.0",
 		"@microsoft/eslint-formatter-sarif": "^3.0.0",
@@ -36,8 +36,8 @@
 		"husky": "^9.1.7",
 		"is-ci": "^4.0.1",
 		"prettier": "^3.5.3",
-		"typescript": "5.9.3",
-		"typescript-eslint": "8.49.0",
+		"typescript": "6.0.2",
+		"typescript-eslint": "^8.57.2",
 		"uvu": "^0.5.6"
 	},
 	"dependenciesMeta": {
@@ -48,7 +48,7 @@
 	"resolutions": {
 		"@angular-devkit/core": "patch:@angular-devkit/core@^21.0.0#.yarn/patches/@angular-devkit__core.patch",
 		"@angular-devkit/schematics@^21.0.0": "patch:@angular-devkit/schematics@npm:^21.0.0#.yarn/patches/@angular-devkit-schematics-npm-14.0.0-eaba80662a.patch",
-		"@angular/compiler-cli@^21.0.0": "patch:@angular/compiler-cli@npm%3A^21.0.0#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch",
+		"@angular/compiler-cli@^21.2.5": "patch:@angular/compiler-cli@npm%3A^21.2.5#./.yarn/patches/@angular-compiler-cli-npm-16.0.0-rc.1-fe815e40f0.patch",
 		"@arcanis/slice-ansi@^2.0.1": "patch:@arcanis/slice-ansi@npm%3A^2.0.1#~/.yarn/patches/@arcanis-slice-ansi.patch",
 		"@nrwl/devkit@13.1.3": "npm:13.8.3",
 		"ajv@8.12.0": "patch:ajv@npm%3A8.12.0#.yarn/patches/ajv.patch",
