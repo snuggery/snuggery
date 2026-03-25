@@ -16,7 +16,7 @@
 		"test": "sn test"
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.13.0",
+		"@snuggery/architect": "^0.13.1",
 		"@snuggery/core": "^0.11.0"
 	},
 	"devDependencies": {

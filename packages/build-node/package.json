@@ -1,6 +1,6 @@
 {
 	"name": "@snuggery/build-node",
-	"version": "0.13.0",
+	"version": "0.13.1",
 	"private": true,
 	"type": "module",
 	"license": "MIT",
@@ -29,7 +29,7 @@
 		}
 	},
 	"dependencies": {
-		"@snuggery/architect": "^0.13.0",
+		"@snuggery/architect": "^0.13.1",
 		"typanion": "^3.12.1"
 	},
 	"devDependencies": {

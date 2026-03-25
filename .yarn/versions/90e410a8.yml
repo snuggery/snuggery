@@ -1,5 +1,0 @@
-releases:
-  "@snuggery/build-angular": patch
-  "@snuggery/build-node": patch
-  "@snuggery/journey": patch
-  "@snuggery/schematics": patch
