@@ -32,8 +32,8 @@
 		}
 	},
 	"dependencies": {
-		"@angular-devkit/core": "^21.0.0",
-		"@angular-devkit/schematics": "^21.0.0",
+		"@angular-devkit/core": "^22.0.0",
+		"@angular-devkit/schematics": "^22.0.0",
 		"@snuggery/core": "^0.11.0",
 		"@snuggery/schematics": "^0.13.1",
 		"kleur": "^4.1.5",

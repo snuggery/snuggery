@@ -14,8 +14,8 @@ index e5f5699b811eb29337ed680b722295dbae68e8ba..5e50a930e155d7a5de02b4c589d55998
 +export * from './src/perform_compile.js';
 +export { CompilerOptions as AngularCompilerOptions } from './src/transformers/api.js';
  export * from './private/tooling';
+ export * from './private/hybrid_analysis';
  export * from './src/ngtsc/logging';
- export * from './src/ngtsc/file_system';
 diff --git a/src/ngtsc/core/api/index.d.ts b/src/ngtsc/core/api/index.d.ts
 index 20ace5ec3ca22214c9d82be2e2bb88ac868dd122..0f45983679d3d78c97d0b93cb212494771ad5b78 100755
 --- a/src/ngtsc/core/api/index.d.ts
