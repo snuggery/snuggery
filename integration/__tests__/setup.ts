@@ -79,7 +79,14 @@ export class CollectingWritable extends Writable {
 	}
 
 	getContent() {
-		return Buffer.concat(this.#buffers);
+		return (
+			Buffer.concat(this.#buffers)
+				.toString("utf-8")
+				// Angular's tooling uses different emoji on Windows.
+				// Why? Who knows.
+				.replaceAll("√", "✔")
+				.replaceAll("»", "›")
+		);
 	}
 
 	reset() {
@@ -116,8 +123,8 @@ function createRunner(dir: string): Fixture["run"] {
 
 		return {
 			exitCode,
-			stdout: stdout.getContent().toString("utf8"),
-			stderr: stderr.getContent().toString("utf8"),
+			stdout: stdout.getContent(),
+			stderr: stderr.getContent(),
 		};
 	};
 }

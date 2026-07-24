@@ -39,14 +39,14 @@ function resolveOnlySelf(entryPoints) {
 					// but go doesn't support negative lookahead so we turn it into
 					// this beauty:
 					//
-					// ^(?:          |         |              |            |             ) // starts with one of the following:
-					//     \.\.[^/\\]                                                      // .. and then _not_ a slash
-					//                \.[^./\\]                                            // . and then not a . or a slash
-					//                          [A-Za-z]:[^\\]                             // A drive letter, a colon but then not a backslash
-					//                                         [A-Za-z][^:]                // A drive letter but then not a colon
-					//                                                      [^./\\A-Za-z]  // not a dot, slash or drive letter
+					// ^(?:          |         |               |            |             ) // starts with one of the following:
+					//     \.\.[^/\\]                                                       // .. and then _not_ a slash
+					//                \.[^./\\]                                             // . and then not a . or a slash
+					//                          [A-Za-z]:[^/\\]                             // A drive letter, a colon but then not a backslash
+					//                                          [A-Za-z][^:]                // A drive letter but then not a colon
+					//                                                       [^./\\A-Za-z]  // not a dot, slash or drive letter
 					filter:
-						/^(?:\.\.[^/\\]|\.[^./\\]|[A-Za-z]:[^\\]|[A-Za-z][^:]|[^./\\A-Za-z])/,
+						/^(?:\.\.[^/\\]|\.[^./\\]|[A-Za-z]:[^/\\]|[A-Za-z][^:]|[^./\\A-Za-z])/,
 				},
 				({path: specifier}) => {
 					const path = ownImports.get(specifier);

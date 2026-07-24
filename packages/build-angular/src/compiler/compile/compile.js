@@ -1,7 +1,7 @@
 /** cspell:ignore ngtsc */
 
 import {createProgram} from "@angular/compiler-cli";
-import {posix} from "path";
+import {normalize, posix} from "path";
 import ts from "typescript";
 
 import {BuildFailureError} from "../error.js";
@@ -58,7 +58,7 @@ export async function compile(
 					(/\.d\.[cm]?ts$/.test(writtenFile) ?
 						writtenDeclarationFiles
 					:	writtenFiles
-					).set(sourceFile.fileName, writtenFile);
+					).set(normalize(sourceFile.fileName), writtenFile);
 				}
 			},
 		});
@@ -181,7 +181,7 @@ function fixBrokenImports(compilerHost, usePrivateApiAsImportIssueWorkaround) {
 								node.modifiers,
 								node.importClause,
 								context.factory.createStringLiteral(newPath),
-								node.assertClause,
+								node.attributes ?? node.assertClause,
 							);
 						}
 					}
